@@ -2,6 +2,7 @@
 
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BarangController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PermohonanController;
 use App\Http\Controllers\PenerimaController;
@@ -112,7 +113,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/arsip/proses_edit_sppd/{id}', [ArsipDigitalController::class, 'proses_edit_sppd'])->name('proses_edit_sppd');
         Route::post('/arsip/hapus_surat_masuk/{id}', [ArsipDigitalController::class, 'hapus_surat_masuk'])->name('hapus_surat_masuk');
         Route::get('/arsip/print_disposisi_surat_masuk/{id}', [ArsipDigitalController::class, 'print_disposisi_arsip_surat_masuk'])->name('disposisi_surat_masuk');
-        
+
 
 
         //SURAT KELUAR
@@ -180,7 +181,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/arsip/aksi_tambah_file_memo/{id}', [MemoController::class, 'aksi_tambah_file_memo'])->name('aksi_tambah_file_memo');
         Route::post('/arsip/aksi_hapus_file_memo/{id}', [MemoController::class, 'aksi_hapus_file_memo'])->name('aksi_hapus_file_memo');
 
-        //Penerima Surat 
+        //Penerima Surat
         Route::post('/aksi_hapus_penerima_surat/{id}', [ArsipDigitalController::class, 'aksi_hapus_penerima_surat'])->name('aksi_hapus_penerima_surat');
         Route::post('/aksi_tambah_penerima_surat', [ArsipDigitalController::class, 'aksi_tambah_penerima_surat'])->name('aksi_tambah_penerima_surat');
 
@@ -208,6 +209,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/aksi_hapus_notulen/{id}', [NotulenController::class, 'aksi_hapus_notulen'])->name('aksi_hapus_notulen');
         Route::post('/aksi_ubah_kehadiran/{id_kegiatan}', [NotulenController::class, 'aksi_ubah_kehadiran'])->name('aksi_ubah_kehadiran');
         Route::post('/aksi_edit_notulen/{id_kegiatan}/{notulen_id}', [NotulenController::class, 'aksi_edit_notulen'])->name('aksi_edit_notulen');
+
+        Route::get('/arsip/barang/data', [BarangController::class, 'data'])->name('data_barang');
     });
 
     // upzis
@@ -215,7 +218,7 @@ Route::middleware('auth')->group(function () {
 
         //dashboard
         Route::get('/dashboard', [DashboardController::class, 'index']);
-        //aset 
+        //aset
         Route::get('/aset_umum', [AsetController::class, 'aset_umum']);
         Route::get('/aset_wakaf', [AsetController::class, 'aset_wakaf']);
         //tambah aset

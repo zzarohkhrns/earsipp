@@ -18,6 +18,11 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
     }
 
+    protected $commands = [
+        \App\Console\Commands\MakeViewCommand::class,
+    ];
+
+
     /**
      * Register the commands for the application.
      *

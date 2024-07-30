@@ -45,7 +45,7 @@
             <a class="btn btn-white btn-sm btn-hilang"><i class="fas fa-cog"></i>
                 <p> Pengaturan</p>
             </a>
-          
+
             <a href="/logout" class="btn btn-white btn-sm btn-hilang"><i class="fa fa-sign-out-alt"></i>
                 <p> Keluar</p>
             </a>
@@ -119,6 +119,38 @@
                                 style="font-size:17px;"></i>
                             <p>Berita Umum</p>
                         </a>
+                    </li>
+
+                    <li class="nav-item @yield('barang') card-seven">
+
+                        <a href="#" class="nav-link @yield('barang_link')">
+                            <i class="nav-icon fas fa-box" style="font-size:17px;"></i>
+                            <p>Data Barang<i class="right fas fa-angle-left"></i></p>
+                        </a>
+                        
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a onclick="$('#cover-spin').show(0)" href="/{{ $role }}/arsip/barang/data"
+                                    class="nav-link @yield('data_barang')">
+                                    <i class="nav-icon fas fa-archive"></i>
+                                    <p>Data Barang</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a onclick="$('#cover-spin').show(0)" href="/{{ $role }}/arsip/barang/permohonan"
+                                    class="nav-link @yield('permohonan_barang')">
+                                    <i class="nav-icon fas fa-cogs"></i>
+                                    <p>Permohonan Barang</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a onclick="$('#cover-spin').show(0)" href="/{{ $role }}/arsip/barang/penyaluran"
+                                    class="nav-link @yield('penyaluran_barang')">
+                                    <i class="nav-icon fas fa-request"></i>
+                                    <p>Penyaluran Barang</p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
 
                     <li class="nav-item @yield('kegiatan_mo') card-four">
@@ -371,7 +403,7 @@
                             </li>
 
 
-                        </ul> 
+                        </ul>
                     </li>  --}}
                     <li class="nav-item  @yield('arsip_mo') card-five">
                         <a href="#" class="nav-link @yield('arsip_ac')" style="font-size:17px;">&nbsp;<i

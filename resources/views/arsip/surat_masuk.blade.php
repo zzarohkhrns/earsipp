@@ -86,15 +86,10 @@
             <div>
                 <div>
                     {{-- Stop trying to control. --}}
-
-
                     <div class="row ">
                         <div class="col-12">
-
                             <div class="card ijo-atas">
-
                                 <div class="card-body ">
-
                                     <div class="row card-surat-masuk">
                                         <div class="col-12  ">
                                             <h5 class="d-flex ">

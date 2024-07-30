@@ -12,9 +12,11 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i>
             </a>
         </li>
-        <div class="d-flex align-items-center hidden">
+        @if(!empty($title))
+        <div class="d-flex align-items-center">
             {{ $title }}
         </div>
+        @endif
     </ul>
     <ul class="navbar-nav ml-auto align-self-center mr-0">
         <li class="nav-item align-self-center mr-0">

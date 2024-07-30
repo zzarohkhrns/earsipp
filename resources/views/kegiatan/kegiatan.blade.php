@@ -49,7 +49,7 @@
                                 <div class="card-body">
 
                                     @php
-                                        
+
                                         if (Auth::user()->gocap_id_pc_pengurus != null) {
                                             if ($hal == 'pc') {
                                                 $display = '';
@@ -112,7 +112,7 @@
                                                         } else {
                                                             $uu = '/' . $role . '/filter/kegiatan_upzis/';
                                                         }
-                                                        
+
                                                     @endphp
                                                     <form method="post" action="{{ $uu }}">
                                                         @csrf
