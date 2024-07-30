@@ -1,0 +1,5 @@
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^e\-arsip\.nucarecilacap\.id$
+RewriteRule ^/?$ "https\:\/\/e\-arsip\.nucarecilacap\.id\/" [R=301,L]
+

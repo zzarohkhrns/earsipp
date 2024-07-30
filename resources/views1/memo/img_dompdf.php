@@ -1,0 +1,1 @@
+<img src="{{ public_path('/images/lazisnu.png') }}">

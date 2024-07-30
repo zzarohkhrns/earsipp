@@ -1,0 +1,78 @@
+
+
+
+  
+  /* @media(min-width: 1300px) {
+    .h-card{
+        height: 110px;
+    }
+  }
+  
+  @media(max-width: 1400px) {
+    .h-card{
+        height: 160px;
+    }
+  } */
+
+  .bor-1{
+      border-radius: 1rem;
+  }
+
+  .ijo-atas {
+      border-top: 3px solid #28a745
+  }
+
+  .ijo-kiri {
+    border-left: 3px solid #28a745
+}
+  @media(min-width: 750px){
+    .co {
+      -ms-flex: 0 0 20%;
+      flex: 0 0 20%;
+      max-width: 20%
+    }
+  }
+  .card-container{
+    width: 20vw;
+    height: 45vh;
+    background-color: aliceblue;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .top-card{
+    background-color: green;
+    width: 100%;
+    height: 40%;
+    border-radius: 10px 10px 0 0 ;
+    position: relative;
+  }
+  
+  .top-card img{
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 4px solid white;
+    position: absolute;
+    left: 40%;
+    bottom: -40px;
+  }
+
+  .btn-circle.btn-xl {
+    width: 100px;
+    height: 100px;
+    padding: 13px 18px;
+    border-radius: 60px;
+    font-size: 15px;
+    text-align: center;
+  }
+
+  .top-card-ijo{
+    
+    background-color: #28a745;
+    width: 100%;
+    height: 120px;
+    border-radius: 10px 10px 0 0 ;
+    position: relative;
+  }
