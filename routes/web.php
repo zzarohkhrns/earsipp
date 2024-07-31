@@ -210,7 +210,16 @@ Route::middleware('auth')->group(function () {
         Route::post('/aksi_ubah_kehadiran/{id_kegiatan}', [NotulenController::class, 'aksi_ubah_kehadiran'])->name('aksi_ubah_kehadiran');
         Route::post('/aksi_edit_notulen/{id_kegiatan}/{notulen_id}', [NotulenController::class, 'aksi_edit_notulen'])->name('aksi_edit_notulen');
 
+        //data barang
         Route::get('/arsip/barang/data', [BarangController::class, 'data'])->name('data_barang');
+        Route::get('/arsip/barang/detail', [BarangController::class, 'detail'])->name('detail_barang');
+        route::get('/arsip/barang/tambah_barang', [BarangController::class, 'tambah_barang'])->name('tambah_barang');
+        Route::post('/aksi_tambah_barang', [BarangController::class, 'aksi_tambah_barang'])->name('aksi_tambah_barang');
+        route::post('/aksi_hapus_barang', [BarangController::class, 'aksi_hapus_barang'])->name('aksi_hapus_barang');
+        route::post('/aksi_edit_barang', [BarangController::class, 'aksi_edit_barang'])->name('aksi_edit_barang');
+        Route::get('/print-kontrol', [BarangController::class, 'printKontrol'])->name('printKontrol');
+
+
     });
 
     // upzis

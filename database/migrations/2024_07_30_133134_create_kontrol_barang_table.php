@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('kontrol_barang', function (Blueprint $table) {
-            $table->integer('id_kontrol_barang')->primary();
+            $table->uuid('id_kontrol_barang')->primary();
             $table->integer('id_barang');
             $table->date('tanggal_kontrol');
             $table->enum('berfungsi', ['ya', 'tidak'])->default('ya');
