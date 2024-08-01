@@ -35,7 +35,7 @@ class KegiatanController extends Controller
             $jenis_kegiatan = JenisKegiatan::all();
             if (Auth::user()->gocap_id_pc_pengurus != NULL) {
                 $ketua_upzis = Upzis::join($gocap . '.upzis_pengurus', $gocap . '.upzis_pengurus.id_upzis', '=', $gocap . '.upzis.id_upzis')
-                    ->join($gocap . '.pengurus_jabatan', $gocap . '.pengurus_jabatan.id_pengurus_jabatan', '=', $gocap . '.upzis_pengurus.id_pengurus_jabatan')
+                    ->join($gocap . '.pendgurus_jabatan', $gocap . '.pengurus_jabatan.id_pengurus_jabatan', '=', $gocap . '.upzis_pengurus.id_pengurus_jabatan')
                     ->get();
 
                 // dd(Auth::user()->PcPengurus->Pc->id_pc);

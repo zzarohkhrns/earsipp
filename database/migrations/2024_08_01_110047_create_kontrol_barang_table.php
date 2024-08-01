@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('kontrol_barang', function (Blueprint $table) {
             $table->uuid('id_kontrol_barang')->primary();
-            $table->integer('id_barang');
+            $table->foreignUuid('id_barang');
+            $table->foreign('id_barang')->references('id_barang')->on('barang');
             $table->date('tanggal_kontrol');
             $table->enum('berfungsi', ['ya', 'tidak'])->default('ya');
-            $table->enum('kondisi', ['baik', 'tidak'])->default('baik');
+            $table->enum('kondisi', ['baik', 'buruk'])->default('baik');
             $table->string('keterangan');
             $table->string('status_kc');
         });

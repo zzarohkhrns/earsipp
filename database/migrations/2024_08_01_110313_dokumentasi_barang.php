@@ -17,9 +17,12 @@ return new class extends Migration
             $table->uuid('id_dokumentasi_barang')->primary();
             $table->string('judul');
             $table->string('foto');
-            $table->integer('id_barang');
-            $table->integer('id_kontrol_barang');
-            $table->integer('id_keluar_masuk_barang');
+            $table->foreignUuid('id_barang');
+            $table->foreign('id_barang')->references('id_barang')->on('barang');
+            $table->foreignUuid('id_kontrol_barang');
+            $table->foreign('id_kontrol_barang')->references('id_kontrol_barang')->on('kontrol_barang');
+            $table->foreignUuid('id_keluar_masuk_barang');
+            $table->foreign('id_keluar_masuk_barang')->references('id_keluar_masuk_barang')->on('keluar_masuk_barang');
         });
     }
 

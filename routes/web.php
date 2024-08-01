@@ -212,14 +212,14 @@ Route::middleware('auth')->group(function () {
 
         //data barang
         Route::get('/arsip/barang/data', [BarangController::class, 'data'])->name('data_barang');
-        Route::get('/arsip/barang/detail', [BarangController::class, 'detail'])->name('detail_barang');
-        route::get('/arsip/barang/tambah_barang', [BarangController::class, 'tambah_barang'])->name('tambah_barang');
+        Route::post('/barang/data/tambah', [BarangController::class, 'store_data'])->name('barang.store');
+        Route::get('/arsip/barang/detail/{id}', [BarangController::class, 'detail'])->name('detail_barang');
+        route::post('/arsip/barang/tambah_kontrol', [BarangController::class, 'store_kontrol'])->name('kontrol.store');
         Route::post('/aksi_tambah_barang', [BarangController::class, 'aksi_tambah_barang'])->name('aksi_tambah_barang');
         route::post('/aksi_hapus_barang', [BarangController::class, 'aksi_hapus_barang'])->name('aksi_hapus_barang');
         route::post('/aksi_edit_barang', [BarangController::class, 'aksi_edit_barang'])->name('aksi_edit_barang');
         Route::get('/print-kontrol', [BarangController::class, 'printKontrol'])->name('printKontrol');
-
-
+        Route::get('/print-keluar', [BarangController::class, 'printKeluar'])->name('printKeluar');
     });
 
     // upzis
