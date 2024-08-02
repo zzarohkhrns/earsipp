@@ -3,6 +3,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\DataAsetController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PermohonanController;
 use App\Http\Controllers\PenerimaController;
@@ -211,15 +212,15 @@ Route::middleware('auth')->group(function () {
         Route::post('/aksi_edit_notulen/{id_kegiatan}/{notulen_id}', [NotulenController::class, 'aksi_edit_notulen'])->name('aksi_edit_notulen');
 
         //data barang
-        Route::get('/arsip/barang/data', [BarangController::class, 'data'])->name('data_barang');
-        Route::post('/barang/data/tambah', [BarangController::class, 'store_data'])->name('barang.store');
-        Route::get('/arsip/barang/detail/{id}', [BarangController::class, 'detail'])->name('detail_barang');
-        route::post('/arsip/barang/tambah_kontrol', [BarangController::class, 'store_kontrol'])->name('kontrol.store');
-        Route::post('/aksi_tambah_barang', [BarangController::class, 'aksi_tambah_barang'])->name('aksi_tambah_barang');
-        route::post('/aksi_hapus_barang', [BarangController::class, 'aksi_hapus_barang'])->name('aksi_hapus_barang');
-        route::post('/aksi_edit_barang', [BarangController::class, 'aksi_edit_barang'])->name('aksi_edit_barang');
-        Route::get('/print-kontrol', [BarangController::class, 'printKontrol'])->name('printKontrol');
-        Route::get('/print-keluar', [BarangController::class, 'printKeluar'])->name('printKeluar');
+        Route::get('/arsip/aset/data', [DataAsetController::class, 'data'])->name('data_aset');
+        Route::post('/aset/data/tambah', [DataAsetController::class, 'store_data'])->name('aset.store');
+        Route::get('/arsip/aset/detail', [DataAsetController::class, 'detail'])->name('detail_aset');
+        route::post('/arsip/aset/tambah_kontrol', [DataAsetController::class, 'store_kontrol'])->name('kontrol.store');
+        Route::post('/aksi_tambah_aset', [DataAsetController::class, 'aksi_tambah_aset'])->name('aksi_tambah_aset');
+        route::post('/aksi_hapus_aset', [DataAsetController::class, 'aksi_hapus_aset'])->name('aksi_hapus_aset');
+        route::post('/aksi_edit_aset', [DataAsetController::class, 'aksi_edit_aset'])->name('aksi_edit_aset');
+        Route::get('/print-kontrol', [DataAsetController::class, 'printKontrol'])->name('printKontrol');
+        Route::get('/print-keluar', [DataAsetController::class, 'printKeluar'])->name('printKeluar');
     });
 
     // upzis

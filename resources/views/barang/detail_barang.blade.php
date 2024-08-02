@@ -38,7 +38,7 @@
                     <ol class="breadcrumb m-0 pl-4">
                         <li class="breadcrumb-item active">
                             <a href="/{{ $role }}/dashboard">Dashboard</a> / <a
-                                href="/{{ $role }}/arsip/barang/data">Data Aset</a> / <a>Detail Aset</a>
+                                href="/{{ $role }}/arsip/aset/data">Data Aset</a> / <a>Detail Aset</a>
                         </li>
                     </ol>
                 </div>
@@ -72,17 +72,21 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>{{ $barang->nama }}</td>
+                                                {{-- <td>{{ $barang->nama }}</td>
                                                 <td>{{ $barang->satuan }}</td>
-                                                <td>{{ $barang->lokasi_penyimpanan }}</td>
+                                                <td>{{ $barang->lokasi_penyimpanan }}</td> --}}
+                                                <td>Laptop Asus</td>
+                                                <td>pcs</td>
+                                                <td>Ruang Staff</td>
                                                 <td>
                                                     <div class="btn-group btn-block mb-2 mb-xl-0 card_edit_barang">
                                                         <a class="btn btn-success intro-ubah-detail-barang ml-1 mr-0 edit-barang"
                                                             type="button" data-toggle="modal" data-target="#edittambahModal"
                                                             aria-expanded="false"
-                                                            data-nama-barang="{{ $barang->nama }}" data-satuan="{{ $barang->satuan }}"
+                                                            {{-- data-nama-barang="{{ $barang->nama }}" data-satuan="{{ $barang->satuan }}"
                                                             data-lokasi-penyimpanan="{{ $barang->lokasi_penyimpanan }}"
-                                                            data-spesifikasi="{{ $barang->spesifikasi }}">
+                                                            data-spesifikasi="{{ $barang->spesifikasi }}" --}}
+                                                            >
                                                             &nbsp;&nbsp;<i class="fas fa-edit"></i> Edit
                                                         </a>
                                                     </div>
@@ -104,7 +108,8 @@
                                                 <td><b>Spesifikasi</b></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="4">{{ $barang->spesifikasi }}</td>
+                                                {{-- <td colspan="4">{{ $barang->spesifikasi }}</td> --}}
+                                                <td colspan="4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa rem optio labore cupiditate dolore corrupti soluta. Vel, illo, tempore aut assumenda laboriosam possimus non omnis maiores provident consequuntur iste. Aspernatur.</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -176,7 +181,7 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    @foreach ($barang->kontrolBarang as $data)
+                                                                    {{-- @foreach ($barang->kontrolBarang as $data)
                                                                     <td>{{ $loop->iteration }}</td>
                                                                     <td>Halin Fajar Waskitho</td>
                                                                     <td>{{ $data->tanggal_kontrol }}</td>
@@ -207,7 +212,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    @endforeach
+                                                                    @endforeach --}}
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -257,7 +262,7 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    @foreach ($barang->keluarMasukBarang as $data)
+                                                                    {{-- @foreach ($barang->keluarMasukBarang as $data)
 
                                                                     <td>{{ $loop->iteration }}</td>
                                                                     <td>Halin Fajar Waskitho</td>
@@ -290,7 +295,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    @endforeach
+                                                                    @endforeach --}}
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -420,7 +425,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Tambah Data Barang</h5>
+                    <h5 class="modal-title" id="myModalLabel">Edit Data Barang</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -428,8 +433,20 @@
                 <div class="modal-body">
                     <form id="myForm">
                         <div class="form-group">
+                            <label for="kode">Kode Aset :</label>
+                            <input type="text" class="form-control" id="kode" name="kode">
+                        </div>
+                        <div class="form-group">
+                            <label for="tgl_beli">Tgl Pembelian :</label>
+                            <input type="text" class="form-control" id="tgl_beli" name="tgl_beli">
+                        </div>
+                        <div class="form-group">
                             <label for="name">Nama :</label>
                             <input type="text" class="form-control" id="name" name="nama">
+                        </div>
+                        <div class="form-group">
+                            <label for="kategori">Kategori :</label>
+                            <input type="text" class="form-control" id="kategori" name="kategori">
                         </div>
                         <div class="form-group">
                             <label for="satuan">Satuan :</label>
@@ -438,6 +455,10 @@
                         <div class="form-group">
                             <label for="lokasi">Lokasi Penyimpanan :</label>
                             <input type="text" class="form-control" id="lokasi" name="lokasi_penyimpanan">
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status :</label>
+                            <input type="text" class="form-control" id="status" name="status">
                         </div>
                         <div class="form-group">
                             <label for="spesifikasi">Spesifikasi/Deskripsi :</label>

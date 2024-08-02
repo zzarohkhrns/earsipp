@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pc;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\Barang;
 use App\Models\KontrolBarang;
@@ -14,21 +13,22 @@ use App\Models\PengurusJabatan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
-class BarangController extends Controller
+class DataAsetController extends Controller
 {
     public function data()
     {
         //$barang = DB::table('barang')->get();
-        // $aset = Barang::with(['latestKontrolBarang', 'latestKeluarMasukBarang'])->get();
+        //$barang = Barang::with(['latestKontrolBarang', 'latestKeluarMasukBarang'])->get();
         $role = 'pc';
-        return view('barang.data_aset', compact('role'));
+        return view('barang.data_barang', compact('role'));
     }
 
-    public function detail($id )
+    public function detail()
     {
         $role = 'pc';
-        // $barang =Barang::with(['kontrolBarang', 'keluarMasukBarang'])->findOrFail($id);
+        //$barang =Barang::with(['kontrolBarang', 'keluarMasukBarang'])->findOrFail($id);
 
         return view('barang.detail_barang', compact('role'));
     }
@@ -54,13 +54,13 @@ class BarangController extends Controller
         ]);
         try
         {
-            Barang::create([
-                'id_barang' => Str::uuid(),
-                'nama' => $request->nama,
-                'satuan' => $request->satuan,
-                'lokasi_penyimpanan' => $request->lokasi_penyimpanan,
-                'spesifikasi' => $request->spesifikasi,
-            ]);
+            // Barang::create([
+            //     'id_barang' => Str::uuid(),
+            //     'nama' => $request->nama,
+            //     'satuan' => $request->satuan,
+            //     'lokasi_penyimpanan' => $request->lokasi_penyimpanan,
+            //     'spesifikasi' => $request->spesifikasi,
+            // ]);
             return redirect()->back()->with('success', 'Data berhasil ditambahkan.');
         }
         catch (\Exception $e)

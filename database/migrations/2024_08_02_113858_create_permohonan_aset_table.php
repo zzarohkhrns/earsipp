@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Query\Expression;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -15,10 +15,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('permohonan_barang_jasa', function (Blueprint $table) {
+        Schema::create('permohonan_aset', function (Blueprint $table) {
             $gocap = DB::connection('gocap')->getDatabaseName();
 
-            $table->uuid('id_permohonan_barang_jasa')->primary();
+            $table->uuid('id_permohonan_aset')->primary();
             $table->foreignUuid('id_pc_pengurus')->nullable();
             $table->foreign('id_pc_pengurus')->references('id_pc_pengurus')->on(new Expression($gocap . '.pc_pengurus'))->nullable();
             $table->string('nomor_permohonan')->nullable();
@@ -41,6 +41,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permohonan_barang_jasa');
+        Schema::dropIfExists('permohonan_aset');
     }
 };

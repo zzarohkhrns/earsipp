@@ -130,21 +130,21 @@
 
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a onclick="$('#cover-spin').show(0)" href="/{{ $role }}/arsip/barang/data"
+                                <a onclick="$('#cover-spin').show(0)" href="/{{ $role }}/arsip/aset/data"
                                     class="nav-link @yield('data_barang')">
                                     <i class="nav-icon fas fa-archive"></i>
                                     <p>Data Aset</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a onclick="$('#cover-spin').show(0)" href="/{{ $role }}/arsip/barang/permohonan"
+                                <a onclick="$('#cover-spin').show(0)" href="/{{ $role }}/arsip/aset/permohonan"
                                     class="nav-link @yield('permohonan_barang')">
                                     <i class="nav-icon fas fa-cogs"></i>
                                     <p>Permohonan</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a onclick="$('#cover-spin').show(0)" href="/{{ $role }}/arsip/barang/penyaluran"
+                                <a onclick="$('#cover-spin').show(0)" href="/{{ $role }}/arsip/aset/penyaluran"
                                     class="nav-link @yield('penyaluran_barang')">
                                     <i class="nav-icon fas fa-request"></i>
                                     <p>Penyaluran</p>

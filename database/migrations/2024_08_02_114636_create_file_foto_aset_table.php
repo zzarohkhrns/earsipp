@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('barang', function (Blueprint $table) {
-            $table->uuid('id_barang')->primary();
-            $table->string('nama')->nullable();
-            $table->string('satuan')->nullable();
-            $table->text('spesifikasi')->nullable();
-            $table->string('lokasi_penyimpanan')->nullable();
+        Schema::create('file_foto_aset', function (Blueprint $table) {
+            $table->uuid('id_file_aset');
+            $table->foreignUuid('aset_id');
+            $table->foreign('aset_id')->references('aset_id')->on('aset');
+            $table->string('judul_file');
+            $table->string('file');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('barang');
+        Schema::dropIfExists('file_foto_aset');
     }
 };

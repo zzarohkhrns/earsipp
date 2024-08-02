@@ -7,6 +7,36 @@
 @section('css')
 @section('content')
 
+    <style>
+        .tab-content {
+            display: none;
+            /* Sembunyikan semua konten tab */
+        }
+
+        .tab-content.active {
+            display: block;
+            /* Tampilkan konten tab yang aktif */
+        }
+
+        .btn-group .btn {
+            cursor: pointer;
+        }
+
+        .custom-input,
+        .custom-text {
+            height: 38px;
+            /* Set tinggi yang konsisten */
+            font-size: 1rem;
+            /* Ukuran font yang sama */
+            line-height: 1.5;
+            /* Garis tengah yang seragam */
+        }
+
+        .input-group-prepend .input-group-text {
+            border-radius: 0;
+            /* Hilangkan border-radius untuk keseragaman */
+        }
+    </style>
 
     <div class="content-header">
         <div class="container-fluid">
@@ -41,20 +71,42 @@
                                             <b class="text-success pl-2">Data Barang<br>Logistik dan Perlengkapan</b>
                                         </h5>
                                         <div class="btn-group ml-5">
-                                            <a onclick="$('#cover-spin').show(0)"
-                                                href="/{{ $role }}/arsip/barang/data"
-                                                class="btn btn-success btn-block mt-2" style="width:150px;">Data Aset</a>
-                                            <a onclick="$('#cover-spin').show(0)"
-                                                href="/{{ $role }}/arsip/barang/data"
-                                                class="btn btn-light btn-block ml-2" style="width:150px;">Pemeriksaan</a>
-                                            <a onclick="$('#cover-spin').show(0)"
-                                                href="/{{ $role }}/arsip/barang/data"
-                                                class="btn btn-light btn-block ml-2" style="width:150px;">Keluar Masuk</a>
-                                            <a onclick="$('#cover-spin').show(0)"
-                                                href="/{{ $role }}/arsip/barang/data"
-                                                class="btn btn-light btn-block ml-2" style="width:150px;">Penyusutan
-                                                Nilai</a>
+                                            <a class="btn btn-success btn-block mt-2" style="width:150px;"
+                                                onclick="openTab('dataAset')">Data Aset</a>
+                                            <a class="btn btn-light btn-block ml-2" style="width:150px;"
+                                                onclick="openTab('pemeriksaan')">Pemeriksaan</a>
+                                            <a class="btn btn-light btn-block ml-2" style="width:150px;"
+                                                onclick="openTab('keluarMasuk')">Keluar Masuk</a>
+                                            <a class="btn btn-light btn-block ml-2" style="width:150px;"
+                                                onclick="openTab('penyusutanNilai')">Penyusutan Nilai</a>
                                         </div>
+
+                                        <script>
+                                            function openTab(tabId) {
+                                                // Sembunyikan semua konten tab
+                                                var contents = document.getElementsByClassName('tab-content');
+                                                for (var i = 0; i < contents.length; i++) {
+                                                    contents[i].classList.remove('active');
+                                                }
+
+                                                // Tampilkan konten tab yang dipilih
+                                                document.getElementById(tabId).classList.add('active');
+
+                                                // Ubah warna tombol tab yang aktif
+                                                var buttons = document.querySelectorAll('.btn-group .btn');
+                                                buttons.forEach(button => {
+                                                    button.classList.remove('btn-success');
+                                                    button.classList.add('btn-light');
+                                                });
+
+                                                // Tambahkan kelas 'btn-success' ke tombol yang aktif
+                                                event.target.classList.add('btn-success');
+                                                event.target.classList.remove('btn-light');
+                                            }
+
+                                            // Inisialisasi tab pertama sebagai aktif
+                                            document.getElementById('dataAset').classList.add('active');
+                                        </script>
                                     </div>
 
                                     <!-- success jika berhasil menambah data -->
@@ -69,189 +121,431 @@
                                         </div>
                                     @endif
 
+                                    <!-- tab data aset -->
+                                    <div id="dataAset" class="tab-content active" style="width: 99%; padding:10px; mt-1">
+                                        <h5 class="text-success"><b>Data Aset</b></h5>
 
-                                    <!-- Menu untuk filter -->
-                                    <div
-                                        style="border: 1px solid #e0e0e0; border-radius: 5px; background-color: #f9f9f9; padding: 10px; margin-bottom: 10px;">
-                                        <!-- Bagian Filter dan Tombol Aksi -->
-                                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                                        <!-- Menu untuk filter -->
+                                        <div
+                                            style="border: 1px solid #e0e0e0; border-radius: 5px; background-color: #f9f9f9; padding: 10px; margin-bottom: 10px;">
+                                            <!-- Bagian Filter dan Tombol Aksi -->
                                             <div
-                                                style="display: flex; align-items: center; flex-wrap: wrap; max-width: 70%;">
-                                                <!-- Filter Tanggal Pembelian -->
-                                                <div style="display: flex; align-items: center; margin-right: 15px;">
-                                                    <label for="tgl-pembelian"
-                                                        style="font-size: 0.9em; margin-right: 5px;">Tgl Pembelian:</label>
-                                                    <input type="date" id="tgl-pembelian-start"
-                                                        name="tgl-pembelian-start"
-                                                        style="padding: 5px; border: 1px solid #ced4da; border-radius: 5px; outline: none; width: 150px; margin-right: 5px;">
-                                                    <span style="margin: 0 5px;">-</span>
-                                                    <input type="date" id="tgl-pembelian-end" name="tgl-pembelian-end"
-                                                        style="padding: 5px; border: 1px solid #ced4da; border-radius: 5px; outline: none; width: 150px;">
-                                                </div>
+                                                style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                                                <div style="display: flex; align-items: center;  max-width: 100%;">
+                                                    <!-- Filter Tanggal Pembelian -->
+                                                    <div class="col-12 col-md-6 col-sm-12 mb-3 mt-3">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text custom-text">Tgl
+                                                                    Pembelian</span>
+                                                            </div>
+                                                            <input type="date" id="tgl-pembelian-start"
+                                                                name="tgl-pembelian-start"
+                                                                class="form-control custom-input">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text custom-text">-</span>
+                                                            </div>
+                                                            <input type="date" id="tgl-pembelian-end"
+                                                                name="tgl-pembelian-end" class="form-control custom-input">
+                                                        </div>
+                                                    </div>
 
-                                                <!-- Filter Kategori -->
-                                                <div style="display: flex; align-items: center; margin-right: 15px;">
-                                                    <label for="kategori"
-                                                        style="font-size: 0.9em; margin-right: 5px;">Kategori:</label>
-                                                    <select id="kategori" name="kategori"
-                                                        style="padding: 5px; border: 1px solid #ced4da; border-radius: 5px; outline: none; width: 150px;">
-                                                        <option value="semua">Semua</option>
-                                                        <option value="kategori1">Kategori 1</option>
-                                                        <option value="kategori2">Kategori 2</option>
-                                                        <!-- Tambahkan lebih banyak opsi sesuai kebutuhan -->
-                                                    </select>
-                                                </div>
+                                                    {{-- filter kategori --}}
+                                                    <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0 mt-2">
+                                                        <div class="input-group mb-2 mr-sm-2">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">Kategori</div>
+                                                            </div>
 
-                                                <!-- Filter Status -->
-                                                <div style="display: flex; align-items: center; margin-right: 15px;">
-                                                    <label for="status"
-                                                        style="font-size: 0.9em; margin-right: 5px;">Status:</label>
-                                                    <select id="status" name="status"
-                                                        style="padding: 5px; border: 1px solid #ced4da; border-radius: 5px; outline: none; width: 150px;">
-                                                        <option value="semua">Semua</option>
-                                                        <option value="status1">Status 1</option>
-                                                        <option value="status2">Status 2</option>
-                                                        <!-- Tambahkan lebih banyak opsi sesuai kebutuhan -->
-                                                    </select>
-                                                </div>
+                                                            <select class="form-control " name="kategori"
+                                                                onchange="javascript:this.form.submit();">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    {{-- filter status --}}
+                                                    <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0 mt-2">
+                                                        <div class="input-group mb-2 mr-sm-2">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">Status</div>
+                                                            </div>
 
-                                                <!-- Tombol Refresh -->
-                                                <div>
-                                                    <button class="btn btn-outline-secondary" ><i class="fas fa-sync-alt"></i></button>
-                                                </div>
-                                            </div>
+                                                            <select class="form-control " name="status"
+                                                                onchange="javascript:this.form.submit();">
+                                                            </select>
+                                                        </div>
+                                                    </div>
 
-                                            <!-- Tombol Aksi -->
-                                            <div
-                                                style="display: flex; flex-direction: column; align-items: center; margin-left: 20px;">
-                                                <div class="btn-group btn-block mb-2 mb-xl-0 mt-1card-tambah-barang"
-                                                    style="width:150px; margin-bottom: 10px;">
-                                                    <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                        <button type="button" class="btn btn-success" data-toggle="modal"
-                                                            href="#tambahModal">
-                                                            <i class="fas fa-plus-circle"></i>
-                                                            <span>Tambah </span>
-                                                        </button>
+                                                    <!-- Tombol Refresh -->
+                                                    <div>
+                                                        <button class="btn btn-outline-secondary" style="width: 100px;"><i
+                                                                class="fas fa-sync-alt"></i></button>
                                                     </div>
                                                 </div>
-                                                <div class="btn-group btn-block mb-2 mb-xl-0 card-tambah-kontrol"
-                                                    style="width:150px;">
-                                                    <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                        <a href="/{{ $role }}/print-data"
-                                                            class="btn btn-outline-secondary">
-                                                            <i class="fi fi-sr-file"></i>Export
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
 
-                                        <!-- Keterangan Data -->
-                                        <div>
-                                            <p style="margin: 0;"><b>&#9432</b> Data Aset PC Lazarus Cilacap. Dapat
-                                                ditambahkan oleh Staff Logistik dan Perlengkapan.</p>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <!-- Table barang -->
-                                <table id="example3" class="table table-bordered" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>NO</th>
-                                            <th>Nama Barang</th>
-                                            <th>Satuan</th>
-                                            <th>Lokasi Penyimpanan</th>
-                                            <th>Spesifikasi</th>
-                                            <th>Kontrol Barang</th>
-                                            <th>Keluar Masuk</th>
-                                            <th>Sisa Barang</th>
-                                            <th style="width: 200px;">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            @foreach ($barang as $data)
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td name="brg_id" hidden>{{ $data->id_barang }}</td>
-                                                <td name='brg_nama'>{{ $data->nama }}</td>
-                                                <td>{{ $data->satuan }}</td>
-                                                <td>{{ $data->lokasi_penyimpanan }}</td>
-                                                <td>{{ $data->spesifikasi }}</td>
-                                                <td style="">
-                                                    @if ($data->latestKontrolBarang)
-                                                        <div>
-                                                            Tgl Kontrol:
-                                                            <b>{{ $data->latestKontrolBarang->tanggal_kontrol }}</b><br>
-                                                            Berfungsi: {{ $data->latestKontrolBarang->berfungsi }} <br>
-                                                            Kondisi: {{ $data->latestKontrolBarang->kondisi }} <br>
-                                                        </div>
-                                                    @endif
-                                                </td>
-                                                <td>
-
-                                                    @if ($data->latestKeluarMasukBarang)
-                                                        <div>
-                                                            Tgl Input:
-                                                            <b>{{ $data->latestKeluarMasukBarang->tanggal_keluar_masuk }}</b><br>
-                                                            Jml Masuk:
-                                                            {{ $data->latestKeluarMasukBarang->jumlah_masuk }}<br>
-                                                            Jml Keluar:
-                                                            {{ $data->latestKeluarMasukBarang->jumlah_keluar }}<br>
-                                                        </div>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($data->latestKeluarMasukBarang)
-                                                        {{ $data->latestKeluarMasukBarang->jumlah_sisa }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <div class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
+                                                <!-- Tombol Aksi -->
+                                                <div
+                                                    style="display: flex; flex-direction: column; align-items: center; margin-left: 0px;">
+                                                    <div class="btn-group btn-block mb-2 mb-xl-0 mt-1card-tambah-barang"
+                                                        style="width:150px; margin-bottom: 10px;">
                                                         <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                            <a onclick="$('#cover-spin').show(0)"
-                                                                href="/{{ $role }}/arsip/barang/detail/{{ $data->id_barang }}"
-                                                                class="btn btn-outline-secondary btn-block"
-                                                                style="display: block;">
-                                                                Detail Barang
+                                                            <button type="button" class="btn btn-success"
+                                                                data-toggle="modal" data-target="#tambahModal">
+                                                                <i class="fas fa-plus-circle"></i>
+                                                                <span>Tambah </span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-group btn-block mb-2 mb-xl-0 card-tambah-kontrol"
+                                                        style="width:150px;">
+                                                        <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                            <a href="/{{ $role }}/print-data"
+                                                                class="btn btn-outline-secondary">
+                                                                <i class="fi fi-sr-file"></i>Export
                                                             </a>
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
 
-                                                    <div class="btn-group btn-block mb-2 mb-xl-0 card_kontrol_barang">
-                                                        <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                            <button type="button" class="btn btn-outline-secondary input-kontrol"
-                                                                data-id-barang="{{ $data->id_barang }}"
-                                                                data-nama-barang="{{ $data->nama }}"
-                                                                data-toggle="modal" data-target="#kontrolModal">
-                                                                <span>Input Kontrol</span>
-                                                            </button>
-                                                        </div>
+                                            <!-- Keterangan Data -->
+                                            <div class="col-12 col-md-10 col-sm-12 mb-2 mb-xl-0">
+                                                <div class="d-flex flex-row bd-highlight align-items-center">
+                                                    <div class="p-2 bd-highlight">
+                                                        <i class="fas fa-info-circle"></i>
                                                     </div>
+                                                    <div class="p-1 bd-highlight">
+                                                        <span>
+                                                            Data Aset PC Lazisnu Cilacap. Dapat ditambahkan oleh Staff
+                                                            Logistik dan Perlengkapan.
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                                    <div class="btn-group btn-block mb-2 mb-xl-0 card_keluar_masuk_barang">
-                                                        <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                            <button type="button" class="btn btn-outline-secondary"
-                                                                data-toggle="modal" data-target="#keluarModal"
-                                                                data-id-barang="{{ $data->id_barang }}"
-                                                                data-nama-barang="{{ $data->nama }}">
-                                                                <span>Input Keluar Masuk</span>
-                                                            </button>
+                                        {{-- script untuk filter data --}}
+                                        <script>
+                                            // Fungsi untuk memfilter data berdasarkan input
+                                            function filterData() {
+                                                var tglStart = document.getElementById('tgl-pembelian-start').value;
+                                                var tglEnd = document.getElementById('tgl-pembelian-end').value;
+                                                var kategori = document.getElementById('kategori').value;
+                                                var status = document.getElementById('status').value;
+
+                                                var filteredData = dataAset.filter(function(item) {
+                                                    // Filter berdasarkan tanggal
+                                                    var itemDate = new Date(item.tanggal);
+                                                    var startDate = new Date(tglStart);
+                                                    var endDate = new Date(tglEnd);
+                                                    var dateCondition = (!tglStart || itemDate >= startDate) && (!tglEnd || itemDate <= endDate);
+
+                                                    // Filter berdasarkan kategori
+                                                    var kategoriCondition = kategori === 'semua' || item.kategori === kategori;
+
+                                                    // Filter berdasarkan status
+                                                    var statusCondition = status === 'semua' || item.status === status;
+
+                                                    return dateCondition && kategoriCondition && statusCondition;
+                                                });
+
+                                                // Implementasikan logika untuk menampilkan filteredData di tabel
+                                                console.log(filteredData);
+                                            }
+
+                                            // Fungsi untuk mereset filter dan menampilkan data asli
+                                            function resetFilters() {
+                                                document.getElementById('tgl-pembelian-start').value = '';
+                                                document.getElementById('tgl-pembelian-end').value = '';
+                                                document.getElementById('kategori').value = 'semua';
+                                                document.getElementById('status').value = 'semua';
+
+                                                // Tampilkan data asli tanpa filter
+                                                console.log(dataAset);
+                                                // Tampilkan data asli di sini
+                                            }
+
+                                            // Event listeners untuk elemen filter
+                                            document.getElementById('tgl-pembelian-start').addEventListener('change', filterData);
+                                            document.getElementById('tgl-pembelian-end').addEventListener('change', filterData);
+                                            document.getElementById('kategori').addEventListener('change', filterData);
+                                            document.getElementById('status').addEventListener('change', filterData);
+                                            document.querySelector('.btn-refresh').addEventListener('click', filterData);
+
+                                            // Event listener untuk tombol refresh
+                                            document.querySelector('.btn-refresh').addEventListener('click', resetFilters);
+                                        </script>
+
+                                        <!-- Table barang -->
+                                        <table id="example3" class="table table-bordered" style="width:100%;">
+                                            <thead class="table-secondary">
+                                                <tr>
+                                                    <th>NO</th>
+                                                    <th>Kode Aset</th>
+                                                    <th>Nama Aset</th>
+                                                    <th>Kategori</th>
+                                                    <th>Lokasi Penyimpanan</th>
+                                                    <th>Satuan</th>
+                                                    <th>Pemeriksaan</th>
+                                                    <th>Keluar Masuk</th>
+                                                    <th style="width: 200px;">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>pc-1</td>
+                                                    <td>Laptop Asus</td>
+                                                    <td>Elektronik</td>
+                                                    <td>Ruang Staf</td>
+                                                    <td>pcs</td>
+                                                    <td>tanggal</td>
+                                                    <td>tangal</td>
+                                                    <td>
+                                                        <div class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
+                                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                                <a onclick="$('#cover-spin').show(0)"
+                                                                    href="/{{ $role }}/arsip/aset/detail"
+                                                                    {{-- /{{ $data->id_barang }}" --}}
+                                                                    class="btn btn-outline-secondary btn-block"
+                                                                    style="display: block;">
+                                                                    Detail Barang
+                                                                </a>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                                        <div class="btn-group btn-block mb-2 mb-xl-0 card_kontrol_barang">
+                                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                                <button type="button"
+                                                                    class="btn btn-outline-secondary input-kontrol"
+                                                                    {{-- data-id-barang="{{ $data->id_barang }}"
+                                                                    data-nama-barang="{{ $data->nama }}" --}}
+                                                                    data-toggle="modal" data-target="#kontrolModal">
+                                                                    <span>Input Kontrol</span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="btn-group btn-block mb-2 mb-xl-0 card_keluar_masuk_barang">
+                                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                                <button type="button" class="btn btn-outline-secondary"
+                                                                    data-toggle="modal" data-target="#keluarModal"
+                                                                    {{-- data-id-barang="{{ $data->id_barang }}"
+                                                                    data-nama-barang="{{ $data->nama }}"> --}}>
+                                                                    <span>Input Keluar Masuk</span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {{-- @foreach ($barang as $data)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td name="brg_id" hidden>{{ $data->id_barang }}</td>
+                                                    <td></td>
+                                                    <td name='brg_nama'>{{ $data->nama }}</td>
+                                                    <td></td>
+                                                    <td>{{ $data->lokasi_penyimpanan }}</td>
+                                                    <td>{{ $data->satuan }}</td>
+                                                    <td>
+                                                        @if ($data->latestKontrolBarang)
+                                                            <div>
+                                                                Tgl Kontrol:
+                                                                <b>{{ $data->latestKontrolBarang->tanggal_kontrol }}</b><br>
+                                                                Berfungsi: {{ $data->latestKontrolBarang->berfungsi }} <br>
+                                                                Kondisi: {{ $data->latestKontrolBarang->kondisi }} <br>
+                                                            </div>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if ($data->latestKeluarMasukBarang)
+                                                            <div>
+                                                                Tgl Input:
+                                                                <b>{{ $data->latestKeluarMasukBarang->tanggal_keluar_masuk }}</b><br>
+                                                                Jml Masuk:
+                                                                {{ $data->latestKeluarMasukBarang->jumlah_masuk }}<br>
+                                                                Jml Keluar:
+                                                                {{ $data->latestKeluarMasukBarang->jumlah_keluar }}<br>
+                                                            </div>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach --}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- tab pemeriksaan -->
+                                    <div id="pemeriksaan" class="tab-content" style="width: 99%; padding:10px; mt-1">
+                                        <h5 class="text-success"><b>Pemeriksaan</b></h5>
+                                        <div class="btn-group btn-block mb-2 mb-xl-3 card-tambah-kontrol"
+                                            style="width:150px">
+                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                <button type="button" class="btn btn-success" data-toggle="modal"
+                                                    style="background-color: green; color: white;">
+                                                    <i class="fas fa-plus-circle"></i>
+                                                    <span>Tambah</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="btn-group btn-block mb-2 mb-xl-4 card-tambah-kontrol"
+                                            style="width:150px">
+                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                <a href="/{{ $role }}/print-kontrol"
+                                                    class="btn btn-outline-secondary">
+                                                    <i class="fi fi-ss-print"></i>Cetak PDF</a>
+                                            </div>
+                                        </div>
+                                        <table id="example3" class="table table-bordered" style="width:100%">
+                                            <thead class="table-secondary">
+                                                <tr>
+                                                    <th>NO</th>
+                                                    <th>Diinput Oleh</th>
+                                                    <th>Tanggal Kontrol</th>
+                                                    <th>Berfungsi</th>
+                                                    <th>Kondisi</th>
+                                                    <th>Keterangan</th>
+                                                    <th>Respon KC</th>
+                                                    <th style="width: 150px;">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    {{-- @foreach ($barang->kontrolBarang as $data)
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>Halin Fajar Waskitho</td>
+                                                    <td>{{ $data->tanggal_kontrol }}</td>
+                                                    <td>{{ $data->berfungsi }}</td>
+                                                    <td>{{ $data->kondisi }}</td>
+                                                    <td>{{ $data->keterangan }}</td>
+                                                    <td>{{ $data->status_kc }}</td>
+                                                    <td>
+                                                        <div class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
+                                                            <a class="btn btn-outline-secondary intro-ubah-detail-barang ml-1 mr-0"
+                                                                type="button" data-toggle="modal"
+                                                                data-target="#editkontrolModal" aria-expanded="false"
+                                                                data-nama>
+                                                                &nbsp;&nbsp;<i class="fas fa-edit"></i> Edit
+                                                            </a>
+                                                        </div>
+                                                        <div class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
+                                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                                <a onclick="$('#cover-spin').show(0)"
+                                                                    href="/{{ $role }}/aksi_hapus_barang"
+                                                                    class="btn btn-outline-secondary btn-block"
+                                                                    style="display: block;">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                @endforeach
+                                            </tr> --}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    {{-- tab keluar masuk --}}
+                                    <div id="keluarMasuk" class="tab-content" style="width: 99%; padding:10px; mt-1">
+                                        <h5 class="text-success"><b>Keluar Masuk</b></h5>
+                                        <div class="btn-group btn-block mb-2 mb-xl-3 card-tambah-kontrol"
+                                            style="width:150px">
+                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                <button type="button" class="btn btn-success" data-toggle="modal"
+                                                    href="#keluarModal" style="background-color: green; color: white;">
+                                                    <i class="fas fa-plus-circle"></i>
+                                                    <span>Tambah</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="btn-group btn-block mb-2 mb-xl-4 card-tambah-kontrol"
+                                            style="width:150px">
+                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                <a href="/{{ $role }}/print-keluar"
+                                                    class="btn btn-outline-secondary">
+                                                    <i class="fi fi-rs-print"></i>Cetak PDF</a>
+                                            </div>
+                                        </div>
+                                        <table id="example3" class="table table-bordered" style="width:100%">
+                                            <thead class="table-secondary">
+                                                <tr>
+                                                    <th>NO</th>
+                                                    <th>Diinput Oleh</th>
+                                                    <th>Tanggal Input</th>
+                                                    <th>Keluar</th>
+                                                    <th>Masuk</th>
+                                                    <th>Sisa</th>
+                                                    <th>Keterangan</th>
+                                                    <th>Respon KC</th>
+                                                    <th style="width: 150px;">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    {{-- @foreach ($barang->keluarMasukBarang as $data)
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>Halin Fajar Waskitho</td>
+                                                        <td>{{ $data->tanggal_keluar_masuk }}</td>
+                                                        <td>{{ $data->jumlah_keluar }}</td>
+                                                        <td>{{ $data->jumlah_masuk }}</td>
+                                                        <td>{{ $data->jumlah_sisa }}</td>
+                                                        <td>{{ $data->keterangan }}</td>
+                                                        <td>{{ $data->status_kc }}</td>
+                                                        <td>
+                                                            <div
+                                                                class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
+                                                                <a class="btn btn-outline-secondary intro-ubah-detail-barang ml-1 mr-0"
+                                                                    type="button" data-toggle="modal"
+                                                                    data-target="#editkeluarModal" aria-expanded="false">
+                                                                    &nbsp;&nbsp;<i class="fas fa-edit"></i>
+                                                                    Edit
+                                                                </a>
+                                                            </div>
+                                                            <div
+                                                                class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
+                                                                <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                                    <a onclick="$('#cover-spin').show(0)"
+                                                                        href="/{{ $role }}/aksi_hapus_barang"
+                                                                        class="btn btn-outline-secondary btn-block"
+                                                                        style="display: block;">
+                                                                        <i class="fas fa-trash"></i> Hapus
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    @endforeach --}}
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="penyusutanNilai" class="tab-content">
+                                        <h2>Penyusutan Nilai</h2>
+                                        <p>Konten untuk Penyusutan Nilai.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        </div>
     </section>
 
     {{-- modal tambah barang --}}
@@ -266,11 +560,23 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="myForm" method="POST" action="{{ route('pc.barang.store') }}">
+                    <form id="myForm" method="POST" action="{{ route('pc.aset.store') }}">
                         @csrf
+                        <div class="form-group">
+                            <label for="kode">Kode Aset :</label>
+                            <input type="text" class="form-control" id="kode" name="kode">
+                        </div>
+                        <div class="form-group">
+                            <label for="tgl_beli">Tgl Pembelian :</label>
+                            <input type="text" class="form-control" id="tgl_beli" name="tgl_beli">
+                        </div>
                         <div class="form-group">
                             <label for="name">Nama :</label>
                             <input type="text" class="form-control" id="name" name="nama">
+                        </div>
+                        <div class="form-group">
+                            <label for="kategori">Kategori :</label>
+                            <input type="text" class="form-control" id="kategori" name="kategori">
                         </div>
                         <div class="form-group">
                             <label for="satuan">Satuan :</label>
@@ -279,6 +585,10 @@
                         <div class="form-group">
                             <label for="lokasi">Lokasi Penyimpanan :</label>
                             <input type="text" class="form-control" id="lokasi" name="lokasi_penyimpanan">
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status :</label>
+                            <input type="text" class="form-control" id="status" name="status">
                         </div>
                         <div class="form-group">
                             <label for="spesifikasi">Spesifikasi/Deskripsi :</label>
@@ -303,7 +613,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="myForm" method="POST" action="{{ route('pc.kontrol.store') }}">
+                    <form id="myForm" method="POST" action="    {{ route('pc.kontrol.store') }}">
                         <div class="form-group">
                             <label for="name">Nama :</label>
                             <input type="text" class="form-control" id="name" name="nama" disabled>
@@ -415,9 +725,25 @@
                     const namaBarang = this.getAttribute('data-nama-barang');
                     const idBarang = this.getAttribute('data-id-barang');
                     document.querySelector('#kontrolModal input[name="nama"]').value = namaBarang;
-                    document.querySelector('#kontrolModal input[name="id_barang"]').value =idBarang;
+                    document.querySelector('#kontrolModal input[name="id_barang"]').value =
+                        idBarang;
                 });
             });
+        });
+
+        document.querySelector('.btn-refresh').addEventListener('click', function() {
+            // Implementasikan logika penyegaran data di sini
+            console.log('Data disegarkan!');
+        });
+
+        document.querySelector('.btn-success').addEventListener('click', function() {
+            // Implementasikan logika untuk menambahkan data baru
+            console.log('Tambah item baru!');
+        });
+
+        document.querySelector('.btn-outline-success').addEventListener('click', function() {
+            // Implementasikan logika ekspor data di sini
+            console.log('Ekspor data!');
         });
     </script>
 

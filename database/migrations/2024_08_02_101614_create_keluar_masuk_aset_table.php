@@ -13,16 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('keluar_masuk_barang', function (Blueprint $table) {
-            $table->uuid('id_keluar_masuk_barang')->primary();
-            $table->foreignUuid('id_barang');
-            $table->foreign('id_barang')->references('id_barang')->on('barang');
+        Schema::create('keluar_masuk_aset', function (Blueprint $table) {
+            $table->uuid('id_keluar_masuk_aset')->primary();
+            $table->foreignUuid('aset_id');
+            $table->foreign('aset_id')->references('aset_id')->on('aset');
             $table->date('tanggal_keluar_masuk');
             $table->string('jumlah_masuk');
             $table->string('jumlah_keluar');
             $table->string('jumlah_sisa');
             $table->string('keterangan');
             $table->string('status_kc');
+            $table->rememberToken();
+            $table->timestamps();
         });
     }
 
@@ -33,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('keluar_masuk_barang');
+        Schema::dropIfExists('keluar_masuk_aset');
     }
 };
