@@ -14,23 +14,23 @@ class Aset extends Model
     protected $keyType = 'string';
     protected $fillable = ['aset_id', 'kode_aset', 'nama_aset', 'tgl_perolehan', 'harga_perolehan', 'id_pc', 'id_upzis', 'satuan', 'id_kategori', 'spesifikasi', 'lokasi_penyimpanan', 'id_pc_pengurus', 'id_upzis_pengurus'];
 
-    public function kontrolBarang()
+    public function PemeriksaanAset()
     {
-        return $this->hasMany(KontrolBarang::class, 'id_barang', 'id_barang');
+        return $this->hasMany(PemeriksaanAset::class, 'aset_id', 'aset_id');
     }
-    public function latestKontrolBarang()
+    public function latestPemeriksaanAset()
     {
-        return $this->hasOne(KontrolBarang::class, 'id_barang', 'id_barang')->latestOfMany('tanggal_kontrol', 'id_tanggal_kontrol');
+        return $this->hasOne(PemeriksaanAset::class, 'aset_id', 'aset_id')->latestOfMany('tanggal_kontrol', 'id_tanggal_kontrol');
     }
 
     public function keluarMasukBarang()
     {
-        return $this->hasMany(KeluarMasukBarang::class, 'id_barang', 'id_barang');
+        return $this->hasMany(KeluarMasukBarang::class, 'aset_id', 'aset_id');
     }
 
     public function latestKeluarMasukBarang()
     {
-        return $this->hasOne(KeluarMasukBarang::class, 'id_barang', 'id_barang')->latestOfMany('tanggal_keluar_masuk', 'id_tanggal_keluar_masuk');
+        return $this->hasOne(KeluarMasukBarang::class, 'aset_id', 'aset_id')->latestOfMany('tanggal_keluar_masuk', 'id_tanggal_keluar_masuk');
     }
 
 }

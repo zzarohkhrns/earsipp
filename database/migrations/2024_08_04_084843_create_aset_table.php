@@ -26,11 +26,11 @@ return new class extends Migration
 
             // Foreign key id_pc
             $table->foreignUuid('id_pc')->nullable();
-            $table->foreign('id_pc')->references('id_pc')->on(new Expression("`{$gocap}`.`pc`")); // Menggunakan sintaks yang benar untuk Expression
+            $table->foreign('id_pc')->references('id_pc')->on(new Expression($gocap.'.pc')); // Menggunakan sintaks yang benar untuk Expression
 
             // Foreign key id_upzis
             $table->foreignUuid('id_upzis')->nullable();
-            $table->foreign('id_upzis')->references('id_upzis')->on(new Expression("`{$gocap}`.`upzis`")); // Menggunakan sintaks yang benar untuk Expression
+            $table->foreign('id_upzis')->references('id_upzis')->on(new Expression($gocap.'.upzis')); // Menggunakan sintaks yang benar untuk Expression
 
             $table->string('satuan')->nullable();
 
@@ -43,11 +43,11 @@ return new class extends Migration
 
             // Foreign key id_pc_pengurus
             $table->foreignUuid('id_pc_pengurus')->nullable();
-            $table->foreign('id_pc_pengurus')->references('id_pc_pengurus')->on(new Expression("`{$gocap}`.`pc_pengurus`")); // Menggunakan sintaks yang benar untuk Expression
+            $table->foreign('id_pc_pengurus')->references('id_pc_pengurus')->on(new Expression($gocap . '.pc_pengurus')); // Menggunakan sintaks yang benar untuk Expression
 
             // Foreign key id_upzis_pengurus
             $table->foreignUuid('id_upzis_pengurus')->nullable();
-            $table->foreign('id_upzis_pengurus')->references('id_upzis_pengurus')->on(new Expression("`{$gocap}`.`upzis_pengurus`")); // Menggunakan sintaks yang benar untuk Expression
+            $table->foreign('id_upzis_pengurus')->references('id_upzis_pengurus')->on(new Expression($gocap . '.upzis_pengurus')); // Menggunakan sintaks yang benar untuk Expression
 
             $table->rememberToken();
             $table->timestamps();

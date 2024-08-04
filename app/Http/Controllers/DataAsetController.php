@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Aset;
 use App\Models\Pc;
 use Illuminate\Support\Facades\Log;
 use App\Models\Barang;
 use App\Models\KontrolBarang;
+use App\Models\PemeriksaanAset;
 use App\Models\Upzis;
 use App\Models\Ranting;
 use App\Models\Pengguna;
@@ -21,8 +23,9 @@ class DataAsetController extends Controller
     {
         //$barang = DB::table('barang')->get();
         //$barang = Barang::with(['latestKontrolBarang', 'latestKeluarMasukBarang'])->get();
+        $aset = Aset::with(['latestPemeriksaanBarang', 'LatestKeluarMasukBarang'])->get();
         $role = 'pc';
-        return view('barang.data_barang', compact('role'));
+        return view('data_aset.data_aset', compact('role', 'aset'));
     }
 
     public function detail()
@@ -30,18 +33,18 @@ class DataAsetController extends Controller
         $role = 'pc';
         //$barang =Barang::with(['kontrolBarang', 'keluarMasukBarang'])->findOrFail($id);
 
-        return view('barang.detail_barang', compact('role'));
+        return view('data_aset.detail_aset', compact('role'));
     }
 
     public function printKontrol()
     {
         $role = 'pc';
-        return view('barang.cetak_kontrol', compact('role'));
+        return view('data_aset.cetak_kontrol', compact('role'));
     }
     public function printKeluar()
     {
         $role = 'pc';
-        return view('barang.cetak_keluar', compact('role'));
+        return view('data_aset.cetak_keluar', compact('role'));
     }
 
     public function store_data(Request $request)
@@ -82,7 +85,7 @@ class DataAsetController extends Controller
         dd($request);
 
         try {
-            KontrolBarang::create([
+            PemeriksaanAset::create([
                 'id_kontrol_barang' => Str::uuid(),
                 'id_barang' => $request->id_barang,
                 'tanggal_kontrol' => $request->tanggal_kontrol,

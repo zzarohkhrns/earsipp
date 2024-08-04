@@ -292,14 +292,18 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>1</td>
+                                                    {{-- <td>1</td>
                                                     <td>pc-1</td>
                                                     <td>Laptop Asus</td>
                                                     <td>Elektronik</td>
                                                     <td>Ruang Staf</td>
                                                     <td>pcs</td>
                                                     <td>tanggal</td>
-                                                    <td>tangal</td>
+                                                    <td>tangal</td> --}}
+                                                    @foreach($aset as $data)
+                                                    <td>$loop->iteration</td>
+                                                    <td>$data->kode_aset</td>
+                                                    @endforeach
                                                     <td>
                                                         <div class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
                                                             <div class="btn-group mb-2 mb-xl-0 btn-block">

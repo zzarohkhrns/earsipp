@@ -18,4 +18,3 @@ class Aset extends Model
         'id' => 'string'
     ];
 }
-apake

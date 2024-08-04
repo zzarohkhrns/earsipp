@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KontrolBarang extends Model
+class PemeriksaanAset extends Model
 {
-    protected $table = 'kontrol_barang';
-    protected $primaryKey = 'id_kontrol_barang';
+    protected $table = 'pemeriksaan_aset';
+    protected $primaryKey = 'id_pemeriksaan_aset';
     public $incrementing = false;
     protected $keyType = 'string';
 
     public function barang()
     {
-        return $this->belongsTo(Barang::class, 'id_barang', 'id_barang');
+        return $this->belongsTo(Aset::class, 'aset_id', 'aset_id');
     }
 }
