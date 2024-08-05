@@ -6,6 +6,7 @@ use App\Models\Aset;
 use App\Models\Pc;
 use Illuminate\Support\Facades\Log;
 use App\Models\Barang;
+use App\Models\Kategori;
 use App\Models\KontrolBarang;
 use App\Models\PemeriksaanAset;
 use App\Models\Upzis;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class DataAsetController extends Controller
 {
@@ -23,10 +25,11 @@ class DataAsetController extends Controller
     {
         //$barang = DB::table('barang')->get();
         //$barang = Barang::with(['latestKontrolBarang', 'latestKeluarMasukBarang'])->get();
-        $aset = Aset::with(['latestPemeriksaanBarang', 'LatestKeluarMasukBarang'])->get();
+        $kategori = DB::table('kategori')->get();
+        $aset = Aset::with(['kategori_aset', 'latestDetailPemeriksaanAset.pemeriksaanAset'])->get();
         $role = 'pc';
-        return view('data_aset.data_aset', compact('role', 'aset'));
-    }
+        return view('data_aset.data_aset', compact('role', 'aset', 'kategori'));
+    }    
 
     public function detail()
     {
@@ -47,23 +50,79 @@ class DataAsetController extends Controller
         return view('data_aset.cetak_keluar', compact('role'));
     }
 
+    public function getNextKodeAset(): JsonResponse
+    {
+        $kodeAset = Aset::getNextKodeAset();
+        return response()->json(['kode_aset' => $kodeAset]);
+    }
+
+
+
+    //menyimpan kategori
+    public function store_kategori(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+        ]);
+        
+        try {
+            $kategori = Kategori::create([
+                'id_kategori' => Str::uuid(),
+                'kategori' => $request->nama
+            ]);
+    
+            return response()->json(['id' => $kategori->id_kategori, 'nama' => $kategori->kategori], 201);
+        } catch (\Exception $e) {
+            Log::error('Error saat menyimpan kategori: ' . $e->getMessage());
+            return response()->json(['error' => 'Gagal menyimpan kategori baru.'], 500);
+        }
+    }
+
     public function store_data(Request $request)
     {
         $request->validate([
-            'nama'=>'required|string|max:255',
-            'satuan'=>'required|string|max:255',
-            'lokasi_penyimpanan'=>'required|string|max:255',
-            'spesifikasi'=>'required|string|max:255',
+            'kode_aset' => 'required|string|max:255',
+            'tgl_perolehan' => 'required|date',
+            'nama_aset' => 'required|string|max:255',
+            'kategori' => 'required|string|max:255',
+            'satuan' => 'required|string|max:255',
+            'lokasi_penyimpanan' => 'required|string|max:255',
+            'spesifikasi' => 'nullable|string|max:255',
+            //ini belum selesai
         ]);
+        
+        $kategori = DB::table('kategori')
+        ->where('kategori', $request->kategori)
+        ->first();
+    
+        if ($kategori) {
+            $kategori_id = $kategori->id_kategori;
+        } else {
+             // Jika kategori tidak ada, tambahkan kategori baru dan ambil id_kategori-nya
+            try {
+                $kategori_id = DB::table('kategori')->insertGetId([
+                    'id_kategori' => Str::uuid(),
+                    'kategori' => $request->kategori,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Error saat menyimpan kategori: ' . $e->getMessage());
+                return redirect()->back()->with('error', 'Gagal menambahkan kategori.');
+            }
+        }
         try
         {
-            // Barang::create([
-            //     'id_barang' => Str::uuid(),
-            //     'nama' => $request->nama,
-            //     'satuan' => $request->satuan,
-            //     'lokasi_penyimpanan' => $request->lokasi_penyimpanan,
-            //     'spesifikasi' => $request->spesifikasi,
-            // ]);
+            Aset::create([
+                'aset_id' => Str::uuid(),
+                'kode_aset' =>$request->kode_aset,
+                'tgl_perolehan' =>$request->tgl_perolehan,
+                'nama_aset' =>$request->nama_aset,
+                'id_kategori' =>$kategori_id,
+                'satuan' =>$request->satuan,
+                'lokasi_penyimpanan' =>$request->lokasi_penyimpanan,
+                'spesifikasi' => $request->spesifikasi,
+            ]);
             return redirect()->back()->with('success', 'Data berhasil ditambahkan.');
         }
         catch (\Exception $e)

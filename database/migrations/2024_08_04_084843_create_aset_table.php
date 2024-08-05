@@ -48,6 +48,8 @@ return new class extends Migration
             // Foreign key id_upzis_pengurus
             $table->foreignUuid('id_upzis_pengurus')->nullable();
             $table->foreign('id_upzis_pengurus')->references('id_upzis_pengurus')->on(new Expression($gocap . '.upzis_pengurus')); // Menggunakan sintaks yang benar untuk Expression
+            
+            $table->string('asal_perolahan')->nullable();
 
             $table->rememberToken();
             $table->timestamps();

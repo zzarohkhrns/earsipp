@@ -13,16 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pemeriksaan_aset', function (Blueprint $table) {
-            $table->uuid('id_pemeriksaan_aset')->primary();
+        Schema::create('detail_pemeriksaan_aset', function (Blueprint $table) {
+            $table->uuid('id_detail_pemeriksaan_aset')->primary();
+            
+            //foreign key pemeriksaan aset
+            $table->foreignUuid('id_pemeriksaan_aset');
+            $table->foreign('id_pemeriksaan_aset')->references('id_pemeriksaan_aset')->on('pemeriksaan_aset');
+            
+            //foreign key aset
             $table->foreignUuid('aset_id');
             $table->foreign('aset_id')->references('aset_id')->on('aset');
-            $table->date('tanggal_pemeriksaan');
-            $table->enum('kondisi', ['baik', 'rusak', 'perlu service', 'hilang'])->default('baik');
+
+            $table->enum('kondisi', ['baik', 'rusak', 'perlu service', 'hilang']);
             $table->enum('status_aset', ['aktif', 'non aktif'])->default('aktif');
-            $table->string('keterangan');
-            $table->enum('status_kc',['mengetahui', 'belum'])->default('belum');
-            $table->rememberToken();
+            $table->text('keterangan');
+            
             $table->timestamps();
         });
     }
@@ -34,6 +39,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pemeriksaan_aset');
+        Schema::dropIfExists('detail_pemeriksaan_aset');
     }
 };

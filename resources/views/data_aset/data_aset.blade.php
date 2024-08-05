@@ -30,10 +30,11 @@
             /* Ukuran font yang sama */
             line-height: 1.5;
             /* Garis tengah yang seragam */
+            border-radius: 10px;
         }
 
         .input-group-prepend .input-group-text {
-            border-radius: 0;
+            border-radius: 10px;
             /* Hilangkan border-radius untuk keseragaman */
         }
     </style>
@@ -123,19 +124,18 @@
 
                                     <!-- tab data aset -->
                                     <div id="dataAset" class="tab-content active" style="width: 99%; padding:10px; mt-1">
-                                        <h5 class="text-success"><b>Data Aset</b></h5>
 
                                         <!-- Menu untuk filter -->
                                         <div
-                                            style="border: 1px solid #e0e0e0; border-radius: 5px; background-color: #f9f9f9; padding: 10px; margin-bottom: 10px;">
+                                            style="border: 1px solid #e0e0e0; border-radius: 10px; background-color: #f9f9f9; padding: 10px; margin-bottom: 10px;">
                                             <!-- Bagian Filter dan Tombol Aksi -->
                                             <div
                                                 style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                                                <div style="display: flex; align-items: center;  max-width: 100%;">
+                                                <div style="display: flex; align-items: center; max-width: 65%;">
                                                     <!-- Filter Tanggal Pembelian -->
                                                     <div class="col-12 col-md-6 col-sm-12 mb-3 mt-3">
                                                         <div class="input-group">
-                                                            <div class="input-group-prepend">
+                                                            <div class="input-group-prepend" style="border-radius: 10px;">
                                                                 <span class="input-group-text custom-text">Tgl
                                                                     Pembelian</span>
                                                             </div>
@@ -150,55 +150,64 @@
                                                         </div>
                                                     </div>
 
-                                                    {{-- filter kategori --}}
+                                                    <!-- Filter Kategori -->
                                                     <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0 mt-2">
                                                         <div class="input-group mb-2 mr-sm-2">
                                                             <div class="input-group-prepend">
                                                                 <div class="input-group-text">Kategori</div>
                                                             </div>
-
-                                                            <select class="form-control " name="kategori"
-                                                                onchange="javascript:this.form.submit();">
+                                                            <select class="form-control" name="kategori"
+                                                                onchange="javascript:this.form.submit();"
+                                                                style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
+                                                                <!-- Options for categories -->
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    {{-- filter status --}}
+
+                                                    <!-- Filter Status -->
                                                     <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0 mt-2">
                                                         <div class="input-group mb-2 mr-sm-2">
                                                             <div class="input-group-prepend">
                                                                 <div class="input-group-text">Status</div>
                                                             </div>
-
-                                                            <select class="form-control " name="status"
-                                                                onchange="javascript:this.form.submit();">
+                                                            <select class="form-control" name="status"
+                                                                onchange="javascript:this.form.submit();"
+                                                                style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
+                                                                <option value="">Semua</option>
+                                                                <option value="aktif">Aktif</option>
+                                                                <option value="non-aktif">Non Aktif</option>
                                                             </select>
                                                         </div>
                                                     </div>
 
                                                     <!-- Tombol Refresh -->
                                                     <div>
-                                                        <button class="btn btn-outline-secondary" style="width: 100px;"><i
-                                                                class="fas fa-sync-alt"></i></button>
+                                                        <button class="btn btn-outline-secondary"
+                                                            style="width: 100px; border-radius:10px;">
+                                                            <i class="fas fa-sync-alt"></i>
+                                                        </button>
                                                     </div>
                                                 </div>
 
                                                 <!-- Tombol Aksi -->
                                                 <div
                                                     style="display: flex; flex-direction: column; align-items: center; margin-left: 0px;">
-                                                    <div class="btn-group btn-block mb-2 mb-xl-0 mt-1card-tambah-barang"
-                                                        style="width:150px; margin-bottom: 10px;">
+                                                    <div class="btn-group btn-block mb-2 mb-xl-0 mt-1 card-tambah-barang"
+                                                        style="width: 150px; margin-bottom: 10px;">
                                                         <div class="btn-group mb-2 mb-xl-0 btn-block">
                                                             <button type="button" class="btn btn-success"
-                                                                data-toggle="modal" data-target="#tambahModal">
+                                                                data-toggle="modal" data-target="#tambahModal"
+                                                                style="background-color: rgb(0, 177, 0);color:white; border-radius:10px;">
                                                                 <i class="fas fa-plus-circle"></i>
                                                                 <span>Tambah </span>
                                                             </button>
                                                         </div>
                                                     </div>
                                                     <div class="btn-group btn-block mb-2 mb-xl-0 card-tambah-kontrol"
-                                                        style="width:150px;">
+                                                        style="width: 150px;">
                                                         <div class="btn-group mb-2 mb-xl-0 btn-block">
                                                             <a href="/{{ $role }}/print-data"
+                                                                style=" border-radius:10px;"
                                                                 class="btn btn-outline-secondary">
                                                                 <i class="fi fi-sr-file"></i>Export
                                                             </a>
@@ -223,61 +232,9 @@
                                             </div>
                                         </div>
 
-                                        {{-- script untuk filter data --}}
-                                        <script>
-                                            // Fungsi untuk memfilter data berdasarkan input
-                                            function filterData() {
-                                                var tglStart = document.getElementById('tgl-pembelian-start').value;
-                                                var tglEnd = document.getElementById('tgl-pembelian-end').value;
-                                                var kategori = document.getElementById('kategori').value;
-                                                var status = document.getElementById('status').value;
-
-                                                var filteredData = dataAset.filter(function(item) {
-                                                    // Filter berdasarkan tanggal
-                                                    var itemDate = new Date(item.tanggal);
-                                                    var startDate = new Date(tglStart);
-                                                    var endDate = new Date(tglEnd);
-                                                    var dateCondition = (!tglStart || itemDate >= startDate) && (!tglEnd || itemDate <= endDate);
-
-                                                    // Filter berdasarkan kategori
-                                                    var kategoriCondition = kategori === 'semua' || item.kategori === kategori;
-
-                                                    // Filter berdasarkan status
-                                                    var statusCondition = status === 'semua' || item.status === status;
-
-                                                    return dateCondition && kategoriCondition && statusCondition;
-                                                });
-
-                                                // Implementasikan logika untuk menampilkan filteredData di tabel
-                                                console.log(filteredData);
-                                            }
-
-                                            // Fungsi untuk mereset filter dan menampilkan data asli
-                                            function resetFilters() {
-                                                document.getElementById('tgl-pembelian-start').value = '';
-                                                document.getElementById('tgl-pembelian-end').value = '';
-                                                document.getElementById('kategori').value = 'semua';
-                                                document.getElementById('status').value = 'semua';
-
-                                                // Tampilkan data asli tanpa filter
-                                                console.log(dataAset);
-                                                // Tampilkan data asli di sini
-                                            }
-
-                                            // Event listeners untuk elemen filter
-                                            document.getElementById('tgl-pembelian-start').addEventListener('change', filterData);
-                                            document.getElementById('tgl-pembelian-end').addEventListener('change', filterData);
-                                            document.getElementById('kategori').addEventListener('change', filterData);
-                                            document.getElementById('status').addEventListener('change', filterData);
-                                            document.querySelector('.btn-refresh').addEventListener('click', filterData);
-
-                                            // Event listener untuk tombol refresh
-                                            document.querySelector('.btn-refresh').addEventListener('click', resetFilters);
-                                        </script>
-
                                         <!-- Table barang -->
                                         <table id="example3" class="table table-bordered" style="width:100%;">
-                                            <thead class="table-secondary">
+                                            <thead class="table-secondary" style="text-align: center">
                                                 <tr>
                                                     <th>NO</th>
                                                     <th>Kode Aset</th>
@@ -287,172 +244,306 @@
                                                     <th>Satuan</th>
                                                     <th>Pemeriksaan</th>
                                                     <th>Keluar Masuk</th>
-                                                    <th style="width: 200px;">Aksi</th>
+                                                    <th style="width: 150px;">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    {{-- <td>1</td>
-                                                    <td>pc-1</td>
-                                                    <td>Laptop Asus</td>
-                                                    <td>Elektronik</td>
-                                                    <td>Ruang Staf</td>
-                                                    <td>pcs</td>
-                                                    <td>tanggal</td>
-                                                    <td>tangal</td> --}}
-                                                    @foreach($aset as $data)
-                                                    <td>$loop->iteration</td>
-                                                    <td>$data->kode_aset</td>
-                                                    @endforeach
-                                                    <td>
-                                                        <div class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
-                                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                                <a onclick="$('#cover-spin').show(0)"
-                                                                    href="/{{ $role }}/arsip/aset/detail"
-                                                                    {{-- /{{ $data->id_barang }}" --}}
-                                                                    class="btn btn-outline-secondary btn-block"
-                                                                    style="display: block;">
-                                                                    Detail Barang
-                                                                </a>
+                                                @foreach ($aset as $data)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>
+                                                            <table id="example3"
+                                                                style="width:100%; border:none; border-collapse: collapse; font-size: 14px;">
+                                                                <tr>
+                                                                    <td style="border: none; padding: 4px;">
+                                                                        <b>{{ $data->kode_aset }}</b>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none; padding: 4px;">Tgl Pembelian
+                                                                    </td>
+                                                                    <td style="border: none; padding: 4px;">
+                                                                        <b>{{ $data->tgl_perolehan ?? 'data tidak tersedia' }}</b>
+                                                                    </td>
+                                                                </tr>
+                                                                <?php
+                                                                // Ambil status dari data, default ke 'null' jika tidak ada
+                                                                $status = $data->latestDetailPemeriksaanAset->status_aset ?? 'null';
+                                                                
+                                                                // Tentukan warna tombol dan teks berdasarkan status
+                                                                if ($status === 'null') {
+                                                                    $warnaTombol = 'background-color: #a9a9a9; border-color: #a9a9a9;'; // Abu-abu untuk data tidak tersedia
+                                                                    $teksTombol = 'Data tidak tersedia';
+                                                                } else {
+                                                                    $warnaTombol = $status === 'aktif' ? 'background-color: #55CE71; border-color: #55CE71;' : 'background-color: rgb(255, 18, 18); border-color: rgb(255, 18, 18);';
+                                                                    $teksTombol = $status === 'aktif' ? 'Aktif' : 'Non Aktif';
+                                                                }
+                                                                
+                                                                // HTML untuk tombol
+                                                                $konten = "<button type='button' class='btn' style='border-radius: 10px; $warnaTombol; color:white; padding: 4px 8px; font-size: 14px;'>$teksTombol</button>";
+                                                                ?>
+                                                                <tr>
+                                                                    <td style="border: none; padding: 4px;">
+                                                                        <?= $konten ?>
+                                                                    </td>
+                                                                </tr>
+
+                                                            </table>
+                                                        </td>
+                                                        <td>{{ $data->nama_aset }}</td>
+                                                        <td>{{ $data->kategori_aset->kategori ?? 'Tidak Ada Kategori' }}
+                                                        </td>
+                                                        <td>{{ $data->lokasi_penyimpanan }}</td>
+                                                        <td>{{ $data->satuan }}</td>
+                                                        <td>
+                                                            <table id="example3"
+                                                                style="width:100%; border:none; border-collapse: collapse;">
+                                                                <tr>
+                                                                    <td style="border: none; padding: 8px;">Tgl Pemeriksaan
+                                                                    </td>
+                                                                    <td
+                                                                        style="border: none; padding: 8px; text-align: right;">
+                                                                        <b> {{ $data->latestDetailPemeriksaanAset->pemeriksaanAset->tanggal_pemeriksaan ?? 'data tidak tersedia' }}
+                                                                        </b>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none; padding: 8px;">Kondisi</td>
+                                                                    <td
+                                                                        style="text-align: right; border: none; padding: 8px; color:{{ $data->latestDetailPemeriksaanAset
+                                                                            ? ($data->latestDetailPemeriksaanAset->kondisi == 'baik'
+                                                                                ? '#55CE71'
+                                                                                : ($data->latestDetailPemeriksaanAset->kondisi == 'rusak'
+                                                                                    ? 'rgb(255, 18, 18)'
+                                                                                    : 'inherit'))
+                                                                            : 'inherit' }}">
+                                                                        {{ $data->latestDetailPemeriksaanAset->kondisi ?? 'data tidak tersedia' }}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none; padding: 8px;">Status</td>
+                                                                    <td
+                                                                        style="border: none; padding: 8px; text-align: right;color:{{ $data->latestDetailPemeriksaanAset
+                                                                            ? ($data->latestDetailPemeriksaanAset->status_aset == 'aktif'
+                                                                                ? '#55CE71'
+                                                                                : ($data->latestDetailPemeriksaanAset->status_aset == 'non aktif'
+                                                                                    ? 'rgb(255, 18, 18)'
+                                                                                    : 'inherit'))
+                                                                            : 'inherit' }}">
+                                                                        {{ $data->latestDetailPemeriksaanAset->status_aset ?? 'data tidak tersedia' }}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none; padding: 8px;">Keterangan</td>
+                                                                    <td
+                                                                        style="border: none; padding: 8px; text-align: right;">
+                                                                        {{ $data->latestDetailPemeriksaanAset->keterangan ?? 'data tidak tersedia' }}
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td>
+                                                            <table id="example3"
+                                                                style="width:100%; border:none; border-collapse: collapse;">
+                                                                <tr>
+                                                                    <td style="border: none; padding: 8px;">Tgl Input</td>
+                                                                    <td style="border: none; padding: 8px;"><b>Tgl
+                                                                            Input</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none; padding: 8px;">Jml Masuk</td>
+                                                                    <td style="border: none; padding: 8px;color:#55CE71;">
+                                                                        Jml Masuk</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none; padding: 8px;">Jml Keluar</td>
+                                                                    <td style="border: none; padding: 8px;color:#FFDA58;">
+                                                                        Jml Keluar</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none; padding: 8px;">Sisa</td>
+                                                                    <td style="border: none; padding: 8px;">Sisa</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+
+                                                        <td>
+                                                            <div
+                                                                class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
+                                                                <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                                    <a onclick="$('#cover-spin').show(0)"
+                                                                        href="/{{ $role }}/arsip/aset/detail"
+                                                                        {{-- /{{ $data->id_barang }}" --}}
+                                                                        class="btn btn-outline-secondary btn-block"
+                                                                        style="display: block;border-radius:10px;">
+                                                                        Detail Barang
+                                                                    </a>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="btn-group btn-block mb-2 mb-xl-0 card_kontrol_barang">
-                                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                                <button type="button"
-                                                                    class="btn btn-outline-secondary input-kontrol"
-                                                                    {{-- data-id-barang="{{ $data->id_barang }}"
-                                                                    data-nama-barang="{{ $data->nama }}" --}}
-                                                                    data-toggle="modal" data-target="#kontrolModal">
-                                                                    <span>Input Kontrol</span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div
-                                                            class="btn-group btn-block mb-2 mb-xl-0 card_keluar_masuk_barang">
-                                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                                <button type="button" class="btn btn-outline-secondary"
-                                                                    data-toggle="modal" data-target="#keluarModal"
-                                                                    {{-- data-id-barang="{{ $data->id_barang }}"
-                                                                    data-nama-barang="{{ $data->nama }}"> --}}>
-                                                                    <span>Input Keluar Masuk</span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                {{-- @foreach ($barang as $data)
-                                                <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td name="brg_id" hidden>{{ $data->id_barang }}</td>
-                                                    <td></td>
-                                                    <td name='brg_nama'>{{ $data->nama }}</td>
-                                                    <td></td>
-                                                    <td>{{ $data->lokasi_penyimpanan }}</td>
-                                                    <td>{{ $data->satuan }}</td>
-                                                    <td>
-                                                        @if ($data->latestKontrolBarang)
-                                                            <div>
-                                                                Tgl Kontrol:
-                                                                <b>{{ $data->latestKontrolBarang->tanggal_kontrol }}</b><br>
-                                                                Berfungsi: {{ $data->latestKontrolBarang->berfungsi }} <br>
-                                                                Kondisi: {{ $data->latestKontrolBarang->kondisi }} <br>
-                                                            </div>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if ($data->latestKeluarMasukBarang)
-                                                            <div>
-                                                                Tgl Input:
-                                                                <b>{{ $data->latestKeluarMasukBarang->tanggal_keluar_masuk }}</b><br>
-                                                                Jml Masuk:
-                                                                {{ $data->latestKeluarMasukBarang->jumlah_masuk }}<br>
-                                                                Jml Keluar:
-                                                                {{ $data->latestKeluarMasukBarang->jumlah_keluar }}<br>
-                                                            </div>
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                            @endforeach --}}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
 
                                     <!-- tab pemeriksaan -->
                                     <div id="pemeriksaan" class="tab-content" style="width: 99%; padding:10px; mt-1">
-                                        <h5 class="text-success"><b>Pemeriksaan</b></h5>
-                                        <div class="btn-group btn-block mb-2 mb-xl-3 card-tambah-kontrol"
-                                            style="width:150px">
-                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                <button type="button" class="btn btn-success" data-toggle="modal"
-                                                    style="background-color: green; color: white;">
-                                                    <i class="fas fa-plus-circle"></i>
-                                                    <span>Tambah</span>
-                                                </button>
+
+                                        <!-- Menu untuk filter -->
+                                        <div
+                                            style="border: 1px solid #e0e0e0; border-radius: 10px; background-color: #f9f9f9; padding: 10px; margin-bottom: 10px;">
+                                            <!-- Bagian Filter dan Tombol Aksi -->
+                                            <div
+                                                style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                                                <div style="display: flex; align-items: center; max-width: 67%;">
+                                                    <!-- Filter Tanggal Pembelian -->
+                                                    <div class="col-12 col-md-6 col-sm-12 mb-3 mt-3">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend" style="border-radius: 10px;">
+                                                                <span class="input-group-text custom-text">Tgl
+                                                                    Pembelian</span>
+                                                            </div>
+                                                            <input type="date" id="tgl-pembelian-start"
+                                                                name="tgl-pembelian-start"
+                                                                class="form-control custom-input">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text custom-text">-</span>
+                                                            </div>
+                                                            <input type="date" id="tgl-pembelian-end"
+                                                                name="tgl-pembelian-end"
+                                                                class="form-control custom-input">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Filter Kategori -->
+                                                    <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0 mt-2">
+                                                        <div class="input-group mb-2 mr-sm-2">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">Status SPV</div>
+                                                            </div>
+                                                            <select class="form-control" name="kategori"
+                                                                onchange="javascript:this.form.submit();"
+                                                                style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
+                                                                <!-- Options for categories -->
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Filter Status -->
+                                                    <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0 mt-2">
+                                                        <div class="input-group mb-2 mr-sm-2">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">Status KC</div>
+                                                            </div>
+                                                            <select class="form-control" name="status"
+                                                                onchange="javascript:this.form.submit();"
+                                                                style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
+                                                                <!-- Options for status -->
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Tombol Refresh -->
+                                                    <div>
+                                                        <button class="btn btn-outline-secondary"
+                                                            style="width: 100px; border-radius:10px;">
+                                                            <i class="fas fa-sync-alt"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Tombol Aksi -->
+                                                <div
+                                                    style="display: flex; flex-direction: column; align-items: center; margin-left: 0px;">
+                                                    <div class="btn-group btn-block mb-2 mb-xl-0 mt-1 card-tambah-periksa"
+                                                        style="width: 150px; margin-bottom: 10px;">
+                                                        <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                            <button type="button" class="btn btn-success"
+                                                                data-toggle="modal" data-target="#pemeriksaanModal"
+                                                                style="background-color:  rgb(0, 177, 0); color: white; border-radius:10px;">
+                                                                <i class="fas fa-plus-circle"></i>
+                                                                <span>Tambah </span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-group btn-block mb-2 mb-xl-0 card-tambah-kontrol"
+                                                        style="width: 150px;">
+                                                        <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                            <a href="/{{ $role }}/print-data"
+                                                                style=" border-radius:10px;"
+                                                                class="btn btn-outline-secondary">
+                                                                <i class="fi fi-sr-file"></i>Export
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Keterangan Data -->
+                                            <div class="col-12 col-md-10 col-sm-12 mb-2 mb-xl-0">
+                                                <div class="d-flex flex-row bd-highlight align-items-center">
+                                                    <div class="p-2 bd-highlight">
+                                                        <i class="fas fa-info-circle"></i>
+                                                    </div>
+                                                    <div class="p-1 bd-highlight">
+                                                        <span>
+                                                            Data Aset PC Lazisnu Cilacap. Dapat ditambahkan oleh Staff
+                                                            Logistik dan Perlengkapan.
+                                                        </span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="btn-group btn-block mb-2 mb-xl-4 card-tambah-kontrol"
-                                            style="width:150px">
-                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                <a href="/{{ $role }}/print-kontrol"
-                                                    class="btn btn-outline-secondary">
-                                                    <i class="fi fi-ss-print"></i>Cetak PDF</a>
-                                            </div>
-                                        </div>
+
+                                        {{-- tabel pemeriksaan --}}
                                         <table id="example3" class="table table-bordered" style="width:100%">
                                             <thead class="table-secondary">
                                                 <tr>
                                                     <th>NO</th>
-                                                    <th>Diinput Oleh</th>
-                                                    <th>Tanggal Kontrol</th>
-                                                    <th>Berfungsi</th>
-                                                    <th>Kondisi</th>
-                                                    <th>Keterangan</th>
-                                                    <th>Respon KC</th>
+                                                    <th>Tgl Pemeriksaan</th>
+                                                    <th>Pemeriksa</th>
+                                                    <th>Aset Diperiksa</th>
+                                                    <th>Berdasarkan Kondisi</th>
+                                                    <th>Berdasarkan Status</th>
+                                                    <th>Status SPV</th>
+                                                    <th>Status KC</th>
                                                     <th style="width: 150px;">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    {{-- @foreach ($barang->kontrolBarang as $data)
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>Halin Fajar Waskitho</td>
-                                                    <td>{{ $data->tanggal_kontrol }}</td>
-                                                    <td>{{ $data->berfungsi }}</td>
-                                                    <td>{{ $data->kondisi }}</td>
-                                                    <td>{{ $data->keterangan }}</td>
-                                                    <td>{{ $data->status_kc }}</td>
+                                                    <td>1</td>
+                                                    <td>ini tanggal</td>
+                                                    <td>ini pemeriksa</td>
+                                                    <td>ini nama aset</td>
+                                                    <td>ini kondisi aset</td>
+                                                    <td>ini status aset</td>
+                                                    <td>ini status spv</td>
+                                                    <td>ini status kc</td>
                                                     <td>
-                                                        <div class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
-                                                            <a class="btn btn-outline-secondary intro-ubah-detail-barang ml-1 mr-0"
-                                                                type="button" data-toggle="modal"
-                                                                data-target="#editkontrolModal" aria-expanded="false"
-                                                                data-nama>
-                                                                &nbsp;&nbsp;<i class="fas fa-edit"></i> Edit
-                                                            </a>
-                                                        </div>
                                                         <div class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
                                                             <div class="btn-group mb-2 mb-xl-0 btn-block">
                                                                 <a onclick="$('#cover-spin').show(0)"
-                                                                    href="/{{ $role }}/aksi_hapus_barang"
+                                                                    href="/{{ $role }}/arsip/aset/detail_pemeriksaan"
+                                                                    {{-- /{{ $data->id_barang }}" --}}
                                                                     class="btn btn-outline-secondary btn-block"
-                                                                    style="display: block;">
-                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                    style="display: block;border-radius:10px;">
+                                                                    Detail
                                                                 </a>
                                                             </div>
                                                         </div>
+                                                        <div class="btn-group btn-block mb-2 mb-xl-0 card-tambah-kontrol"
+                                                        style="width: 150px;">
+                                                        <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                            <a href="/{{ $role }}/print-pemeriksaan-byid"
+                                                                style=" border-radius:10px;"
+                                                                class="btn btn-outline-secondary">
+                                                                <i class="fi fi-sr-file"></i>Cetak PDF
+                                                            </a>
+                                                        </div>
+                                                    </div>
                                                     </td>
-                                                @endforeach
-                                            </tr> --}}
                                             </tbody>
                                         </table>
                                     </div>
@@ -464,7 +555,8 @@
                                             style="width:150px">
                                             <div class="btn-group mb-2 mb-xl-0 btn-block">
                                                 <button type="button" class="btn btn-success" data-toggle="modal"
-                                                    href="#keluarModal" style="background-color: green; color: white;">
+                                                    href="#keluarModal"
+                                                    style="background-color: rgb(0, 177, 0); color: white;">
                                                     <i class="fas fa-plus-circle"></i>
                                                     <span>Tambah</span>
                                                 </button>
@@ -504,38 +596,6 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    {{-- @foreach ($barang->keluarMasukBarang as $data)
-                                                        <td>{{ $loop->iteration }}</td>
-                                                        <td>Halin Fajar Waskitho</td>
-                                                        <td>{{ $data->tanggal_keluar_masuk }}</td>
-                                                        <td>{{ $data->jumlah_keluar }}</td>
-                                                        <td>{{ $data->jumlah_masuk }}</td>
-                                                        <td>{{ $data->jumlah_sisa }}</td>
-                                                        <td>{{ $data->keterangan }}</td>
-                                                        <td>{{ $data->status_kc }}</td>
-                                                        <td>
-                                                            <div
-                                                                class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
-                                                                <a class="btn btn-outline-secondary intro-ubah-detail-barang ml-1 mr-0"
-                                                                    type="button" data-toggle="modal"
-                                                                    data-target="#editkeluarModal" aria-expanded="false">
-                                                                    &nbsp;&nbsp;<i class="fas fa-edit"></i>
-                                                                    Edit
-                                                                </a>
-                                                            </div>
-                                                            <div
-                                                                class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
-                                                                <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                                    <a onclick="$('#cover-spin').show(0)"
-                                                                        href="/{{ $role }}/aksi_hapus_barang"
-                                                                        class="btn btn-outline-secondary btn-block"
-                                                                        style="display: block;">
-                                                                        <i class="fas fa-trash"></i> Hapus
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    @endforeach --}}
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -568,31 +628,43 @@
                         @csrf
                         <div class="form-group">
                             <label for="kode">Kode Aset :</label>
-                            <input type="text" class="form-control" id="kode" name="kode">
+                            <input type="text" class="form-control" id="kode_aset" name="kode_aset" disabled>
+                            <input type="text" class="form-control" id="kode_aset" name="kode_aset" hidden>
                         </div>
                         <div class="form-group">
-                            <label for="tgl_beli">Tgl Pembelian :</label>
-                            <input type="text" class="form-control" id="tgl_beli" name="tgl_beli">
+                            <label for="tgl_beli">Tgl Perolehan :</label>
+                            <input type="date" class="form-control" id="tgl_beli" name="tgl_perolehan">
                         </div>
                         <div class="form-group">
                             <label for="name">Nama :</label>
-                            <input type="text" class="form-control" id="name" name="nama">
+                            <input type="text" class="form-control" id="name" name="nama_aset">
                         </div>
                         <div class="form-group">
                             <label for="kategori">Kategori :</label>
-                            <input type="text" class="form-control" id="kategori" name="kategori">
+                            <select class="form-control" id="kategori" name="kategori"
+                                onchange="toggleNewCategoryForm()">
+                                <!-- Daftar kategori yang ada, bisa diisi dengan data dari database -->
+                                <option value="">Pilih Kategori</option>
+                                @foreach ($kategori as $kat)
+                                    <option value="{{ $kat->kategori }}">{{ $kat->kategori }}</option>
+                                @endforeach
+                                <option value="others">Lainnya</option>
+                            </select>
+                            <div class="mt-2" id="newCategoryForm" style="display: none;">
+                                <input type="text" id="newKategori" class="form-control"
+                                    placeholder="Tambah kategori baru">
+                                <button type="button" id="" class="btn btn-success mt-2"
+                                    onclick="addCategory()">Tambah
+                                    Kategori</button>
+                            </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-grPoup">
                             <label for="satuan">Satuan :</label>
                             <input type="text" class="form-control" id="satuan" name="satuan">
                         </div>
                         <div class="form-group">
                             <label for="lokasi">Lokasi Penyimpanan :</label>
                             <input type="text" class="form-control" id="lokasi" name="lokasi_penyimpanan">
-                        </div>
-                        <div class="form-group">
-                            <label for="status">Status :</label>
-                            <input type="text" class="form-control" id="status" name="status">
                         </div>
                         <div class="form-group">
                             <label for="spesifikasi">Spesifikasi/Deskripsi :</label>
@@ -605,68 +677,206 @@
         </div>
     </div>
 
-    {{-- modal kontrol barang --}}
-    <div class="modal fade" id="kontrolModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <script>
+        $(document).ready(function() {
+            $('#tambahModal').on('show.bs.modal', function() {
+                $.ajax({
+                    url: "{{ route('pc.aset.nextKodeAset') }}",
+                    method: 'GET',
+                    success: function(data) {
+                        console.log(data);
+                        $('#kode_aset').val(data.kode_aset);
+                    },
+                    error: function() {
+                        alert('Gagal mendapatkan kode aset baru');
+                    }
+                })
+            })
+        })
+    </script>
+
+
+
+    {{-- script untuk menyimpan kategori --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pasang event listener pada tombol "Tambah Kategori"
+            document.getElementById('addCategoryButton').addEventListener('click', function() {
+                addCategory();
+            });
+
+            // Menampilkan atau menyembunyikan form kategori baru berdasarkan pilihan
+            toggleNewCategoryForm();
+        });
+
+        function toggleNewCategoryForm() {
+            var select = document.getElementById('kategori');
+            var newCategoryForm = document.getElementById('newCategoryForm');
+            if (select.value === 'others') {
+                newCategoryForm.style.display = 'block';
+            } else {
+                newCategoryForm.style.display = 'none';
+            }
+        }
+
+        function addCategory() {
+            var newCategory = document.getElementById('newKategori').value.trim();
+            if (newCategory) {
+                // Kirim kategori baru ke server
+                $.ajax({
+                    url: '{{ route('pc.kategori.store') }}',
+                    type: 'POST',
+                    data: {
+                        nama: newCategory,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        if (data.id) {
+                            var select = document.getElementById('kategori');
+                            var option = document.createElement('option');
+                            option.value = data.id; // Gunakan ID dari respons (id_kategori)
+                            option.text = data.nama; // Gunakan nama dari respons (kategori)
+                            select.add(option);
+                            select.value = data.id; // Setel kategori baru sebagai yang dipilih
+                            document.getElementById('newKategori').value = ''; // Kosongkan input
+                            document.getElementById('newCategoryForm').style.display =
+                                'none'; // Sembunyikan form setelah menambah
+                        } else {
+                            alert('Gagal menambahkan kategori.');
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert('Gagal menyimpan kategori baru.');
+                    }
+                });
+            } else {
+                alert('Silakan masukkan nama kategori baru.');
+            }
+        }
+    </script>
+
+    <!-- modal tambah pemeriksaan -->
+    <div class="modal fade" id="pemeriksaanModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Kontrol Barang</h5>
+                    <h5 class="modal-title" id="myModalLabel">Tambah Pemeriksaan</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form id="myForm" method="POST" action="    {{ route('pc.kontrol.store') }}">
+                <div class="modal-body" style="padding-top: 0;">
+                    <form>
                         <div class="form-group">
-                            <label for="name">Nama :</label>
-                            <input type="text" class="form-control" id="name" name="nama" disabled>
+                            <label for="tgl_pemeriksaan" style="font-weight: bold; font-size: 14px;">Tgl
+                                Pemeriksaan</label>
+                            <input type="text" class="form-control" id="tgl_pemeriksaan"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
                         </div>
                         <div class="form-group">
-                            <label for="id">ID :</label>
-                            <input type="text" class="form-control" id="id_barang" name="id_barang" disabled>
+                            <label for="manajemen_eksekutif" style="font-weight: bold; font-size: 14px;">Manajemen
+                                Eksekutif</label>
+                            <input type="text" class="form-control" id="manajemen_eksekutif"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
                         </div>
                         <div class="form-group">
-                            <label for="tanggal">Tanggal Kontrol :</label>
-                            <input type="date" class="form-control" id="tanggal_kontrol" name="tanggal_kontrol">
+                            <label for="pemeriksa" style="font-weight: bold; font-size: 14px;">Pemeriksa</label>
+                            <input type="text" class="form-control" id="pemeriksa"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
                         </div>
                         <div class="form-group">
-                            <label>Berfungsi :</label><br>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" id="berfungsiYa" name="berfungsi"
-                                    value="Ya">
-                                <label class="form-check-label" for="berfungsiYa">Ya</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" id="berfungsiTidak" name="berfungsi"
-                                    value="Tidak">
-                                <label class="form-check-label" for="berfungsiTidak">Tidak</label>
-                            </div>
+                            <label for="supervisor" style="font-weight: bold; font-size: 14px;">Supervisor</label>
+                            <input type="text" class="form-control" id="supervisor"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
                         </div>
                         <div class="form-group">
-                            <label>Kondisi :</label><br>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" id="kondisiBaik" name="kondisi"
-                                    value="Baik">
-                                <label class="form-check-label" for="kondisiBaik">Baik</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" id="kondisiRusak" name="kondisi"
-                                    value="Rusak">
-                                <label class="form-check-label" for="kondisiRusak">Rusak</label>
-                            </div>
+                            <label for="kepala_cabang" style="font-weight: bold; font-size: 14px;">Kepala Cabang</label>
+                            <input type="text" class="form-control" id="kepala_cabang"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
                         </div>
-                        <div class="form-group">
-                            <label for="keterangan">Keterangan :</label>
-                            <input type="text" class="form-control" id="keterangan" name="keterangan">
+                        <div class="alert alert-info"
+                            style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; margin-top: 15px;">
+                            <strong>INFORMASI</strong><br>Setelah berhasil menambahkan pemeriksaan, anda wajib melengkapi
+                            data pemeriksaan aset.
                         </div>
-                        <button type="submit" class="btn btn-success">Simpan</button>
                     </form>
+                </div>
+                <div class="modal-footer" style="border-top: none; padding-top: 0;">
+                    <button type="submit" class="btn btn-success">Simpan</button>
                 </div>
             </div>
         </div>
     </div>
 
+
+    {{-- modal tambah data pemeriksaan barang --}}
+    <div class="modal fade" id="TambahPemeriksaanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Tambah Data Pemeriksaan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 1rem;">
+                    <form>
+                        <div class="form-group">
+                            <label for="nama_aset" style="font-weight: bold; font-size: 14px;">Nama Aset</label>
+                            <input type="text" class="form-control" id="nama_aset"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        </div>
+                        <div class="form-group">
+                            <label for="kategori" style="font-weight: bold; font-size: 14px;">Kategori</label>
+                            <input type="text" class="form-control" id="kategori"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        </div>
+                        <div class="form-group">
+                            <label for="lokasi_aset" style="font-weight: bold; font-size: 14px;">Lokasi Aset</label>
+                            <input type="text" class="form-control" id="lokasi_aset"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        </div>
+                        <div class="form-group">
+                            <label for="tgl_pembelian" style="font-weight: bold; font-size: 14px;">Tgl Pembelian</label>
+                            <input type="text" class="form-control" id="tgl_pembelian"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        </div>
+                        <div class="form-group">
+                            <label style="font-weight: bold; font-size: 14px;">Status</label><br>
+                            <div style="display: flex; align-items: center;">
+                                <input type="radio" id="aktif" name="status" value="aktif" checked
+                                    style="margin-right: 5px;">
+                                <label for="aktif" style="margin-right: 20px;">Aktif</label>
+                                <input type="radio" id="nonaktif" name="status" value="nonaktif"
+                                    style="margin-right: 5px;">
+                                <label for="nonaktif">Non Aktif</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="kondisi" style="font-weight: bold; font-size: 14px;">Kondisi</label>
+                            <input type="text" class="form-control" id="kondisi"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        </div>
+                        <div class="form-group">
+                            <label for="masalah" style="font-weight: bold; font-size: 14px;">Masalah
+                                Teridentifikasi</label>
+                            <textarea class="form-control" id="masalah" rows="3"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="tindakan" style="font-weight: bold; font-size: 14px;">Tindakan Yang
+                                Diperlukan</label>
+                            <textarea class="form-control" id="tindakan" rows="3"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success"
+                            style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {{-- modal keluar masuk barang --}}
     <div class="modal fade" id="keluarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -751,5 +961,23 @@
         });
     </script>
 
+@endsection
+
+@section('js')
+    <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+
+    <!-- AdminLTE -->
+    <script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
 @endsection
 @endsection

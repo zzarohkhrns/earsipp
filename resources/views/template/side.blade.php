@@ -122,7 +122,6 @@
                     </li>
 
                     <li class="nav-item @yield('barang') card-seven">
-
                         <a href="#" class="nav-link @yield('barang_link')">
                             <i class="nav-icon fas fa-box" style="font-size:17px;"></i>
                             <p>Data Aset<i class="right fas fa-angle-left"></i></p>
@@ -132,21 +131,21 @@
                             <li class="nav-item">
                                 <a onclick="$('#cover-spin').show(0)" href="/{{ $role }}/arsip/aset/data"
                                     class="nav-link @yield('data_barang')">
-                                    <i class="nav-icon fas fa-archive"></i>
+                                    <i class="nav-icon fas fa-genderless"></i>
                                     <p>Data Aset</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a onclick="$('#cover-spin').show(0)" href="/{{ $role }}/arsip/aset/permohonan"
                                     class="nav-link @yield('permohonan_barang')">
-                                    <i class="nav-icon fas fa-cogs"></i>
+                                    <i class="nav-icon fas fa-genderless"></i>
                                     <p>Permohonan</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a onclick="$('#cover-spin').show(0)" href="/{{ $role }}/arsip/aset/penyaluran"
                                     class="nav-link @yield('penyaluran_barang')">
-                                    <i class="nav-icon fas fa-request"></i>
+                                    <i class="nav-icon fas fa-genderless"></i>
                                     <p>Penyaluran</p>
                                 </a>
                             </li>

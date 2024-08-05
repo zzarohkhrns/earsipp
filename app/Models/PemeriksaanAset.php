@@ -12,8 +12,13 @@ class PemeriksaanAset extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    public function barang()
+    // public function aset()
+    // {
+    //     return $this->belongsTo(Aset::class, 'aset_id', 'aset_id');
+    // }
+
+    public function detailPemeriksaanAset()
     {
-        return $this->belongsTo(Aset::class, 'aset_id', 'aset_id');
+        return $this->hasOne(DetailPemeriksaanAset::class, 'id_pemeriksaan_aset', 'id_pemeriksaan_aset');
     }
 }

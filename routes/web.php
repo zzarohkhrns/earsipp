@@ -221,6 +221,8 @@ Route::middleware('auth')->group(function () {
         route::post('/aksi_edit_aset', [DataAsetController::class, 'aksi_edit_aset'])->name('aksi_edit_aset');
         Route::get('/print-kontrol', [DataAsetController::class, 'printKontrol'])->name('printKontrol');
         Route::get('/print-keluar', [DataAsetController::class, 'printKeluar'])->name('printKeluar');
+        Route::get('/aset/next-kode-aset', [DataAsetController::class, 'getNextKodeAset'])->name('aset.nextKodeAset');
+        Route::post('/kategori/store', [DataAsetController::class, 'store_kategori'])->name('kategori.store');
     });
 
     // upzis

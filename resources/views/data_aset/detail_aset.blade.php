@@ -60,58 +60,108 @@
                         <div class="card-body">
                             <div class="row card-detail-barang">
                                 <div class="col-12">
+                                    {{-- Data detail barang --}}
                                     <table id="example3" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 200px;"><b>Nama Barang</b></th>
-                                                <th style="width: 200px;"><b>Satuan</b></th>
-                                                <th style="width: 200px;"><b>Lokasi Barang</b></th>
-                                                <th style="width: 100px;"></th>
-                                                <th style="width: 100px;"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                {{-- <td>{{ $barang->nama }}</td>
-                                                <td>{{ $barang->satuan }}</td>
-                                                <td>{{ $barang->lokasi_penyimpanan }}</td> --}}
-                                                <td>Laptop Asus</td>
-                                                <td>pcs</td>
-                                                <td>Ruang Staff</td>
-                                                <td>
-                                                    <div class="btn-group btn-block mb-2 mb-xl-0 card_edit_barang">
-                                                        <a class="btn btn-success intro-ubah-detail-barang ml-1 mr-0 edit-barang"
-                                                            type="button" data-toggle="modal" data-target="#edittambahModal"
-                                                            aria-expanded="false"
-                                                            {{-- data-nama-barang="{{ $barang->nama }}" data-satuan="{{ $barang->satuan }}"
+
+                                        {{-- Line 1 --}}
+                                        <tr>
+                                            <th style="width: 200px;"><b>Kode Aset</b></th>
+                                            <th style="width: 200px;"></th>
+                                            <th style="width: 200px;"></th>
+                                            <th style="width: 100px;">
+                                                <div class="btn-group btn-block mb-2 mb-xl-0 card_edit_barang">
+                                                    <a class="btn btn-success intro-ubah-detail-barang ml-1 mr- edit-barang"
+                                                        type="button" data-toggle="modal" data-target="#edittambahModal" style="border-radius:10px;"
+                                                        aria-expanded="false" {{-- data-nama-barang="{{ $barang->nama }}" data-satuan="{{ $barang->satuan }}"
                                                             data-lokasi-penyimpanan="{{ $barang->lokasi_penyimpanan }}"
-                                                            data-spesifikasi="{{ $barang->spesifikasi }}" --}}
-                                                            >
-                                                            &nbsp;&nbsp;<i class="fas fa-edit"></i> Edit
+                                                            data-spesifikasi="{{ $barang->spesifikasi }}" --}}>
+                                                        &nbsp;&nbsp;<i class="fas fa-edit"></i> Edit
+                                                    </a>
+                                                </div>
+                                            </th>
+                                            <th style="width: 100px;">
+                                                <div class="btn-group btn-block mb-2 mb-xl-0 card_hapus_barang">
+                                                    <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                        <a onclick="$('#cover-spin').show(0)"
+                                                            href="/{{ $role }}/aksi_hapus_barang"
+                                                            class="btn btn-danger btn-block" style="display: block; border-radius:10px;">
+                                                            <i class="fas fa-trash"></i>
+                                                            Hapus
                                                         </a>
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <div class="btn-group btn-block mb-2 mb-xl-0 card_hapus_barang">
-                                                        <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                            <a onclick="$('#cover-spin').show(0)"
-                                                                href="/{{ $role }}/aksi_hapus_barang"
-                                                                class="btn btn-danger btn-block" style="display: block;">
-                                                                <i class="fas fa-trash"></i>
-                                                                Hapus
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><b>Spesifikasi</b></td>
-                                            </tr>
-                                            <tr>
-                                                {{-- <td colspan="4">{{ $barang->spesifikasi }}</td> --}}
-                                                <td colspan="4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa rem optio labore cupiditate dolore corrupti soluta. Vel, illo, tempore aut assumenda laboriosam possimus non omnis maiores provident consequuntur iste. Aspernatur.</td>
-                                            </tr>
-                                        </tbody>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th style="width: 200px;" class="text-success"><h4><b>Kode Aset</b></h4></th>
+                                            <th style="width: 200px;"></th>
+                                            <th style="width: 200px;"></th>
+                                            <th style="width: 100px;"></th>
+                                            <th style="width: 100px;"></th>
+                                        </tr>
+
+                                        {{-- Line 2 --}}
+                                        <tr>
+                                            <th style="width: 200px;"><b>Nama Barang</b></th>
+                                            <th style="width: 200px;"><b>Kategori</b></th>
+                                            <th style="width: 200px;"></th>
+                                            <th style="width: 100px;"></th>
+                                            <th style="width: 100px;"></th>
+                                        </tr>
+                                        <tr>
+                                            {{-- <td>{{ $barang->nama }}</td>
+                                                <td>{{ $barang->satuan }}</td>
+                                                <td>{{ $barang->lokasi_penyimpanan }}</td> --}}
+                                            <td>Laptop Asus</td>
+                                            <td>Elektronik</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+
+                                        {{-- Line 3 --}}
+                                        <tr>
+                                            <th style="width: 200px;"><b>Tanggal Pembelian</b></th>
+                                            <th style="width: 200px;"><b>Satuan</b></th>
+                                            <th style="width: 200px;"></th>
+                                            <th style="width: 100px;"></th>
+                                            <th style="width: 100px;"></th>
+                                        </tr>
+                                        <tr>
+                                            <td>Ini tanggal pembelian</td>
+                                            <td>Pcs</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+
+                                        {{-- Line 4 --}}
+                                        <tr>
+                                            <th style="width: 200px;"><b>Asal Perolehan</b></th>
+                                            <th style="width: 200px;"><b>Lokasi Penyimpanan</b></th>
+                                            <th style="width: 200px;"></th>
+                                            <th style="width: 100px;"></th>
+                                            <th style="width: 100px;"></th>
+                                        </tr>
+                                        <tr>
+                                            <td>Asal</td>
+                                            <td>Gudang Lantai2</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+
+                                        {{-- Line 5 --}}
+                                        <tr>
+                                            <td><b>Spesifikasi</b></td>
+                                        </tr>
+                                        <tr>
+                                            {{-- <td colspan="4">{{ $barang->spesifikasi }}</td> --}}
+                                            <td colspan="2">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                                                Ipsa rem optio labore cupiditate dolore corrupti soluta. Vel, illo,
+                                                tempore aut assumenda laboriosam possimus non omnis maiores provident
+                                                consequuntur iste. Aspernatur.</td>
+                                        </tr>
                                     </table>
                                 </div>
                             </div>
@@ -136,7 +186,8 @@
                                         <li class="nav-item">
                                             <a class="nav-link" id="keluar-masuk-barang-tab" data-toggle="tab"
                                                 href="#keluar-masuk-barang" role="tab"
-                                                aria-controls="keluar-masuk-barang" aria-selected="false">DATA KELUAR MASUK BARANG</a>
+                                                aria-controls="keluar-masuk-barang" aria-selected="false">DATA KELUAR MASUK
+                                                BARANG</a>
                                         </li>
                                     </ul>
 
@@ -472,19 +523,23 @@
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const editButtons= document.querySelectorAll('.edit-barang');
+            const editButtons = document.querySelectorAll('.edit-barang');
 
-            editButtons.forEach(button=>{
-                button.addEventListener('click', function(){
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
                     const namaBarang = this.getAttribute('data-nama-barang');
                     const satuanBarang = this.getAttribute('data-satuan');
                     const lokasiPenyimpanan = this.getAttribute('data-lokasi-penyimpanan');
                     const spesifikasi = this.getAttribute('data-spesifikasi');
 
-                    document.querySelector('#edittambahModal input[name="nama"]').value= namaBarang;
-                    document.querySelector('#edittambahModal input[name="satuan"]').value= satuanBarang;
-                    document.querySelector('#edittambahModal input[name="lokasi_penyimpanan"]').value= lokasiPenyimpanan;
-                    document.querySelector('#edittambahModal input[name="spesifikasi"]').value= spesifikasi;
+                    document.querySelector('#edittambahModal input[name="nama"]').value =
+                        namaBarang;
+                    document.querySelector('#edittambahModal input[name="satuan"]').value =
+                        satuanBarang;
+                    document.querySelector('#edittambahModal input[name="lokasi_penyimpanan"]')
+                        .value = lokasiPenyimpanan;
+                    document.querySelector('#edittambahModal input[name="spesifikasi"]').value =
+                        spesifikasi;
                 })
             })
         })
