@@ -159,7 +159,13 @@
                                                             <select class="form-control" name="kategori"
                                                                 onchange="javascript:this.form.submit();"
                                                                 style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
-                                                                <!-- Options for categories -->
+                                                                <!-- Daftar kategori yang ada, bisa diisi dengan data dari database -->
+                                                                <option value="">Semua</option>
+                                                                @foreach ($kategori as $kat)
+                                                                    <option value="{{ $kat->id_kategori }}">
+                                                                        {{ $kat->kategori }}
+                                                                    </option>
+                                                                @endforeach
                                                             </select>
                                                         </div>
                                                     </div>
@@ -209,7 +215,7 @@
                                                             <a href="/{{ $role }}/print-data"
                                                                 style=" border-radius:10px;"
                                                                 class="btn btn-outline-secondary">
-                                                                <i class="fi fi-sr-file"></i>Export
+                                                                <i class="fas fa-file-alt"></i></i>Export
                                                             </a>
                                                         </div>
                                                     </div>
@@ -372,11 +378,11 @@
                                                                 class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
                                                                 <div class="btn-group mb-2 mb-xl-0 btn-block">
                                                                     <a onclick="$('#cover-spin').show(0)"
-                                                                        href="/{{ $role }}/arsip/aset/detail"
+                                                                        href="/{{ $role }}/arsip/aset/detail/{{ $data->aset_id }}"
                                                                         {{-- /{{ $data->id_barang }}" --}}
                                                                         class="btn btn-outline-secondary btn-block"
                                                                         style="display: block;border-radius:10px;">
-                                                                        Detail Barang
+                                                                        Detail Aset
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -473,7 +479,7 @@
                                                             <a href="/{{ $role }}/print-data"
                                                                 style=" border-radius:10px;"
                                                                 class="btn btn-outline-secondary">
-                                                                <i class="fi fi-sr-file"></i>Export
+                                                                <i class="fas fa-file-alt" style="margin-right:2px;"></i>Export
                                                             </a>
                                                         </div>
                                                     </div>
@@ -512,38 +518,49 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>ini tanggal</td>
-                                                    <td>ini pemeriksa</td>
-                                                    <td>ini nama aset</td>
-                                                    <td>ini kondisi aset</td>
-                                                    <td>ini status aset</td>
-                                                    <td>ini status spv</td>
-                                                    <td>ini status kc</td>
-                                                    <td>
-                                                        <div class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
-                                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                                <a onclick="$('#cover-spin').show(0)"
-                                                                    href="/{{ $role }}/arsip/aset/detail_pemeriksaan"
-                                                                    {{-- /{{ $data->id_barang }}" --}}
-                                                                    class="btn btn-outline-secondary btn-block"
-                                                                    style="display: block;border-radius:10px;">
-                                                                    Detail
-                                                                </a>
+                                                @foreach ($pemeriksaan as $data)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>
+                                                            @if ($data->detailPemeriksaanAset->isNotEmpty())
+                                                                {{ $data->detailPemeriksaanAset->first()->pemeriksaanAset->tanggal_pemeriksaan }}
+                                                            @else
+                                                                'Tidak ada data tanggal'
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ Auth::user()->nama }}</td>
+                                                        <td>{{ $data->nama_aset }}</td>
+                                                        <td>ini kondisi aset</td>
+                                                        <td>ini status aset</td>
+                                                        <td>{{ $data->detailPemeriksaanAset->first()->pemeriksaanAset->status_spv }}
+                                                        </td>
+                                                        <td>{{ $data->detailPemeriksaanAset->first()->pemeriksaanAset->status_kc }}
+                                                        </td>
+                                                        <td>
+                                                            <div
+                                                                class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
+                                                                <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                                    <a onclick="$('#cover-spin').show(0)"
+                                                                        href="/{{ $role }}/arsip/aset/detail_pemeriksaan"
+                                                                        {{-- /{{ $data->id_barang }}" --}}
+                                                                        class="btn btn-outline-secondary btn-block"
+                                                                        style="display: block;border-radius:10px;">
+                                                                        Detail
+                                                                    </a>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="btn-group btn-block mb-2 mb-xl-0 card-tambah-kontrol"
-                                                        style="width: 150px;">
-                                                        <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                            <a href="/{{ $role }}/print-pemeriksaan-byid"
-                                                                style=" border-radius:10px;"
-                                                                class="btn btn-outline-secondary">
-                                                                <i class="fi fi-sr-file"></i>Cetak PDF
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    </td>
+                                                            <div class="btn-group btn-block mb-2 mb-xl-0 card-tambah-kontrol"
+                                                                style="width: 150px;">
+                                                                <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                                    <a href="/{{ $role }}/print-pemeriksaan-byid"
+                                                                        style=" border-radius:10px;"
+                                                                        class="btn btn-outline-secondary">
+                                                                        <i class="fi fi-sr-file"></i>Cetak PDF </a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -628,12 +645,15 @@
                         @csrf
                         <div class="form-group">
                             <label for="kode">Kode Aset :</label>
-                            <input type="text" class="form-control" id="kode_aset" name="kode_aset" disabled>
-                            <input type="text" class="form-control" id="kode_aset" name="kode_aset" hidden>
+                            <input type="text" class="form-control" id="kode_aset" name="kode_aset" readonly>
                         </div>
                         <div class="form-group">
                             <label for="tgl_beli">Tgl Perolehan :</label>
                             <input type="date" class="form-control" id="tgl_beli" name="tgl_perolehan">
+                        </div>
+                        <div class="form-group">
+                            <label for="asal">Asal Perolehan :</label>
+                            <input type="text" class="form-control" id="asal" name="asal">
                         </div>
                         <div class="form-group">
                             <label for="name">Nama :</label>
@@ -646,7 +666,8 @@
                                 <!-- Daftar kategori yang ada, bisa diisi dengan data dari database -->
                                 <option value="">Pilih Kategori</option>
                                 @foreach ($kategori as $kat)
-                                    <option value="{{ $kat->kategori }}">{{ $kat->kategori }}</option>
+                                    <option value="{{ $kat->id_kategori }}">
+                                        {{ $kat->kategori }}</option>
                                 @endforeach
                                 <option value="others">Lainnya</option>
                             </select>

@@ -93,7 +93,7 @@
                                             </th>
                                         </tr>
                                         <tr>
-                                            <th style="width: 200px;" class="text-success"><h4><b>Kode Aset</b></h4></th>
+                                            <th style="width: 200px;" class="text-success"><h4><b>{{ $aset->kode_aset }}</b></h4></th>
                                             <th style="width: 200px;"></th>
                                             <th style="width: 200px;"></th>
                                             <th style="width: 100px;"></th>
@@ -112,8 +112,8 @@
                                             {{-- <td>{{ $barang->nama }}</td>
                                                 <td>{{ $barang->satuan }}</td>
                                                 <td>{{ $barang->lokasi_penyimpanan }}</td> --}}
-                                            <td>Laptop Asus</td>
-                                            <td>Elektronik</td>
+                                            <td>{{ $aset->nama_aset }}</</td>
+                                            <td>{{ $aset->kategori_aset->kategori }}</td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -128,8 +128,8 @@
                                             <th style="width: 100px;"></th>
                                         </tr>
                                         <tr>
-                                            <td>Ini tanggal pembelian</td>
-                                            <td>Pcs</td>
+                                            <td>{{ $aset->tgl_perolehan }}</td>
+                                            <td>{{ $aset->satuan }}</td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -144,8 +144,8 @@
                                             <th style="width: 100px;"></th>
                                         </tr>
                                         <tr>
-                                            <td>Asal</td>
-                                            <td>Gudang Lantai2</td>
+                                            <td>{{ $aset->asal_perolehan ?? 'tidak ada asal perolehan' }}</td>
+                                            <td>{{ $aset->lokasi_penyimpanan }}</td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -157,10 +157,7 @@
                                         </tr>
                                         <tr>
                                             {{-- <td colspan="4">{{ $barang->spesifikasi }}</td> --}}
-                                            <td colspan="2">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                                                Ipsa rem optio labore cupiditate dolore corrupti soluta. Vel, illo,
-                                                tempore aut assumenda laboriosam possimus non omnis maiores provident
-                                                consequuntur iste. Aspernatur.</td>
+                                            <td colspan="2">{{ $aset->spesifikasi }}</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -476,7 +473,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Edit Data Barang</h5>
+                    <h5 class="modal-title" id="myModalLabel">Edit Data Aset</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

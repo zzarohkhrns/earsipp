@@ -21,6 +21,11 @@ class PcPengurus extends Model
         return $this->belongsTo(Pc::class, 'id_pc');
     }
 
+    public function pemeriksaanAset()
+    {
+        return $this->hasMany(PemeriksaanAset::class, 'id_pc_pengurus', 'id_pc_pengurus');
+    }
+
     public function PengurusJabatan()
     {
         return $this->belongsTo(PengurusJabatan::class, 'id_pengurus_jabatan');

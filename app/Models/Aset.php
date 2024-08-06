@@ -41,7 +41,7 @@ class Aset extends Model
         return self::generateKodeAset();
     }
 
-    public function detaiPemeriksaanAset()
+    public function detailPemeriksaanAset()
     {
         return $this->hasMany(DetailPemeriksaanAset::class, 'aset_id', 'aset_id');
     }

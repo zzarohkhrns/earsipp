@@ -211,10 +211,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/aksi_ubah_kehadiran/{id_kegiatan}', [NotulenController::class, 'aksi_ubah_kehadiran'])->name('aksi_ubah_kehadiran');
         Route::post('/aksi_edit_notulen/{id_kegiatan}/{notulen_id}', [NotulenController::class, 'aksi_edit_notulen'])->name('aksi_edit_notulen');
 
-        //data barang
+        //data aset
         Route::get('/arsip/aset/data', [DataAsetController::class, 'data'])->name('data_aset');
+        Route::get('/arsip/aset/detail_pemeriksaan', [DataAsetController::class, 'detail_pemeriksaan'])->name('detail_pemeriksaan');
         Route::post('/aset/data/tambah', [DataAsetController::class, 'store_data'])->name('aset.store');
-        Route::get('/arsip/aset/detail', [DataAsetController::class, 'detail'])->name('detail_aset');
+        Route::get('/arsip/aset/detail/{id}', [DataAsetController::class, 'detail'])->name('detail_aset');
         route::post('/arsip/aset/tambah_kontrol', [DataAsetController::class, 'store_kontrol'])->name('kontrol.store');
         Route::post('/aksi_tambah_aset', [DataAsetController::class, 'aksi_tambah_aset'])->name('aksi_tambah_aset');
         route::post('/aksi_hapus_aset', [DataAsetController::class, 'aksi_hapus_aset'])->name('aksi_hapus_aset');

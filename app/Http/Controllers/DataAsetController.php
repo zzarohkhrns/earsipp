@@ -6,6 +6,7 @@ use App\Models\Aset;
 use App\Models\Pc;
 use Illuminate\Support\Facades\Log;
 use App\Models\Barang;
+use App\Models\DetailPemeriksaanAset;
 use App\Models\Kategori;
 use App\Models\KontrolBarang;
 use App\Models\PemeriksaanAset;
@@ -23,20 +24,29 @@ class DataAsetController extends Controller
 {
     public function data()
     {
-        //$barang = DB::table('barang')->get();
-        //$barang = Barang::with(['latestKontrolBarang', 'latestKeluarMasukBarang'])->get();
+        //hanya mengambil aset yang memiliki detail pemeriksaan
+        $pemeriksaan = Aset::with([
+            'kategori_aset',
+            'detailPemeriksaanAset.pemeriksaanAset'
+        ])->whereHas('detailPemeriksaanAset', function ($query) {
+            // Filter agar hanya mengambil aset yang memiliki detail pemeriksaan
+            $query->whereNotNull('id_detail_pemeriksaan_aset');
+        })->get();
+
+        
         $kategori = DB::table('kategori')->get();
-        $aset = Aset::with(['kategori_aset', 'latestDetailPemeriksaanAset.pemeriksaanAset'])->get();
+        $aset = Aset::with(['kategori_aset', 'latestDetailPemeriksaanAset.pemeriksaanAset', 'detailPemeriksaanAset.pemeriksaanAset'])->get();
         $role = 'pc';
-        return view('data_aset.data_aset', compact('role', 'aset', 'kategori'));
+        return view('data_aset.data_aset', compact('role', 'aset', 'kategori', 'pemeriksaan'));
     }    
 
-    public function detail()
+    public function detail($id)
     {
         $role = 'pc';
         //$barang =Barang::with(['kontrolBarang', 'keluarMasukBarang'])->findOrFail($id);
+        $aset = Aset::with(['kategori_aset', 'detailPemeriksaanAset.pemeriksaanAset'])->findOrFail($id);
 
-        return view('data_aset.detail_aset', compact('role'));
+        return view('data_aset.detail_aset', compact('role', 'aset'));
     }
 
     public function printKontrol()
@@ -67,10 +77,10 @@ class DataAsetController extends Controller
         
         try {
             $kategori = Kategori::create([
-                'id_kategori' => Str::uuid(),
-                'kategori' => $request->nama
+                'id_kategori' => (string) Str::uuid(),
+                'kategori' => $request->nama,
             ]);
-    
+
             return response()->json(['id' => $kategori->id_kategori, 'nama' => $kategori->kategori], 201);
         } catch (\Exception $e) {
             Log::error('Error saat menyimpan kategori: ' . $e->getMessage());
@@ -78,43 +88,36 @@ class DataAsetController extends Controller
         }
     }
 
+    //menyimpan data aset
     public function store_data(Request $request)
     {
         $request->validate([
             'kode_aset' => 'required|string|max:255',
             'tgl_perolehan' => 'required|date',
             'nama_aset' => 'required|string|max:255',
-            'kategori' => 'required|string|max:255',
+            'kategori' => 'required',
             'satuan' => 'required|string|max:255',
             'lokasi_penyimpanan' => 'required|string|max:255',
             'spesifikasi' => 'nullable|string|max:255',
             //ini belum selesai
         ]);
+
+        Log::info('Memulai penyimpanan data aset. Kategori: ' . $request->id_kategori);
         
         $kategori = DB::table('kategori')
-        ->where('kategori', $request->kategori)
+        ->where('id_kategori', $request->kategori)
         ->first();
-    
-        if ($kategori) {
-            $kategori_id = $kategori->id_kategori;
-        } else {
-             // Jika kategori tidak ada, tambahkan kategori baru dan ambil id_kategori-nya
-            try {
-                $kategori_id = DB::table('kategori')->insertGetId([
-                    'id_kategori' => Str::uuid(),
-                    'kategori' => $request->kategori,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ]);
-            } catch (\Exception $e) {
-                Log::error('Error saat menyimpan kategori: ' . $e->getMessage());
+
+        if (!$kategori) {
                 return redirect()->back()->with('error', 'Gagal menambahkan kategori.');
-            }
+        } else {
+            $kategori_id = $kategori->id_kategori;
         }
+
         try
         {
             Aset::create([
-                'aset_id' => Str::uuid(),
+                'aset_id' => (string) Str::uuid(),
                 'kode_aset' =>$request->kode_aset,
                 'tgl_perolehan' =>$request->tgl_perolehan,
                 'nama_aset' =>$request->nama_aset,
@@ -159,5 +162,12 @@ class DataAsetController extends Controller
             Log::error('Error saat menyimpan data kontrol: '. $e->getMessage());
             return redirect()->back()->with('error', 'Data gagal ditambahkan.');
         }
+    }
+
+    public function detail_pemeriksaan( )
+    {
+        $role = 'pc';
+
+        return view('data_aset.detail_pemeriksaan', compact('role'));
     }
 }

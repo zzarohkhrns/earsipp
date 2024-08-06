@@ -21,4 +21,9 @@ class PemeriksaanAset extends Model
     {
         return $this->hasOne(DetailPemeriksaanAset::class, 'id_pemeriksaan_aset', 'id_pemeriksaan_aset');
     }
+
+    public function pcPengurus()
+    {
+        return $this->belongsTo(PcPengurus::class, 'id_pc_pengurus', 'id_pc_pengurus');
+    }
 }
