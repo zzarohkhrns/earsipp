@@ -21,9 +21,19 @@ class PcPengurus extends Model
         return $this->belongsTo(Pc::class, 'id_pc');
     }
 
+    public function pengguna()
+    {
+        return $this->hasOne(Pengguna::class, 'gocap_id_pc_pengurus', 'id_pc_pengurus');
+    }
+
     public function pemeriksaanAset()
     {
-        return $this->hasMany(PemeriksaanAset::class, 'id_pc_pengurus', 'id_pc_pengurus');
+        return $this->hasMany(PemeriksaanAset::class, 'id_pemeriksa', 'id_pc_pengurus');
+    }
+
+    public function kc()
+    {
+        return $this->hasMany(PemeriksaanAset::class, 'id_kc', 'id_pc_pengurus');
     }
 
     public function PengurusJabatan()

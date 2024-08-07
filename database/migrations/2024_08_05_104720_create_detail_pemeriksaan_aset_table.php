@@ -26,7 +26,8 @@ return new class extends Migration
 
             $table->enum('kondisi', ['baik', 'rusak', 'perlu service', 'hilang']);
             $table->enum('status_aset', ['aktif', 'non aktif'])->default('aktif');
-            $table->text('keterangan');
+            $table->text('masalah_teridentifikasi');
+            $table->text('tindakan_diperlukan');
             
             $table->timestamps();
         });

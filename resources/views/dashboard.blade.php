@@ -225,7 +225,31 @@
                         <!-- /.info-box-content -->
                     </div>
                 </div>
+                <div class="col-12 col-sm-3 " style="{{ $display }}">
+                    <div class="card ijo-kiri h-card">
+                        <div class="container pl-2">
 
+                            <div class="d-flex align-items-start">
+                                <div class="info-box-content pt-1">
+                                    <span class="info-box-text">Data Aset</span>
+                                    <span class="info-box-text"><b>
+                                            {{-- <h3>{{ $jumlah_aset }}</h3> --}}
+                                            <h3>ini jumlah aset</h3>
+                                        </b></span>
+                                    <p class="info-box-text">
+
+                                        <a href="/{{ $role }}/arsip/aset/data" class="text-success"
+                                            style="font-size: 16px;"><i>
+                                                << Lihat Detail>>
+                                            </i> </a>
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                </div>
 
 
 

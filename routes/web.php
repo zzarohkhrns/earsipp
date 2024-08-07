@@ -213,7 +213,7 @@ Route::middleware('auth')->group(function () {
 
         //data aset
         Route::get('/arsip/aset/data', [DataAsetController::class, 'data'])->name('data_aset');
-        Route::get('/arsip/aset/detail_pemeriksaan', [DataAsetController::class, 'detail_pemeriksaan'])->name('detail_pemeriksaan');
+        Route::get('/arsip/aset/detail_pemeriksaan/{id}', [DataAsetController::class, 'detail_pemeriksaan'])->name('detail_pemeriksaan');
         Route::post('/aset/data/tambah', [DataAsetController::class, 'store_data'])->name('aset.store');
         Route::get('/arsip/aset/detail/{id}', [DataAsetController::class, 'detail'])->name('detail_aset');
         route::post('/arsip/aset/tambah_kontrol', [DataAsetController::class, 'store_kontrol'])->name('kontrol.store');
@@ -224,6 +224,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/print-keluar', [DataAsetController::class, 'printKeluar'])->name('printKeluar');
         Route::get('/aset/next-kode-aset', [DataAsetController::class, 'getNextKodeAset'])->name('aset.nextKodeAset');
         Route::post('/kategori/store', [DataAsetController::class, 'store_kategori'])->name('kategori.store');
+        Route::post('/filter/aset', [DataAsetController::class, 'FilterAset'])->name('filter_aset');
+
     });
 
     // upzis

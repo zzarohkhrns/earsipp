@@ -31,6 +31,8 @@ return new class extends Migration
             $table->enum('status_kc',['mengetahui', 'belum'])->default('belum');
             $table->string('catatan_kc')->nullable();
             $table->string('catatan_spv')->nullable();
+            $table->date('tgl_mengetahui_spv')->nullable();
+            $table->date('tgl_mengetahui_kc')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
