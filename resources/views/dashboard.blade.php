@@ -234,7 +234,7 @@
                                     <span class="info-box-text">Data Aset</span>
                                     <span class="info-box-text"><b>
                                             {{-- <h3>{{ $jumlah_aset }}</h3> --}}
-                                            <h3>ini jumlah aset</h3>
+                                            <h3>{{ $jumlah_aset }}</h3>
                                         </b></span>
                                     <p class="info-box-text">
 

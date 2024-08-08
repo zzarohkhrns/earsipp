@@ -46,63 +46,55 @@
 
         .dropdown {
             position: relative;
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .dropdown-button {
-            width: 200px;
-            /* Set a fixed width for the button */
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 10px;
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            /* Ensure space between text and icon */
-        }
-
-        .dropdown-button .icon {
-            margin-left: 10px;
+            display: block;
         }
 
         .dropdown-menu {
-            display: none;
+            color: black display: none;
             position: absolute;
-            background-color: #f9f9f9;
-            min-width: 200px;
-            /* Set a fixed width for the dropdown menu */
+            background-color: #ffffff;
+            /* Warna sekunder */
+            min-width: 160px;
             box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            /* Ensure dropdown is on top of other elements */
-            border-radius: 10px;
-            max-height: 200px;
-            /* Optional: Limit the height of the dropdown menu */
-            overflow-y: auto;
-            /* Add scroll if content exceeds max height */
+            z-index: 1;
         }
 
         .dropdown-menu button {
             color: black;
-            padding: 12px;
+            padding: 12px 16px;
             text-decoration: none;
             display: block;
             width: 100%;
-            text-align: left;
             border: none;
             background: none;
-            cursor: pointer;
+            text-align: left;
         }
 
         .dropdown-menu button:hover {
-            background-color: #ddd;
+            background-color: #d6d6d6;
+            /* Warna saat hover */
         }
 
-        .show {
+        .dropdown-button {
             display: block;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #6c757d;
+            /* Warna sekunder */
+            color: white;
+            border: none;
+            width: 200px;
+        }
+
+        .dropdown-button:hover {
+            background-color: #5a6268;
+            /* Warna saat hover */
+        }
+
+        .dropdown-button .icon {
+            color: white;
         }
     </style>
 
@@ -151,6 +143,8 @@
                                             </ul>
 
                                             <div class="tab-content" id="myTabContent">
+
+                                                {{-- tab pemeriksaaan --}}
                                                 <div class="tab-pane fade show active" id="pemeriksaan" role="tabpanel"
                                                     aria-labelledby="pemeriksaan-tab">
                                                     <div class="col-12 mt-3 mb-3">
@@ -172,13 +166,14 @@
 
                                                                 {{-- line 1 --}}
                                                                 <tr>
-                                                                    <th style="width: 75%">
+                                                                    <th style="width: 50%">
                                                                         <h6><b>Pemeriksa</b></h6>
                                                                     </th>
-                                                                    <th style="width: 25%">
+                                                                    <th style="width: 50%">
                                                                         <div class="dropdown">
                                                                             <button id="dropdownButton"
                                                                                 class="dropdown-button"
+                                                                                style="border-radius:10px; width: 100%; max-width: 100%; padding: 10px; margin: 0;"
                                                                                 onclick="toggleDropdown()">
                                                                                 <span id="buttonText">Belum Selesai
                                                                                     Diinput</span>
@@ -303,10 +298,13 @@
                                                                                         <h6>Baik</h6>
                                                                                     </th>
                                                                                     <th style="width:20%">
-                                                                                        <h6>jumlah</h6>
+                                                                                        <h6>{{ $pemeriksaan->where('kondisi', 'baik')->count() }}
+                                                                                        </h6>
                                                                                     </th>
                                                                                     <th style="width:20%">
-                                                                                        <h6>persen</h6>
+                                                                                        <h6>
+                                                                                            {{ ($pemeriksaan->where('kondisi', 'baik')->count() / $jumlahAset) * 100 }}%
+                                                                                        </h6>
                                                                                     </th>
                                                                                 </tr>
                                                                                 <tr>
@@ -314,11 +312,13 @@
                                                                                         <h6>Tidak Memadai (rusak)</h6>
                                                                                     </th>
                                                                                     <th style="width:25%">
-                                                                                        <h6 class="text-primary">jumlah
+                                                                                        <h6 class="text-primary">
+                                                                                            {{ $pemeriksaan->where('kondisi', 'rusak')->count() }}
                                                                                         </h6>
                                                                                     </th>
                                                                                     <th style="width:25%">
-                                                                                        <h6 class="text-primary">persen
+                                                                                        <h6 class="text-primary">
+                                                                                            {{ ($pemeriksaan->where('kondisi', 'rusak')->count() / $jumlahAset) * 100 }}%
                                                                                         </h6>
                                                                                     </th>
                                                                                 </tr>
@@ -327,11 +327,13 @@
                                                                                         <h6>Perlu Perbaikan</h6>
                                                                                     </th>
                                                                                     <th style="width:25%">
-                                                                                        <h6 class="text-warning">jumlah
+                                                                                        <h6 class="text-warning">
+                                                                                            {{ $pemeriksaan->where('kondisi', 'perlu service')->count() }}
                                                                                         </h6>
                                                                                     </th>
                                                                                     <th style="width:25%">
-                                                                                        <h6 class="text-warning">persen
+                                                                                        <h6 class="text-warning">
+                                                                                            {{ ($pemeriksaan->where('kondisi', 'perlu service')->count() / $jumlahAset) * 100 }}%
                                                                                         </h6>
                                                                                     </th>
                                                                                 </tr>
@@ -340,10 +342,14 @@
                                                                                         <h6>Hilang</h6>
                                                                                     </th>
                                                                                     <th style="width:25%">
-                                                                                        <h6 class="text-danger">jumlah</h6>
+                                                                                        <h6 class="text-danger">
+                                                                                            {{ $pemeriksaan->where('kondisi', 'hilang')->count() }}
+                                                                                        </h6>
                                                                                     </th>
                                                                                     <th style="width:25%">
-                                                                                        <h6 class="text-danger">persen</h6>
+                                                                                        <h6 class="text-danger">
+                                                                                            {{ ($pemeriksaan->where('kondisi', 'hilang')->count() / $jumlahAset) * 100 }}%
+                                                                                        </h6>
                                                                                     </th>
                                                                                 </tr>
                                                                             </table>
@@ -358,10 +364,12 @@
                                                                                         <h6>Aktif</h6>
                                                                                     </th>
                                                                                     <th style="width:25%">
-                                                                                        <h6>jumlah</h6>
+                                                                                        <h6>{{ $pemeriksaan->where('status_aset', 'aktif')->count() }}
+                                                                                        </h6>
                                                                                     </th>
                                                                                     <th style="width:25%">
-                                                                                        <h6>persen</h6>
+                                                                                        <h6>{{ ($pemeriksaan->where('status_aset', 'aktif')->count() / $jumlahAset) * 100 }}%
+                                                                                        </h6>
                                                                                     </th>
                                                                                 </tr>
                                                                                 <tr>
@@ -369,10 +377,14 @@
                                                                                         <h6>Non Aktif</h6>
                                                                                     </th>
                                                                                     <th style="width:25%">
-                                                                                        <h6 class="text-danger">jumlah</h6>
+                                                                                        <h6 class="text-danger">
+                                                                                            {{ $pemeriksaan->where('status_aset', 'non aktif')->count() }}
+                                                                                        </h6>
                                                                                     </th>
                                                                                     <th style="width:25%">
-                                                                                        <h6 class="text-danger">persen</h6>
+                                                                                        <h6 class="text-danger">
+                                                                                            {{ ($pemeriksaan->where('status_aset', 'non aktif')->count() / $jumlahAset) * 100 }}%
+                                                                                        </h6>
                                                                                     </th>
                                                                                 </tr>
                                                                                 <tr>
@@ -404,7 +416,351 @@
                                                             </table>
                                                         </div>
                                                     </div>
+                                                    <div class="row card-kontrol-barang">
+                                                        <div class="col-12">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center mb-3">
+                                                                <h6><b>Hasil Pemeriksaan
+                                                                        Berdasarkan Kondisi</b>
+                                                                </h6>
+                                                                <button type="button" class="btn btn-success"
+                                                                    data-toggle="modal"
+                                                                    data-target="#TambahPemeriksaanModal"
+                                                                    style="background-color: rgb(0, 177, 0); color:white; border-radius:10px; width:150px;">
+                                                                    <i class="fas fa-plus-circle"></i>
+                                                                    <span>Tambah</span>
+                                                                </button>
+                                                            </div>
+                                                            <table id="example3" class="table table-bordered"
+                                                                style="width:100%;">
+                                                                <thead class="table-secondary" style="text-align: center">
+                                                                    <tr>
+                                                                        <th>No.</th>
+                                                                        <th>Kode Aset</th>
+                                                                        <th>Nama Aset</th>
+                                                                        <th>Kategori</th>
+                                                                        <th>Lokasi</th>
+                                                                        <th>Kondisi</th>
+                                                                        <th>Status</th>
+                                                                        <th>Tgl Pembelian</th>
+                                                                        <th>Masalah
+                                                                            Teridentifikasi</th>
+                                                                        <th>Tindakan Yang
+                                                                            Diperlukan</th>
+                                                                        <th style="width: 150px;">
+                                                                            Aksi</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td colspan="11"
+                                                                            style="background-color: #CBF2D6">
+                                                                            <h6><b>1. Aset
+                                                                                    Dengan
+                                                                                    Kondisi Baik
+                                                                                    ({{ $pemeriksaan->where('kondisi', 'baik')->count() }})</b>
+                                                                            </h6>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    @if ($pemeriksaan->where('kondisi', 'baik')->count() > 0)
+                                                                        @php
+                                                                            $no = 1;
+                                                                        @endphp
+                                                                        @foreach ($pemeriksaan as $data)
+                                                                            @if ($data->kondisi == 'baik')
+                                                                                <tr>
+                                                                                    <td>{{ $no++ }}</td>
+                                                                                    <td>{{ $data->aset->kode_aset }}</td>
+                                                                                    <td>{{ $data->aset->nama_aset }}</td>
+                                                                                    <td>{{ $data->aset->kategori_aset->kategori }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->aset->lokasi_penyimpanan }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->kondisi }}</td>
+                                                                                    <td>{{ $data->status_aset }}</td>
+                                                                                    <td>{{ $data->aset->tgl_perolehan }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->masalah_teridentifikasi }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->tindakan_diperlukan }}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <div
+                                                                                            class="d-flex flex-column align-items-center">
+                                                                                            <div
+                                                                                                class="btn-group mb-2 card_edit_pemeriksaan">
+                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
+                                                                                                    type="button"
+                                                                                                    data-toggle="modal"
+                                                                                                    data-target="#UbahPemeriksaanModal"
+                                                                                                    style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
+                                                                                                    aria-expanded="false">
+                                                                                                    &nbsp;&nbsp;<i
+                                                                                                        class="fas fa-edit"></i>
+                                                                                                    Ubah
+                                                                                                </a>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="btn-group mb-2 card_hapus_barang">
+                                                                                                <div
+                                                                                                    class="btn-group btn-block">
+                                                                                                    <a onclick="$('#cover-spin').show(0)"
+                                                                                                        href="/{{ $role }}/aksi_hapus_barang"
+                                                                                                        class="btn btn-outline-secondary btn-block"
+                                                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
+                                                                                                        <i
+                                                                                                            class="fas fa-trash"></i>
+                                                                                                        Hapus
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @else
+                                                                        <tr>
+                                                                            <td colspan="11" style="text-align:center">
+                                                                                Tidak ada data
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+
+                                                                    <tr>
+                                                                        <td colspan="11"
+                                                                            style="background-color: #CBF2D6">
+                                                                            <h6><b>2. Aset
+                                                                                    Dengan
+                                                                                    Kondisi
+                                                                                    Tidak
+                                                                                    Memadai /
+                                                                                    Rusak
+                                                                                    ({{ $pemeriksaan->where('kondisi', 'rusak')->count() }})</b>
+                                                                            </h6>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    @if ($pemeriksaan->where('kondisi', 'rusak')->count() > 0)
+                                                                        @php
+                                                                            $no = 1;
+                                                                        @endphp
+
+                                                                        @foreach ($pemeriksaan as $data)
+                                                                            @if ($data->kondisi == 'rusak')
+                                                                                <tr>
+                                                                                    <td>{{ $no++ }}</td>
+                                                                                    <td>{{ $data->aset->kode_aset }}</td>
+                                                                                    <td>{{ $data->aset->nama_aset }}</td>
+                                                                                    <td>{{ $data->aset->kategori_aset->kategori }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->aset->lokasi_penyimpanan }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->kondisi }}</td>
+                                                                                    <td>{{ $data->status_aset }}</td>
+                                                                                    <td>{{ $data->aset->tgl_perolehan }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->masalah_teridentifikasi }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->tindakan_diperlukan }}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <div
+                                                                                            class="d-flex flex-column align-items-center">
+                                                                                            <div
+                                                                                                class="btn-group mb-2 card_edit_pemeriksaan">
+                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
+                                                                                                    type="button"
+                                                                                                    data-toggle="modal"
+                                                                                                    data-target="#UbahPemeriksaanModal"
+                                                                                                    style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
+                                                                                                    aria-expanded="false">
+                                                                                                    &nbsp;&nbsp;<i
+                                                                                                        class="fas fa-edit"></i>
+                                                                                                    Ubah
+                                                                                                </a>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="btn-group mb-2 card_hapus_barang">
+                                                                                                <div
+                                                                                                    class="btn-group btn-block">
+                                                                                                    <a onclick="$('#cover-spin').show(0)"
+                                                                                                        href="/{{ $role }}/aksi_hapus_barang"
+                                                                                                        class="btn btn-outline-secondary btn-block"
+                                                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
+                                                                                                        <i
+                                                                                                            class="fas fa-trash"></i>
+                                                                                                        Hapus
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @else
+                                                                        <tr>
+                                                                            <td colspan="11" style="text-align:center">
+                                                                                Tidak ada data
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+
+                                                                    <tr>
+                                                                        <td colspan="11"
+                                                                            style="background-color: #CBF2D6">
+                                                                            <h6><b>3. Aset
+                                                                                    Dengan
+                                                                                    Kondisi
+                                                                                    Perlu
+                                                                                    Perbaikan
+                                                                                    ({{ $pemeriksaan->where('kondisi', 'perlu service')->count() }})</b>
+                                                                            </h6>
+                                                                        </td>
+                                                                    </tr>
+
+
+                                                                    @if ($pemeriksaan->where('kondisi', 'perlu service')->count() > 0)
+                                                                        @php
+                                                                            $no = 1;
+                                                                        @endphp
+                                                                        @foreach ($pemeriksaan as $data)
+                                                                            @if ($data->kondisi == 'perlu service')
+                                                                                <tr>
+                                                                                    <td>{{ $no++ }}</td>
+                                                                                    <td>{{ $data->aset->kode_aset }}</td>
+                                                                                    <td>{{ $data->aset->nama_aset }}</td>
+                                                                                    <td>{{ $data->aset->kategori_aset->kategori }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->aset->lokasi_penyimpanan }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->kondisi }}</td>
+                                                                                    <td>{{ $data->status_aset }}</td>
+                                                                                    <td>{{ $data->aset->tgl_perolehan }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->masalah_teridentifikasi }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->tindakan_diperlukan }}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <div
+                                                                                            class="d-flex flex-column align-items-center">
+                                                                                            <div
+                                                                                                class="btn-group mb-2 card_edit_pemeriksaan">
+                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
+                                                                                                    type="button"
+                                                                                                    data-toggle="modal"
+                                                                                                    data-target="#UbahPemeriksaanModal"
+                                                                                                    style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
+                                                                                                    aria-expanded="false">
+                                                                                                    &nbsp;&nbsp;<i
+                                                                                                        class="fas fa-edit"></i>
+                                                                                                    Ubah
+                                                                                                </a>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="btn-group mb-2 card_hapus_barang">
+                                                                                                <div
+                                                                                                    class="btn-group btn-block">
+                                                                                                    <a onclick="$('#cover-spin').show(0)"
+                                                                                                        href="/{{ $role }}/aksi_hapus_barang"
+                                                                                                        class="btn btn-outline-secondary btn-block"
+                                                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
+                                                                                                        <i
+                                                                                                            class="fas fa-trash"></i>
+                                                                                                        Hapus
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @else
+                                                                        <tr>
+                                                                            <td colspan="11" style="text-align:center">
+                                                                                Tidak ada data
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+
+
+
+                                                                    <tr>
+                                                                        <td colspan="11"
+                                                                            style="background-color: #CBF2D6">
+                                                                            <h6><b>4. Aset
+                                                                                    Dengan
+                                                                                    Kondisi
+                                                                                    Hilang
+                                                                                    ({{ $pemeriksaan->where('kondisi', 'hilang')->count() }})</b>
+                                                                            </h6>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    @if ($pemeriksaan->where('kondisi', 'hilang')->count() > 0)
+                                                                        <tr>
+                                                                            <td>{{ $no++ }}</td>
+                                                                            <td>{{ $data->aset->kode_aset }}</td>
+                                                                            <td>{{ $data->aset->nama_aset }}</td>
+                                                                            <td>{{ $data->aset->kategori_aset->kategori }}
+                                                                            </td>
+                                                                            <td>{{ $data->aset->lokasi_penyimpanan }}</td>
+                                                                            <td>{{ $data->kondisi }}</td>
+                                                                            <td>{{ $data->status_aset }}</td>
+                                                                            <td>{{ $data->aset->tgl_perolehan }}</td>
+                                                                            <td>{{ $data->masalah_teridentifikasi }}</td>
+                                                                            <td>{{ $data->tindakan_diperlukan }}</td>
+                                                                            <td>
+                                                                                <div
+                                                                                    class="d-flex flex-column align-items-center">
+                                                                                    <div
+                                                                                        class="btn-group mb-2 card_edit_pemeriksaan">
+                                                                                        <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
+                                                                                            type="button"
+                                                                                            data-toggle="modal"
+                                                                                            data-target="#UbahPemeriksaanModal"
+                                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
+                                                                                            aria-expanded="false">
+                                                                                            &nbsp;&nbsp;<i
+                                                                                                class="fas fa-edit"></i>
+                                                                                            Ubah
+                                                                                        </a>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="btn-group mb-2 card_hapus_barang">
+                                                                                        <div class="btn-group btn-block">
+                                                                                            <a onclick="$('#cover-spin').show(0)"
+                                                                                                href="/{{ $role }}/aksi_hapus_barang"
+                                                                                                class="btn btn-outline-secondary btn-block"
+                                                                                                style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
+                                                                                                <i
+                                                                                                    class="fas fa-trash"></i>
+                                                                                                Hapus
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @else
+                                                                        <tr>
+                                                                            <td colspan="11" style="text-align:center">
+                                                                                Tidak ada data
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                </tbody>
+
+                                                            </table>
+                                                        </div>
+                                                    </div>
                                                 </div>
+
+                                                {{-- tab status spv & kc --}}
                                                 <div class="tab-pane fade" id="status-spv-kc" role="tabpanel"
                                                     aria-labelledby="status-spv-kc-tab">
                                                     <div class="col-12 mt-3 mb-3">
@@ -480,10 +836,10 @@
                                                                 <tr>
                                                                     <td>
                                                                         @if ($detailPemeriksaan->pemeriksaanAset->tgl_mengetahui_spv)
-                                                                        <h6>{{ $detailPemeriksaan->pemeriksaanAset->tgl_mengetahui_spv }}</h6>
+                                                                            <h6>{{ $detailPemeriksaan->pemeriksaanAset->tgl_mengetahui_spv }}
+                                                                            </h6>
                                                                         @else
-                                                                        <h6>-</h6>
-                                                                            
+                                                                            <h6>-</h6>
                                                                         @endif
                                                                     </td>
                                                                     <td></td>
@@ -498,7 +854,9 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        <h6 class="text-success">{{ $detailPemeriksaan->pemeriksaanAset->status_spv }}</h6>
+                                                                        <h6 class="text-success">
+                                                                            {{ $detailPemeriksaan->pemeriksaanAset->status_spv }}
+                                                                        </h6>
                                                                     </td>
                                                                     <td></td>
                                                                 </tr>
@@ -512,7 +870,9 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        <h6 class="text-success">{{ $detailPemeriksaan->pemeriksaanAset->catatan_spv }}</h6>
+                                                                        <h6 class="text-success">
+                                                                            {{ $detailPemeriksaan->pemeriksaanAset->catatan_spv }}
+                                                                        </h6>
                                                                     </td>
                                                                     <td></td>
                                                                 </tr>
@@ -530,9 +890,9 @@
                                                                     </th>
                                                                     <th style="width: 25%">
                                                                         <div class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                            <a class="btn btn-secondary btn-block intro-respon-spv respon-spv"
+                                                                            <a class="btn btn-secondary btn-block intro-respon-kc respon-kc"
                                                                                 type="button" data-toggle="modal"
-                                                                                data-target="#responkModal"
+                                                                                data-target="#responkcModal"
                                                                                 style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
                                                                                 aria-expanded="false">
                                                                                 &nbsp;&nbsp;<i class="fas fa-edit"></i>
@@ -544,8 +904,8 @@
                                                                 <tr>
                                                                     <td>
                                                                         <h5 class="text-success"><b>
-                                                                            {{ $detailPemeriksaan->pemeriksaanAset->kc->pengguna->nama }}
-                                                                        </b>
+                                                                                {{ $detailPemeriksaan->pemeriksaanAset->kc->pengguna->nama }}
+                                                                            </b>
                                                                         </h5>
                                                                     </td>
                                                                     <td></td>
@@ -577,13 +937,11 @@
                                                                 <tr>
                                                                     <td>
                                                                         @if ($detailPemeriksaan->pemeriksaanAset->tanggal_mengetahui_kc)
-                                                                        <h6>
-                                                                            {{ $detailPemeriksaan->pemeriksaanAset->tanggal_mengetahui_kc }}
-                                                                        </h6>
-
+                                                                            <h6>
+                                                                                {{ $detailPemeriksaan->pemeriksaanAset->tanggal_mengetahui_kc }}
+                                                                            </h6>
                                                                         @else
-                                                                        <h6>-</h6>
-                                                                            
+                                                                            <h6>-</h6>
                                                                         @endif
 
                                                                     </td>
@@ -601,7 +959,7 @@
                                                                     <td>
                                                                         @if ($detailPemeriksaan->pemeriksaanAset->status_kc == 'mengetahui')
                                                                             <h6 class="text-success">Mengetahui</h6>
-                                                                        @else    
+                                                                        @else
                                                                             <h6 class="text-warning">Belum</h6>
                                                                         @endif
                                                                     </td>
@@ -621,8 +979,7 @@
                                                                             <h6 class="text-success">
                                                                                 {{ $detailPemeriksaan->pemeriksaanAset->catatan_kc }}
                                                                             </h6>
-
-                                                                            @else
+                                                                        @else
                                                                             <h6>-</h6>
                                                                         @endif
                                                                     </td>
@@ -631,262 +988,228 @@
                                                             </table>
                                                         </div>
                                                     </div>
+                                                    <div class="row card-ontrol-barang">
+                                                        <div class="col-12">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center mb-3">
+                                                                <h6><b>Hasil Pemeriksaan
+                                                                        Berdasarkan Kondisi</b>
+                                                                </h6>
+
+                                                                <a href="/{{ $role }}/print-data"
+                                                                    style="background-color: rgb(0, 177, 0); color:white; border-radius:10px; width:150px;"
+                                                                    class="btn btn-success">
+                                                                    <i class="fas fa-file-alt"></i>Export
+                                                                </a>
+                                                            </div>
+                                                            <table id="example3" class="table table-bordered"
+                                                                style="width:100%;">
+                                                                <thead class="table-secondary" style="text-align: center">
+                                                                    <tr>
+                                                                        <th>No.</th>
+                                                                        <th>Kode Aset</th>
+                                                                        <th>Nama Aset</th>
+                                                                        <th>Kategori</th>
+                                                                        <th>Lokasi</th>
+                                                                        <th>Kondisi</th>
+                                                                        <th>Status</th>
+                                                                        <th>Tgl Pembelian</th>
+                                                                        <th>Masalah
+                                                                            Teridentifikasi</th>
+                                                                        <th>Tindakan Yang
+                                                                            Diperlukan</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td colspan="11"
+                                                                            style="background-color: #CBF2D6">
+                                                                            <h6><b>1. Aset
+                                                                                    Dengan
+                                                                                    Kondisi Baik
+                                                                                    ({{ $pemeriksaan->where('kondisi', 'baik')->count() }})</b>
+                                                                            </h6>
+                                                                        </td>
+                                                                    </tr>
+
+
+                                                                    @if ($pemeriksaan->where('kondisi', 'baik')->count() > 0)
+                                                                        @php
+                                                                            $no = 1;
+                                                                        @endphp
+                                                                        @foreach ($pemeriksaan as $data)
+                                                                            @if ($data->kondisi == 'baik')
+                                                                                <tr>
+                                                                                    <td>{{ $no++ }}</td>
+                                                                                    <td>{{ $data->aset->kode_aset }}</td>
+                                                                                    <td>{{ $data->aset->nama_aset }}</td>
+                                                                                    <td>{{ $data->aset->kategori_aset->kategori }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->aset->lokasi_penyimpanan }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->kondisi }}</td>
+                                                                                    <td>{{ $data->status_aset }}</td>
+                                                                                    <td>{{ $data->aset->tgl_perolehan }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->masalah_teridentifikasi }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->tindakan_diperlukan }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @else
+                                                                        <tr>
+                                                                            <td colspan="11" style="text-align:center">
+                                                                                Tidak ada data
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+
+
+
+                                                                    <tr>
+                                                                        <td colspan="11"
+                                                                            style="background-color: #CBF2D6">
+                                                                            <h6><b>2. Aset
+                                                                                    Dengan
+                                                                                    Kondisi
+                                                                                    Tidak
+                                                                                    Memadai /
+                                                                                    Rusak
+                                                                                    ({{ $pemeriksaan->where('kondisi', 'rusak')->count() }})</b>
+                                                                            </h6>
+                                                                        </td>
+                                                                    </tr>
+
+
+                                                                    @if ($pemeriksaan->where('kondisi', 'rusak')->count() > 0)
+                                                                        @php
+                                                                            $no = 1;
+                                                                        @endphp
+
+                                                                        @foreach ($pemeriksaan as $data)
+                                                                            @if ($data->kondisi == 'rusak')
+                                                                                <tr>
+                                                                                    <td>{{ $no++ }}</td>
+                                                                                    <td>{{ $data->aset->kode_aset }}</td>
+                                                                                    <td>{{ $data->aset->nama_aset }}</td>
+                                                                                    <td>{{ $data->aset->kategori_aset->kategori }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->aset->lokasi_penyimpanan }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->kondisi }}</td>
+                                                                                    <td>{{ $data->status_aset }}</td>
+                                                                                    <td>{{ $data->aset->tgl_perolehan }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->masalah_teridentifikasi }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->tindakan_diperlukan }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @else
+                                                                        <tr>
+                                                                            <td colspan="11" style="text-align:center">
+                                                                                Tidak ada data
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+
+
+
+
+
+                                                                    <tr>
+                                                                        <td colspan="11"
+                                                                            style="background-color: #CBF2D6">
+                                                                            <h6><b>3. Aset
+                                                                                    Dengan
+                                                                                    Kondisi
+                                                                                    Perlu
+                                                                                    Perbaikan
+                                                                                    ({{ $pemeriksaan->where('kondisi', 'perlu service')->count() }})</b>
+                                                                            </h6>
+                                                                        </td>
+                                                                    </tr>
+
+
+                                                                    @if ($pemeriksaan->where('kondisi', 'perlu service')->count() > 0)
+                                                                        @php
+                                                                            $no = 1;
+                                                                        @endphp
+                                                                        @foreach ($pemeriksaan as $data)
+                                                                            @if ($data->kondisi == 'perlu service')
+                                                                                <tr>
+                                                                                    <td>{{ $no++ }}</td>
+                                                                                    <td>{{ $data->aset->kode_aset }}</td>
+                                                                                    <td>{{ $data->aset->nama_aset }}</td>
+                                                                                    <td>{{ $data->aset->kategori_aset->kategori }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->aset->lokasi_penyimpanan }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->kondisi }}</td>
+                                                                                    <td>{{ $data->status_aset }}</td>
+                                                                                    <td>{{ $data->aset->tgl_perolehan }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->masalah_teridentifikasi }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->tindakan_diperlukan }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @else
+                                                                        <tr>
+                                                                            <td colspan="11" style="text-align:center">
+                                                                                Tidak ada data
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+
+
+
+                                                                    <tr>
+                                                                        <td colspan="11"
+                                                                            style="background-color: #CBF2D6">
+                                                                            <h6><b>4. Aset
+                                                                                    Dengan
+                                                                                    Kondisi
+                                                                                    Hilang
+                                                                                    ({{ $pemeriksaan->where('kondisi', 'hilang')->count() }})</b>
+                                                                            </h6>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    @if ($pemeriksaan->where('kondisi', 'hilang')->count() > 0)
+                                                                        <tr>
+                                                                            <td>{{ $no++ }}</td>
+                                                                            <td>{{ $data->aset->kode_aset }}</td>
+                                                                            <td>{{ $data->aset->nama_aset }}</td>
+                                                                            <td>{{ $data->aset->kategori_aset->kategori }}
+                                                                            </td>
+                                                                            <td>{{ $data->aset->lokasi_penyimpanan }}</td>
+                                                                            <td>{{ $data->kondisi }}</td>
+                                                                            <td>{{ $data->status_aset }}</td>
+                                                                            <td>{{ $data->aset->tgl_perolehan }}</td>
+                                                                            <td>{{ $data->masalah_teridentifikasi }}</td>
+                                                                            <td>{{ $data->tindakan_diperlukan }}</td>
+                                                                        </tr>
+                                                                    @else
+                                                                        <tr>
+                                                                            <td colspan="11" style="text-align:center">
+                                                                                Tidak ada data
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                </tbody>
+
+                                                            </table>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card ijo-kiri">
-                        <div class="card-body">
-                            <div class="row card-detail-barang">
-                                <div class="col-12">
-                                    <div class="row card-ontrol-barang">
-                                        <div class="col-12">
-                                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                                <h6><b>Hasil Pemeriksaan
-                                                        Berdasarkan Kondisi</b>
-                                                </h6>
-                                                <button type="button" class="btn btn-success" data-toggle="modal"
-                                                    data-target="#tambahModal"
-                                                    style="background-color: rgb(0, 177, 0); color:white; border-radius:10px;">
-                                                    <i class="fas fa-plus-circle"></i>
-                                                    <span>Tambah</span>
-                                                </button>
-                                            </div>
-                                            <table id="example3" class="table table-bordered" style="width:100%;">
-                                                <thead class="table-secondary" style="text-align: center">
-                                                    <tr>
-                                                        <th>No.</th>
-                                                        <th>Kode Aset</th>
-                                                        <th>Nama Aset</th>
-                                                        <th>Kategori</th>
-                                                        <th>Lokasi</th>
-                                                        <th>Kondisi</th>
-                                                        <th>Status</th>
-                                                        <th>Tgl Pembelian</th>
-                                                        <th>Masalah
-                                                            Teridentifikasi</th>
-                                                        <th>Tindakan Yang
-                                                            Diperlukan</th>
-                                                        <th style="width: 150px;">
-                                                            Aksi</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td colspan="11" style="background-color: #CBF2D6">
-                                                            <h6><b>1. Aset
-                                                                    Dengan
-                                                                    Kondisi Baik
-                                                                    (jumlah)</b>
-                                                            </h6>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>ini No.</td>
-                                                        <td>ini Kode Aset</td>
-                                                        <td>ini Nama Aset</td>
-                                                        <td>ini Kategori</td>
-                                                        <td>ini Lokasi</td>
-                                                        <td>ini Kondisi</td>
-                                                        <td>ini Status</td>
-                                                        <td>ini Tgl Pembelian
-                                                        </td>
-                                                        <td>ini Masalah
-                                                            Teridentifikasi</td>
-                                                        <td>ini Tindakan Yang
-                                                            Diperlukan</td>
-                                                        <td>
-                                                            <div class="d-flex flex-column align-items-center">
-                                                                <div class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                    <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
-                                                                        type="button" data-toggle="modal"
-                                                                        data-target="#UbahPemeriksaanModal"
-                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
-                                                                        aria-expanded="false">
-                                                                        &nbsp;&nbsp;<i class="fas fa-edit"></i>
-                                                                        Ubah
-                                                                    </a>
-                                                                </div>
-                                                                <div class="btn-group mb-2 card_hapus_barang">
-                                                                    <div class="btn-group btn-block">
-                                                                        <a onclick="$('#cover-spin').show(0)"
-                                                                            href="/{{ $role }}/aksi_hapus_barang"
-                                                                            class="btn btn-outline-secondary btn-block"
-                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
-                                                                            <i class="fas fa-trash"></i>
-                                                                            Hapus
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="11" style="background-color: #CBF2D6">
-                                                            <h6><b>2. Aset
-                                                                    Dengan
-                                                                    Kondisi
-                                                                    Tidak
-                                                                    Memadai /
-                                                                    Rusak
-                                                                    (jumlah)</b>
-                                                            </h6>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>ini No.</td>
-                                                        <td>ini Kode Aset</td>
-                                                        <td>ini Nama Aset</td>
-                                                        <td>ini Kategori</td>
-                                                        <td>ini Lokasi</td>
-                                                        <td>ini Kondisi</td>
-                                                        <td>ini Status</td>
-                                                        <td>ini Tgl Pembelian
-                                                        </td>
-                                                        <td>ini Masalah
-                                                            Teridentifikasi</td>
-                                                        <td>ini Tindakan Yang
-                                                            Diperlukan</td>
-                                                        <td>
-                                                            <div class="d-flex flex-column align-items-center">
-                                                                <div class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                    <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
-                                                                        type="button" data-toggle="modal"
-                                                                        data-target="#UbahPemeriksaanModal"
-                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
-                                                                        aria-expanded="false">
-                                                                        &nbsp;&nbsp;<i class="fas fa-edit"></i>
-                                                                        Ubah
-                                                                    </a>
-                                                                </div>
-                                                                <div class="btn-group mb-2 card_hapus_barang">
-                                                                    <div class="btn-group btn-block">
-                                                                        <a onclick="$('#cover-spin').show(0)"
-                                                                            href="/{{ $role }}/aksi_hapus_barang"
-                                                                            class="btn btn-outline-secondary btn-block"
-                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
-                                                                            <i class="fas fa-trash"></i>
-                                                                            Hapus
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="11" style="background-color: #CBF2D6">
-                                                            <h6><b>3. Aset
-                                                                    Dengan
-                                                                    Kondisi
-                                                                    Perlu
-                                                                    Perbaikan
-                                                                    (jumlah)</b>
-                                                            </h6>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>ini No.</td>
-                                                        <td>ini Kode Aset</td>
-                                                        <td>ini Nama Aset</td>
-                                                        <td>ini Kategori</td>
-                                                        <td>ini Lokasi</td>
-                                                        <td>ini Kondisi</td>
-                                                        <td>ini Status</td>
-                                                        <td>ini Tgl Pembelian
-                                                        </td>
-                                                        <td>ini Masalah
-                                                            Teridentifikasi</td>
-                                                        <td>ini Tindakan Yang
-                                                            Diperlukan</td>
-                                                        <td>
-                                                            <div class="d-flex flex-column align-items-center">
-                                                                <div class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                    <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
-                                                                        type="button" data-toggle="modal"
-                                                                        data-target="#UbahPemeriksaanModal"
-                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
-                                                                        aria-expanded="false">
-                                                                        &nbsp;&nbsp;<i class="fas fa-edit"></i>
-                                                                        Ubah
-                                                                    </a>
-                                                                </div>
-                                                                <div class="btn-group mb-2 card_hapus_barang">
-                                                                    <div class="btn-group btn-block">
-                                                                        <a onclick="$('#cover-spin').show(0)"
-                                                                            href="/{{ $role }}/aksi_hapus_barang"
-                                                                            class="btn btn-outline-secondary btn-block"
-                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
-                                                                            <i class="fas fa-trash"></i>
-                                                                            Hapus
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="11" style="background-color: #CBF2D6">
-                                                            <h6><b>4. Aset
-                                                                    Dengan
-                                                                    Kondisi
-                                                                    Hilang
-                                                                    (jumlah)</b>
-                                                            </h6>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>ini No.</td>
-                                                        <td>ini Kode Aset</td>
-                                                        <td>ini Nama Aset</td>
-                                                        <td>ini Kategori</td>
-                                                        <td>ini Lokasi</td>
-                                                        <td>ini Kondisi</td>
-                                                        <td>ini Status</td>
-                                                        <td>ini Tgl Pembelian
-                                                        </td>
-                                                        <td>ini Masalah
-                                                            Teridentifikasi</td>
-                                                        <td>ini Tindakan Yang
-                                                            Diperlukan</td>
-                                                        <td>
-                                                            <div class="d-flex flex-column align-items-center">
-                                                                <div class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                    <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
-                                                                        type="button" data-toggle="modal"
-                                                                        data-target="#UbahPemeriksaanModal"
-                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
-                                                                        aria-expanded="false">
-                                                                        &nbsp;&nbsp;<i class="fas fa-edit"></i>
-                                                                        Ubah
-                                                                    </a>
-                                                                </div>
-                                                                <div class="btn-group mb-2 card_hapus_barang">
-                                                                    <div class="btn-group btn-block">
-                                                                        <a onclick="$('#cover-spin').show(0)"
-                                                                            href="/{{ $role }}/aksi_hapus_barang"
-                                                                            class="btn btn-outline-secondary btn-block"
-                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
-                                                                            <i class="fas fa-trash"></i>
-                                                                            Hapus
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -917,7 +1240,7 @@
 
 </section>
 
-{{-- modal tambah data pemeriksaan barang --}}
+{{-- modal ubah data pemeriksaan barang --}}
 <div class="modal fade" id="UbahPemeriksaanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -936,9 +1259,23 @@
                             style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
                     </div>
                     <div class="form-group">
-                        <label for="kategori" style="font-weight: bold; font-size: 14px;">Kategori</label>
-                        <input type="text" class="form-control" id="kategori"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        <label for="kategori">Kategori :</label>
+                        <select class="form-control" id="kategori" name="kategori"
+                            onchange="toggleNewCategoryForm()">
+                            <option value="">Pilih Kategori</option>
+                            @foreach ($kategori as $kat)
+                                <option value="{{ $kat->id_kategori }}">
+                                    {{ $kat->kategori }}</option>
+                            @endforeach
+                            <option value="others">Lainnya</option>
+                        </select>
+                        <div class="mt-2" id="newCategoryForm" style="display: none;">
+                            <input type="text" id="newKategori" class="form-control"
+                                placeholder="Tambah kategori baru">
+                            <button type="button" id="" class="btn btn-success mt-2"
+                                onclick="addCategory()">Tambah
+                                Kategori</button>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="lokasi_aset" style="font-weight: bold; font-size: 14px;">Lokasi Aset</label>
@@ -947,7 +1284,94 @@
                     </div>
                     <div class="form-group">
                         <label for="tgl_pembelian" style="font-weight: bold; font-size: 14px;">Tgl Pembelian</label>
-                        <input type="text" class="form-control" id="tgl_pembelian"
+                        <input type="date" class="form-control" id="tgl_pembelian"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                    </div>
+                    <div class="form-group">
+                        <label style="font-weight: bold; font-size: 14px;">Status</label><br>
+                        <div style="display: flex; align-items: center;">
+                            <input type="radio" id="aktif" name="status" value="aktif" checked
+                                style="margin-right: 5px;">
+                            <label for="aktif" style="margin-right: 20px;">Aktif</label>
+                            <input type="radio" id="nonaktif" name="status" value="nonaktif"
+                                style="margin-right: 5px;">
+                            <label for="nonaktif">Non Aktif</label>
+                        </div>
+                    </div>
+
+                    <label for="kategori">Kondisi</label>
+                    <select class="form-control" id="kategori" name="kategori" onchange="toggleNewCategoryForm()">
+                        <option value="">Pilih Kondisi</option>
+                        <option value="Baik">Baik</option>
+                        <option value="Tidak Memadai (Rusak)">Tidak Memadai (Rusak)</option>
+                        <option value="Perlu Perbaikan">Perlu Perbaikan</option>
+                        <option value="Hilang">Hilang</option>
+                    </select>
+                    <div class="form-group">
+                        <label for="masalah" style="font-weight: bold; font-size: 14px;">Masalah
+                            Teridentifikasi</label>
+                        <textarea class="form-control" id="masalah" rows="3"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="tindakan" style="font-weight: bold; font-size: 14px;">Tindakan Yang
+                            Diperlukan</label>
+                        <textarea class="form-control" id="tindakan" rows="3"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success"
+                        style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- modal tambah data pemeriksaan barang --}}
+<div class="modal fade" id="TambahPemeriksaanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Tambah Data Pemeriksaan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 1rem;">
+                <form>
+                    <div class="form-group">
+                        <label for="nama_aset" style="font-weight: bold; font-size: 14px;">Nama Aset</label>
+                        <input type="text" class="form-control" id="nama_aset"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="kategori">Kategori :</label>
+                        <select class="form-control" id="kategori" name="kategori"
+                            onchange="toggleNewCategoryForm()">
+                            <option value="">Pilih Kategori</option>
+                            @foreach ($kategori as $kat)
+                                <option value="{{ $kat->id_kategori }}">
+                                    {{ $kat->kategori }}</option>
+                            @endforeach
+                            <option value="others">Lainnya</option>
+                        </select>
+                        <div class="mt-2" id="newCategoryForm" style="display: none;">
+                            <input type="text" id="newKategori" class="form-control"
+                                placeholder="Tambah kategori baru">
+                            <button type="button" id="" class="btn btn-success mt-2"
+                                onclick="addCategory()">Tambah
+                                Kategori</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lokasi_aset" style="font-weight: bold; font-size: 14px;">Lokasi Aset</label>
+                        <input type="text" class="form-control" id="lokasi_aset"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="tgl_pembelian" style="font-weight: bold; font-size: 14px;">Tgl Pembelian</label>
+                        <input type="date" class="form-control" id="tgl_pembelian"
                             style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
                     </div>
                     <div class="form-group">
@@ -1024,8 +1448,8 @@
                     </div>
                     <div class="alert alert-info"
                         style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; margin-top: 15px;">
-                        <strong>INFORMASI</strong><br>Setelah berhasil menambahkan pemeriksaan, anda wajib melengkapi
-                        data pemeriksaan aset.
+                        <strong>INFORMASI</strong><br>Dengan klik tombol simpan, SPV mengetahui hasil pemeriksaan aset
+                        dan meneruskannya ke Kepala Cabang.
                     </div>
                 </form>
             </div>
@@ -1076,8 +1500,8 @@
                     </div>
                     <div class="alert alert-info"
                         style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; margin-top: 15px;">
-                        <strong>INFORMASI</strong><br>Setelah berhasil menambahkan pemeriksaan, anda wajib melengkapi
-                        data pemeriksaan aset.
+                        <strong>INFORMASI</strong><br>Dengan klik tombol simpan, KC mengetahui hasil pemeriksaan aset.
+                        Hasil pemeriksaan aset dapat digunakan sebagai lampiran pengajuan internal.
                     </div>
                 </form>
             </div>
@@ -1106,6 +1530,65 @@
         });
     });
 </script>
+
+{{-- script untuk menyimpan kategori --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Pasang event listener pada tombol "Tambah Kategori"
+        document.getElementById('addCategoryButton').addEventListener('click', function() {
+            addCategory();
+        });
+
+        // Menampilkan atau menyembunyikan form kategori baru berdasarkan pilihan
+        toggleNewCategoryForm();
+    });
+
+    function toggleNewCategoryForm() {
+        var select = document.getElementById('kategori');
+        var newCategoryForm = document.getElementById('newCategoryForm');
+        if (select.value === 'others') {
+            newCategoryForm.style.display = 'block';
+        } else {
+            newCategoryForm.style.display = 'none';
+        }
+    }
+
+    function addCategory() {
+        var newCategory = document.getElementById('newKategori').value.trim();
+        if (newCategory) {
+            // Kirim kategori baru ke server
+            $.ajax({
+                url: '{{ route('pc.kategori.store') }}',
+                type: 'POST',
+                data: {
+                    nama: newCategory,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(data) {
+                    if (data.id) {
+                        var select = document.getElementById('kategori');
+                        var option = document.createElement('option');
+                        option.value = data.id; // Gunakan ID dari respons (id_kategori)
+                        option.text = data.nama; // Gunakan nama dari respons (kategori)
+                        select.add(option);
+                        select.value = data.id; // Setel kategori baru sebagai yang dipilih
+                        document.getElementById('newKategori').value = ''; // Kosongkan input
+                        document.getElementById('newCategoryForm').style.display =
+                            'none'; // Sembunyikan form setelah menambah
+                    } else {
+                        alert('Gagal menambahkan kategori.');
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Gagal menyimpan kategori baru.');
+                }
+            });
+        } else {
+            alert('Silakan masukkan nama kategori baru.');
+        }
+    }
+</script>
+
 
 {{-- script untuk dropdown --}}
 <script>

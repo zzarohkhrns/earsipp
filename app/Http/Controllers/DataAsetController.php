@@ -9,11 +9,13 @@ use App\Models\Barang;
 use App\Models\DetailPemeriksaanAset;
 use App\Models\Kategori;
 use App\Models\KontrolBarang;
+use App\Models\PcPengurus;
 use App\Models\PemeriksaanAset;
 use App\Models\Upzis;
 use App\Models\Ranting;
 use App\Models\Pengguna;
 use App\Models\PengurusJabatan;
+use Egulias\EmailValidator\Result\Reason\DetailedReason;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -33,7 +35,7 @@ class DataAsetController extends Controller
             $query->whereNotNull('id_detail_pemeriksaan_aset');
         })->get();
 
-        
+
         //menarik data pemeriksaan dari table detail pemeriksaan
         $pemeriksaan2 = DetailPemeriksaanAset::with([
             'aset.kategori_aset',
@@ -53,7 +55,40 @@ class DataAsetController extends Controller
         //$kondisi = DB::table('kondisi')->get();
         $aset = Aset::with(['kategori_aset', 'latestDetailPemeriksaanAset.pemeriksaanAset', 'detailPemeriksaanAset.pemeriksaanAset'])->get();
         $role = 'pc';
-        return view('data_aset.data_aset', compact('role', 'aset', 'kategori', 'pemeriksaan', 'pemeriksaanGrouped'));
+
+
+        // Mendapatkan divisi user yang sedang login dari database gocap
+        $divisiUser = DB::connection('gocap')
+            ->table('pc_pengurus')
+            ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
+            ->where('pc_pengurus.id_pc_pengurus', Auth::user()->gocap_id_pc_pengurus)
+            ->select('pengurus_jabatan.divisi')
+            ->first();
+
+        if ($divisiUser) {
+            // Mengambil data id_pc_pengurus dan nama dari user table di database siftnu
+            $supervisor = DB::connection('gocap')
+                ->table('pc_pengurus')
+                ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
+                ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus') // Join ke table user di database siftnu
+                ->where('pengurus_jabatan.jabatan', 'Supervisor Cabang')
+                ->where('pengurus_jabatan.divisi', $divisiUser->divisi)
+                ->select('pc_pengurus.id_pc_pengurus as id_supervisor', 'siftnu.pengguna.nama as nama_supervisor') // Memilih kolom id dan nama dari table user
+                ->first();
+        } else {
+            $supervisor = null;
+        }
+
+        $kc = DB::connection('gocap')
+              ->table('pc_pengurus')
+              ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
+              ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus')
+              ->where('pengurus_jabatan.jabatan', 'Kepala Cabang')
+              ->select('pc_pengurus.id_pc_pengurus as id_kc', 'siftnu.pengguna.nama as nama_kc')
+              ->first();
+
+
+        return view('data_aset.data_aset', compact('role', 'aset', 'kategori', 'pemeriksaan', 'pemeriksaanGrouped', 'supervisor', 'kc'));
     }
 
     public function detail($id)
@@ -149,6 +184,130 @@ class DataAsetController extends Controller
         }
     }
 
+    public function update_data(Request $request, $id)
+    {
+        $request->validate([
+            'aset_id' => 'required',
+            'kode_aset' => 'required',
+            'tgl_perolehan' => 'required|date',
+            'nama_aset' => 'required|string|max:255',
+            'kategori' => 'required',
+            'satuan' => 'required|string|max:255',
+            'asal_perolehan' => 'required|string|max:255',
+            'lokasi_penyimpanan' => 'required|string|max:255',
+            'spesifikasi' => 'nullable|string|max:255',
+        ]);
+
+        // Check if the kategori exists
+        $kategori = DB::table('kategori')
+            ->where('id_kategori', $request->kategori)
+            ->first();
+
+        if (!$kategori) {
+            return redirect()->back()->with('error', 'Gagal menemukan kategori.');
+        } else {
+            $kategori_id = $kategori->id_kategori;
+        }
+
+        try {
+            // Find the aset by aset_id
+            $aset = Aset::findOrFail($request->aset_id);
+
+            // Update the aset data
+            $aset->update([
+                'kode_aset' => $request->kode_aset,
+                'tgl_perolehan' => $request->tgl_perolehan,
+                'nama_aset' => $request->nama_aset,
+                'id_kategori' => $kategori_id,
+                'satuan' => $request->satuan,
+                'asal_perolehan' => $request->asal_perolehan,
+                'lokasi_penyimpanan' => $request->lokasi_penyimpanan,
+                'spesifikasi' => $request->spesifikasi,
+            ]);
+
+            return redirect()->back()->with('success', 'Data berhasil diupdate.');
+        } catch (\Exception $e) {
+            Log::error('Error saat mengupdate data barang: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Data gagal diupdate.');
+        }
+    }
+
+    public function delete_data($id)
+    {
+        // Temukan data aset berdasarkan ID
+        $aset = Aset::find($id);
+
+        if ($aset) {
+            // Hapus detail pemeriksaan aset yang berelasi
+            $detailPemeriksaan = DetailPemeriksaanAset::where('aset_id', $id)->get();
+
+            foreach ($detailPemeriksaan as $detail) {
+                $pemeriksaanAset_id = $detail->id_pemeriksaan_aset;
+                $pemeriksaanAset = PemeriksaanAset::find($pemeriksaanAset_id);
+
+                if ($pemeriksaanAset) {
+                    $pemeriksaanAset->delete();
+                }
+
+                $detail->delete();
+            }
+
+            // // Hapus keluar masuk aset yang berelasi
+            // $keluarMasukAset = KeluarMasukAset::where('aset_id', $id)->get();
+
+            // foreach ($keluarMasukAset as $keluarMasuk) {
+            //     $keluarMasuk->delete();
+            // }
+
+            // Hapus data aset
+            $aset->delete();
+
+            // Redirect dengan pesan sukses
+            return redirect()->back()->back()->with('success', 'Berhasil menghapus data.');
+        } else {
+            // Redirect dengan pesan error jika data tidak ditemukan
+            return redirect()->route('data_aset')->with('error', 'Data aset tidak ditemukan.');
+        }
+    }
+
+
+    // public function delete_data($id)
+    // {
+    //     // Temukan data aset berdasarkan ID
+    //     $aset = Aset::find($id);
+
+    //     if ($aset) {
+
+    //         $detailPemeriksaan = DetailPemeriksaanAset::where('aset_id', $id)->firstOrFail();
+
+    //         if ($detailPemeriksaan) {
+    //             $pemeriksaanAset_id = $detailPemeriksaan->id_pemeriksaan_aset;
+    //             $pemeriksaanAset = PemeriksaanAset::find($pemeriksaanAset_id);
+    //             // Hapus detail pemeriksaan
+    //             $detailPemeriksaan->delete();
+
+    //             //Hapus pemeriksaan
+    //             $pemeriksaanAset->delete();
+
+    //             // Hapus data aset
+    //             $aset->delete();
+    //         } else {
+    //             // Hapus data aset
+    //             $aset->delete();
+    //         }
+
+
+    //         // Redirect dengan pesan sukses
+    //         //return redirect()->route('data_aset')->with('success', 'Data aset berhasil dihapus.');
+    //         //return redirect()->back()->with('success', 'Berhasil menghapus data.');
+    //         return view('data_aset.data_aset')->with('success', 'Data aset berhasil dihapus.');
+    //     } else {
+    //         // Redirect dengan pesan error jika data tidak ditemukan
+    //         return redirect()->route('data_aset')->with('error', 'Data aset tidak ditemukan.');
+    //     }
+    // }
+
+
     public function store_kontrol(Request $request)
     {
         $request->validate([
@@ -176,7 +335,7 @@ class DataAsetController extends Controller
         }
     }
 
-    public function detail_pemeriksaan($id)
+    public function detail_pemeriksaan($id, $tgl)
     {
         $role = 'pc';
 
@@ -185,9 +344,13 @@ class DataAsetController extends Controller
             'pemeriksaanAset.pcPengurus.pengguna',
             'pemeriksaanAset.pcPengurus.pengurusJabatan',
             'pemeriksaanAset.supervisor.pengguna',
+            'pemeriksaanAset.supervisor.pengurusJabatan',
+            'pemeriksaanAset.kc.pengguna',
+            'pemeriksaanAset.kc.pengurusJabatan',
             'pemeriksaanAset.kc.pengguna'
-        ])->whereHas('pemeriksaanAset', function ($query) use ($id) {
-            $query->where('id_pemeriksaan_aset', $id);
+        ])->whereHas('pemeriksaanAset', function ($query) use ($id, $tgl) {
+            $query->where('id_pemeriksaan_aset', $id)
+                ->where('tanggal_pemeriksaan', $tgl);
         })->firstOrFail();
 
 
@@ -203,8 +366,9 @@ class DataAsetController extends Controller
             'pemeriksaanAset.kc.pengguna',
             'pemeriksaanAset.kc.pengurusJabatan',
             'pemeriksaanAset.kc.pengguna'
-        ])->whereHas('pemeriksaanAset', function ($query) use ($id) {
-            $query->where('id_pemeriksaan_aset', $id);
+        ])->whereHas('pemeriksaanAset', function ($query) use ($id, $tgl) {
+            $query->where('id_pemeriksaan_aset', $id)
+                ->where('tanggal_pemeriksaan', $tgl);
         })->get();
 
         // Ambil data pemeriksaan terbaru untuk setiap aset_id
@@ -215,7 +379,12 @@ class DataAsetController extends Controller
         // Hitung jumlah aset yang unik
         $jumlahAset = $latestDetailPemeriksaan->count();
 
-        return view('data_aset.detail_pemeriksaan', compact('role', 'detailPemeriksaan', 'jumlahAset'));
+
+        //kategori
+        $kategori = Kategori::all();
+
+
+        return view('data_aset.detail_pemeriksaan', compact('role', 'detailPemeriksaan', 'jumlahAset', 'pemeriksaan', 'kategori'));
     }
 
     public function filterAset(Request $request)
@@ -250,5 +419,26 @@ class DataAsetController extends Controller
 
         // Kembalikan data yang difilter ke view
         return view('data_aset.data_aset', ['data' => $data]);
+    }
+
+    public function store(Request $request)
+    {
+        // Validasi input
+        $validatedData = $request->validate([
+            'nama_aset' => 'required|string|max:255',
+            'kategori' => 'required|string|max:255',
+            'lokasi_aset' => 'required|string|max:255',
+            'tgl_pembelian' => 'required|date',
+            'status' => 'required|in:aktif,nonaktif',
+            'kondisi' => 'required|string|max:255',
+            'masalah' => 'nullable|string',
+            'tindakan' => 'nullable|string',
+        ]);
+
+        // Simpan data ke database
+        DetailPemeriksaanAset::create([]);
+
+        // Redirect atau berikan response sukses
+        return redirect()->back()->with('success', 'Data pemeriksaan berhasil ditambahkan.');
     }
 }

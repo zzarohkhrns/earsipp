@@ -599,7 +599,7 @@
                                                                         class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
                                                                         <div class="btn-group mb-2 mb-xl-0 btn-block">
                                                                             <a onclick="$('#cover-spin').show(0)"
-                                                                                href="/{{ $role }}/arsip/aset/detail_pemeriksaan/{{ $detail->pemeriksaanAset->id_pemeriksaan_aset }}"
+                                                                                href="/{{ $role }}/arsip/aset/detail_pemeriksaan/{{ $detail->pemeriksaanAset->id_pemeriksaan_aset }}/{{ $detail->pemeriksaanAset->tanggal_pemeriksaan }}"
                                                                                 class="btn btn-outline-secondary btn-block"
                                                                                 style="display: block;border-radius:10px;">
                                                                                 Detail
@@ -851,29 +851,36 @@
                         <div class="form-group">
                             <label for="tgl_pemeriksaan" style="font-weight: bold; font-size: 14px;">Tgl
                                 Pemeriksaan</label>
-                            <input type="text" class="form-control" id="tgl_pemeriksaan"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                                <input type="date" id="tgl-pembelian-end"
+                                name="tgl-pembelian-end"
+                                class="form-control custom-input">
                         </div>
                         <div class="form-group">
                             <label for="manajemen_eksekutif" style="font-weight: bold; font-size: 14px;">Manajemen
                                 Eksekutif</label>
                             <input type="text" class="form-control" id="manajemen_eksekutif"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" value="Nu-Care Lazisnu Cilacap" readonly>
                         </div>
                         <div class="form-group">
                             <label for="pemeriksa" style="font-weight: bold; font-size: 14px;">Pemeriksa</label>
-                            <input type="text" class="form-control" id="pemeriksa"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                            <input type="text" class="form-control" id="pemeriksa" name="nama"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" value="{{ Auth::user()->nama }}" readonly>
+                            <input type="text" class="form-control" id="pemeriksa" name="id_pemeriksa"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" value="{{ Auth::user()->gocap_id_pc_pengurus }}" hidden>
                         </div>
                         <div class="form-group">
                             <label for="supervisor" style="font-weight: bold; font-size: 14px;">Supervisor</label>
-                            <input type="text" class="form-control" id="supervisor"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                            <input type="text" class="form-control" id="supervisor" name="nama"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" value="{{ $supervisor->nama_supervisor }}" readonly>
+                            <input type="text" class="form-control" id="supervisor" name="id_supervisor"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" value="{{ $supervisor->id_supervisor }}" hidden>
                         </div>
                         <div class="form-group">
                             <label for="kepala_cabang" style="font-weight: bold; font-size: 14px;">Kepala Cabang</label>
                             <input type="text" class="form-control" id="kepala_cabang"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" value="{{ $kc->nama_kc }}" readonly>
+                            <input type="text" class="form-control" id="kepala_cabang"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" value="{{ $kc->id_kc }}" hidden>
                         </div>
                         <div class="alert alert-info"
                             style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; margin-top: 15px;">

@@ -80,13 +80,17 @@
                                             <th style="width: 100px;">
                                                 <div class="btn-group btn-block mb-2 mb-xl-0 card_hapus_barang">
                                                     <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                        <a onclick="$('#cover-spin').show(0)"
-                                                            href="/{{ $role }}/aksi_hapus_barang"
-                                                            class="btn btn-danger btn-block"
-                                                            style="display: block; border-radius:10px;">
-                                                            <i class="fas fa-trash"></i>
-                                                            Hapus
-                                                        </a>
+                                                        <form
+                                                            action="/{{ $role }}/aset/data/delete/{{ $aset->aset_id }}"
+                                                            method="POST"
+                                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-danger btn-block"
+                                                                style="display: block; border-radius:10px; width: 160px">
+                                                                <i class="fas fa-trash"></i>
+                                                                Hapus
+                                                            </button>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </th>
@@ -444,31 +448,37 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="myForm" method="POST" action="{{ route('pc.aset.store') }}">
+                    <form id="myForm" method="POST" action="/{{ $role }}/aset/data/update/{{ $aset->aset_id }}">
                         @csrf
                         <div class="form-group">
                             <label for="kode">Kode Aset :</label>
-                            <input type="text" class="form-control" id="kode_aset" name="kode_aset" readonly>
+                            <input type="text" value="{{ $aset->aset_id }}" class="form-control" id="aset_id"
+                                name="aset_id" readonly>
+                            <input type="text" value="{{ $aset->kode_aset }}" class="form-control" id="kode_aset"
+                                name="kode_aset" readonly>
                         </div>
                         <div class="form-group">
                             <label for="tgl_beli">Tgl Perolehan :</label>
-                            <input type="date" class="form-control" id="tgl_beli" name="tgl_perolehan">
+                            <input type="date" value="{{ $aset->tgl_perolehan }}" class="form-control"
+                                id="tgl_perolehan" name="tgl_perolehan">
                         </div>
                         <div class="form-group">
                             <label for="asal">Asal Perolehan :</label>
-                            <input type="text" class="form-control" id="asal" name="asal">
+                            <input type="text" class="form-control" value="{{ $aset->asal_perolehan }}"
+                                id="asal_perolehan" name="asal_perolehan">
                         </div>
                         <div class="form-group">
                             <label for="name">Nama :</label>
-                            <input type="text" class="form-control" id="name" name="nama_aset">
+                            <input type="text" class="form-control" value="{{ $aset->nama_aset }}" id="nama_aset"
+                                name="nama_aset">
                         </div>
                         <div class="form-group">
                             <label for="kategori">Kategori :</label>
                             <select class="form-control" id="kategori" name="kategori"
                                 onchange="toggleNewCategoryForm()">
-                                <option value="">Pilih Kategori</option>
                                 @foreach ($kategori as $kat)
-                                    <option value="{{ $kat->id_kategori }}">
+                                    <option value="{{ $kat->id_kategori }}"
+                                        @if ($aset->id_kategori == $kat->id_kategori) selected @endif>
                                         {{ $kat->kategori }}</option>
                                 @endforeach
                                 <option value="others">Lainnya</option>
@@ -483,22 +493,25 @@
                         </div>
                         <div class="form-grPoup">
                             <label for="satuan">Satuan :</label>
-                            <input type="text" class="form-control" id="satuan" name="satuan">
+                            <input type="text" class="form-control" value="{{ $aset->satuan }}" id="satuan"
+                                name="satuan">
                         </div>
                         <div class="form-group">
                             <label for="lokasi">Lokasi Penyimpanan :</label>
-                            <input type="text" class="form-control" id="lokasi" name="lokasi_penyimpanan">
+                            <input type="text" class="form-control" id="lokasi"
+                                value="{{ $aset->lokasi_penyimpanan }}" name="lokasi_penyimpanan">
                         </div>
                         <div class="form-group">
                             <label for="spesifikasi">Spesifikasi/Deskripsi :</label>
-                            <input type="text" class="form-control" id="spesifikasi" name="spesifikasi">
+                            <input type="text" class="form-control" value="{{ $aset->spesifikasi }}"
+                                id="spesifikasi" name="spesifikasi">
                         </div>
                         <button type="submit" class="btn btn-success">Simpan</button>
                     </form>
                 </div>
             </div>
         </div>
-    </div>  
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

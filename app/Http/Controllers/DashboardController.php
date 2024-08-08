@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ArsipDigital;
+use App\Models\Aset;
 use App\Models\Berita;
 use App\Models\Disposisi;
 use App\Models\Kegiatan;
@@ -54,6 +55,7 @@ class DashboardController extends Controller
             $jumlah_surat_masuk = ArsipDigital::where('jenis_arsip', 'Surat Masuk')->count();
             $jumlah_surat_keluar = ArsipDigital::where('jenis_arsip', 'Surat Keluar')->count();
             $jumlah_dokumen = ArsipDigital::where('jenis_arsip', 'Dokumen')->count();
+            $jumlah_aset = Aset::count();
         }
 
         // upzis
@@ -63,6 +65,7 @@ class DashboardController extends Controller
             $jumlah_berita = '';
             $jumlah_memo = '';
             $jumlah_kegiatan = Kegiatan::where('id_upzis', Auth::user()->UpzisPengurus->id_upzis)->count();
+            $jumlah_aset = Aset::count();
 
 
             $m1 = ArsipDigital::where('jenis_arsip', 'Surat Masuk')->where('id_pengguna', Auth::user()->id_pengguna)->count();
@@ -103,7 +106,7 @@ class DashboardController extends Controller
 
         return view(
             'dashboard',
-            compact('title',  'jumlah_memo', 'jumlah_berita', 'jumlah_kegiatan', 'jumlah_surat_masuk', 'jumlah_surat_keluar', 'jumlah_dokumen')
+            compact('title', 'jumlah_aset',  'jumlah_memo', 'jumlah_berita', 'jumlah_kegiatan', 'jumlah_surat_masuk', 'jumlah_surat_keluar', 'jumlah_dokumen')
         );
     }
 
