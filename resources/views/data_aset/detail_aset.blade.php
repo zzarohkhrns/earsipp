@@ -97,7 +97,7 @@
                                         </tr>
                                         <tr>
                                             <th style="width: 200px;" class="text-success">
-                                                <h4><b>{{ $aset->kode_aset }}</b></h4>
+                                                <h4><b>{{ $aset->kode_aset ?? '0'}}</b></h4>
                                             </th>
                                             <th style="width: 200px;"></th>
                                             <th style="width: 200px;"></th>
@@ -117,8 +117,8 @@
                                             {{-- <td>{{ $barang->nama }}</td>
                                                 <td>{{ $barang->satuan }}</td>
                                                 <td>{{ $barang->lokasi_penyimpanan }}</td> --}}
-                                            <td>{{ $aset->nama_aset }}</< /td>
-                                            <td>{{ $aset->kategori_aset->kategori }}</td>
+                                            <td>{{ $aset->nama_aset ?? '0' }}</< /td>
+                                            <td>{{ $aset->kategori_aset->kategori ?? '0'}}</td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -133,8 +133,8 @@
                                             <th style="width: 100px;"></th>
                                         </tr>
                                         <tr>
-                                            <td>{{ $aset->tgl_perolehan }}</td>
-                                            <td>{{ $aset->satuan }}</td>
+                                            <td>{{ $aset->tgl_perolehan ?? '0'}}</td>
+                                            <td>{{ $aset->satuan ?? '0' }}</td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -150,7 +150,7 @@
                                         </tr>
                                         <tr>
                                             <td>{{ $aset->asal_perolehan ?? 'tidak ada asal perolehan' }}</td>
-                                            <td>{{ $aset->lokasi_penyimpanan }}</td>
+                                            <td>{{ $aset->lokasi_penyimpanan ?? '0'}}</td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -162,7 +162,7 @@
                                         </tr>
                                         <tr>
                                             {{-- <td colspan="4">{{ $barang->spesifikasi }}</td> --}}
-                                            <td colspan="2">{{ $aset->spesifikasi }}</td>
+                                            <td colspan="2">{{ $aset->spesifikasi ?? '0' }}</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -448,28 +448,28 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="myForm" method="POST" action="/{{ $role }}/aset/data/update/{{ $aset->aset_id }}">
+                    <form id="myForm" method="POST" action="/{{ $role }}/aset/data/update/{{ $aset->aset_id ?? '0'}}">
                         @csrf
                         <div class="form-group">
                             <label for="kode">Kode Aset :</label>
-                            <input type="text" value="{{ $aset->aset_id }}" class="form-control" id="aset_id"
+                            <input type="text" value="{{ $aset->aset_id ?? '0' }}" class="form-control" id="aset_id"
                                 name="aset_id" readonly>
-                            <input type="text" value="{{ $aset->kode_aset }}" class="form-control" id="kode_aset"
+                            <input type="text" value="{{ $aset->kode_aset ?? '0' }}" class="form-control" id="kode_aset"
                                 name="kode_aset" readonly>
                         </div>
                         <div class="form-group">
                             <label for="tgl_beli">Tgl Perolehan :</label>
-                            <input type="date" value="{{ $aset->tgl_perolehan }}" class="form-control"
+                            <input type="date" value="{{ $aset->tgl_perolehan ?? '0' }}" class="form-control"
                                 id="tgl_perolehan" name="tgl_perolehan">
                         </div>
                         <div class="form-group">
                             <label for="asal">Asal Perolehan :</label>
-                            <input type="text" class="form-control" value="{{ $aset->asal_perolehan }}"
+                            <input type="text" class="form-control" value="{{ $aset->asal_perolehan ?? '0'}}"
                                 id="asal_perolehan" name="asal_perolehan">
                         </div>
                         <div class="form-group">
                             <label for="name">Nama :</label>
-                            <input type="text" class="form-control" value="{{ $aset->nama_aset }}" id="nama_aset"
+                            <input type="text" class="form-control" value="{{ $aset->nama_aset ?? '0'}}" id="nama_aset"
                                 name="nama_aset">
                         </div>
                         <div class="form-group">
@@ -477,9 +477,9 @@
                             <select class="form-control" id="kategori" name="kategori"
                                 onchange="toggleNewCategoryForm()">
                                 @foreach ($kategori as $kat)
-                                    <option value="{{ $kat->id_kategori }}"
+                                    <option value="{{ $kat->id_kategori ?? '0'}}"
                                         @if ($aset->id_kategori == $kat->id_kategori) selected @endif>
-                                        {{ $kat->kategori }}</option>
+                                        {{ $kat->kategori ?? '0'}}</option>
                                 @endforeach
                                 <option value="others">Lainnya</option>
                             </select>
@@ -493,17 +493,17 @@
                         </div>
                         <div class="form-grPoup">
                             <label for="satuan">Satuan :</label>
-                            <input type="text" class="form-control" value="{{ $aset->satuan }}" id="satuan"
+                            <input type="text" class="form-control" value="{{ $aset->satuan ?? '0' }}" id="satuan"
                                 name="satuan">
                         </div>
                         <div class="form-group">
                             <label for="lokasi">Lokasi Penyimpanan :</label>
                             <input type="text" class="form-control" id="lokasi"
-                                value="{{ $aset->lokasi_penyimpanan }}" name="lokasi_penyimpanan">
+                                value="{{ $aset->lokasi_penyimpanan ?? '0'}}" name="lokasi_penyimpanan">
                         </div>
                         <div class="form-group">
                             <label for="spesifikasi">Spesifikasi/Deskripsi :</label>
-                            <input type="text" class="form-control" value="{{ $aset->spesifikasi }}"
+                            <input type="text" class="form-control" value="{{ $aset->spesifikasi ?? '0'}}"
                                 id="spesifikasi" name="spesifikasi">
                         </div>
                         <button type="submit" class="btn btn-success">Simpan</button>

@@ -78,6 +78,26 @@
             display: flex;
             align-items: center;
         }
+
+        /* Mengatur style tabel */
+        #example {
+            width: 250px; /* Menyesuaikan lebar tabel dengan konten */
+            border-collapse: collapse; /* Menghapus ruang antar border */
+            margin: 20px 0; /* Menambahkan margin atas dan bawah tabel */
+        }
+
+        /* Menghapus border pada sel tabel */
+        #example td {
+            border: none; /* Menghapus border */
+            padding: 8px 12px; /* Menambahkan padding pada sel */
+            font-size: 16px; /* Mengatur ukuran font */
+          /* Menyelaraskan teks ke tengah */
+        }
+
+        /* Style tambahan (opsional) */
+        #example tr:nth-child(even) {
+            background-color: #f9f9f9; /* Warna latar belakang berbeda untuk baris genap */
+        }
     </style>
 
     <div class="content-header">
@@ -171,104 +191,127 @@
 
                                     {{-- script untuk close --}}
                                     <script>
-                                        $(document).ready(function(){
-                                            $('.alert .close').on('click', function(){
+                                        $(document).ready(function() {
+                                            $('.alert .close').on('click', function() {
                                                 $(this).parent('.alert').hide();
                                             });
                                         });
                                     </script>
-                                    
+
 
                                     <!-- tab data aset -->
                                     <div id="dataAset" class="tab-content active" style="width: 99%; padding:10px; mt-1">
 
-                                        {{-- tab filter --}}
-                                        <div class="col-12 col-md-12 col-sm-12 mb-2 mb-xl-0 mt-2">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <form method="post" action="/{{ $role }}/filter/aset">
-                                                        @csrf
-                                                        <div class="filter-container">
-                                                            <!-- Filter Tanggal Pembelian -->
-                                                            <div
-                                                                class="filter-item filter-date col-12 col-md-6 col-sm-12 mb-3 mt-3">
-                                                                <div class="input-group">
-                                                                    <div class="input-group-prepend"
-                                                                        style="border-radius: 10px;">
-                                                                        <span class="input-group-text custom-text">Tgl
-                                                                            Pembelian</span>
-                                                                    </div>
-                                                                    <input type="date" id="tgl-pembelian-start"
-                                                                        name="tgl-pembelian-start"
-                                                                        class="form-control custom-input">
-                                                                    <div class="input-group-prepend">
-                                                                        <span class="input-group-text custom-text">-</span>
-                                                                    </div>
-                                                                    <input type="date" id="tgl-pembelian-end"
-                                                                        name="tgl-pembelian-end"
-                                                                        class="form-control custom-input">
-                                                                </div>
+                                        {{-- menu filter --}}
+                                        <div
+                                            style="border: 1px solid #e0e0e0; border-radius: 10px; background-color: #f9f9f9; padding: 10px; margin-bottom: 10px;">
+                                            <!-- Bagian Filter dan Tombol Aksi -->
+                                            <div
+                                                style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                                                <div style="display: flex; align-items: center; max-width: 67%;">
+                                                    <!-- Filter Tanggal Pembelian -->
+                                                    <div class="col-12 col-md-6 col-sm-12 mb-3 mt-3">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend" style="border-radius: 10px;">
+                                                                <span class="input-group-text custom-text">Tgl
+                                                                    Pembelian</span>
                                                             </div>
-                                                            <!-- Filter Kategori -->
-                                                            <div
-                                                                class="filter-item filter-kategori col-12 col-md-4 col-sm-12 mb-2 mb-xl-0 mt-2">
-                                                                <div class="input-group mb-2 mr-sm-2">
-                                                                    <div class="input-group-prepend">
-                                                                        <div class="input-group-text">Kategori</div>
-                                                                    </div>
-                                                                    <select class="form-control" name="kategori"
-                                                                        onchange="javascript:this.form.submit();"
-                                                                        style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
-                                                                        <option value="">Semua</option>
-                                                                        @foreach ($kategori as $kat)
-                                                                            <option value="{{ $kat->id_kategori }}">
-                                                                                {{ $kat->kategori }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
+                                                            <input type="date" id="tgl-pembelian-start"
+                                                                name="tgl-pembelian-start"
+                                                                class="form-control custom-input">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text custom-text">-</span>
                                                             </div>
-                                                            <!-- Filter Status -->
-                                                            <div
-                                                                class="filter-item filter-status col-12 col-md-4 col-sm-12 mb-2 mb-xl-0 mt-2">
-                                                                <div class="input-group mb-2 mr-sm-2">
-                                                                    <div class="input-group-prepend">
-                                                                        <div class="input-group-text">Status</div>
-                                                                    </div>
-                                                                    <select class="form-control" name="status"
-                                                                        onchange="javascript:this.form.submit();"
-                                                                        style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
-                                                                        <option value="">Semua</option>
-                                                                        <option value="aktif">Aktif</option>
-                                                                        <option value="non-aktif">Non Aktif</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <!-- Tombol Aksi -->
-                                                            <div class="filter-buttons">
-                                                                <button type="button" class="btn btn-success"
-                                                                    data-toggle="modal" data-target="#tambahModal"
-                                                                    style="background-color: rgb(0, 177, 0);color:white; border-radius:10px;">
-                                                                    <i class="fas fa-plus-circle"></i>
-                                                                    <span>Tambah</span>
-                                                                </button>
-                                                                <a href="/{{ $role }}/print-data"
-                                                                    style="border-radius:10px;"
-                                                                    class="btn btn-outline-secondary">
-                                                                    <i class="fas fa-file-alt"></i>Export
-                                                                </a>
-                                                            </div>
+                                                            <input type="date" id="tgl-pembelian-end"
+                                                                name="tgl-pembelian-end" class="form-control custom-input">
                                                         </div>
-                                                        <!-- Keterangan Data -->
-                                                        <div class="info-section col-12 col-md-10 col-sm-12 mb-2 mb-xl-0">
-                                                            <div class="p-2 bd-highlight">
-                                                                <i class="fas fa-info-circle"></i>
+                                                    </div>
+
+                                                    <!-- Filter Kategori -->
+                                                    <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0 mt-2">
+                                                        <div class="input-group mb-2 mr-sm-2">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">Kategori</div>
                                                             </div>
-                                                            <div class="p-1 bd-highlight">
-                                                                <span>Data Aset PC Lazisnu Cilacap. Dapat ditambahkan oleh
-                                                                    Staff Logistik dan Perlengkapan.</span>
-                                                            </div>
+                                                            <select class="form-control" name="kategori"
+                                                                onchange="javascript:this.form.submit();"
+                                                                style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
+                                                                <option value="">Semua</option>
+                                                                @foreach ($kategori as $kat)
+                                                                    <option value="{{ $kat->id_kategori }}">
+                                                                        {{ $kat->kategori }}</option>
+                                                                @endforeach
+                                                            </select>
                                                         </div>
-                                                    </form>
+                                                    </div>
+
+                                                    <!-- Filter Status -->
+                                                    <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0 mt-2">
+                                                        <div class="input-group mb-2 mr-sm-2">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">Status</div>
+                                                            </div>
+                                                            <select class="form-control" name="status"
+                                                                onchange="javascript:this.form.submit();"
+                                                                style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
+                                                                <option value="">Semua</option>
+                                                                <option value="aktif">Aktif</option>
+                                                                <option value="non aktif">Non Aktif</option>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Tombol Refresh -->
+                                                    <div>
+                                                        <button class="btn btn-outline-secondary"
+                                                            style="width: 100px; border-radius:10px;">
+                                                            <i class="fas fa-sync-alt"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Tombol Aksi -->
+                                                <div
+                                                    style="display: flex; flex-direction: column; align-items: center; margin-left: 0px;">
+                                                    <div class="btn-group btn-block mb-2 mb-xl-0 mt-1 card-tambah-periksa"
+                                                        style="width: 150px; margin-bottom: 10px;">
+                                                        <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                            <button type="button" class="btn btn-success"
+                                                                data-toggle="modal" data-target="#pemeriksaanModal"
+                                                                style="background-color:  rgb(0, 177, 0); color: white; border-radius:10px;">
+                                                                <i class="fas fa-plus-circle"></i>
+                                                                <span>Tambah </span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-group btn-block mb-2 mb-xl-0 card-tambah-kontrol"
+                                                        style="width: 150px;">
+                                                        <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                            <a href="/{{ $role }}/print-data"
+                                                                style=" border-radius:10px;"
+                                                                class="btn btn-outline-secondary">
+                                                                <i class="fas fa-file-alt"
+                                                                    style="margin-right:2px;"></i>Export
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Keterangan Data -->
+                                            <div class="col-12 col-md-10 col-sm-12 mb-2 mb-xl-0">
+                                                <div class="d-flex flex-row bd-highlight align-items-center">
+                                                    <div class="p-2 bd-highlight">
+                                                        <i class="fas fa-info-circle"></i>
+                                                    </div>
+                                                    <div class="p-1 bd-highlight">
+                                                        <span>
+                                                            Data Aset PC Lazisnu Cilacap. Dapat ditambahkan oleh
+                                                            Staff
+                                                            Logistik dan Perlengkapan.
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -480,7 +523,9 @@
                                                             <select class="form-control" name="kategori"
                                                                 onchange="javascript:this.form.submit();"
                                                                 style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
-                                                                <!-- Options for categories -->
+                                                                <option value="">Semua</option>
+                                                                <option value="mengetahui">Mengetahui</option>
+                                                                <option value="belum mengetahui">Belum Mengetahui</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -494,7 +539,9 @@
                                                             <select class="form-control" name="status"
                                                                 onchange="javascript:this.form.submit();"
                                                                 style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
-                                                                <!-- Options for status -->
+                                                                <option value="">Semua</option>
+                                                                <option value="mengetahui">Mengetahui</option>
+                                                                <option value="belum mengetahui">Belum Mengetahui</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -569,37 +616,87 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($pemeriksaanGrouped as $namaPemeriksa => $details)
+                                                @foreach ($pemeriksaanGrouped as $groupKey => $details)
+                                                    @php
+                                                        // Memisahkan nama pemeriksa dan tanggal pemeriksaan
+                                                        [$namaPemeriksa, $tanggalPemeriksaan] = explode('-', $groupKey);
+                                                    @endphp
                                                     @foreach ($details as $key => $detail)
                                                         <tr>
                                                             @if ($key == 0)
-                                                                <td rowspan="{{ count($details) }}">
-                                                                    {{ $loop->iteration }}</td>
-                                                                <td rowspan="{{ count($details) }}">
-                                                                    {{ $detail->pemeriksaanAset->tanggal_pemeriksaan }}
+                                                                <td>{{ $loop->iteration }}</td>
+                                                                <td>{{ $detail->tanggal_pemeriksaan }}</td>
+                                                                <td><b>
+                                                                    {{
+                                                                        $namaPemeriksa
+                                                                    }}
+                                                                </b>
+                                                                    <br>
+                                                                    {{ 
+                                                                        $detail->pcPengurus->pengurusJabatan->jabatan
+                                                                    }}
                                                                 </td>
-                                                                <td rowspan="{{ count($details) }}">
-                                                                    {{ $detail->pemeriksaanAset->pcPengurus->pengguna->nama }}
+                                                                <td>
+                                                                    @if ($detail->detailPemeriksaanAset->isNotEmpty())
+                                                                        {{ $detail->detailPemeriksaanAset->count() }} Aset
+                                                                    @else
+                                                                        -
+                                                                    @endif
                                                                 </td>
-                                                                <td rowspan="{{ count($details) }}">
-                                                                    {{ count($details->unique('aset_id')) }}
+                                                                <td>
+                                                                    @if ($detail->detailPemeriksaanAset->isNotEmpty())
+                                                                        {{-- <ul>
+                                                                            @foreach ($detail->detailPemeriksaanAset as $item)
+                                                                                <li>{{ $item->kondisi }}</li>
+                                                                            @endforeach
+                                                                        </ul> --}}
+                                                                        <div>
+                                                                            <table id="example">
+                                                                                <tr>
+                                                                                    <td>baik</td>
+                                                                                    <td>10</td>
+                                                                                    <td>10</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>rusak</td>
+                                                                                    <td>10</td>
+                                                                                    <td>10</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>perlu perbaikan</td>
+                                                                                    <td>10</td>
+                                                                                    <td>10</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>hilang</td>
+                                                                                    <td>10</td>
+                                                                                    <td>10</td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
+                                                                    @else
+                                                                        -
+                                                                    @endif
                                                                 </td>
-                                                                <td rowspan="{{ count($details) }}">ini
-                                                                    kondisi aset</td>
-                                                                <td rowspan="{{ count($details) }}">ini status
-                                                                    aset</td>
-                                                                <td rowspan="{{ count($details) }}">
-                                                                    {{ $detail->pemeriksaanAset->status_spv }}
+                                                                <td>
+                                                                    @if ($detail->detailPemeriksaanAset->isNotEmpty())
+                                                                        <ul>
+                                                                            @foreach ($detail->detailPemeriksaanAset as $item)
+                                                                                <li>{{ $item->status_aset }}</li>
+                                                                            @endforeach
+                                                                        </ul>
+                                                                    @else
+                                                                        -
+                                                                    @endif
                                                                 </td>
-                                                                <td rowspan="{{ count($details) }}">
-                                                                    {{ $detail->pemeriksaanAset->status_kc }}
-                                                                </td>
+                                                                <td>{{ $detail->status_spv }}</td>
+                                                                <td>{{ $detail->status_kc }}</td>
                                                                 <td>
                                                                     <div
                                                                         class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
                                                                         <div class="btn-group mb-2 mb-xl-0 btn-block">
                                                                             <a onclick="$('#cover-spin').show(0)"
-                                                                                href="/{{ $role }}/arsip/aset/detail_pemeriksaan/{{ $detail->pemeriksaanAset->id_pemeriksaan_aset }}/{{ $detail->pemeriksaanAset->tanggal_pemeriksaan }}"
+                                                                                href="/{{ $role }}/arsip/aset/detail_pemeriksaan/{{ $detail->id_pemeriksaan_aset }}/{{ $detail->tanggal_pemeriksaan }}"
                                                                                 class="btn btn-outline-secondary btn-block"
                                                                                 style="display: block;border-radius:10px;">
                                                                                 Detail
@@ -612,8 +709,7 @@
                                                                             <a href="/{{ $role }}/print-pemeriksaan-byid"
                                                                                 style="border-radius:10px;"
                                                                                 class="btn btn-outline-secondary">
-                                                                                <i class="fi fi-sr-file"></i>Cetak
-                                                                                PDF </a>
+                                                                                <i class="fi fi-sr-file"></i>Cetak PDF </a>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -621,7 +717,6 @@
                                                         </tr>
                                                     @endforeach
                                                 @endforeach
-                                            </tbody>
                                         </table>
                                     </div>
 
@@ -836,6 +931,19 @@
         }
     </script>
 
+    {{-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const activeTab = "{{ session('active_tab') }}";
+            if (activeTab) {
+                const tabElement = document.querySelector(`a[href="pemeriksaan${activeTab}"]`);
+                if (tabElement) {
+                    new bootstrap.Tab(tabElement).show();
+                }
+            }
+        });
+    </script> --}}
+
+
     <!-- modal tambah pemeriksaan -->
     <div class="modal fade" id="pemeriksaanModal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
@@ -847,57 +955,65 @@
                     </button>
                 </div>
                 <div class="modal-body" style="padding-top: 0;">
-                    <form>
+                    <form id="myForm" method="POST" action="{{ route('pc.pemeriksaan.store') }}">
+                        @csrf
                         <div class="form-group">
                             <label for="tgl_pemeriksaan" style="font-weight: bold; font-size: 14px;">Tgl
                                 Pemeriksaan</label>
-                                <input type="date" id="tgl-pembelian-end"
-                                name="tgl-pembelian-end"
-                                class="form-control custom-input">
-                        </div>
+                            <input type="date" id="tanggal_pemeriksaan" name="tanggal_pemeriksaan"
+                                class="form-control custom-input" required>
                         <div class="form-group">
                             <label for="manajemen_eksekutif" style="font-weight: bold; font-size: 14px;">Manajemen
                                 Eksekutif</label>
                             <input type="text" class="form-control" id="manajemen_eksekutif"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" value="Nu-Care Lazisnu Cilacap" readonly>
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
+                                value="Nu-Care Lazisnu Cilacap" readonly>
                         </div>
                         <div class="form-group">
                             <label for="pemeriksa" style="font-weight: bold; font-size: 14px;">Pemeriksa</label>
-                            <input type="text" class="form-control" id="pemeriksa" name="nama"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" value="{{ Auth::user()->nama }}" readonly>
+                            <input type="text" class="form-control" id="pemeriksa" name="nama_pemeriksa"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
+                                value="{{ Auth::user()->nama }}" readonly>
                             <input type="text" class="form-control" id="pemeriksa" name="id_pemeriksa"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" value="{{ Auth::user()->gocap_id_pc_pengurus }}" hidden>
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" name="id_pemeriksa"
+                                value="{{ Auth::user()->gocap_id_pc_pengurus }}" hidden>
                         </div>
                         <div class="form-group">
                             <label for="supervisor" style="font-weight: bold; font-size: 14px;">Supervisor</label>
                             <input type="text" class="form-control" id="supervisor" name="nama"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" value="{{ $supervisor->nama_supervisor }}" readonly>
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
+                                value="{{ $supervisor->nama_supervisor }}" readonly>
                             <input type="text" class="form-control" id="supervisor" name="id_supervisor"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" value="{{ $supervisor->id_supervisor }}" hidden>
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" name="id_supervisor"
+                                value="{{ $supervisor->id_supervisor }}" hidden>
                         </div>
                         <div class="form-group">
                             <label for="kepala_cabang" style="font-weight: bold; font-size: 14px;">Kepala Cabang</label>
                             <input type="text" class="form-control" id="kepala_cabang"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" value="{{ $kc->nama_kc }}" readonly>
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
+                                value="{{ $kc->nama_kc }}" readonly>
                             <input type="text" class="form-control" id="kepala_cabang"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" value="{{ $kc->id_kc }}" hidden>
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" name="id_kc"
+                                value="{{ $kc->id_kc }}" hidden>
                         </div>
                         <div class="alert alert-info"
                             style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; margin-top: 15px;">
                             <strong>INFORMASI</strong><br>Setelah berhasil menambahkan pemeriksaan, anda wajib melengkapi
                             data pemeriksaan aset.
                         </div>
+                        <div class="modal-footer" style="border-top: none; padding-top: 0;">
+                            <button type="submit" class="btn btn-success">Simpan</button>
+                        </div>
                     </form>
-                </div>
-                <div class="modal-footer" style="border-top: none; padding-top: 0;">
-                    <button type="submit" class="btn btn-success">Simpan</button>
                 </div>
             </div>
         </div>
     </div>
 
 
-    {{-- modal tambah data pemeriksaan barang --}}
+
+
+    {{-- modal tambah data pemeriksaan barang
     <div class="modal fade" id="TambahPemeriksaanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -967,7 +1083,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
 @endsection
 

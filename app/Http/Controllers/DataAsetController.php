@@ -16,6 +16,7 @@ use App\Models\Ranting;
 use App\Models\Pengguna;
 use App\Models\PengurusJabatan;
 use Egulias\EmailValidator\Result\Reason\DetailedReason;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -37,16 +38,27 @@ class DataAsetController extends Controller
 
 
         //menarik data pemeriksaan dari table detail pemeriksaan
-        $pemeriksaan2 = DetailPemeriksaanAset::with([
-            'aset.kategori_aset',
-            'pemeriksaanAset.pcPengurus.pengguna',
-            'pemeriksaanAset.supervisor.pengguna',
-            'pemeriksaanAset.kc.pengguna'
+        // $pemeriksaan2 = DetailPemeriksaanAset::with([
+        //     'aset.kategori_aset',
+        //     'pemeriksaanAset.pcPengurus.pengguna',
+        //     'pemeriksaanAset.supervisor.pengguna',
+        //     'pemeriksaanAset.kc.pengguna'
+        // ])->get();
+
+
+        $pemeriksaan2 = PemeriksaanAset::with([
+            'detailPemeriksaanAset.aset.kategori_aset',
+            'pcPengurus.pengguna',
+            'pcPengurus.pengurusJabatan',
+            'supervisor.pengurusJabatan',
+            'kc.pengurusJabatan',
+            'supervisor.pengguna',
+            'kc.pengguna'
         ])->get();
 
-        //mengelompokkan berdasarkan nama pemeriksa dan memilih pemeriksaan terakhir untuk aset yang sama
+        // Mengelompokkan berdasarkan nama pemeriksa dan tanggal_pemeriksaan dan memilih pemeriksaan terakhir untuk aset yang sama
         $pemeriksaanGrouped = $pemeriksaan2->groupBy(function ($item) {
-            return $item->pemeriksaanAset->pcPengurus->pengguna->nama;
+            return $item->pcPengurus->pengguna->nama .'-' . $item->tanggal_pemeriksaan;
         })->map(function ($group) {
             return $group->sortByDesc('created_at')->unique('aset_id')->values();
         });
@@ -88,7 +100,7 @@ class DataAsetController extends Controller
               ->first();
 
 
-        return view('data_aset.data_aset', compact('role', 'aset', 'kategori', 'pemeriksaan', 'pemeriksaanGrouped', 'supervisor', 'kc'));
+        return view('data_aset.data_aset', compact('role', 'aset', 'kategori', 'pemeriksaan', 'pemeriksaan2', 'pemeriksaanGrouped', 'supervisor', 'kc'));
     }
 
     public function detail($id)
@@ -335,10 +347,26 @@ class DataAsetController extends Controller
         }
     }
 
+    
+
     public function detail_pemeriksaan($id, $tgl)
     {
         $role = 'pc';
 
+        // Cari Pemeriksaan Aset
+        $pemeriksaanAset = PemeriksaanAset::with([
+            'pcPengurus.pengguna',
+            'pcPengurus.pengurusJabatan',
+            'supervisor.pengguna',
+            'supervisor.pengurusJabatan',
+            'kc.pengguna',
+            'kc.pengurusJabatan',
+            'detailPemeriksaanAset.aset.kategori_aset',
+        ])->where('id_pemeriksaan_aset', $id)
+          ->where('tanggal_pemeriksaan', $tgl)
+          ->firstOrFail();
+    
+        // Mencari Detail Pemeriksaan Aset
         $detailPemeriksaan = DetailPemeriksaanAset::with([
             'aset.kategori_aset',
             'pemeriksaanAset.pcPengurus.pengguna',
@@ -351,41 +379,35 @@ class DataAsetController extends Controller
         ])->whereHas('pemeriksaanAset', function ($query) use ($id, $tgl) {
             $query->where('id_pemeriksaan_aset', $id)
                 ->where('tanggal_pemeriksaan', $tgl);
-        })->firstOrFail();
-
-
-        //menghitung jumlah aset yang diperiksa
-
-        // Ambil semua detail pemeriksaan aset terkait dengan ID pemeriksaan
-        $pemeriksaan = DetailPemeriksaanAset::with([
-            'aset.kategori_aset',
-            'pemeriksaanAset.pcPengurus.pengguna',
-            'pemeriksaanAset.pcPengurus.pengurusJabatan',
-            'pemeriksaanAset.supervisor.pengguna',
-            'pemeriksaanAset.supervisor.pengurusJabatan',
-            'pemeriksaanAset.kc.pengguna',
-            'pemeriksaanAset.kc.pengurusJabatan',
-            'pemeriksaanAset.kc.pengguna'
-        ])->whereHas('pemeriksaanAset', function ($query) use ($id, $tgl) {
-            $query->where('id_pemeriksaan_aset', $id)
-                ->where('tanggal_pemeriksaan', $tgl);
         })->get();
-
-        // Ambil data pemeriksaan terbaru untuk setiap aset_id
-        $latestDetailPemeriksaan = $pemeriksaan->sortByDesc('created_at')
-            ->unique('aset_id')
-            ->values();
-
-        // Hitung jumlah aset yang unik
-        $jumlahAset = $latestDetailPemeriksaan->count();
-
-
-        //kategori
+    
+        // Menghitung jumlah detail pemeriksaan yang ditemukan
+        if ($detailPemeriksaan->isNotEmpty()) {
+            // Ambil data pemeriksaan terbaru untuk setiap aset_id
+            $latestDetailPemeriksaan = $detailPemeriksaan->sortByDesc('created_at')
+                ->unique('aset_id')
+                ->values();
+    
+            // Hitung jumlah aset yang unik
+            $jumlahAset = $latestDetailPemeriksaan->count();
+        } else {
+            $jumlahAset = 0; // Set ke 0 jika tidak ada detail pemeriksaan ditemukan
+        }
+    
+        // Mengambil semua kategori
         $kategori = Kategori::all();
-
-
-        return view('data_aset.detail_pemeriksaan', compact('role', 'detailPemeriksaan', 'jumlahAset', 'pemeriksaan', 'kategori'));
+    
+        return view('data_aset.detail_pemeriksaan', compact('role', 'detailPemeriksaan', 'jumlahAset', 'pemeriksaanAset', 'kategori'));
     }
+
+    // public function checkDate_Pemeriksaan(Request $request)
+    // {
+    //     $exists = PemeriksaanAset::where('id_pemeriksa', $request->id_pemeriksa)
+    //         ->where('tanggal_pemeriksaan', $request->tanggal_pemeriksaan)
+    //         ->exists();
+
+    //     return response()->json(['exists' => $exists]);
+    // }
 
     public function filterAset(Request $request)
     {
@@ -421,7 +443,62 @@ class DataAsetController extends Controller
         return view('data_aset.data_aset', ['data' => $data]);
     }
 
-    public function store(Request $request)
+    // public function store_pemeriksaan(Request $request)
+    // {
+    //     $request->validate([
+    //         'tanggal_pemeriksaan' => 'required|date',
+    //         'id_pemeriksa' => 'required',
+    //         'id_supervisor' => 'required',
+    //         'id_kc' => 'required',
+    //     ]);
+
+
+    //     try
+    //     {
+    //         PemeriksaanAset::create([
+    //             'id_pemeriksaan_aset' => (string) Str::uuid(),
+    //             'tanggal_pemeriksaan' => $request->tanggal_pemeriksaan,
+    //             'id_pemeriksa' => $request->id_pemeriksa,
+    //             'id_supervisor' => $request->id_supervisor,
+    //             'id_kc' => $request->id_kc,
+    //         ]);
+    //         return redirect()->back()->with('success', 'Data berhasil ditambahkan');
+    //     }catch(Exception $e)
+    //     {
+    //         return redirect()->back()->with('error', 'Data gagal ditambahkan.');   
+    //     }
+    // }
+
+    public function store_pemeriksaan(Request $request)
+    {
+        $request->validate([
+            'id_pemeriksa' => 'required',
+            'tanggal_pemeriksaan' => ['required'],
+            'id_supervisor' => 'required',
+            'id_kc' => 'required',
+        ]);
+
+        try
+        {
+            PemeriksaanAset::create([
+                'id_pemeriksaan_aset' => (string) Str::uuid(),
+                'tanggal_pemeriksaan' => $request->tanggal_pemeriksaan,
+                'id_pemeriksa' => $request->id_pemeriksa,
+                'id_supervisor' => $request->id_supervisor,
+                'id_kc' => $request->id_kc,
+            ]);
+
+            session()->flash('active_tab', 'pemeriksaan');
+            return redirect()->back()->with('success', 'Data berhasil ditambahkan');
+        }
+        catch (Exception $e)
+        {
+            session()->flash('active_tab', 'pemeriksaan');
+            return redirect()->back()->with('error', 'Data gagal ditambahkan.');
+        }
+    }
+
+    public function store_detail_pemeriksaan(Request $request)
     {
         // Validasi input
         $validatedData = $request->validate([

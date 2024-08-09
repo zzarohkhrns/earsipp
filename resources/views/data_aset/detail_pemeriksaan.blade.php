@@ -43,59 +43,6 @@
             border-radius: 0.25rem;
             padding: 1rem;
         }
-
-        .dropdown {
-            position: relative;
-            display: block;
-        }
-
-        .dropdown-menu {
-            color: black display: none;
-            position: absolute;
-            background-color: #ffffff;
-            /* Warna sekunder */
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-        }
-
-        .dropdown-menu button {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            width: 100%;
-            border: none;
-            background: none;
-            text-align: left;
-        }
-
-        .dropdown-menu button:hover {
-            background-color: #d6d6d6;
-            /* Warna saat hover */
-        }
-
-        .dropdown-button {
-            display: block;
-            gap: 10px;
-            margin-bottom: 20px;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #6c757d;
-            /* Warna sekunder */
-            color: white;
-            border: none;
-            width: 200px;
-        }
-
-        .dropdown-button:hover {
-            background-color: #5a6268;
-            /* Warna saat hover */
-        }
-
-        .dropdown-button .icon {
-            color: white;
-        }
     </style>
 
     <div class="content-header">
@@ -166,49 +113,45 @@
 
                                                                 {{-- line 1 --}}
                                                                 <tr>
-                                                                    <th style="width: 50%">
+                                                                    <th style="width: 70%">
                                                                         <h6><b>Pemeriksa</b></h6>
                                                                     </th>
-                                                                    <th style="width: 50%">
+                                                                    <th style="width: 30%">
                                                                         <div class="dropdown">
                                                                             <button id="dropdownButton"
-                                                                                class="dropdown-button"
-                                                                                style="border-radius:10px; width: 100%; max-width: 100%; padding: 10px; margin: 0;"
+                                                                                class="btn btn-secondary dropdown-toggle"
+                                                                                style="border-radius: 10px; width: 100%; max-width: 100%; padding: 10px; margin: 0;"
                                                                                 onclick="toggleDropdown()">
-                                                                                <span id="buttonText">Belum Selesai
-                                                                                    Diinput</span>
-                                                                                <i class="fas fa-chevron-down icon"></i>
+                                                                                <span id="buttonText">Belum Selesai Diinput</span>
                                                                             </button>
-                                                                            <div id="myDropdown" class="dropdown-menu">
-                                                                                <button
-                                                                                    onclick="handleSelection('Selesai Diinput')">Selesai
-                                                                                    Diinput</button>
-                                                                                <button
-                                                                                    onclick="handleSelection('Belum Selesai Diinput')">Belum
-                                                                                    Selesai Diinput</button>
+                                                                            <div id="myDropdown" class="dropdown-menu w-100" style="border-radius: 10px;">
+                                                                                <button class="dropdown-item btn btn-secondary w-100 text-justify"
+                                                                                    onclick="handleSelection('Selesai Diinput')">Selesai Diinput</button>
+                                                                                <button class="dropdown-item btn btn-secondary w-100 text-left"
+                                                                                    onclick="handleSelection('Belum Selesai Diinput')">Belum Selesai Diinput</button>
                                                                             </div>
                                                                         </div>
-                                                                    </th>
+                                                                    </th>                                                                    
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
                                                                         <h5 class="text-success">
-                                                                            <b>{{ $detailPemeriksaan->pemeriksaanAset->pcPengurus->pengguna->nama }}</b>
+                                                                            <b>{{ $pemeriksaanAset->pcPengurus->pengguna->nama }}</b>
                                                                         </h5>
                                                                     </td>
                                                                     <td></td>
                                                                 </tr>
 
                                                                 {{-- line 2 --}}
-                                                                <tr>
-                                                                    <th style="width: 75%">
+                                                                <tr></tr>
+                                                                    <th>
                                                                         <h6><b>Jabatan</b></h6>
                                                                     </th>
-                                                                    <th style="width: 25%"></th>
+                                                                    <th></th>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        <h6>{{ $detailPemeriksaan->pemeriksaanAset->pcPengurus->pengurusJabatan->jabatan }}
+                                                                        <h6>{{ $pemeriksaanAset->pcPengurus->pengurusJabatan->jabatan }}
                                                                         </h6>
                                                                     </td>
                                                                     <td></td>
@@ -216,14 +159,14 @@
 
                                                                 {{-- line 3 --}}
                                                                 <tr>
-                                                                    <th style="width: 75%">
+                                                                    <th>
                                                                         <h6><b>Tgl Pemeriksaan</b></h6>
                                                                     </th>
-                                                                    <th style="width: 25%"></th>
+                                                                    <th></th>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        <h6>{{ $detailPemeriksaan->pemeriksaanAset->tanggal_pemeriksaan }}
+                                                                        <h6>{{ $pemeriksaanAset->tanggal_pemeriksaan }}
                                                                         </h6>
                                                                     </td>
                                                                     <td></td>
@@ -231,14 +174,14 @@
 
                                                                 {{-- line 4 --}}
                                                                 <tr>
-                                                                    <th style="width: 75%">
+                                                                    <th>
                                                                         <h6><b>Status</b></h6>
                                                                     </th>
-                                                                    <th style="width: 25%"></th>
+                                                                    <th></th>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        @if ($detailPemeriksaan->pemeriksaanAset->status_pemeriksaan == 'selesai')
+                                                                        @if ($pemeriksaanAset->status_pemeriksaan == 'selesai')
                                                                             <h6 class="text-success"> Selesai Diinput </h6>
                                                                         @else
                                                                             <h6 class="text-danger">Belum Selesai Diinput
@@ -298,58 +241,87 @@
                                                                                         <h6>Baik</h6>
                                                                                     </th>
                                                                                     <th style="width:20%">
-                                                                                        <h6>{{ $pemeriksaan->where('kondisi', 'baik')->count() }}
+                                                                                        @if ($detailPemeriksaan->isNotEmpty())
+                                                                                        <h6>{{ $detailPemeriksaan->where('kondisi', 'baik')->count() }}
                                                                                         </h6>
+                                                                                        @else
+                                                                                        <h6 class="text-">0</h6>
+                                                                                        @endif
                                                                                     </th>
                                                                                     <th style="width:20%">
+                                                                                        @if ($detailPemeriksaan->isNotEmpty())
                                                                                         <h6>
-                                                                                            {{ ($pemeriksaan->where('kondisi', 'baik')->count() / $jumlahAset) * 100 }}%
+                                                                                            {{ ($detailPemeriksaan->where('kondisi', 'baik')->count() / $jumlahAset) * 100 }}%
                                                                                         </h6>
+                                                                                        @else
+                                                                                        0
+                                                                                        @endif
                                                                                     </th>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <th style="width:50%">
                                                                                         <h6>Tidak Memadai (rusak)</h6>
                                                                                     </th>
-                                                                                    <th style="width:25%">
-                                                                                        <h6 class="text-primary">
-                                                                                            {{ $pemeriksaan->where('kondisi', 'rusak')->count() }}
+                                                                                    <th style="width:20%">
+                                                                                        @if ($detailPemeriksaan->isNotEmpty())
+                                                                                        <h6 class="text-primary">{{ $detailPemeriksaan->where('kondisi', 'rusak')->count() }}
                                                                                         </h6>
+                                                                                        @else
+                                                                                        <h6 class="text-primary">0</h6>
+                                                                                        @endif
                                                                                     </th>
-                                                                                    <th style="width:25%">
+                                                                                    <th style="width:20%">
+                                                                                        @if ($detailPemeriksaan->isNotEmpty())
                                                                                         <h6 class="text-primary">
-                                                                                            {{ ($pemeriksaan->where('kondisi', 'rusak')->count() / $jumlahAset) * 100 }}%
+                                                                                            {{ ($detailPemeriksaan->where('kondisi', 'rusak')->count() / $jumlahAset) * 100 }}%
                                                                                         </h6>
+                                                                                        @else
+                                                                                        <h6 class="text-primary">0</h6>
+                                                                                        @endif
                                                                                     </th>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <th style="width:50%">
                                                                                         <h6>Perlu Perbaikan</h6>
                                                                                     </th>
-                                                                                    <th style="width:25%">
-                                                                                        <h6 class="text-warning">
-                                                                                            {{ $pemeriksaan->where('kondisi', 'perlu service')->count() }}
+                                                                                    <th style="width:20%">
+                                                                                        @if ($detailPemeriksaan->isNotEmpty())
+                                                                                        <h6 class="text-warning">{{ $detailPemeriksaan->where('kondisi', 'perlu service')->count() }}
                                                                                         </h6>
+                                                                                        @else
+                                                                                        <h6 class="text-warning">0</h6>
+                                                                                        @endif
                                                                                     </th>
-                                                                                    <th style="width:25%">
+                                                                                    <th style="width:20%">
+                                                                                        @if ($detailPemeriksaan->isNotEmpty())
                                                                                         <h6 class="text-warning">
-                                                                                            {{ ($pemeriksaan->where('kondisi', 'perlu service')->count() / $jumlahAset) * 100 }}%
+                                                                                            {{ ($detailPemeriksaan->where('kondisi', 'perlu service')->count() / $jumlahAset) * 100 }}%
                                                                                         </h6>
+                                                                                        @else
+                                                                                        <h6 class="text-warning">0</h6>
+                                                                                        @endif
                                                                                     </th>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <th style="width:50%">
                                                                                         <h6>Hilang</h6>
                                                                                     </th>
-                                                                                    <th style="width:25%">
-                                                                                        <h6 class="text-danger">
-                                                                                            {{ $pemeriksaan->where('kondisi', 'hilang')->count() }}
+                                                                                    <th style="width:20%">
+                                                                                        @if ($detailPemeriksaan->isNotEmpty())
+                                                                                        <h6 class="text-danger">{{ $detailPemeriksaan->where('kondisi', 'hilang')->count() }}
                                                                                         </h6>
+                                                                                        @else
+                                                                                        <h6 class="text-danger">0</h6>
+                                                                                        @endif
                                                                                     </th>
-                                                                                    <th style="width:25%">
+                                                                                    <th style="width:20%">
+                                                                                        @if ($detailPemeriksaan->isNotEmpty())
                                                                                         <h6 class="text-danger">
-                                                                                            {{ ($pemeriksaan->where('kondisi', 'hilang')->count() / $jumlahAset) * 100 }}%
+                                                                                            {{ ($detailPemeriksaan->where('kondisi', 'hilang')->count() / $jumlahAset) * 100 }}%
                                                                                         </h6>
+                                                                                        @else
+                                                                                        <h6 class="text-danger">0</h6>
+                                                                                        @endif
                                                                                     </th>
                                                                                 </tr>
                                                                             </table>
@@ -364,12 +336,20 @@
                                                                                         <h6>Aktif</h6>
                                                                                     </th>
                                                                                     <th style="width:25%">
-                                                                                        <h6>{{ $pemeriksaan->where('status_aset', 'aktif')->count() }}
+                                                                                        @if ($detailPemeriksaan->isNotEmpty())
+                                                                                        <h6>{{ $detailPemeriksaan->where('status_aset', 'aktif')->count() }}
                                                                                         </h6>
+                                                                                        @else
+                                                                                        0
+                                                                                        @endif
                                                                                     </th>
                                                                                     <th style="width:25%">
-                                                                                        <h6>{{ ($pemeriksaan->where('status_aset', 'aktif')->count() / $jumlahAset) * 100 }}%
+                                                                                        @if ($detailPemeriksaan->isNotEmpty())
+                                                                                        <h6>{{ ($detailPemeriksaan->where('status_aset', 'aktif')->count() / $jumlahAset) * 100 }}%
                                                                                         </h6>
+                                                                                        @else
+                                                                                        0
+                                                                                        @endif
                                                                                     </th>
                                                                                 </tr>
                                                                                 <tr>
@@ -377,14 +357,20 @@
                                                                                         <h6>Non Aktif</h6>
                                                                                     </th>
                                                                                     <th style="width:25%">
-                                                                                        <h6 class="text-danger">
-                                                                                            {{ $pemeriksaan->where('status_aset', 'non aktif')->count() }}
+                                                                                        @if ($detailPemeriksaan->isNotEmpty())
+                                                                                        <h6 class="text-danger">{{ $detailPemeriksaan->where('status_aset', 'non aktif')->count() }}
                                                                                         </h6>
+                                                                                        @else
+                                                                                        <h6 class="text-danger">0</h6>
+                                                                                        @endif
                                                                                     </th>
                                                                                     <th style="width:25%">
-                                                                                        <h6 class="text-danger">
-                                                                                            {{ ($pemeriksaan->where('status_aset', 'non aktif')->count() / $jumlahAset) * 100 }}%
+                                                                                        @if ($detailPemeriksaan->isNotEmpty())
+                                                                                        <h6 class="text-danger">{{ ($detailPemeriksaan->where('status_aset', 'non aktif')->count() / $jumlahAset) * 100 }}%
                                                                                         </h6>
+                                                                                        @else
+                                                                                        <h6 class="text-danger">0</h6>
+                                                                                        @endif
                                                                                     </th>
                                                                                 </tr>
                                                                                 <tr>
@@ -458,16 +444,16 @@
                                                                             <h6><b>1. Aset
                                                                                     Dengan
                                                                                     Kondisi Baik
-                                                                                    ({{ $pemeriksaan->where('kondisi', 'baik')->count() }})</b>
+                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'baik')->count()?? 0 }})</b>
                                                                             </h6>
                                                                         </td>
                                                                     </tr>
 
-                                                                    @if ($pemeriksaan->where('kondisi', 'baik')->count() > 0)
+                                                                    @if (($detailPemeriksaan->where('kondisi', 'baik')->count()?? 0) > 0)
                                                                         @php
                                                                             $no = 1;
                                                                         @endphp
-                                                                        @foreach ($pemeriksaan as $data)
+                                                                        @foreach ($detailPemeriksaan as $data)
                                                                             @if ($data->kondisi == 'baik')
                                                                                 <tr>
                                                                                     <td>{{ $no++ }}</td>
@@ -537,17 +523,17 @@
                                                                                     Tidak
                                                                                     Memadai /
                                                                                     Rusak
-                                                                                    ({{ $pemeriksaan->where('kondisi', 'rusak')->count() }})</b>
+                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'rusak')->count() ?? 0 }})</b>
                                                                             </h6>
                                                                         </td>
                                                                     </tr>
 
-                                                                    @if ($pemeriksaan->where('kondisi', 'rusak')->count() > 0)
+                                                                    @if (($detailPemeriksaan->where('kondisi', 'rusak')->count()?? 0) > 0)
                                                                         @php
                                                                             $no = 1;
                                                                         @endphp
 
-                                                                        @foreach ($pemeriksaan as $data)
+                                                                        @foreach ($detailPemeriksaan as $data)
                                                                             @if ($data->kondisi == 'rusak')
                                                                                 <tr>
                                                                                     <td>{{ $no++ }}</td>
@@ -616,17 +602,17 @@
                                                                                     Kondisi
                                                                                     Perlu
                                                                                     Perbaikan
-                                                                                    ({{ $pemeriksaan->where('kondisi', 'perlu service')->count() }})</b>
+                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'perlu service')->count()??0 }})</b>
                                                                             </h6>
                                                                         </td>
                                                                     </tr>
 
 
-                                                                    @if ($pemeriksaan->where('kondisi', 'perlu service')->count() > 0)
+                                                                    @if (($detailPemeriksaan->where('kondisi', 'perlu service')->count()??0) > 0)
                                                                         @php
                                                                             $no = 1;
                                                                         @endphp
-                                                                        @foreach ($pemeriksaan as $data)
+                                                                        @foreach ($detailPemeriksaan as $data)
                                                                             @if ($data->kondisi == 'perlu service')
                                                                                 <tr>
                                                                                     <td>{{ $no++ }}</td>
@@ -696,12 +682,12 @@
                                                                                     Dengan
                                                                                     Kondisi
                                                                                     Hilang
-                                                                                    ({{ $pemeriksaan->where('kondisi', 'hilang')->count() }})</b>
+                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'hilang')->count()??0 }})</b>
                                                                             </h6>
                                                                         </td>
                                                                     </tr>
 
-                                                                    @if ($pemeriksaan->where('kondisi', 'hilang')->count() > 0)
+                                                                    @if (($detailPemeriksaan->where('kondisi', 'hilang')->count()??0) > 0)
                                                                         <tr>
                                                                             <td>{{ $no++ }}</td>
                                                                             <td>{{ $data->aset->kode_aset }}</td>
@@ -803,7 +789,7 @@
                                                                 <tr>
                                                                     <td>
                                                                         <h5 class="text-success"><b>
-                                                                                {{ $detailPemeriksaan->pemeriksaanAset->supervisor->pengguna->nama }}
+                                                                                {{ $pemeriksaanAset->supervisor->pengguna->nama }}
                                                                             </b>
                                                                         </h5>
                                                                     </td>
@@ -820,7 +806,7 @@
                                                                 <tr>
                                                                     <td>
                                                                         <h6>
-                                                                            {{ $detailPemeriksaan->pemeriksaanAset->supervisor->pengurusJabatan->jabatan }}
+                                                                            {{ $pemeriksaanAset->supervisor->pengurusJabatan->jabatan }}
                                                                         </h6>
                                                                     </td>
                                                                     <td></td>
@@ -835,8 +821,8 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        @if ($detailPemeriksaan->pemeriksaanAset->tgl_mengetahui_spv)
-                                                                            <h6>{{ $detailPemeriksaan->pemeriksaanAset->tgl_mengetahui_spv }}
+                                                                        @if ($pemeriksaanAset->tgl_mengetahui_spv)
+                                                                            <h6>{{ $pemeriksaanAset->tgl_mengetahui_spv }}
                                                                             </h6>
                                                                         @else
                                                                             <h6>-</h6>
@@ -855,7 +841,7 @@
                                                                 <tr>
                                                                     <td>
                                                                         <h6 class="text-success">
-                                                                            {{ $detailPemeriksaan->pemeriksaanAset->status_spv }}
+                                                                            {{ $pemeriksaanAset->status_spv }}
                                                                         </h6>
                                                                     </td>
                                                                     <td></td>
@@ -871,7 +857,7 @@
                                                                 <tr>
                                                                     <td>
                                                                         <h6 class="text-success">
-                                                                            {{ $detailPemeriksaan->pemeriksaanAset->catatan_spv }}
+                                                                            {{ $pemeriksaanAset->catatan_spv }}
                                                                         </h6>
                                                                     </td>
                                                                     <td></td>
@@ -904,7 +890,7 @@
                                                                 <tr>
                                                                     <td>
                                                                         <h5 class="text-success"><b>
-                                                                                {{ $detailPemeriksaan->pemeriksaanAset->kc->pengguna->nama }}
+                                                                                {{ $pemeriksaanAset->kc->pengguna->nama }}
                                                                             </b>
                                                                         </h5>
                                                                     </td>
@@ -921,7 +907,7 @@
                                                                 <tr>
                                                                     <td>
                                                                         <h6>
-                                                                            {{ $detailPemeriksaan->pemeriksaanAset->kc->pengurusJabatan->jabatan }}
+                                                                            {{ $pemeriksaanAset->kc->pengurusJabatan->jabatan }}
                                                                         </h6>
                                                                     </td>
                                                                     <td></td>
@@ -936,9 +922,9 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        @if ($detailPemeriksaan->pemeriksaanAset->tanggal_mengetahui_kc)
+                                                                        @if ($pemeriksaanAset->tanggal_mengetahui_kc)
                                                                             <h6>
-                                                                                {{ $detailPemeriksaan->pemeriksaanAset->tanggal_mengetahui_kc }}
+                                                                                {{ $pemeriksaanAset->tanggal_mengetahui_kc }}
                                                                             </h6>
                                                                         @else
                                                                             <h6>-</h6>
@@ -957,7 +943,7 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        @if ($detailPemeriksaan->pemeriksaanAset->status_kc == 'mengetahui')
+                                                                        @if ($pemeriksaanAset->status_kc == 'mengetahui')
                                                                             <h6 class="text-success">Mengetahui</h6>
                                                                         @else
                                                                             <h6 class="text-warning">Belum</h6>
@@ -975,9 +961,9 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        @if ($detailPemeriksaan->pemeriksaanAset->catatan_kc)
+                                                                        @if ($pemeriksaanAset->catatan_kc)
                                                                             <h6 class="text-success">
-                                                                                {{ $detailPemeriksaan->pemeriksaanAset->catatan_kc }}
+                                                                                {{ $pemeriksaanAset->catatan_kc }}
                                                                             </h6>
                                                                         @else
                                                                             <h6>-</h6>
@@ -999,7 +985,7 @@
                                                                 <a href="/{{ $role }}/print-data"
                                                                     style="background-color: rgb(0, 177, 0); color:white; border-radius:10px; width:150px;"
                                                                     class="btn btn-success">
-                                                                    <i class="fas fa-file-alt"></i>Export
+                                                                    <i class="fas fa-file-alt" style="margin-right: 5px"></i>Export
                                                                 </a>
                                                             </div>
                                                             <table id="example3" class="table table-bordered"
@@ -1018,6 +1004,8 @@
                                                                             Teridentifikasi</th>
                                                                         <th>Tindakan Yang
                                                                             Diperlukan</th>
+                                                                        <th style="width: 150px;">
+                                                                            Aksi</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -1027,17 +1015,16 @@
                                                                             <h6><b>1. Aset
                                                                                     Dengan
                                                                                     Kondisi Baik
-                                                                                    ({{ $pemeriksaan->where('kondisi', 'baik')->count() }})</b>
+                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'baik')->count()?? 0 }})</b>
                                                                             </h6>
                                                                         </td>
                                                                     </tr>
 
-
-                                                                    @if ($pemeriksaan->where('kondisi', 'baik')->count() > 0)
+                                                                    @if (($detailPemeriksaan->where('kondisi', 'baik')->count()?? 0) > 0)
                                                                         @php
                                                                             $no = 1;
                                                                         @endphp
-                                                                        @foreach ($pemeriksaan as $data)
+                                                                        @foreach ($detailPemeriksaan as $data)
                                                                             @if ($data->kondisi == 'baik')
                                                                                 <tr>
                                                                                     <td>{{ $no++ }}</td>
@@ -1055,6 +1042,38 @@
                                                                                     </td>
                                                                                     <td>{{ $data->tindakan_diperlukan }}
                                                                                     </td>
+                                                                                    <td>
+                                                                                        <div
+                                                                                            class="d-flex flex-column align-items-center">
+                                                                                            <div
+                                                                                                class="btn-group mb-2 card_edit_pemeriksaan">
+                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
+                                                                                                    type="button"
+                                                                                                    data-toggle="modal"
+                                                                                                    data-target="#UbahPemeriksaanModal"
+                                                                                                    style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
+                                                                                                    aria-expanded="false">
+                                                                                                    &nbsp;&nbsp;<i
+                                                                                                        class="fas fa-edit"></i>
+                                                                                                    Ubah
+                                                                                                </a>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="btn-group mb-2 card_hapus_barang">
+                                                                                                <div
+                                                                                                    class="btn-group btn-block">
+                                                                                                    <a onclick="$('#cover-spin').show(0)"
+                                                                                                        href="/{{ $role }}/aksi_hapus_barang"
+                                                                                                        class="btn btn-outline-secondary btn-block"
+                                                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
+                                                                                                        <i
+                                                                                                            class="fas fa-trash"></i>
+                                                                                                        Hapus
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </td>
                                                                                 </tr>
                                                                             @endif
                                                                         @endforeach
@@ -1066,8 +1085,6 @@
                                                                         </tr>
                                                                     @endif
 
-
-
                                                                     <tr>
                                                                         <td colspan="11"
                                                                             style="background-color: #CBF2D6">
@@ -1077,18 +1094,17 @@
                                                                                     Tidak
                                                                                     Memadai /
                                                                                     Rusak
-                                                                                    ({{ $pemeriksaan->where('kondisi', 'rusak')->count() }})</b>
+                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'rusak')->count() ?? 0 }})</b>
                                                                             </h6>
                                                                         </td>
                                                                     </tr>
 
-
-                                                                    @if ($pemeriksaan->where('kondisi', 'rusak')->count() > 0)
+                                                                    @if (($detailPemeriksaan->where('kondisi', 'rusak')->count()?? 0) > 0)
                                                                         @php
                                                                             $no = 1;
                                                                         @endphp
 
-                                                                        @foreach ($pemeriksaan as $data)
+                                                                        @foreach ($detailPemeriksaan as $data)
                                                                             @if ($data->kondisi == 'rusak')
                                                                                 <tr>
                                                                                     <td>{{ $no++ }}</td>
@@ -1106,6 +1122,38 @@
                                                                                     </td>
                                                                                     <td>{{ $data->tindakan_diperlukan }}
                                                                                     </td>
+                                                                                    <td>
+                                                                                        <div
+                                                                                            class="d-flex flex-column align-items-center">
+                                                                                            <div
+                                                                                                class="btn-group mb-2 card_edit_pemeriksaan">
+                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
+                                                                                                    type="button"
+                                                                                                    data-toggle="modal"
+                                                                                                    data-target="#UbahPemeriksaanModal"
+                                                                                                    style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
+                                                                                                    aria-expanded="false">
+                                                                                                    &nbsp;&nbsp;<i
+                                                                                                        class="fas fa-edit"></i>
+                                                                                                    Ubah
+                                                                                                </a>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="btn-group mb-2 card_hapus_barang">
+                                                                                                <div
+                                                                                                    class="btn-group btn-block">
+                                                                                                    <a onclick="$('#cover-spin').show(0)"
+                                                                                                        href="/{{ $role }}/aksi_hapus_barang"
+                                                                                                        class="btn btn-outline-secondary btn-block"
+                                                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
+                                                                                                        <i
+                                                                                                            class="fas fa-trash"></i>
+                                                                                                        Hapus
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </td>
                                                                                 </tr>
                                                                             @endif
                                                                         @endforeach
@@ -1117,10 +1165,6 @@
                                                                         </tr>
                                                                     @endif
 
-
-
-
-
                                                                     <tr>
                                                                         <td colspan="11"
                                                                             style="background-color: #CBF2D6">
@@ -1129,17 +1173,17 @@
                                                                                     Kondisi
                                                                                     Perlu
                                                                                     Perbaikan
-                                                                                    ({{ $pemeriksaan->where('kondisi', 'perlu service')->count() }})</b>
+                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'perlu service')->count()??0 }})</b>
                                                                             </h6>
                                                                         </td>
                                                                     </tr>
 
 
-                                                                    @if ($pemeriksaan->where('kondisi', 'perlu service')->count() > 0)
+                                                                    @if (($detailPemeriksaan->where('kondisi', 'perlu service')->count()??0) > 0)
                                                                         @php
                                                                             $no = 1;
                                                                         @endphp
-                                                                        @foreach ($pemeriksaan as $data)
+                                                                        @foreach ($detailPemeriksaan as $data)
                                                                             @if ($data->kondisi == 'perlu service')
                                                                                 <tr>
                                                                                     <td>{{ $no++ }}</td>
@@ -1156,6 +1200,38 @@
                                                                                     <td>{{ $data->masalah_teridentifikasi }}
                                                                                     </td>
                                                                                     <td>{{ $data->tindakan_diperlukan }}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <div
+                                                                                            class="d-flex flex-column align-items-center">
+                                                                                            <div
+                                                                                                class="btn-group mb-2 card_edit_pemeriksaan">
+                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
+                                                                                                    type="button"
+                                                                                                    data-toggle="modal"
+                                                                                                    data-target="#UbahPemeriksaanModal"
+                                                                                                    style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
+                                                                                                    aria-expanded="false">
+                                                                                                    &nbsp;&nbsp;<i
+                                                                                                        class="fas fa-edit"></i>
+                                                                                                    Ubah
+                                                                                                </a>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="btn-group mb-2 card_hapus_barang">
+                                                                                                <div
+                                                                                                    class="btn-group btn-block">
+                                                                                                    <a onclick="$('#cover-spin').show(0)"
+                                                                                                        href="/{{ $role }}/aksi_hapus_barang"
+                                                                                                        class="btn btn-outline-secondary btn-block"
+                                                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
+                                                                                                        <i
+                                                                                                            class="fas fa-trash"></i>
+                                                                                                        Hapus
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
                                                                                     </td>
                                                                                 </tr>
                                                                             @endif
@@ -1177,12 +1253,12 @@
                                                                                     Dengan
                                                                                     Kondisi
                                                                                     Hilang
-                                                                                    ({{ $pemeriksaan->where('kondisi', 'hilang')->count() }})</b>
+                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'hilang')->count()??0 }})</b>
                                                                             </h6>
                                                                         </td>
                                                                     </tr>
 
-                                                                    @if ($pemeriksaan->where('kondisi', 'hilang')->count() > 0)
+                                                                    @if (($detailPemeriksaan->where('kondisi', 'hilang')->count()??0) > 0)
                                                                         <tr>
                                                                             <td>{{ $no++ }}</td>
                                                                             <td>{{ $data->aset->kode_aset }}</td>
@@ -1195,6 +1271,37 @@
                                                                             <td>{{ $data->aset->tgl_perolehan }}</td>
                                                                             <td>{{ $data->masalah_teridentifikasi }}</td>
                                                                             <td>{{ $data->tindakan_diperlukan }}</td>
+                                                                            <td>
+                                                                                <div
+                                                                                    class="d-flex flex-column align-items-center">
+                                                                                    <div
+                                                                                        class="btn-group mb-2 card_edit_pemeriksaan">
+                                                                                        <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
+                                                                                            type="button"
+                                                                                            data-toggle="modal"
+                                                                                            data-target="#UbahPemeriksaanModal"
+                                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
+                                                                                            aria-expanded="false">
+                                                                                            &nbsp;&nbsp;<i
+                                                                                                class="fas fa-edit"></i>
+                                                                                            Ubah
+                                                                                        </a>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="btn-group mb-2 card_hapus_barang">
+                                                                                        <div class="btn-group btn-block">
+                                                                                            <a onclick="$('#cover-spin').show(0)"
+                                                                                                href="/{{ $role }}/aksi_hapus_barang"
+                                                                                                class="btn btn-outline-secondary btn-block"
+                                                                                                style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
+                                                                                                <i
+                                                                                                    class="fas fa-trash"></i>
+                                                                                                Hapus
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
                                                                         </tr>
                                                                     @else
                                                                         <tr>
@@ -1618,3 +1725,5 @@
     }
 </script>
 @endsection
+                                                                                        <h6 class="text-primary">0</h6>
+                                                                                        <h6 class="text-warning">0</h6>
