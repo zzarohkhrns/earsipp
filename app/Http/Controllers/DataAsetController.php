@@ -104,14 +104,21 @@ class DataAsetController extends Controller
         return view('data_aset.data_aset', compact('role', 'aset', 'kategori', 'pemeriksaan', 'pemeriksaan2', 'pemeriksaanGrouped', 'supervisor', 'kc'));
     }
 
-    public function detail($id)
+    public function detail_aset($id)
     {
         $role = 'pc';
         //$barang =Barang::with(['kontrolBarang', 'keluarMasukBarang'])->findOrFail($id);
         $kategori = DB::table('kategori')->get();
         $aset = Aset::with(['kategori_aset', 'detailPemeriksaanAset.pemeriksaanAset'])->findOrFail($id);
 
-        return view('data_aset.detail_aset', compact('role', 'aset', 'kategori'));
+        $detailPemeriksaan = DetailPemeriksaanAset::with([
+            'aset.kategori_aset',
+            'pemeriksaanAset.pcPengurus.pengguna',
+            'pemeriksaanAset.supervisor.pengguna',
+            'pemeriksaanAset.kc.pengguna'
+        ])->where('aset_id', $id)->get();
+
+        return view('data_aset.detail_aset', compact('role', 'aset', 'kategori', 'detailPemeriksaan'));
     }
 
     public function printKontrol()

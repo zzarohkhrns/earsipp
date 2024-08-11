@@ -221,7 +221,7 @@ Route::middleware('auth')->group(function () {
         //Route::post('/check-date', [DataAsetController::class, 'checkDate_Pemeriksaan'])->name('check-date');
         Route::post('/aset/data/update/{id}', [DataAsetController::class, 'update_data'])->name('aset.update');
         Route::post('/aset/data/delete/{id}', [DataAsetController::class, 'delete_data'])->name('aset.delete');
-        Route::get('/arsip/aset/detail/{id}', [DataAsetController::class, 'detail'])->name('detail_aset');
+        Route::get('/arsip/aset/detail/{id}', [DataAsetController::class, 'detail_aset'])->name('detail_aset');
         route::post('/arsip/aset/tambah_kontrol', [DataAsetController::class, 'store_kontrol'])->name('kontrol.store');
         Route::get('/print-kontrol', [DataAsetController::class, 'printKontrol'])->name('printKontrol');
         Route::get('/print-keluar', [DataAsetController::class, 'printKeluar'])->name('printKeluar');

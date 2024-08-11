@@ -219,34 +219,45 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr>
-                                                                    <td></td>
-                                                                    <td></td>
-                                                                    <td></td>
-                                                                    <td class="text-success"></td>
-                                                                    <td></td>
-                                                                    <td></td>
-                                                                    <td>
-                                                                        <div class="d-flex flex-column align-items-center">
-                                                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                                                <a onclick="$('#cover-spin').show(0)"
-                                                                                    href="/{{ $role }}/arsip/aset/detail_pemeriksaan"
-                                                                                    class="btn btn-outline-secondary"
-                                                                                    style="display: block; border-radius: 10px; width: 150px; padding: 10px; margin: 5px 0;">
-                                                                                    Detail
-                                                                                </a>
-                                                                            </div>
-                                                                            <div
-                                                                                class="btn-group mb-2 card_pemeriksaan btn-block">
-                                                                                <a href="/{{ $role }}/print-data"
-                                                                                    class="btn btn-outline-secondary"
-                                                                                    style="display: block; border-radius: 10px; width: 150px; padding: 10px; margin: 5px 0;">
-                                                                                    <i class="fas fa-file-alt"></i> Export
-                                                                                </a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
+                                                                @if ($detailPemeriksaan->isNotEmpty())
+                                                                @php
+                                                                        $no = 1;
+                                                                        @endphp
+                                                                        @foreach ($detailPemeriksaan as $item)
+                                                                        <tr>
+                                                                            <td>{{ $no++ }}</td>
+                                                                            <td>{{ $item->pemeriksaanAset->tanggal_pemeriksaan }}</td>
+                                                                            <td>{{ $item->kondisi }}</td>
+                                                                            @if ($item->status_aset == 'aktif')
+                                                                            <td class="text-success">Aktif</td>
+                                                                            @else
+                                                                            <td class="text-danger">Non aktif</td>
+                                                                            @endif
+                                                                            <td>{{ $item->masalah_teridentifikasi }}</td>
+                                                                            <td>{{ $item->tindakan_diperlukan }}</td>
+                                                                            <td>
+                                                                                <div class="d-flex flex-column align-items-center">
+                                                                                    <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                                                        <a onclick="$('#cover-spin').show(0)"
+                                                                                            href="/{{ $role }}/arsip/aset/detail_pemeriksaan"
+                                                                                            class="btn btn-outline-secondary"
+                                                                                            style="display: block; border-radius: 10px; width: 150px; padding: 10px; margin: 5px 0;">
+                                                                                            Detail
+                                                                                        </a>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="btn-group mb-2 card_pemeriksaan btn-block">
+                                                                                        <a href="/{{ $role }}/print-data"
+                                                                                            class="btn btn-outline-secondary"
+                                                                                            style="display: block; border-radius: 10px; width: 150px; padding: 10px; margin: 5px 0;">
+                                                                                            <i class="fas fa-file-alt"></i> Export
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                        @endforeach
+                                                                    @endif
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -450,7 +461,7 @@
                 <div class="modal-body">
                     <form id="myForm" method="POST" action="/{{ $role }}/aset/data/update/{{ $aset->aset_id ?? '0'}}">
                         @csrf
-                        <div class="form-group">
+                        <div class="form-group"> 
                             <label for="kode">Kode Aset :</label>
                             <input type="text" value="{{ $aset->aset_id ?? '0' }}" class="form-control" id="aset_id"
                                 name="aset_id" hidden>
