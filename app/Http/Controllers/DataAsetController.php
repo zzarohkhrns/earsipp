@@ -260,16 +260,24 @@ class DataAsetController extends Controller
             // Hapus detail pemeriksaan aset yang berelasi
             $detailPemeriksaan = DetailPemeriksaanAset::where('aset_id', $id)->get();
 
-            foreach ($detailPemeriksaan as $detail) {
-                $pemeriksaanAset_id = $detail->id_pemeriksaan_aset;
-                $pemeriksaanAset = PemeriksaanAset::find($pemeriksaanAset_id);
-
-                if ($pemeriksaanAset) {
-                    $pemeriksaanAset->delete();
+            if($detailPemeriksaan)
+            {
+                foreach ($detailPemeriksaan as $detail)
+                {
+                    $detail->delete();
                 }
-
-                $detail->delete();
             }
+            $aset->delete();
+            // foreach ($detailPemeriksaan as $detail) {
+            //     $pemeriksaanAset_id = $detail->id_pemeriksaan_aset;
+            //     $pemeriksaanAset = PemeriksaanAset::find($pemeriksaanAset_id);
+
+            //     if ($pemeriksaanAset) {
+            //         $pemeriksaanAset->delete();
+            //     }
+
+            //     $detail->delete();
+            // }
 
             // // Hapus keluar masuk aset yang berelasi
             // $keluarMasukAset = KeluarMasukAset::where('aset_id', $id)->get();
@@ -278,14 +286,11 @@ class DataAsetController extends Controller
             //     $keluarMasuk->delete();
             // }
 
-            // Hapus data aset
-            $aset->delete();
-
             // Redirect dengan pesan sukses
-            return redirect()->back()->back()->with('success', 'Berhasil menghapus data.');
+            return redirect()->route('pc.data_aset')->with('success', 'Berhasil menghapus data.');
         } else {
             // Redirect dengan pesan error jika data tidak ditemukan
-            return redirect()->route('data_aset')->with('error', 'Data aset tidak ditemukan.');
+            return redirect()->route('pc.data_aset')->with('error', 'Data aset tidak ditemukan.');
         }
     }
 

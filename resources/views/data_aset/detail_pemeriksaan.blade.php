@@ -1004,8 +1004,6 @@
                                                                             Teridentifikasi</th>
                                                                         <th>Tindakan Yang
                                                                             Diperlukan</th>
-                                                                        <th style="width: 150px;">
-                                                                            Aksi</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -1041,38 +1039,6 @@
                                                                                     <td>{{ $data->masalah_teridentifikasi }}
                                                                                     </td>
                                                                                     <td>{{ $data->tindakan_diperlukan }}
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <div
-                                                                                            class="d-flex flex-column align-items-center">
-                                                                                            <div
-                                                                                                class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
-                                                                                                    type="button"
-                                                                                                    data-toggle="modal"
-                                                                                                    data-target="#UbahPemeriksaanModal"
-                                                                                                    style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
-                                                                                                    aria-expanded="false">
-                                                                                                    &nbsp;&nbsp;<i
-                                                                                                        class="fas fa-edit"></i>
-                                                                                                    Ubah
-                                                                                                </a>
-                                                                                            </div>
-                                                                                            <div
-                                                                                                class="btn-group mb-2 card_hapus_barang">
-                                                                                                <div
-                                                                                                    class="btn-group btn-block">
-                                                                                                    <a onclick="$('#cover-spin').show(0)"
-                                                                                                        href="/{{ $role }}/aksi_hapus_barang"
-                                                                                                        class="btn btn-outline-secondary btn-block"
-                                                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
-                                                                                                        <i
-                                                                                                            class="fas fa-trash"></i>
-                                                                                                        Hapus
-                                                                                                    </a>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
                                                                                     </td>
                                                                                 </tr>
                                                                             @endif

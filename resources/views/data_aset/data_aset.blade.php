@@ -285,7 +285,7 @@
                                                         style="width: 150px; margin-bottom: 10px;">
                                                         <div class="btn-group mb-2 mb-xl-0 btn-block">
                                                             <button type="button" class="btn btn-success"
-                                                                data-toggle="modal" data-target="#pemeriksaanModal"
+                                                                data-toggle="modal" data-target="#tambahModal"
                                                                 style="background-color:  rgb(0, 177, 0); color: white; border-radius:10px;">
                                                                 <i class="fas fa-plus-circle"></i>
                                                                 <span>Tambah </span>
@@ -699,12 +699,12 @@
                                                                             <table id="example">
                                                                                 <tr>
                                                                                     <td>Aktif</td>
-                                                                                    <td>{{  $aktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'aktif')->count() }}</td>
-                                                                                    <td class="text-danger">{{ $totalDetailPemeriksaan > 0 ? round(($aktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%</td>
+                                                                                    <td class="text-success">{{  $aktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'aktif')->count() }}</td>
+                                                                                    <td class="text-success">{{ $totalDetailPemeriksaan > 0 ? round(($aktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td>Non Aktif</td>
-                                                                                    <td>{{  $nonAktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'non aktif')->count() }}</td>
+                                                                                    <td class="text-danger">{{  $nonAktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'non aktif')->count() }}</td>
                                                                                     <td class="text-danger">{{ $totalDetailPemeriksaan > 0 ? round(($nonAktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%</td>
                                                                                 </tr>
                                                                             </table>
