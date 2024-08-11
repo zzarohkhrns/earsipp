@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 
-class Aset extends Model
+class AsetGaKepake extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
     protected $guarded = ['id'];

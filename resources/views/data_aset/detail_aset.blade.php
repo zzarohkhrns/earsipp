@@ -453,23 +453,23 @@
                         <div class="form-group">
                             <label for="kode">Kode Aset :</label>
                             <input type="text" value="{{ $aset->aset_id ?? '0' }}" class="form-control" id="aset_id"
-                                name="aset_id" readonly>
+                                name="aset_id" hidden>
                             <input type="text" value="{{ $aset->kode_aset ?? '0' }}" class="form-control" id="kode_aset"
                                 name="kode_aset" readonly>
                         </div>
                         <div class="form-group">
                             <label for="tgl_beli">Tgl Perolehan :</label>
-                            <input type="date" value="{{ $aset->tgl_perolehan ?? '0' }}" class="form-control"
+                            <input type="date" value="{{ $aset->tgl_perolehan ?? '-' }}" class="form-control"
                                 id="tgl_perolehan" name="tgl_perolehan">
                         </div>
                         <div class="form-group">
                             <label for="asal">Asal Perolehan :</label>
-                            <input type="text" class="form-control" value="{{ $aset->asal_perolehan ?? '0'}}"
+                            <input type="text" class="form-control" value="{{ $aset->asal_perolehan ?? '-'}}"
                                 id="asal_perolehan" name="asal_perolehan">
                         </div>
                         <div class="form-group">
                             <label for="name">Nama :</label>
-                            <input type="text" class="form-control" value="{{ $aset->nama_aset ?? '0'}}" id="nama_aset"
+                            <input type="text" class="form-control" value="{{ $aset->nama_aset ?? '-'}}" id="nama_aset"
                                 name="nama_aset">
                         </div>
                         <div class="form-group">
@@ -477,9 +477,9 @@
                             <select class="form-control" id="kategori" name="kategori"
                                 onchange="toggleNewCategoryForm()">
                                 @foreach ($kategori as $kat)
-                                    <option value="{{ $kat->id_kategori ?? '0'}}"
+                                    <option value="{{ $kat->id_kategori ?? '-'}}"
                                         @if ($aset->id_kategori == $kat->id_kategori) selected @endif>
-                                        {{ $kat->kategori ?? '0'}}</option>
+                                        {{ $kat->kategori ?? '-'}}</option>
                                 @endforeach
                                 <option value="others">Lainnya</option>
                             </select>
@@ -493,17 +493,17 @@
                         </div>
                         <div class="form-grPoup">
                             <label for="satuan">Satuan :</label>
-                            <input type="text" class="form-control" value="{{ $aset->satuan ?? '0' }}" id="satuan"
+                            <input type="text" class="form-control" value="{{ $aset->satuan ?? '-' }}" id="satuan"
                                 name="satuan">
                         </div>
                         <div class="form-group">
                             <label for="lokasi">Lokasi Penyimpanan :</label>
                             <input type="text" class="form-control" id="lokasi"
-                                value="{{ $aset->lokasi_penyimpanan ?? '0'}}" name="lokasi_penyimpanan">
+                                value="{{ $aset->lokasi_penyimpanan ?? '-'}}" name="lokasi_penyimpanan">
                         </div>
                         <div class="form-group">
                             <label for="spesifikasi">Spesifikasi/Deskripsi :</label>
-                            <input type="text" class="form-control" value="{{ $aset->spesifikasi ?? '0'}}"
+                            <input type="text" class="form-control" value="{{ $aset->spesifikasi ?? '-'}}"
                                 id="spesifikasi" name="spesifikasi">
                         </div>
                         <button type="submit" class="btn btn-success">Simpan</button>

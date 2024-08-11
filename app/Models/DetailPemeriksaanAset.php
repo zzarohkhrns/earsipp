@@ -11,6 +11,7 @@ class DetailPemeriksaanAset extends Model
     protected $primaryKey = 'id_detail_pemeriksaan_aset';
     public $incrementing = false;
     protected $keyType = 'string';
+    protected $fillable = ['id_detail_pemeriksaan_aset', 'id_pemeriksaan_aset', 'aset_id', 'kondisi', 'status_aset', 'masalah_teridentifikasi', 'tindakan_diperlukan', ];
 
     public function pemeriksaanAset()
     {

@@ -215,8 +215,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/arsip/aset/data', [DataAsetController::class, 'data'])->name('data_aset');
         Route::get('/arsip/aset/detail_pemeriksaan/{id}/{tgl}', [DataAsetController::class, 'detail_pemeriksaan'])->name('detail_pemeriksaan');
         Route::post('/aset/data/tambah', [DataAsetController::class, 'store_data'])->name('aset.store');
-        Route::post('/detail_pemeriksaan/store', [DataAsetController::class, 'store_detail_pemeriksaan'])->name('detail_pemeriksaan.store');
+        Route::post('/detail_pemeriksaan/store/{id}', [DataAsetController::class, 'store_detail_pemeriksaan'])->name('detail_pemeriksaan.store');
         Route::post('/pemeriksaan/store', [DataAsetController::class, 'store_pemeriksaan'])->name('pemeriksaan.store');
+        Route::get('/aset/data/{id}', [DataAsetController::class, 'getDataAset']);
         //Route::post('/check-date', [DataAsetController::class, 'checkDate_Pemeriksaan'])->name('check-date');
         Route::post('/aset/data/update/{id}', [DataAsetController::class, 'update_data'])->name('aset.update');
         Route::post('/aset/data/delete/{id}', [DataAsetController::class, 'delete_data'])->name('aset.delete');

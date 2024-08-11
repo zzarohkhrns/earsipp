@@ -81,23 +81,30 @@
 
         /* Mengatur style tabel */
         #example {
-            width: 250px; /* Menyesuaikan lebar tabel dengan konten */
-            border-collapse: collapse; /* Menghapus ruang antar border */
-            margin: 20px 0; /* Menambahkan margin atas dan bawah tabel */
+            width: 250px;
+            /* Menyesuaikan lebar tabel dengan konten */
+            border-collapse: collapse;
+            /* Menghapus ruang antar border */
+            margin: 20px 0;
+            /* Menambahkan margin atas dan bawah tabel */
         }
 
         /* Menghapus border pada sel tabel */
         #example td {
-            border: none; /* Menghapus border */
-            padding: 8px 12px; /* Menambahkan padding pada sel */
-            font-size: 16px; /* Mengatur ukuran font */
-          /* Menyelaraskan teks ke tengah */
+            border: none;
+            /* Menghapus border */
+            padding: 8px 12px;
+            /* Menambahkan padding pada sel */
+            font-size: 16px;
+            /* Mengatur ukuran font */
+            /* Menyelaraskan teks ke tengah */
         }
 
         /* Style tambahan (opsional) */
-        #example tr:nth-child(even) {
-            background-color: #f9f9f9; /* Warna latar belakang berbeda untuk baris genap */
-        }
+        /* #example tr:nth-child(even) {
+            background-color: #f9f9f9;
+            /* Warna latar belakang berbeda untuk baris genap
+        } */
     </style>
 
     <div class="content-header">
@@ -616,6 +623,9 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @php
+                                                    $no = 1;
+                                                @endphp
                                                 @foreach ($pemeriksaanGrouped as $groupKey => $details)
                                                     @php
                                                         // Memisahkan nama pemeriksa dan tanggal pemeriksaan
@@ -624,53 +634,53 @@
                                                     @foreach ($details as $key => $detail)
                                                         <tr>
                                                             @if ($key == 0)
-                                                                <td>{{ $loop->iteration }}</td>
+                                                                <td>{{ $no++ }}</td>
                                                                 <td>{{ $detail->tanggal_pemeriksaan }}</td>
                                                                 <td><b>
-                                                                    {{
-                                                                        $namaPemeriksa
-                                                                    }}
-                                                                </b>
+                                                                        {{ $namaPemeriksa }}
+                                                                    </b>
                                                                     <br>
-                                                                    {{ 
-                                                                        $detail->pcPengurus->pengurusJabatan->jabatan
-                                                                    }}
+                                                                    {{ $detail->pcPengurus->pengurusJabatan->jabatan }}
                                                                 </td>
                                                                 <td>
                                                                     @if ($detail->detailPemeriksaanAset->isNotEmpty())
-                                                                        {{ $detail->detailPemeriksaanAset->count() }} Aset
+                                                                        {{ $totalDetailPemeriksaan = $detail->detailPemeriksaanAset->count() }}
+                                                                        Aset
                                                                     @else
                                                                         -
                                                                     @endif
                                                                 </td>
                                                                 <td>
                                                                     @if ($detail->detailPemeriksaanAset->isNotEmpty())
-                                                                        {{-- <ul>
-                                                                            @foreach ($detail->detailPemeriksaanAset as $item)
-                                                                                <li>{{ $item->kondisi }}</li>
-                                                                            @endforeach
-                                                                        </ul> --}}
                                                                         <div>
                                                                             <table id="example">
                                                                                 <tr>
                                                                                     <td>baik</td>
-                                                                                    <td>10</td>
-                                                                                    <td>10</td>
+                                                                                    <td>{{ $baikCount = $detail->detailPemeriksaanAset->where('kondisi', 'baik')->count() }}
+                                                                                    </td>
+                                                                                    <td>{{ $totalDetailPemeriksaan > 0 ? round(($baikCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
+                                                                                    </td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td>rusak</td>
-                                                                                    <td>10</td>
-                                                                                    <td>10</td>
+                                                                                    <td class="text-primary">{{ $rusakCount = $detail->detailPemeriksaanAset->where('kondisi', 'rusak')->count() }}
+                                                                                    </td>
+                                                                                    <td class="text-primary">{{ $totalDetailPemeriksaan > 0 ? round(($rusakCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
+                                                                                    </td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td>perlu perbaikan</td>
-                                                                                    <td>10</td>
-                                                                                    <td>10</td>
+                                                                                    <td class="text-warning">{{ $serviceCount = $detail->detailPemeriksaanAset->where('kondisi', 'perlu service')->count() }}
+                                                                                    </td>
+                                                                                    <td class="text-warning">{{ $totalDetailPemeriksaan > 0 ? round(($serviceCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
+                                                                                    </td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td>hilang</td>
-                                                                                    <td>10</td>
-                                                                                    <td>10</td>
+                                                                                    <td class="text-danger">{{ $hilangCount = $detail->detailPemeriksaanAset->where('kondisi', 'hilang')->count() }}
+                                                                                    </td>
+                                                                                    <td class="text-danger">{{ $totalDetailPemeriksaan > 0 ? round(($hilangCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
+                                                                                    </td>
                                                                                 </tr>
                                                                             </table>
                                                                         </div>
@@ -680,17 +690,52 @@
                                                                 </td>
                                                                 <td>
                                                                     @if ($detail->detailPemeriksaanAset->isNotEmpty())
-                                                                        <ul>
+                                                                        {{-- <ul>
                                                                             @foreach ($detail->detailPemeriksaanAset as $item)
                                                                                 <li>{{ $item->status_aset }}</li>
                                                                             @endforeach
-                                                                        </ul>
+                                                                        </ul> --}}
+                                                                        <div>
+                                                                            <table id="example">
+                                                                                <tr>
+                                                                                    <td>Aktif</td>
+                                                                                    <td>{{  $aktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'aktif')->count() }}</td>
+                                                                                    <td class="text-danger">{{ $totalDetailPemeriksaan > 0 ? round(($aktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Non Aktif</td>
+                                                                                    <td>{{  $nonAktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'non aktif')->count() }}</td>
+                                                                                    <td class="text-danger">{{ $totalDetailPemeriksaan > 0 ? round(($nonAktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%</td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
                                                                     @else
                                                                         -
                                                                     @endif
                                                                 </td>
-                                                                <td>{{ $detail->status_spv }}</td>
-                                                                <td>{{ $detail->status_kc }}</td>
+                                                                <td>
+
+                                                                        <div>
+                                                                            @if ($detail->status_spv == 'mengetahui')
+                                                                            <div class="text-success">Mengetahui</div>
+                                                                            @else
+                                                                            <div class="text-danger">Belum Mengetahui</div>                                                                                
+                                                                            @endif
+                                                                            <div><b>{{ $detail->supervisor->pengguna->nama }}</b></div>
+                                                                            <div>{{ $detail->supervisor->pengurusJabatan->jabatan }}</div>
+                                                                        </div>
+                                                                </td>
+                                                                <td>
+                                                                        <div>
+                                                                            @if ($detail->status_kc == 'mengetahui')
+                                                                            <div class="text-success">Mengetahui</div>
+                                                                            @else
+                                                                            <div class="text-danger">Belum Mengetahui</div>                                                                                
+                                                                            @endif
+                                                                            <div><b>{{ $detail->kc->pengguna->nama }}</b></div>
+                                                                            <div>{{ $detail->kc->pengurusJabatan->jabatan }}</div>
+                                                                        </div>
+                                                                </td>
                                                                 <td>
                                                                     <div
                                                                         class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
@@ -962,128 +1007,55 @@
                                 Pemeriksaan</label>
                             <input type="date" id="tanggal_pemeriksaan" name="tanggal_pemeriksaan"
                                 class="form-control custom-input" required>
-                        <div class="form-group">
-                            <label for="manajemen_eksekutif" style="font-weight: bold; font-size: 14px;">Manajemen
-                                Eksekutif</label>
-                            <input type="text" class="form-control" id="manajemen_eksekutif"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
-                                value="Nu-Care Lazisnu Cilacap" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="pemeriksa" style="font-weight: bold; font-size: 14px;">Pemeriksa</label>
-                            <input type="text" class="form-control" id="pemeriksa" name="nama_pemeriksa"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
-                                value="{{ Auth::user()->nama }}" readonly>
-                            <input type="text" class="form-control" id="pemeriksa" name="id_pemeriksa"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" name="id_pemeriksa"
-                                value="{{ Auth::user()->gocap_id_pc_pengurus }}" hidden>
-                        </div>
-                        <div class="form-group">
-                            <label for="supervisor" style="font-weight: bold; font-size: 14px;">Supervisor</label>
-                            <input type="text" class="form-control" id="supervisor" name="nama"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
-                                value="{{ $supervisor->nama_supervisor }}" readonly>
-                            <input type="text" class="form-control" id="supervisor" name="id_supervisor"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" name="id_supervisor"
-                                value="{{ $supervisor->id_supervisor }}" hidden>
-                        </div>
-                        <div class="form-group">
-                            <label for="kepala_cabang" style="font-weight: bold; font-size: 14px;">Kepala Cabang</label>
-                            <input type="text" class="form-control" id="kepala_cabang"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
-                                value="{{ $kc->nama_kc }}" readonly>
-                            <input type="text" class="form-control" id="kepala_cabang"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" name="id_kc"
-                                value="{{ $kc->id_kc }}" hidden>
-                        </div>
-                        <div class="alert alert-info"
-                            style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; margin-top: 15px;">
-                            <strong>INFORMASI</strong><br>Setelah berhasil menambahkan pemeriksaan, anda wajib melengkapi
-                            data pemeriksaan aset.
-                        </div>
-                        <div class="modal-footer" style="border-top: none; padding-top: 0;">
-                            <button type="submit" class="btn btn-success">Simpan</button>
-                        </div>
+                            <div class="form-group">
+                                <label for="manajemen_eksekutif" style="font-weight: bold; font-size: 14px;">Manajemen
+                                    Eksekutif</label>
+                                <input type="text" class="form-control" id="manajemen_eksekutif"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
+                                    value="Nu-Care Lazisnu Cilacap" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="pemeriksa" style="font-weight: bold; font-size: 14px;">Pemeriksa</label>
+                                <input type="text" class="form-control" id="pemeriksa" name="nama_pemeriksa"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
+                                    value="{{ Auth::user()->nama }}" readonly>
+                                <input type="text" class="form-control" id="pemeriksa" name="id_pemeriksa"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" name="id_pemeriksa"
+                                    value="{{ Auth::user()->gocap_id_pc_pengurus }}" hidden>
+                            </div>
+                            <div class="form-group">
+                                <label for="supervisor" style="font-weight: bold; font-size: 14px;">Supervisor</label>
+                                <input type="text" class="form-control" id="supervisor" name="nama"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
+                                    value="{{ $supervisor->nama_supervisor }}" readonly>
+                                <input type="text" class="form-control" id="supervisor" name="id_supervisor"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" name="id_supervisor"
+                                    value="{{ $supervisor->id_supervisor }}" hidden>
+                            </div>
+                            <div class="form-group">
+                                <label for="kepala_cabang" style="font-weight: bold; font-size: 14px;">Kepala
+                                    Cabang</label>
+                                <input type="text" class="form-control" id="kepala_cabang"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
+                                    value="{{ $kc->nama_kc }}" readonly>
+                                <input type="text" class="form-control" id="kepala_cabang"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" name="id_kc"
+                                    value="{{ $kc->id_kc }}" hidden>
+                            </div>
+                            <div class="alert alert-info"
+                                style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; margin-top: 15px;">
+                                <strong>INFORMASI</strong><br>Setelah berhasil menambahkan pemeriksaan, anda wajib
+                                melengkapi
+                                data pemeriksaan aset.
+                            </div>
+                            <div class="modal-footer" style="border-top: none; padding-top: 0;">
+                                <button type="submit" class="btn btn-success">Simpan</button>
+                            </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
-
-
-
-    {{-- modal tambah data pemeriksaan barang
-    <div class="modal fade" id="TambahPemeriksaanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Tambah Data Pemeriksaan</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" style="padding: 1rem;">
-                    <form>
-                        <div class="form-group">
-                            <label for="nama_aset" style="font-weight: bold; font-size: 14px;">Nama Aset</label>
-                            <input type="text" class="form-control" id="nama_aset"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
-                        </div>
-                        <div class="form-group">
-                            <label for="kategori" style="font-weight: bold; font-size: 14px;">Kategori</label>
-                            <input type="text" class="form-control" id="kategori"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
-                        </div>
-                        <div class="form-group">
-                            <label for="lokasi_aset" style="font-weight: bold; font-size: 14px;">Lokasi Aset</label>
-                            <input type="text" class="form-control" id="lokasi_aset"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
-                        </div>
-                        <div class="form-group">
-                            <label for="tgl_pembelian" style="font-weight: bold; font-size: 14px;">Tgl Pembelian</label>
-                            <input type="text" class="form-control" id="tgl_pembelian"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
-                        </div>
-                        <div class="form-group">
-                            <label style="font-weight: bold; font-size: 14px;">Status</label><br>
-                            <div style="display: flex; align-items: center;">
-                                <input type="radio" id="aktif" name="status" value="aktif" checked
-                                    style="margin-right: 5px;">
-                                <label for="aktif" style="margin-right: 20px;">Aktif</label>
-                                <input type="radio" id="nonaktif" name="status" value="nonaktif"
-                                    style="margin-right: 5px;">
-                                <label for="nonaktif">Non Aktif</label>
-                            </div>
-                        </div>
-                        <label for="kategori">Kondisi</label>
-                        <select class="form-control" id="kategori" name="kategori" onchange="toggleNewCategoryForm()">
-                            <option value="">Pilih Kondisi</option>
-                            <option value="Baik">Baik</option>
-                            <option value="Tidak Memadai (Rusak)">Tidak Memadai (Rusak)</option>
-                            <option value="Perlu Perbaikan">Perlu Perbaikan</option>
-                            <option value="Hilang">Hilang</option>
-                        </select>
-                        <div class="form-group">
-                            <label for="masalah" style="font-weight: bold; font-size: 14px;">Masalah
-                                Teridentifikasi</label>
-                            <textarea class="form-control" id="masalah" rows="3"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="tindakan" style="font-weight: bold; font-size: 14px;">Tindakan Yang
-                                Diperlukan</label>
-                            <textarea class="form-control" id="tindakan" rows="3"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-success"
-                            style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 
 @endsection
 

@@ -55,7 +55,8 @@ class DataAsetController extends Controller
             'supervisor.pengguna',
             'kc.pengguna'
         ])->get();
-
+        
+        
         // Mengelompokkan berdasarkan nama pemeriksa dan tanggal_pemeriksaan dan memilih pemeriksaan terakhir untuk aset yang sama
         $pemeriksaanGrouped = $pemeriksaan2->groupBy(function ($item) {
             return $item->pcPengurus->pengguna->nama .'-' . $item->tanggal_pemeriksaan;
@@ -214,6 +215,8 @@ class DataAsetController extends Controller
         $kategori = DB::table('kategori')
             ->where('id_kategori', $request->kategori)
             ->first();
+        
+        
 
         if (!$kategori) {
             return redirect()->back()->with('error', 'Gagal menemukan kategori.');
@@ -223,19 +226,16 @@ class DataAsetController extends Controller
 
         try {
             // Find the aset by aset_id
-            $aset = Aset::findOrFail($request->aset_id);
-
-            // Update the aset data
-            $aset->update([
-                'kode_aset' => $request->kode_aset,
-                'tgl_perolehan' => $request->tgl_perolehan,
-                'nama_aset' => $request->nama_aset,
-                'id_kategori' => $kategori_id,
-                'satuan' => $request->satuan,
-                'asal_perolehan' => $request->asal_perolehan,
-                'lokasi_penyimpanan' => $request->lokasi_penyimpanan,
-                'spesifikasi' => $request->spesifikasi,
-            ]);
+            $aset = Aset::findOrFail($id);
+            $aset->kode_aset = $request->kode_aset;
+            $aset->tgl_perolehan = $request->tgl_perolehan;
+            $aset->asal_perolehan = $request->asal_perolehan;
+            $aset->nama_aset = $request->nama_aset;
+            $aset->id_kategori = $request->kategori;
+            $aset->satuan = $request->satuan;
+            $aset->lokasi_penyimpanan = $request->lokasi_penyimpanan;
+            $aset->spesifikasi = $request->spesifikasi;
+            $aset->save();
 
             return redirect()->back()->with('success', 'Data berhasil diupdate.');
         } catch (\Exception $e) {
@@ -393,12 +393,27 @@ class DataAsetController extends Controller
         } else {
             $jumlahAset = 0; // Set ke 0 jika tidak ada detail pemeriksaan ditemukan
         }
+
+        $aset = Aset::all();
     
         // Mengambil semua kategori
         $kategori = Kategori::all();
     
-        return view('data_aset.detail_pemeriksaan', compact('role', 'detailPemeriksaan', 'jumlahAset', 'pemeriksaanAset', 'kategori'));
+        return view('data_aset.detail_pemeriksaan', compact('role', 'detailPemeriksaan', 'jumlahAset', 'pemeriksaanAset', 'kategori', 'aset'));
     }
+
+    public function getDataAset($id)
+    {
+        $aset = Aset::with('kategori_aset')->where('aset_id', $id)->get();
+
+        // Memastikan data yang dikembalikan benar
+        if ($aset) {
+            return response()->json($aset);
+        } else {
+            return response()->json(['message' => 'Aset not found'], 404);
+        }
+    }
+
 
     // public function checkDate_Pemeriksaan(Request $request)
     // {
@@ -498,22 +513,27 @@ class DataAsetController extends Controller
         }
     }
 
-    public function store_detail_pemeriksaan(Request $request)
+    public function store_detail_pemeriksaan(Request $request, $id)
     {
         // Validasi input
-        $validatedData = $request->validate([
-            'nama_aset' => 'required|string|max:255',
-            'kategori' => 'required|string|max:255',
-            'lokasi_aset' => 'required|string|max:255',
-            'tgl_pembelian' => 'required|date',
-            'status' => 'required|in:aktif,nonaktif',
+        $request->validate([
+            'aset' => 'required',
+            'status_aset' => 'required|in:aktif,non aktif',
             'kondisi' => 'required|string|max:255',
-            'masalah' => 'nullable|string',
-            'tindakan' => 'nullable|string',
+            'masalah_teridentifikasi' => 'required|string',
+            'tindakan_diperlukan' => 'required|string',
         ]);
 
         // Simpan data ke database
-        DetailPemeriksaanAset::create([]);
+        DetailPemeriksaanAset::create([
+            'id_detail_pemeriksaan_aset' => (string) Str::uuid(), 
+            'id_pemeriksaan_aset' => $id,
+            'aset_id' => $request->aset,
+            'kondisi' => $request->kondisi,
+            'status_aset' => $request->status_aset,
+            'masalah_teridentifikasi' => $request->masalah_teridentifikasi,
+            'tindakan_diperlukan' => $request->tindakan_diperlukan,
+        ]);
 
         // Redirect atau berikan response sukses
         return redirect()->back()->with('success', 'Data pemeriksaan berhasil ditambahkan.');

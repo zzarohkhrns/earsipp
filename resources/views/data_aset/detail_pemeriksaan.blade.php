@@ -251,7 +251,7 @@
                                                                                     <th style="width:20%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
                                                                                         <h6>
-                                                                                            {{ ($detailPemeriksaan->where('kondisi', 'baik')->count() / $jumlahAset) * 100 }}%
+                                                                                            {{ round(($detailPemeriksaan->where('kondisi', 'baik')->count() / $jumlahAset) * 100, 2) }}%
                                                                                         </h6>
                                                                                         @else
                                                                                         0
@@ -273,7 +273,7 @@
                                                                                     <th style="width:20%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
                                                                                         <h6 class="text-primary">
-                                                                                            {{ ($detailPemeriksaan->where('kondisi', 'rusak')->count() / $jumlahAset) * 100 }}%
+                                                                                            {{ round(($detailPemeriksaan->where('kondisi', 'rusak')->count() / $jumlahAset) * 100, 2) }}%
                                                                                         </h6>
                                                                                         @else
                                                                                         <h6 class="text-primary">0</h6>
@@ -295,7 +295,7 @@
                                                                                     <th style="width:20%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
                                                                                         <h6 class="text-warning">
-                                                                                            {{ ($detailPemeriksaan->where('kondisi', 'perlu service')->count() / $jumlahAset) * 100 }}%
+                                                                                            {{ round(($detailPemeriksaan->where('kondisi', 'perlu service')->count() / $jumlahAset) * 100, 2) }}%
                                                                                         </h6>
                                                                                         @else
                                                                                         <h6 class="text-warning">0</h6>
@@ -317,7 +317,7 @@
                                                                                     <th style="width:20%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
                                                                                         <h6 class="text-danger">
-                                                                                            {{ ($detailPemeriksaan->where('kondisi', 'hilang')->count() / $jumlahAset) * 100 }}%
+                                                                                            {{ round(($detailPemeriksaan->where('kondisi', 'hilang')->count() / $jumlahAset) * 100, 2) }}%
                                                                                         </h6>
                                                                                         @else
                                                                                         <h6 class="text-danger">0</h6>
@@ -345,7 +345,7 @@
                                                                                     </th>
                                                                                     <th style="width:25%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
-                                                                                        <h6>{{ ($detailPemeriksaan->where('status_aset', 'aktif')->count() / $jumlahAset) * 100 }}%
+                                                                                        <h6>{{ round(($detailPemeriksaan->where('status_aset', 'aktif')->count() / $jumlahAset) * 100, 2) }}%
                                                                                         </h6>
                                                                                         @else
                                                                                         0
@@ -366,7 +366,7 @@
                                                                                     </th>
                                                                                     <th style="width:25%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
-                                                                                        <h6 class="text-danger">{{ ($detailPemeriksaan->where('status_aset', 'non aktif')->count() / $jumlahAset) * 100 }}%
+                                                                                        <h6 class="text-danger">{{ round(($detailPemeriksaan->where('status_aset', 'non aktif')->count() / $jumlahAset) * 100, 2) }}%
                                                                                         </h6>
                                                                                         @else
                                                                                         <h6 class="text-danger">0</h6>
@@ -1446,70 +1446,62 @@
                 </button>
             </div>
             <div class="modal-body" style="padding: 1rem;">
-                <form>
+                <form method="POST" action="{{ route('pc.detail_pemeriksaan.store', $pemeriksaanAset->id_pemeriksaan_aset) }}">
+                    @csrf
                     <div class="form-group">
                         <label for="nama_aset" style="font-weight: bold; font-size: 14px;">Nama Aset</label>
-                        <input type="text" class="form-control" id="nama_aset"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        <select class="form-control" id="aset" name="aset"
+                            onchange="toggleNewCategoryForm()">
+                            <option value="">Pilih Aset</option>
+                            @foreach ($aset as $data)
+                                <option value="{{ $data->aset_id }}">{{ $data->nama_aset }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="kategori">Kategori :</label>
-                        <select class="form-control" id="kategori" name="kategori"
-                            onchange="toggleNewCategoryForm()">
-                            <option value="">Pilih Kategori</option>
-                            @foreach ($kategori as $kat)
-                                <option value="{{ $kat->id_kategori }}">
-                                    {{ $kat->kategori }}</option>
-                            @endforeach
-                            <option value="others">Lainnya</option>
-                        </select>
-                        <div class="mt-2" id="newCategoryForm" style="display: none;">
-                            <input type="text" id="newKategori" class="form-control"
-                                placeholder="Tambah kategori baru">
-                            <button type="button" id="" class="btn btn-success mt-2"
-                                onclick="addCategory()">Tambah
-                                Kategori</button>
-                        </div>
+                        <input type="text" class="form-control" id="kategori_aset" name="kategori_aset"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
                     </div>
                     <div class="form-group">
                         <label for="lokasi_aset" style="font-weight: bold; font-size: 14px;">Lokasi Aset</label>
-                        <input type="text" class="form-control" id="lokasi_aset"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        <input type="text" class="form-control" id="lokasi_penyimpanan" name="lokasi_penyimpanan"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
                     </div>
                     <div class="form-group">
                         <label for="tgl_pembelian" style="font-weight: bold; font-size: 14px;">Tgl Pembelian</label>
-                        <input type="date" class="form-control" id="tgl_pembelian"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        <input type="date" class="form-control" id="tgl_perolehan" name="tgl_perolehan"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
                     </div>
                     <div class="form-group">
                         <label style="font-weight: bold; font-size: 14px;">Status</label><br>
                         <div style="display: flex; align-items: center;">
-                            <input type="radio" id="aktif" name="status" value="aktif" checked
+                            <input type="radio" id="status_aset" name="status_aset" value="aktif" checked
                                 style="margin-right: 5px;">
                             <label for="aktif" style="margin-right: 20px;">Aktif</label>
-                            <input type="radio" id="nonaktif" name="status" value="nonaktif"
+                            <input type="radio" id="status_aset" name="status_aset" value="non aktif"
                                 style="margin-right: 5px;">
                             <label for="nonaktif">Non Aktif</label>
                         </div>
                     </div>
                     <label for="kategori">Kondisi</label>
-                    <select class="form-control" id="kategori" name="kategori" onchange="toggleNewCategoryForm()">
+                    <select class="form-control" id="kondisi" name="kondisi" onchange="toggleNewCategoryForm()">
                         <option value="">Pilih Kondisi</option>
-                        <option value="Baik">Baik</option>
-                        <option value="Tidak Memadai (Rusak)">Tidak Memadai (Rusak)</option>
-                        <option value="Perlu Perbaikan">Perlu Perbaikan</option>
-                        <option value="Hilang">Hilang</option>
+                        <option value="baik">Baik</option>
+                        <option value="rusak">Tidak Memadai (Rusak)</option>
+                        <option value="perlu service">Perlu Perbaikan</option>
+                        <option value="hilang">Hilang</option>
                     </select>
                     <div class="form-group">
                         <label for="masalah" style="font-weight: bold; font-size: 14px;">Masalah
                             Teridentifikasi</label>
-                        <textarea class="form-control" id="masalah" rows="3"
+                        <textarea class="form-control" id="masalah_teridentifikasi" rows="3" name="masalah_teridentifikasi"
                             style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="tindakan" style="font-weight: bold; font-size: 14px;">Tindakan Yang
                             Diperlukan</label>
-                        <textarea class="form-control" id="tindakan" rows="3"
+                        <textarea class="form-control" id="tindakan_diperlukan" rows="3" name="tindakan_diperlukan"
                             style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"></textarea>
                     </div>
                     <button type="submit" class="btn btn-success"
@@ -1519,6 +1511,46 @@
         </div>
     </div>
 </div>
+
+{{-- script untuk otomatisasi data aset pada tambah pemeriksaan --}}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script>
+    $('#aset').change(function() {
+        var asetId = $(this).val(); // Mendapatkan nilai id aset yang dipilih
+        console.log(asetId); // Log id aset untuk memastikan onchange berfungsi
+        if (asetId) {
+            $.ajax({
+                url: '/pc/aset/data/' + asetId, // URL endpoint sesuai dengan route yang telah diatur
+                type: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Mengambil csrf_token dari meta tag
+                },
+                success: function(data) {
+                    if (data.length > 0) {
+                        var aset = data[0];
+                        // Mengisi field yang sesuai dengan data yang diterima dari server
+                        $('#kategori_aset').val(aset.kategori_aset.kategori);
+                        $('#lokasi_penyimpanan').val(aset.lokasi_penyimpanan);
+                        $('#tgl_perolehan').val(aset.tgl_perolehan);
+                    } else {
+                        alert('Aset tidak ditemukan');
+                    }
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
+        } else {
+            // Mengosongkan field jika tidak ada aset yang dipilih
+            $('#kategori_aset').val('');
+            $('#lokasi_penyimpanan').val('');
+            $('#tgl_perolehan').val('');
+        }
+    });
+</script>
+
+
+
 
 <!-- modal respon spv -->
 <div class="modal fade" id="responspvModal" tabindex="-1" role="dialog">
