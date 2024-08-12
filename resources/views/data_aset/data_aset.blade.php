@@ -99,12 +99,6 @@
             /* Mengatur ukuran font */
             /* Menyelaraskan teks ke tengah */
         }
-
-        /* Style tambahan (opsional) */
-        /* #example tr:nth-child(even) {
-            background-color: #f9f9f9;
-            /* Warna latar belakang berbeda untuk baris genap
-        } */
     </style>
 
     <div class="content-header">
@@ -204,7 +198,6 @@
                                             });
                                         });
                                     </script>
-
 
                                     <!-- tab data aset -->
                                     <div id="dataAset" class="tab-content active" style="width: 99%; padding:10px; mt-1">
@@ -361,7 +354,7 @@
                                                                 <?php
                                                                 // Ambil status dari data, default ke 'null' jika tidak ada
                                                                 $status = $data->latestDetailPemeriksaanAset->status_aset ?? 'null';
-                                                                
+
                                                                 // Tentukan warna tombol dan teks berdasarkan status
                                                                 if ($status === 'null') {
                                                                     $warnaTombol = 'background-color: #a9a9a9; border-color: #a9a9a9;'; // Abu-abu untuk data tidak tersedia
@@ -370,7 +363,7 @@
                                                                     $warnaTombol = $status === 'aktif' ? 'background-color: #55CE71; border-color: #55CE71;' : 'background-color: rgb(255, 18, 18); border-color: rgb(255, 18, 18);';
                                                                     $teksTombol = $status === 'aktif' ? 'Aktif' : 'Non Aktif';
                                                                 }
-                                                                
+
                                                                 // HTML untuk tombol
                                                                 $konten = "<button type='button' class='btn' style='border-radius: 10px; $warnaTombol; color:white; padding: 4px 8px; font-size: 14px;'>$teksTombol</button>";
                                                                 ?>
@@ -663,23 +656,29 @@
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td>rusak</td>
-                                                                                    <td class="text-primary">{{ $rusakCount = $detail->detailPemeriksaanAset->where('kondisi', 'rusak')->count() }}
+                                                                                    <td class="text-primary">
+                                                                                        {{ $rusakCount = $detail->detailPemeriksaanAset->where('kondisi', 'rusak')->count() }}
                                                                                     </td>
-                                                                                    <td class="text-primary">{{ $totalDetailPemeriksaan > 0 ? round(($rusakCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
+                                                                                    <td class="text-primary">
+                                                                                        {{ $totalDetailPemeriksaan > 0 ? round(($rusakCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td>perlu perbaikan</td>
-                                                                                    <td class="text-warning">{{ $serviceCount = $detail->detailPemeriksaanAset->where('kondisi', 'perlu service')->count() }}
+                                                                                    <td class="text-warning">
+                                                                                        {{ $serviceCount = $detail->detailPemeriksaanAset->where('kondisi', 'perlu service')->count() }}
                                                                                     </td>
-                                                                                    <td class="text-warning">{{ $totalDetailPemeriksaan > 0 ? round(($serviceCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
+                                                                                    <td class="text-warning">
+                                                                                        {{ $totalDetailPemeriksaan > 0 ? round(($serviceCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td>hilang</td>
-                                                                                    <td class="text-danger">{{ $hilangCount = $detail->detailPemeriksaanAset->where('kondisi', 'hilang')->count() }}
+                                                                                    <td class="text-danger">
+                                                                                        {{ $hilangCount = $detail->detailPemeriksaanAset->where('kondisi', 'hilang')->count() }}
                                                                                     </td>
-                                                                                    <td class="text-danger">{{ $totalDetailPemeriksaan > 0 ? round(($hilangCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
+                                                                                    <td class="text-danger">
+                                                                                        {{ $totalDetailPemeriksaan > 0 ? round(($hilangCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
@@ -690,22 +689,25 @@
                                                                 </td>
                                                                 <td>
                                                                     @if ($detail->detailPemeriksaanAset->isNotEmpty())
-                                                                        {{-- <ul>
-                                                                            @foreach ($detail->detailPemeriksaanAset as $item)
-                                                                                <li>{{ $item->status_aset }}</li>
-                                                                            @endforeach
-                                                                        </ul> --}}
                                                                         <div>
                                                                             <table id="example">
                                                                                 <tr>
                                                                                     <td>Aktif</td>
-                                                                                    <td class="text-success">{{  $aktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'aktif')->count() }}</td>
-                                                                                    <td class="text-success">{{ $totalDetailPemeriksaan > 0 ? round(($aktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%</td>
+                                                                                    <td class="text-success">
+                                                                                        {{ $aktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'aktif')->count() }}
+                                                                                    </td>
+                                                                                    <td class="text-success">
+                                                                                        {{ $totalDetailPemeriksaan > 0 ? round(($aktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
+                                                                                    </td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td>Non Aktif</td>
-                                                                                    <td class="text-danger">{{  $nonAktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'non aktif')->count() }}</td>
-                                                                                    <td class="text-danger">{{ $totalDetailPemeriksaan > 0 ? round(($nonAktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%</td>
+                                                                                    <td class="text-danger">
+                                                                                        {{ $nonAktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'non aktif')->count() }}
+                                                                                    </td>
+                                                                                    <td class="text-danger">
+                                                                                        {{ $totalDetailPemeriksaan > 0 ? round(($nonAktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
+                                                                                    </td>
                                                                                 </tr>
                                                                             </table>
                                                                         </div>
@@ -714,27 +716,31 @@
                                                                     @endif
                                                                 </td>
                                                                 <td>
-
-                                                                        <div>
-                                                                            @if ($detail->status_spv == 'mengetahui')
+                                                                    <div>
+                                                                        @if ($detail->status_spv == 'mengetahui')
                                                                             <div class="text-success">Mengetahui</div>
-                                                                            @else
-                                                                            <div class="text-danger">Belum Mengetahui</div>                                                                                
-                                                                            @endif
-                                                                            <div><b>{{ $detail->supervisor->pengguna->nama }}</b></div>
-                                                                            <div>{{ $detail->supervisor->pengurusJabatan->jabatan }}</div>
+                                                                        @else
+                                                                            <div class="text-danger">Belum Mengetahui</div>
+                                                                        @endif
+                                                                        <div>
+                                                                            <b>{{ $detail->supervisor->pengguna->nama }}</b>
                                                                         </div>
+                                                                        <div>
+                                                                            {{ $detail->supervisor->pengurusJabatan->jabatan }}
+                                                                        </div>
+                                                                    </div>
                                                                 </td>
                                                                 <td>
-                                                                        <div>
-                                                                            @if ($detail->status_kc == 'mengetahui')
+                                                                    <div>
+                                                                        @if ($detail->status_kc == 'mengetahui')
                                                                             <div class="text-success">Mengetahui</div>
-                                                                            @else
-                                                                            <div class="text-danger">Belum Mengetahui</div>                                                                                
-                                                                            @endif
-                                                                            <div><b>{{ $detail->kc->pengguna->nama }}</b></div>
-                                                                            <div>{{ $detail->kc->pengurusJabatan->jabatan }}</div>
+                                                                        @else
+                                                                            <div class="text-danger">Belum Mengetahui</div>
+                                                                        @endif
+                                                                        <div><b>{{ $detail->kc->pengguna->nama }}</b></div>
+                                                                        <div>{{ $detail->kc->pengurusJabatan->jabatan }}
                                                                         </div>
+                                                                    </div>
                                                                 </td>
                                                                 <td>
                                                                     <div
@@ -827,6 +833,7 @@
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 
     {{-- modal tambah barang --}}
@@ -916,8 +923,6 @@
         })
     </script>
 
-
-
     {{-- script untuk menyimpan kategori --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -975,19 +980,6 @@
             }
         }
     </script>
-
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const activeTab = "{{ session('active_tab') }}";
-            if (activeTab) {
-                const tabElement = document.querySelector(`a[href="pemeriksaan${activeTab}"]`);
-                if (tabElement) {
-                    new bootstrap.Tab(tabElement).show();
-                }
-            }
-        });
-    </script> --}}
-
 
     <!-- modal tambah pemeriksaan -->
     <div class="modal fade" id="pemeriksaanModal" tabindex="-1" role="dialog">
@@ -1051,13 +1043,13 @@
                             <div class="modal-footer" style="border-top: none; padding-top: 0;">
                                 <button type="submit" class="btn btn-success">Simpan</button>
                             </div>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
-@endsection
 
 @section('js')
     <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -1075,5 +1067,7 @@
 
     <!-- AdminLTE -->
     <script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
+@endsection
+
 @endsection
 @endsection

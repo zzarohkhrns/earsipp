@@ -461,7 +461,7 @@
                 <div class="modal-body">
                     <form id="myForm" method="POST" action="/{{ $role }}/aset/data/update/{{ $aset->aset_id ?? '0'}}">
                         @csrf
-                        <div class="form-group"> 
+                        <div class="form-group">
                             <label for="kode">Kode Aset :</label>
                             <input type="text" value="{{ $aset->aset_id ?? '0' }}" class="form-control" id="aset_id"
                                 name="aset_id" hidden>
