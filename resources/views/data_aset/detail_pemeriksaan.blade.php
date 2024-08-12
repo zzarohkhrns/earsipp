@@ -43,6 +43,21 @@
             border-radius: 0.25rem;
             padding: 1rem;
         }
+
+        #dropdownButton {
+            background-color: #757575;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #dropdownButton option {
+            color: black;
+            background-color: white;
+            border: none;
+        }
     </style>
 
     <div class="content-header">
@@ -96,12 +111,24 @@
                                                     aria-labelledby="pemeriksaan-tab">
                                                     <div class="col-12 mt-3 mb-3">
                                                         <div class="status-buttons">
-                                                            <button class="btn btn-success"
-                                                                style="border-radius: 10px">Selesai Input
-                                                                Pemeriksaan</button>
-                                                            <button class="btn btn-warning"
-                                                                style="border-radius: 10px">Diteruskan Ke SPV, SPV Belum
-                                                                Mengetahui</button>
+                                                            @if ($pemeriksaanAset->status_pemeriksaan == 'selesai')
+                                                                <button class="btn btn-success"
+                                                                    style="border-radius: 10px">Selesai Input
+                                                                    Pemeriksaan</button>
+                                                            @else
+                                                                <button class="btn btn-warning"
+                                                                    style="border-radius: 10px">Belum Selesai Input
+                                                                    Pemeriksaan</button>
+                                                            @endif
+                                                            @if ($pemeriksaanAset->status_spv == 'mengetahui')
+                                                                <button class="btn btn-success"
+                                                                    style="border-radius: 10px">Diteruskan Ke SPV, SPV
+                                                                    Mengetahui</button>
+                                                            @else
+                                                                <button class="btn btn-warning"
+                                                                    style="border-radius: 10px">Diteruskan Ke SPV, SPV Belum
+                                                                    Mengetahui</button>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                     <div class="flex-container">
@@ -117,21 +144,19 @@
                                                                         <h6><b>Pemeriksa</b></h6>
                                                                     </th>
                                                                     <th style="width: 30%">
+                                                                        <input type="hidden" id="idPemeriksaanAset"
+                                                                            value="{{ $pemeriksaanAset->id_pemeriksaan_aset }}">
                                                                         <div class="dropdown">
-                                                                            <button id="dropdownButton"
-                                                                                class="btn btn-secondary dropdown-toggle"
-                                                                                style="border-radius: 10px; width: 100%; max-width: 100%; padding: 10px; margin: 0;"
-                                                                                onclick="toggleDropdown()">
-                                                                                <span id="buttonText">Belum Selesai Diinput</span>
-                                                                            </button>
-                                                                            <div id="myDropdown" class="dropdown-menu w-100" style="border-radius: 10px;">
-                                                                                <button class="dropdown-item btn btn-secondary w-100 text-justify"
-                                                                                    onclick="handleSelection('Selesai Diinput')">Selesai Diinput</button>
-                                                                                <button class="dropdown-item btn btn-secondary w-100 text-left"
-                                                                                    onclick="handleSelection('Belum Selesai Diinput')">Belum Selesai Diinput</button>
-                                                                            </div>
+                                                                            <select id="dropdownButton"
+                                                                                onchange="handleDropdownChange(this)"
+                                                                                style="padding: 10px; border-radius: 5px;">
+                                                                                <option value="Belum Selesai Diinput">Belum
+                                                                                    Selesai Diinput</option>
+                                                                                <option value="Selesai Diinput">Selesai
+                                                                                    Diinput</option>
+                                                                            </select>
                                                                         </div>
-                                                                    </th>                                                                    
+                                                                    </th>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
@@ -144,10 +169,10 @@
 
                                                                 {{-- line 2 --}}
                                                                 <tr></tr>
-                                                                    <th>
-                                                                        <h6><b>Jabatan</b></h6>
-                                                                    </th>
-                                                                    <th></th>
+                                                                <th>
+                                                                    <h6><b>Jabatan</b></h6>
+                                                                </th>
+                                                                <th></th>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
@@ -196,15 +221,15 @@
                                                             <table id="example"
                                                                 style="width: 100%; border-collapse: collapse;">
                                                                 <tr>
-                                                                    <th style="width: 75%">
+                                                                    <th style="width: 65%">
                                                                         <h6><b>Hasil Pemeriksaan Aset</b></h6>
                                                                     </th>
-                                                                    <th style="width: 25%">
+                                                                    <th style="width: 35%">
                                                                         <div class="btn-group btn-block mb-2 mb-xl-0 card-tambah-kontrol"
                                                                             style="width: 100%;">
                                                                             <div class="btn-group mb-2 mb-xl-0 btn-block">
                                                                                 <a href="/{{ $role }}/print-data"
-                                                                                    style="border-radius:10px;"
+                                                                                    style="border-radius: 10px; width: 100%; max-width: 100%; padding: 10px; margin: 0;"
                                                                                     class="btn btn-success">
                                                                                     <i class="fas fa-file-alt"></i> Export
                                                                                 </a>
@@ -214,7 +239,8 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td style="width: 75%">
-                                                                        <h5 class="text-success"><b>{{ $jumlahAset }} aset
+                                                                        <h5 class="text-success"><b>{{ $jumlahAset }}
+                                                                                aset
                                                                                 diperiksa</b>
                                                                         </h5>
                                                                     </td>
@@ -242,19 +268,19 @@
                                                                                     </th>
                                                                                     <th style="width:20%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
-                                                                                        <h6>{{ $detailPemeriksaan->where('kondisi', 'baik')->count() }}
-                                                                                        </h6>
+                                                                                            <h6>{{ $detailPemeriksaan->where('kondisi', 'baik')->count() }}
+                                                                                            </h6>
                                                                                         @else
-                                                                                        <h6 class="text-">0</h6>
+                                                                                            <h6 class="text-">0</h6>
                                                                                         @endif
                                                                                     </th>
                                                                                     <th style="width:20%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
-                                                                                        <h6>
-                                                                                            {{ round(($detailPemeriksaan->where('kondisi', 'baik')->count() / $jumlahAset) * 100, 2) }}%
-                                                                                        </h6>
+                                                                                            <h6>
+                                                                                                {{ round(($detailPemeriksaan->where('kondisi', 'baik')->count() / $jumlahAset) * 100, 2) }}%
+                                                                                            </h6>
                                                                                         @else
-                                                                                        0
+                                                                                            0
                                                                                         @endif
                                                                                     </th>
                                                                                 </tr>
@@ -264,19 +290,20 @@
                                                                                     </th>
                                                                                     <th style="width:20%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
-                                                                                        <h6 class="text-primary">{{ $detailPemeriksaan->where('kondisi', 'rusak')->count() }}
-                                                                                        </h6>
+                                                                                            <h6 class="text-primary">
+                                                                                                {{ $detailPemeriksaan->where('kondisi', 'rusak')->count() }}
+                                                                                            </h6>
                                                                                         @else
-                                                                                        <h6 class="text-primary">0</h6>
+                                                                                            <h6 class="text-primary">0</h6>
                                                                                         @endif
                                                                                     </th>
                                                                                     <th style="width:20%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
-                                                                                        <h6 class="text-primary">
-                                                                                            {{ round(($detailPemeriksaan->where('kondisi', 'rusak')->count() / $jumlahAset) * 100, 2) }}%
-                                                                                        </h6>
+                                                                                            <h6 class="text-primary">
+                                                                                                {{ round(($detailPemeriksaan->where('kondisi', 'rusak')->count() / $jumlahAset) * 100, 2) }}%
+                                                                                            </h6>
                                                                                         @else
-                                                                                        <h6 class="text-primary">0</h6>
+                                                                                            <h6 class="text-primary">0</h6>
                                                                                         @endif
                                                                                     </th>
                                                                                 </tr>
@@ -286,19 +313,20 @@
                                                                                     </th>
                                                                                     <th style="width:20%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
-                                                                                        <h6 class="text-warning">{{ $detailPemeriksaan->where('kondisi', 'perlu service')->count() }}
-                                                                                        </h6>
+                                                                                            <h6 class="text-warning">
+                                                                                                {{ $detailPemeriksaan->where('kondisi', 'perlu service')->count() }}
+                                                                                            </h6>
                                                                                         @else
-                                                                                        <h6 class="text-warning">0</h6>
+                                                                                            <h6 class="text-warning">0</h6>
                                                                                         @endif
                                                                                     </th>
                                                                                     <th style="width:20%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
-                                                                                        <h6 class="text-warning">
-                                                                                            {{ round(($detailPemeriksaan->where('kondisi', 'perlu service')->count() / $jumlahAset) * 100, 2) }}%
-                                                                                        </h6>
+                                                                                            <h6 class="text-warning">
+                                                                                                {{ round(($detailPemeriksaan->where('kondisi', 'perlu service')->count() / $jumlahAset) * 100, 2) }}%
+                                                                                            </h6>
                                                                                         @else
-                                                                                        <h6 class="text-warning">0</h6>
+                                                                                            <h6 class="text-warning">0</h6>
                                                                                         @endif
                                                                                     </th>
                                                                                 </tr>
@@ -308,19 +336,20 @@
                                                                                     </th>
                                                                                     <th style="width:20%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
-                                                                                        <h6 class="text-danger">{{ $detailPemeriksaan->where('kondisi', 'hilang')->count() }}
-                                                                                        </h6>
+                                                                                            <h6 class="text-danger">
+                                                                                                {{ $detailPemeriksaan->where('kondisi', 'hilang')->count() }}
+                                                                                            </h6>
                                                                                         @else
-                                                                                        <h6 class="text-danger">0</h6>
+                                                                                            <h6 class="text-danger">0</h6>
                                                                                         @endif
                                                                                     </th>
                                                                                     <th style="width:20%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
-                                                                                        <h6 class="text-danger">
-                                                                                            {{ round(($detailPemeriksaan->where('kondisi', 'hilang')->count() / $jumlahAset) * 100, 2) }}%
-                                                                                        </h6>
+                                                                                            <h6 class="text-danger">
+                                                                                                {{ round(($detailPemeriksaan->where('kondisi', 'hilang')->count() / $jumlahAset) * 100, 2) }}%
+                                                                                            </h6>
                                                                                         @else
-                                                                                        <h6 class="text-danger">0</h6>
+                                                                                            <h6 class="text-danger">0</h6>
                                                                                         @endif
                                                                                     </th>
                                                                                 </tr>
@@ -337,18 +366,18 @@
                                                                                     </th>
                                                                                     <th style="width:25%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
-                                                                                        <h6>{{ $detailPemeriksaan->where('status_aset', 'aktif')->count() }}
-                                                                                        </h6>
+                                                                                            <h6>{{ $detailPemeriksaan->where('status_aset', 'aktif')->count() }}
+                                                                                            </h6>
                                                                                         @else
-                                                                                        0
+                                                                                            0
                                                                                         @endif
                                                                                     </th>
                                                                                     <th style="width:25%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
-                                                                                        <h6>{{ round(($detailPemeriksaan->where('status_aset', 'aktif')->count() / $jumlahAset) * 100, 2) }}%
-                                                                                        </h6>
+                                                                                            <h6>{{ round(($detailPemeriksaan->where('status_aset', 'aktif')->count() / $jumlahAset) * 100, 2) }}%
+                                                                                            </h6>
                                                                                         @else
-                                                                                        0
+                                                                                            0
                                                                                         @endif
                                                                                     </th>
                                                                                 </tr>
@@ -358,18 +387,20 @@
                                                                                     </th>
                                                                                     <th style="width:25%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
-                                                                                        <h6 class="text-danger">{{ $detailPemeriksaan->where('status_aset', 'non aktif')->count() }}
-                                                                                        </h6>
+                                                                                            <h6 class="text-danger">
+                                                                                                {{ $detailPemeriksaan->where('status_aset', 'non aktif')->count() }}
+                                                                                            </h6>
                                                                                         @else
-                                                                                        <h6 class="text-danger">0</h6>
+                                                                                            <h6 class="text-danger">0</h6>
                                                                                         @endif
                                                                                     </th>
                                                                                     <th style="width:25%">
                                                                                         @if ($detailPemeriksaan->isNotEmpty())
-                                                                                        <h6 class="text-danger">{{ round(($detailPemeriksaan->where('status_aset', 'non aktif')->count() / $jumlahAset) * 100, 2) }}%
-                                                                                        </h6>
+                                                                                            <h6 class="text-danger">
+                                                                                                {{ round(($detailPemeriksaan->where('status_aset', 'non aktif')->count() / $jumlahAset) * 100, 2) }}%
+                                                                                            </h6>
                                                                                         @else
-                                                                                        <h6 class="text-danger">0</h6>
+                                                                                            <h6 class="text-danger">0</h6>
                                                                                         @endif
                                                                                     </th>
                                                                                 </tr>
@@ -444,12 +475,12 @@
                                                                             <h6><b>1. Aset
                                                                                     Dengan
                                                                                     Kondisi Baik
-                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'baik')->count()?? 0 }})</b>
+                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'baik')->count() ?? 0 }})</b>
                                                                             </h6>
                                                                         </td>
                                                                     </tr>
 
-                                                                    @if (($detailPemeriksaan->where('kondisi', 'baik')->count()?? 0) > 0)
+                                                                    @if (($detailPemeriksaan->where('kondisi', 'baik')->count() ?? 0) > 0)
                                                                         @php
                                                                             $no = 1;
                                                                         @endphp
@@ -480,6 +511,15 @@
                                                                                                     type="button"
                                                                                                     data-toggle="modal"
                                                                                                     data-target="#UbahPemeriksaanModal"
+                                                                                                    data-aset-id="{{ $data->aset_id }}"
+                                                                                                    data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
+                                                                                                    data-lokasi-penyimpanan="{{ $data->aset->lokasi_penyimpanan }}"
+                                                                                                    data-tgl-perolehan="{{ $data->aset->tgl_perolehan }}"
+                                                                                                    data-kondisi="{{ $data->kondisi }}"
+                                                                                                    data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
+                                                                                                    data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
+                                                                                                    data-status-aset="{{ $data->status_aset }}"
+                                                                                                    data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
                                                                                                     style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
                                                                                                     aria-expanded="false">
                                                                                                     &nbsp;&nbsp;<i
@@ -528,7 +568,7 @@
                                                                         </td>
                                                                     </tr>
 
-                                                                    @if (($detailPemeriksaan->where('kondisi', 'rusak')->count()?? 0) > 0)
+                                                                    @if (($detailPemeriksaan->where('kondisi', 'rusak')->count() ?? 0) > 0)
                                                                         @php
                                                                             $no = 1;
                                                                         @endphp
@@ -560,6 +600,15 @@
                                                                                                     type="button"
                                                                                                     data-toggle="modal"
                                                                                                     data-target="#UbahPemeriksaanModal"
+                                                                                                    data-aset-id="{{ $data->aset_id }}"
+                                                                                                    data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
+                                                                                                    data-lokasi-penyimpanan="{{ $data->aset->lokasi_penyimpanan }}"
+                                                                                                    data-tgl-perolehan="{{ $data->aset->tgl_perolehan }}"
+                                                                                                    data-kondisi="{{ $data->kondisi }}"
+                                                                                                    data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
+                                                                                                    data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
+                                                                                                    data-status-aset="{{ $data->status_aset }}"
+                                                                                                    data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
                                                                                                     style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
                                                                                                     aria-expanded="false">
                                                                                                     &nbsp;&nbsp;<i
@@ -602,13 +651,13 @@
                                                                                     Kondisi
                                                                                     Perlu
                                                                                     Perbaikan
-                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'perlu service')->count()??0 }})</b>
+                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'perlu service')->count() ?? 0 }})</b>
                                                                             </h6>
                                                                         </td>
                                                                     </tr>
 
 
-                                                                    @if (($detailPemeriksaan->where('kondisi', 'perlu service')->count()??0) > 0)
+                                                                    @if (($detailPemeriksaan->where('kondisi', 'perlu service')->count() ?? 0) > 0)
                                                                         @php
                                                                             $no = 1;
                                                                         @endphp
@@ -639,6 +688,15 @@
                                                                                                     type="button"
                                                                                                     data-toggle="modal"
                                                                                                     data-target="#UbahPemeriksaanModal"
+                                                                                                    data-aset-id="{{ $data->aset_id }}"
+                                                                                                    data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
+                                                                                                    data-lokasi-penyimpanan="{{ $data->aset->lokasi_penyimpanan }}"
+                                                                                                    data-tgl-perolehan="{{ $data->aset->tgl_perolehan }}"
+                                                                                                    data-kondisi="{{ $data->kondisi }}"
+                                                                                                    data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
+                                                                                                    data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
+                                                                                                    data-status-aset="{{ $data->status_aset }}"
+                                                                                                    data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
                                                                                                     style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
                                                                                                     aria-expanded="false">
                                                                                                     &nbsp;&nbsp;<i
@@ -682,12 +740,12 @@
                                                                                     Dengan
                                                                                     Kondisi
                                                                                     Hilang
-                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'hilang')->count()??0 }})</b>
+                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'hilang')->count() ?? 0 }})</b>
                                                                             </h6>
                                                                         </td>
                                                                     </tr>
 
-                                                                    @if (($detailPemeriksaan->where('kondisi', 'hilang')->count()??0) > 0)
+                                                                    @if (($detailPemeriksaan->where('kondisi', 'hilang')->count() ?? 0) > 0)
                                                                         <tr>
                                                                             <td>{{ $no++ }}</td>
                                                                             <td>{{ $data->aset->kode_aset }}</td>
@@ -709,6 +767,15 @@
                                                                                             type="button"
                                                                                             data-toggle="modal"
                                                                                             data-target="#UbahPemeriksaanModal"
+                                                                                            data-aset-id="{{ $data->aset_id }}"
+                                                                                                    data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
+                                                                                                    data-lokasi-penyimpanan="{{ $data->aset->lokasi_penyimpanan }}"
+                                                                                                    data-tgl-perolehan="{{ $data->aset->tgl_perolehan }}"
+                                                                                                    data-kondisi="{{ $data->kondisi }}"
+                                                                                                    data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
+                                                                                                    data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
+                                                                                                    data-status-aset="{{ $data->status_aset }}"
+                                                                                                    data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
                                                                                             style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
                                                                                             aria-expanded="false">
                                                                                             &nbsp;&nbsp;<i
@@ -751,14 +818,32 @@
                                                     aria-labelledby="status-spv-kc-tab">
                                                     <div class="col-12 mt-3 mb-3">
                                                         <div class="status-buttons">
-                                                            <button class="btn btn-success"
-                                                                style="border-radius: 10px">Selesai Input
-                                                                Pemeriksaan</button>
-                                                            <button class="btn btn-success"
-                                                                style="border-radius: 10px">SPV Mengetahui</button>
-                                                            <button class="btn btn-warning"
-                                                                style="border-radius: 10px">Diteruskan Ke KC, KC Belum
-                                                                Mengetahui</button>
+                                                            @if ($pemeriksaanAset->status_pemeriksaan == 'selesai')
+                                                                <button class="btn btn-success"
+                                                                    style="border-radius: 10px">Selesai Input
+                                                                    Pemeriksaan</button>
+                                                            @else
+                                                                <button class="btn btn-warning"
+                                                                    style="border-radius: 10px">Belum Selesai Input
+                                                                    Pemeriksaan</button>
+                                                            @endif
+                                                            @if ($pemeriksaanAset->status_spv == 'mengetahui')
+                                                                <button class="btn btn-success"
+                                                                    style="border-radius: 10px">SPV Mengetahui</button>
+                                                            @else
+                                                                <button class="btn btn-warning"
+                                                                    style="border-radius: 10px">SPV Belum
+                                                                    Mengetahui</button>
+                                                            @endif
+                                                            @if ($pemeriksaanAset->status_kc == 'mengetahui')
+                                                                <button class="btn btn-success"
+                                                                    style="border-radius: 10px">Diteruskan Ke KC, KC
+                                                                    Mengetahui</button>
+                                                            @else
+                                                                <button class="btn btn-warning"
+                                                                    style="border-radius: 10px">Diteruskan Ke KC, KC Belum
+                                                                    Mengetahui</button>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                     <div class="flex-container">
@@ -840,9 +925,11 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        <h6 class="text-success">
-                                                                            {{ $pemeriksaanAset->status_spv }}
-                                                                        </h6>
+                                                                        @if ($pemeriksaanAset->status_sp == 'mengetahui')
+                                                                            <h6 class="text-success">Mengetahui</h6>
+                                                                        @else
+                                                                            <h6 class="text-warning">Belum</h6>
+                                                                        @endif
                                                                     </td>
                                                                     <td></td>
                                                                 </tr>
@@ -856,9 +943,13 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        <h6 class="text-success">
-                                                                            {{ $pemeriksaanAset->catatan_spv }}
-                                                                        </h6>
+                                                                        @if ($pemeriksaanAset->catatan_spv)
+                                                                            <h6>
+                                                                                {{ $pemeriksaanAset->catatan_spv }}
+                                                                            </h6>
+                                                                        @else
+                                                                            <h6>-</h6>
+                                                                        @endif
                                                                     </td>
                                                                     <td></td>
                                                                 </tr>
@@ -962,7 +1053,7 @@
                                                                 <tr>
                                                                     <td>
                                                                         @if ($pemeriksaanAset->catatan_kc)
-                                                                            <h6 class="text-success">
+                                                                            <h6>
                                                                                 {{ $pemeriksaanAset->catatan_kc }}
                                                                             </h6>
                                                                         @else
@@ -985,7 +1076,8 @@
                                                                 <a href="/{{ $role }}/print-data"
                                                                     style="background-color: rgb(0, 177, 0); color:white; border-radius:10px; width:150px;"
                                                                     class="btn btn-success">
-                                                                    <i class="fas fa-file-alt" style="margin-right: 5px"></i>Export
+                                                                    <i class="fas fa-file-alt"
+                                                                        style="margin-right: 5px"></i>Export
                                                                 </a>
                                                             </div>
                                                             <table id="example3" class="table table-bordered"
@@ -1013,12 +1105,12 @@
                                                                             <h6><b>1. Aset
                                                                                     Dengan
                                                                                     Kondisi Baik
-                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'baik')->count()?? 0 }})</b>
+                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'baik')->count() ?? 0 }})</b>
                                                                             </h6>
                                                                         </td>
                                                                     </tr>
 
-                                                                    @if (($detailPemeriksaan->where('kondisi', 'baik')->count()?? 0) > 0)
+                                                                    @if (($detailPemeriksaan->where('kondisi', 'baik')->count() ?? 0) > 0)
                                                                         @php
                                                                             $no = 1;
                                                                         @endphp
@@ -1065,7 +1157,7 @@
                                                                         </td>
                                                                     </tr>
 
-                                                                    @if (($detailPemeriksaan->where('kondisi', 'rusak')->count()?? 0) > 0)
+                                                                    @if (($detailPemeriksaan->where('kondisi', 'rusak')->count() ?? 0) > 0)
                                                                         @php
                                                                             $no = 1;
                                                                         @endphp
@@ -1098,6 +1190,7 @@
                                                                                                     data-toggle="modal"
                                                                                                     data-target="#UbahPemeriksaanModal"
                                                                                                     style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
+                                                                                                    id-detail={{ $data->id_detail_pemeriksaan_aset }}
                                                                                                     aria-expanded="false">
                                                                                                     &nbsp;&nbsp;<i
                                                                                                         class="fas fa-edit"></i>
@@ -1139,13 +1232,13 @@
                                                                                     Kondisi
                                                                                     Perlu
                                                                                     Perbaikan
-                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'perlu service')->count()??0 }})</b>
+                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'perlu service')->count() ?? 0 }})</b>
                                                                             </h6>
                                                                         </td>
                                                                     </tr>
 
 
-                                                                    @if (($detailPemeriksaan->where('kondisi', 'perlu service')->count()??0) > 0)
+                                                                    @if (($detailPemeriksaan->where('kondisi', 'perlu service')->count() ?? 0) > 0)
                                                                         @php
                                                                             $no = 1;
                                                                         @endphp
@@ -1219,12 +1312,12 @@
                                                                                     Dengan
                                                                                     Kondisi
                                                                                     Hilang
-                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'hilang')->count()??0 }})</b>
+                                                                                    ({{ $detailPemeriksaan->where('kondisi', 'hilang')->count() ?? 0 }})</b>
                                                                             </h6>
                                                                         </td>
                                                                     </tr>
 
-                                                                    @if (($detailPemeriksaan->where('kondisi', 'hilang')->count()??0) > 0)
+                                                                    @if (($detailPemeriksaan->where('kondisi', 'hilang')->count() ?? 0) > 0)
                                                                         <tr>
                                                                             <td>{{ $no++ }}</td>
                                                                             <td>{{ $data->aset->kode_aset }}</td>
@@ -1237,37 +1330,6 @@
                                                                             <td>{{ $data->aset->tgl_perolehan }}</td>
                                                                             <td>{{ $data->masalah_teridentifikasi }}</td>
                                                                             <td>{{ $data->tindakan_diperlukan }}</td>
-                                                                            <td>
-                                                                                <div
-                                                                                    class="d-flex flex-column align-items-center">
-                                                                                    <div
-                                                                                        class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                                        <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
-                                                                                            type="button"
-                                                                                            data-toggle="modal"
-                                                                                            data-target="#UbahPemeriksaanModal"
-                                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
-                                                                                            aria-expanded="false">
-                                                                                            &nbsp;&nbsp;<i
-                                                                                                class="fas fa-edit"></i>
-                                                                                            Ubah
-                                                                                        </a>
-                                                                                    </div>
-                                                                                    <div
-                                                                                        class="btn-group mb-2 card_hapus_barang">
-                                                                                        <div class="btn-group btn-block">
-                                                                                            <a onclick="$('#cover-spin').show(0)"
-                                                                                                href="/{{ $role }}/aksi_hapus_barang"
-                                                                                                class="btn btn-outline-secondary btn-block"
-                                                                                                style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
-                                                                                                <i
-                                                                                                    class="fas fa-trash"></i>
-                                                                                                Hapus
-                                                                                            </a>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
                                                                         </tr>
                                                                     @else
                                                                         <tr>
@@ -1313,6 +1375,136 @@
 
 </section>
 
+{{-- script untuk edit detail pemeriksaan --}}
+{{-- <script>
+    function editDetailPemeriksaan(id_detail_pemeriksaan_aset) {
+        $.ajax({
+            url: {{ $role }} '/detail-pemeriksaan/' +
+            id_detail_pemeriksaan_aset, // Ganti dengan route yang sesuai
+            type: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                    'content') // Mengambil csrf_token dari meta tag
+            },
+            success: function(data) {
+                // Mengisi modal dengan data yang diterima
+                $('#aset').val(data.aset_id).trigger('change'); // Memilih aset dan memicu onchange
+                $('#kategori_aset').val(data.kategori_aset.kategori);
+                $('#lokasi_penyimpanan').val(data.lokasi_penyimpanan);
+                $('#tgl_perolehan').val(data.tgl_perolehan);
+                $('#kondisi').val(data.kondisi);
+                $('#masalah_teridentifikasi').val(data.masalah_teridentifikasi);
+                $('#tindakan_diperlukan').val(data.tindakan_diperlukan);
+                // Set nilai status aset (aktif/nonaktif)
+                $('input[name="status"][value="' + data.status_aset + '"]').prop('checked', true);
+
+                // Set form action URL untuk update data
+                $('#editPemeriksaanForm').attr('action', '/pc/detail-pemeriksaan/update/' +
+                    id_detail_pemeriksaan_aset);
+            },
+            error: function(xhr) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+    // Script untuk otomatisasi data saat dropdown aset diubah
+    $('#aset').change(function() {
+        var asetId = $(this).val(); // Mendapatkan nilai id aset yang dipilih
+        if (asetId) {
+            $.ajax({
+                url: '/pc/aset/data/' + asetId, // URL endpoint sesuai dengan route yang telah diatur
+                type: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                        'content') // Mengambil csrf_token dari meta tag
+                },
+                success: function(data) {
+                    if (data.length > 0) {
+                        var aset = data[0];
+                        // Mengisi field yang sesuai dengan data yang diterima dari server
+                        $('#kategori_aset').val(aset.kategori_aset.kategori);
+                        $('#lokasi_penyimpanan').val(aset.lokasi_penyimpanan);
+                        $('#tgl_perolehan').val(aset.tgl_perolehan);
+                    } else {
+                        alert('Aset tidak ditemukan');
+                    }
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
+        } else {
+            // Mengosongkan field jika tidak ada aset yang dipilih
+            $('#kategori_aset').val('');
+            $('#lokasi_penyimpanan').val('');
+            $('#tgl_perolehan').val('');
+        }
+    });
+</script> --}}
+
+<script>
+    // $('#UbahPemeriksaanModal').on('show.bs.modal', function(event) {
+    //     var button = $(event.relatedTarget); // Tombol yang diklik untuk membuka modal
+
+    //     // Ambil data dari atribut data-*
+    //     var asetId = button.data('aset-id');
+    //     var kategoriAset = button.data('kategori-aset');
+    //     var lokasiPenyimpanan = button.data('lokasi-penyimpanan');
+    //     var tglPerolehan = button.data('tgl-perolehan');
+    //     var kondisi = button.data('kondisi');
+    //     var masalahTeridentifikasi = button.data('masalah-teridentifikasi');
+    //     var tindakanDiperlukan = button.data('tindakan-diperlukan');
+    //     var statusAset = button.data('status-aset');
+    //     var idDetail = button.data('id-detail');
+
+    //     // Isi modal dengan data tersebut
+    //     var modal = $(this);
+    //     modal.find('#edit_aset').val(asetId).trigger('change');
+    //     modal.find('#edit_kategori_aset').val(kategoriAset);
+    //     modal.find('#edit_lokasi_penyimpanan').val(lokasiPenyimpanan);
+    //     modal.find('#edit_tgl_perolehan').val(tglPerolehan);
+    //     modal.find('#edit_kondisi').val(kondisi);
+    //     modal.find('#edit_masalah_teridentifikasi').val(masalahTeridentifikasi);
+    //     modal.find('#edit_tindakan_diperlukan').val(tindakanDiperlukan);
+    //     modal.find('input[name="edit_status"][value="' + statusAset + '"]').prop('checked', true);
+    // });
+
+    // data-aset-id="{{ $data->aset_id }}"
+    // data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
+    // data-lokasi-penyimpanan="{{ $data->lokasi_penyimpanan }}"
+    // data-tgl-perolehan="{{ $data->tgl_perolehan }}"
+    // data-kondisi="{{ $data->kondisi }}"
+    // data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
+    // data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
+    // data-status-aset="{{ $data->status_aset }}"
+    // data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
+    $(document).on('click', '.edit-pemeriksaan', function() {
+        var id_detail = $(this).data('id-detail');
+        var aset_id = $(this).data('aset-id');
+        var kategori_aset = $(this).data('kategori-aset');
+        var lokasi_penyimpanan = $(this).data('lokasi-penyimpanan');
+        var tgl_perolehan = $(this).data('tgl-perolehan');
+        var kondisi = $(this).data('kondisi');
+        var masalah_teridentifikasi = $(this).data('masalah-teridentifikasi');
+        var tindakan_diperlukan = $(this).data('tindakan-diperlukan');
+        var status_aset = $(this).data('status-aset');
+
+        // Isi form di dalam modal dengan data yang diterima
+        $('#edit_aset').val(aset_id); // Set value untuk select
+        $('#edit_kategori_aset').val(kategori_aset);
+        $('#edit_lokasi_penyimpanan').val(lokasi_penyimpanan);
+        $('#edit_tgl_perolehan').val(tgl_perolehan);
+        $('#edit_kondisi').val(kondisi);
+        $('#edit_masalah_teridentifikasi').val(masalah_teridentifikasi);
+        $('#edit_tindakan_diperlukan').val(tindakan_diperlukan);
+        $('input[name="edit_status"][value="' + status_aset + '"]').prop('checked', true);
+
+        // Set action URL untuk form edit
+        $('#editPemeriksaanForm').attr('action', 'pc/detail-pemeriksaan/update/' + id_detail);
+    })
+</script>
+
 {{-- modal ubah data pemeriksaan barang --}}
 <div class="modal fade" id="UbahPemeriksaanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
     aria-hidden="true">
@@ -1325,71 +1517,69 @@
                 </button>
             </div>
             <div class="modal-body" style="padding: 1rem;">
-                <form>
+                <form id="editPemeriksaanForm" method="POST">
+                    @csrf
+                    @method('PUT')
+
                     <div class="form-group">
                         <label for="nama_aset" style="font-weight: bold; font-size: 14px;">Nama Aset</label>
-                        <input type="text" class="form-control" id="nama_aset"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
-                    </div>
-                    <div class="form-group">
-                        <label for="kategori">Kategori :</label>
-                        <select class="form-control" id="kategori" name="kategori"
+                        <select class="form-control" id="edit_aset" name="edit_aset"
                             onchange="toggleNewCategoryForm()">
-                            <option value="">Pilih Kategori</option>
-                            @foreach ($kategori as $kat)
-                                <option value="{{ $kat->id_kategori }}">
-                                    {{ $kat->kategori }}</option>
+                            <option value="">Pilih Aset</option>
+                            @foreach ($aset as $data)
+                                <option value="{{ $data->aset_id }}">{{ $data->nama_aset }}</option>
                             @endforeach
-                            <option value="others">Lainnya</option>
                         </select>
-                        <div class="mt-2" id="newCategoryForm" style="display: none;">
-                            <input type="text" id="newKategori" class="form-control"
-                                placeholder="Tambah kategori baru">
-                            <button type="button" id="" class="btn btn-success mt-2"
-                                onclick="addCategory()">Tambah
-                                Kategori</button>
-                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="lokasi_aset" style="font-weight: bold; font-size: 14px;">Lokasi Aset</label>
-                        <input type="text" class="form-control" id="lokasi_aset"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        <label for="edit_kategori_aset">Kategori :</label>
+                        <input type="text" class="form-control" id="edit_kategori_aset"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="tgl_pembelian" style="font-weight: bold; font-size: 14px;">Tgl Pembelian</label>
-                        <input type="date" class="form-control" id="tgl_pembelian"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        <label for="edit_lokasi_penyimpanan" style="font-weight: bold; font-size: 14px;">Lokasi
+                            Aset</label>
+                        <input type="text" class="form-control" id="edit_lokasi_penyimpanan"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_tgl_perolehan" style="font-weight: bold; font-size: 14px;">Tgl
+                            Pembelian</label>
+                        <input type="date" class="form-control" id="edit_tgl_perolehan"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
                     </div>
                     <div class="form-group">
                         <label style="font-weight: bold; font-size: 14px;">Status</label><br>
                         <div style="display: flex; align-items: center;">
-                            <input type="radio" id="aktif" name="status" value="aktif" checked
+                            <input type="radio" id="edit_status_aset_aktif" name="edit_status" value="aktif"
+                                checked style="margin-right: 5px;">
+                            <label for="edit_status_aset_aktif" style="margin-right: 20px;">Aktif</label>
+                            <input type="radio" id="status_aset_nonaktif" name="edit_status" value="non aktif"
                                 style="margin-right: 5px;">
-                            <label for="aktif" style="margin-right: 20px;">Aktif</label>
-                            <input type="radio" id="nonaktif" name="status" value="nonaktif"
-                                style="margin-right: 5px;">
-                            <label for="nonaktif">Non Aktif</label>
+                            <label for="status_aset_nonaktif">Non Aktif</label>
                         </div>
                     </div>
 
-                    <label for="kategori">Kondisi</label>
-                    <select class="form-control" id="kategori" name="kategori" onchange="toggleNewCategoryForm()">
+                    <label for="kondisi">Kondisi</label>
+                    <select class="form-control" id="edit_kondisi" name="edit_kondisi"
+                        onchange="toggleNewCategoryForm()">
                         <option value="">Pilih Kondisi</option>
-                        <option value="Baik">Baik</option>
-                        <option value="Tidak Memadai (Rusak)">Tidak Memadai (Rusak)</option>
-                        <option value="Perlu Perbaikan">Perlu Perbaikan</option>
-                        <option value="Hilang">Hilang</option>
+                        <option value="baik">Baik</option>
+                        <option value="rusak">Tidak Memadai (Rusak)</option>
+                        <option value="perlu service">Perlu Perbaikan</option>
+                        <option value="hilang">Hilang</option>
                     </select>
                     <div class="form-group">
-                        <label for="masalah" style="font-weight: bold; font-size: 14px;">Masalah
+                        <label for="edit_masalah_teridentifikasi" style="font-weight: bold; font-size: 14px;">Masalah
                             Teridentifikasi</label>
-                        <textarea class="form-control" id="masalah" rows="3"
+                        <textarea class="form-control" id="edit_masalah_teridentifikasi" rows="3"
                             style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="tindakan" style="font-weight: bold; font-size: 14px;">Tindakan Yang
+                        <label for="edit_tindakan_diperlukan" style="font-weight: bold; font-size: 14px;">Tindakan
+                            Yang
                             Diperlukan</label>
-                        <textarea class="form-control" id="tindakan" rows="3"
+                        <textarea class="form-control" id="edit_tindakan_diperlukan" rows="3"
                             style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"></textarea>
                     </div>
                     <button type="submit" class="btn btn-success"
@@ -1478,6 +1668,7 @@
     </div>
 </div>
 
+
 {{-- script untuk otomatisasi data aset pada tambah pemeriksaan --}}
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script>
@@ -1529,7 +1720,7 @@
                 </button>
             </div>
             <div class="modal-body" style="padding-top: 0;">
-                <form>
+                <form id="responspvForm">
                     <div class="form-group">
                         <label for="tgl_pemeriksaan" style="font-weight: bold; font-size: 14px;">Tgl
                             Pemeriksaan</label>
@@ -1537,9 +1728,13 @@
                             style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
                     </div>
                     <div class="form-group">
-                        <label for="status_spv" style="font-weight: bold; font-size: 14px;">Status SPV</label>
-                        <input type="text" class="form-control" id="status_spv"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        <label for="kategori">Status SPV</label>
+                        <select class="form-control" id="status_spv" name="status_spv"
+                            onchange="toggleNewCategoryForm()">
+                            <option value="">Pilih Status</option>
+                            <option value="mengetahui">Mengetahui</option>
+                            <option value="belum mengetahui">Belum Mengetahui</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="tgl_respon" style="font-weight: bold; font-size: 14px;">Tgl Respon SPV</label>
@@ -1556,16 +1751,15 @@
                         <strong>INFORMASI</strong><br>Dengan klik tombol simpan, SPV mengetahui hasil pemeriksaan aset
                         dan meneruskannya ke Kepala Cabang.
                     </div>
+                    <button type="submit" class="btn btn-success"
+                        style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
                 </form>
-            </div>
-            <div class="modal-footer" style="border-top: none; padding-top: 0;">
-                <button type="submit" class="btn btn-success">Simpan</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- modal respon spv -->
+<!-- modal respon kc -->
 <div class="modal fade" id="responkcModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
         <div class="modal-content">
@@ -1594,6 +1788,15 @@
                             style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
                     </div>
                     <div class="form-group">
+                        <label for="kategori">Status KC</label>
+                        <select class="form-control" id="status_spv" name="status_spv"
+                            onchange="toggleNewCategoryForm()">
+                            <option value="">Pilih Status</option>
+                            <option value="mengetahui">Mengetahui</option>
+                            <option value="belum mengetahui">Belum Mengetahui</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="tgl_respon_kc" style="font-weight: bold; font-size: 14px;">Tgl Respon KC</label>
                         <input type="date" class="form-control" id="tgl_respon_kc"
                             style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
@@ -1608,10 +1811,9 @@
                         <strong>INFORMASI</strong><br>Dengan klik tombol simpan, KC mengetahui hasil pemeriksaan aset.
                         Hasil pemeriksaan aset dapat digunakan sebagai lampiran pengajuan internal.
                     </div>
+                    <button type="submit" class="btn btn-success"
+                        style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
                 </form>
-            </div>
-            <div class="modal-footer" style="border-top: none; padding-top: 0;">
-                <button type="submit" class="btn btn-success">Simpan</button>
             </div>
         </div>
     </div>
@@ -1695,23 +1897,41 @@
 </script>
 
 
-{{-- script untuk dropdown --}}
+{{-- script untuk dropdown status pemeriksaan --}}
 <script>
     var status = 'Belum Selesai Diinput';
 
     function toggleDropdown() {
-        var dropdown = document.getElementById("myDropdown");
+        var dropdown = document.getElementById("statusPemeriksaanDropdown");
         dropdown.classList.toggle("show");
     }
 
-    function handleSelection(selection) {
-        status = selection;
-        document.getElementById("buttonText").textContent = status;
-        document.getElementById("myDropdown").classList.remove("show");
+    function handleDropdownChange(selectElement) {
+        var selectedValue = selectElement.value;
+
+        // Ambil ID Pemeriksaan Aset dari elemen hidden jika diperlukan
+        var idPemeriksaanAset = document.getElementById("idPemeriksaanAset").value;
+
+        // Kirim data melalui AJAX ke server
+        $.ajax({
+            url: '{{ route('pc.updateStatusPemeriksaan') }}',
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}', // CSRF token untuk keamanan
+                id_pemeriksaan_aset: idPemeriksaanAset,
+                status_pemeriksaan: selectedValue
+            },
+            success: function(response) {
+                alert(response.message); // Tampilkan pesan sukses
+            },
+            error: function(xhr) {
+                alert('Gagal mengubah status pemeriksaan'); // Tampilkan pesan error
+            }
+        });
     }
 
     window.onclick = function(event) {
-        if (!event.target.matches('#dropdownButton') && !event.target.closest('.dropdown-menu')) {
+        if (!event.target.matches('#statusPemeriksaanButton') && !event.target.closest('.dropdown-menu')) {
             var dropdowns = document.getElementsByClassName("dropdown-menu");
             for (var i = 0; i < dropdowns.length; i++) {
                 var openDropdown = dropdowns[i];
@@ -1722,6 +1942,59 @@
         }
     }
 </script>
+
 @endsection
-                                                                                        <h6 class="text-primary">0</h6>
-                                                                                        <h6 class="text-warning">0</h6>
+
+{{-- <script>
+    var status = 'Belum Selesai Diinput';
+
+    function toggleDropdown() {
+        var dropdown = document.getElementById("statusPemeriksaanDropdown");
+        dropdown.classList.toggle("show");
+    }
+
+    function handleSelection(selection) {
+        status = selection;
+        
+        // Mengatur teks tombol berdasarkan status
+        if (status === 'Selesai Diinput') {
+            document.getElementById("buttonText").textContent = 'Selesai Diinput';
+        } else {
+            document.getElementById("buttonText").textContent = 'Belum Selesai Diinput';
+        }
+
+        document.getElementById("statusPemeriksaanDropdown").classList.remove("show");
+
+        // Ambil ID Pemeriksaan Aset dari elemen hidden
+        var idPemeriksaanAset = document.getElementById("idPemeriksaanAset").value;
+
+        // Kirim data melalui AJAX
+        $.ajax({
+            url: '{{ route('pc.updateStatusPemeriksaan') }}',
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id_pemeriksaan_aset: idPemeriksaanAset,
+                status_pemeriksaan: status
+            },
+            success: function(response) {
+                alert(response.message); // Tampilkan pesan sukses atau update UI lain sesuai kebutuhan
+            },
+            error: function(xhr) {
+                alert('Gagal mengubah status pemeriksaan');
+            }
+        });
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.matches('#statusPemeriksaanButton') && !event.target.closest('.dropdown-menu')) {
+            var dropdowns = document.getElementsByClassName("dropdown-menu");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script> --}}

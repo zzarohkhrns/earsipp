@@ -208,68 +208,63 @@
                                             <!-- Bagian Filter dan Tombol Aksi -->
                                             <div
                                                 style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                                                <div style="display: flex; align-items: center; max-width: 67%;">
+                                                {{-- <div style="display: flex; align-items: center; max-width: 67%;">
+                                                </div> --}}
+                                                <form id="filter-form" method="GET" action="{{ url('/arsip/aset/data') }}"
+                                                    style="display: flex; align-items: center; gap: 10px;">
                                                     <!-- Filter Tanggal Pembelian -->
-                                                    <div class="col-12 col-md-6 col-sm-12 mb-3 mt-3">
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend" style="border-radius: 10px;">
-                                                                <span class="input-group-text custom-text">Tgl
-                                                                    Pembelian</span>
-                                                            </div>
-                                                            <input type="date" id="tgl-pembelian-start"
-                                                                name="tgl-pembelian-start"
-                                                                class="form-control custom-input">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text custom-text">-</span>
-                                                            </div>
-                                                            <input type="date" id="tgl-pembelian-end"
-                                                                name="tgl-pembelian-end" class="form-control custom-input">
+                                                    <div class="input-group" style="flex: 1;">
+                                                        <div class="input-group-prepend" style="border-radius: 10px;">
+                                                            <span class="input-group-text custom-text">Tgl Pembelian</span>
                                                         </div>
+                                                        <input type="date" id="tgl-pembelian-start"
+                                                            name="tgl-pembelian-start" class="form-control custom-input"
+                                                            style="min-width: 140px;">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text custom-text">-</span>
+                                                        </div>
+                                                        <input type="date" id="tgl-pembelian-end"
+                                                            name="tgl-pembelian-end" class="form-control custom-input"
+                                                            style="min-width: 140px;">
                                                     </div>
 
                                                     <!-- Filter Kategori -->
-                                                    <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0 mt-2">
-                                                        <div class="input-group mb-2 mr-sm-2">
-                                                            <div class="input-group-prepend">
-                                                                <div class="input-group-text">Kategori</div>
-                                                            </div>
-                                                            <select class="form-control" name="kategori"
-                                                                onchange="javascript:this.form.submit();"
-                                                                style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
-                                                                <option value="">Semua</option>
-                                                                @foreach ($kategori as $kat)
-                                                                    <option value="{{ $kat->id_kategori }}">
-                                                                        {{ $kat->kategori }}</option>
-                                                                @endforeach
-                                                            </select>
+                                                    <div class="input-group" style="flex: 0.5;">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Kategori</div>
                                                         </div>
+                                                        <select class="form-control" name="kategori"
+                                                            style="border-top-right-radius: 10px; border-bottom-right-radius:10px; min-width: 120px;">
+                                                            <option value="">Semua</option>
+                                                            @foreach ($kategori as $kat)
+                                                                <option value="{{ $kat->id_kategori }}">{{ $kat->kategori }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
 
                                                     <!-- Filter Status -->
-                                                    <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0 mt-2">
-                                                        <div class="input-group mb-2 mr-sm-2">
-                                                            <div class="input-group-prepend">
-                                                                <div class="input-group-text">Status</div>
-                                                            </div>
-                                                            <select class="form-control" name="status"
-                                                                onchange="javascript:this.form.submit();"
-                                                                style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
-                                                                <option value="">Semua</option>
-                                                                <option value="aktif">Aktif</option>
-                                                                <option value="non aktif">Non Aktif</option>
-
-                                                            </select>
+                                                    <div class="input-group" style="flex: 0.5;">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Status</div>
                                                         </div>
+                                                        <select class="form-control" name="status"
+                                                            style="border-top-right-radius: 10px; border-bottom-right-radius:10px; min-width: 120px;">
+                                                            <option value="">Semua</option>
+                                                            <option value="aktif">Aktif</option>
+                                                            <option value="non aktif">Non Aktif</option>
+                                                        </select>
                                                     </div>
 
                                                     <!-- Tombol Refresh -->
                                                     <div>
-                                                        <button class="btn btn-outline-secondary"
-                                                            style="width: 100px; border-radius:10px;">
+                                                        <button type="button" class="btn btn-outline-secondary"
+                                                            style="width: 100px; border-radius:10px;"
+                                                            onclick="location.reload();">
                                                             <i class="fas fa-sync-alt"></i>
                                                         </button>
                                                     </div>
-                                                </div>
+                                                </form>
 
                                                 <!-- Tombol Aksi -->
                                                 <div
@@ -299,6 +294,7 @@
                                                 </div>
                                             </div>
 
+
                                             <!-- Keterangan Data -->
                                             <div class="col-12 col-md-10 col-sm-12 mb-2 mb-xl-0">
                                                 <div class="d-flex flex-row bd-highlight align-items-center">
@@ -316,8 +312,32 @@
                                             </div>
                                         </div>
 
+                                        <!-- Script AJAX untuk filter -->
+                                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                        <script>
+                                            $(document).ready(function() {
+                                                $('#filter-form').on('change', 'input, select', function() {
+                                                    var formData = $('#filter-form').serialize();
+                                                    $.ajax({
+                                                        url: $('#filter-form').attr('action'),
+                                                        method: 'GET',
+                                                        data: formData,
+                                                        success: function(response) {
+                                                            var newTableBody = $(response).find('#table-container').html();
+                                                            $('#table-container').html(newTableBody);
+                                                            window.history.pushState({}, '', $('#filter-form').attr('action') +
+                                                                '?' + formData);
+                                                        },
+                                                        error: function() {
+                                                            alert('Ada kesalahan dalam memfilter data.');
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        </script>
+
                                         <!-- Table barang -->
-                                        <table id="example3" class="table table-bordered" style="width:100%;">
+                                        <table id="table-container" class="table table-bordered" style="width:100%;">
                                             <thead class="table-secondary" style="text-align: center">
                                                 <tr>
                                                     <th>NO</th>
@@ -354,7 +374,7 @@
                                                                 <?php
                                                                 // Ambil status dari data, default ke 'null' jika tidak ada
                                                                 $status = $data->latestDetailPemeriksaanAset->status_aset ?? 'null';
-
+                                                                
                                                                 // Tentukan warna tombol dan teks berdasarkan status
                                                                 if ($status === 'null') {
                                                                     $warnaTombol = 'background-color: #a9a9a9; border-color: #a9a9a9;'; // Abu-abu untuk data tidak tersedia
@@ -363,7 +383,7 @@
                                                                     $warnaTombol = $status === 'aktif' ? 'background-color: #55CE71; border-color: #55CE71;' : 'background-color: rgb(255, 18, 18); border-color: rgb(255, 18, 18);';
                                                                     $teksTombol = $status === 'aktif' ? 'Aktif' : 'Non Aktif';
                                                                 }
-
+                                                                
                                                                 // HTML untuk tombol
                                                                 $konten = "<button type='button' class='btn' style='border-radius: 10px; $warnaTombol; color:white; padding: 4px 8px; font-size: 14px;'>$teksTombol</button>";
                                                                 ?>

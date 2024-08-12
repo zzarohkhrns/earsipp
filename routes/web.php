@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\DataAsetController;
+use App\Http\Controllers\DetailPemeriksaanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PermohonanController;
 use App\Http\Controllers\PenerimaController;
@@ -216,6 +217,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/arsip/aset/detail_pemeriksaan/{id}/{tgl}', [DataAsetController::class, 'detail_pemeriksaan'])->name('detail_pemeriksaan');
         Route::post('/aset/data/tambah', [DataAsetController::class, 'store_data'])->name('aset.store');
         Route::post('/detail_pemeriksaan/store/{id}', [DataAsetController::class, 'store_detail_pemeriksaan'])->name('detail_pemeriksaan.store');
+        Route::post('/detail_pemeriksaan/update/{id}', [DataAsetController::class, 'update_detail_pemeriksaan'])->name('detail_pemeriksaan.update');
+        // // Route untuk mendapatkan detail aset
+        // Route::get('/aset/data/{id}', [DataAsetController::class, 'getAsetData']);
+        // // Route untuk mendapatkan detail pemeriksaan
+        // Route::get('/detail-pemeriksaan/{id}', [DataAsetController::class, 'getDetailPemeriksaan']);
+        // Route untuk mendapatkan detail pemeriksaan
+        Route::get('/detail-pemeriksaan/{id}', [DetailPemeriksaanController::class, 'getDetailPemeriksaan']);
+        Route::post('/update-status-pemeriksaan', [DataAsetController::class, 'updateStatusPemeriksaan'])->name('updateStatusPemeriksaan');
         Route::post('/pemeriksaan/store', [DataAsetController::class, 'store_pemeriksaan'])->name('pemeriksaan.store');
         Route::get('/aset/data/{id}', [DataAsetController::class, 'getDataAset']);
         //Route::post('/check-date', [DataAsetController::class, 'checkDate_Pemeriksaan'])->name('check-date');
