@@ -477,8 +477,6 @@ class DataAsetController extends Controller
     //     return redirect()->back()->with('success', 'Detail Pemeriksaan berhasil diupdate');
     // }
 
-    public function update_detail_pemeriksaan(Request $request, $id) {}
-
     public function getAsetDetail($id)
     {
         $aset = Aset::with('kategori_aset')->find($id);
@@ -651,5 +649,34 @@ class DataAsetController extends Controller
 
         // Redirect atau berikan response sukses
         return redirect()->back()->with('success', 'Data pemeriksaan berhasil ditambahkan.');
+    }
+
+    public function update_detail_pemeriksaan(Request $request)
+    {
+        $request->validate([
+            'edit_id_detail_pemeriksaan' => 'required',
+            'edit_aset' => 'required',
+            'edit_status' => 'required|in:aktif,non aktif',
+            'edit_kondisi' => 'required|string|max:255',
+            'edit_masalah_teridentifikasi' => 'required|string',
+            'edit_tindakan_diperlukan' => 'required|string',
+        ]);
+
+        try
+        {
+
+            $detail_pemeriksaan = DetailPemeriksaanAset::findOrFail($request->edit_id_detail_pemeriksaan);
+            $detail_pemeriksaan->aset_id = $request->edit_aset;
+            $detail_pemeriksaan->kondisi = $request->edit_kondisi;
+            $detail_pemeriksaan->status_aset = $request->edit_status;
+            $detail_pemeriksaan->masalah_teridentifikasi = $request->edit_masalah_teridentifikasi;
+            $detail_pemeriksaan->tindakan_diperlukan = $request->edit_tindakan_diperlukan;
+            $detail_pemeriksaan->save();
+
+            return redirect()->back()->with('success', 'Data berhasil diupdate.');
+        } catch (\Exception $e) {
+            Log::error('Error saat mengupdate data barang: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Data gagal diupdate.');
+        }
     }
 }

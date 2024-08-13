@@ -217,13 +217,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/arsip/aset/detail_pemeriksaan/{id}/{tgl}', [DataAsetController::class, 'detail_pemeriksaan'])->name('detail_pemeriksaan');
         Route::post('/aset/data/tambah', [DataAsetController::class, 'store_data'])->name('aset.store');
         Route::post('/detail_pemeriksaan/store/{id}', [DataAsetController::class, 'store_detail_pemeriksaan'])->name('detail_pemeriksaan.store');
-        Route::post('/detail_pemeriksaan/update/{id}', [DataAsetController::class, 'update_detail_pemeriksaan'])->name('detail_pemeriksaan.update');
+        Route::post('/detail_pemeriksaan/update/', [DataAsetController::class, 'update_detail_pemeriksaan'])->name('detail_pemeriksaan.update');
         Route::delete('/delete-detail-pemeriksaan/{id_detail_pemeriksaan_aset}/{id_pemeriksaan_aset}/{aset_id}', [DataAsetController::class, 'delete_detail_pemeriksaan'])->name('delete_detail_pemeriksaan');
-        // // Route untuk mendapatkan detail aset
-        // Route::get('/aset/data/{id}', [DataAsetController::class, 'getAsetData']);
-        // // Route untuk mendapatkan detail pemeriksaan
-        // Route::get('/detail-pemeriksaan/{id}', [DataAsetController::class, 'getDetailPemeriksaan']);
-        // Route untuk mendapatkan detail pemeriksaan
+
         Route::get('/detail-pemeriksaan/{id}', [DetailPemeriksaanController::class, 'getDetailPemeriksaan']);
         Route::post('/update-status-pemeriksaan', [DataAsetController::class, 'updateStatusPemeriksaan'])->name('updateStatusPemeriksaan');
         Route::post('/pemeriksaan/store', [DataAsetController::class, 'store_pemeriksaan'])->name('pemeriksaan.store');

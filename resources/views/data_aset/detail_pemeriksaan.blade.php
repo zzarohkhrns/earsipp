@@ -4,7 +4,6 @@
 @section('barang', 'menu-open')
 
 @section('css')
-@endsection
 
 @section('content')
     <style>
@@ -42,6 +41,11 @@
             border: 1px solid #dee2e6;
             border-radius: 0.25rem;
             padding: 1rem;
+        }
+
+        a.disabled {
+            pointer-events: none;
+            cursor: default;
         }
 
         #dropdownButton {
@@ -149,7 +153,7 @@
                                                                         <div class="dropdown">
                                                                             <select id="dropdownButton"
                                                                                 onchange="handleDropdownChange(this)"
-                                                                                style="padding: 10px; border-radius: 5px;">
+                                                                                style="padding: 10px; border-radius: 10px; border: none;">
                                                                                 <option value="Belum Selesai Diinput">Belum
                                                                                     Selesai Diinput</option>
                                                                                 <option value="Selesai Diinput">Selesai
@@ -485,6 +489,16 @@
                                                                             $no = 1;
                                                                         @endphp
                                                                         @foreach ($detailPemeriksaan as $data)
+                                                                            @php
+                                                                                // Mendapatkan tanggal pemeriksaan yang terkait dengan data
+                                                                                $tanggal_pemeriksaan =
+                                                                                    $data->pemeriksaanAset
+                                                                                        ->tanggal_pemeriksaan;
+                                                                                // Membandingkan tanggal pemeriksaan dengan tanggal sekarang
+                                                                                $canEdit = \Carbon\Carbon::parse(
+                                                                                    $tanggal_pemeriksaan,
+                                                                                )->isToday();
+                                                                            @endphp
                                                                             @if ($data->kondisi == 'baik')
                                                                                 <tr>
                                                                                     <td>{{ $no++ }}</td>
@@ -507,7 +521,9 @@
                                                                                             class="d-flex flex-column align-items-center">
                                                                                             <div
                                                                                                 class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
+                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan
+                                                                                                @if (!$canEdit) disabled @endif
+                                                                                                "
                                                                                                     type="button"
                                                                                                     data-toggle="modal"
                                                                                                     data-target="#UbahPemeriksaanModal"
@@ -531,21 +547,23 @@
                                                                                                 <div
                                                                                                     class="btn-group mb-2 mb-xl-0 btn-block">
                                                                                                     {{-- @foreach ($detailPemeriksaan as $item) --}}
-                                                                                                        <form
-                                                                                                            action="{{--  {{ route ($role.'.delete_detail_pemeriksaan', [$item->id, $pemeriksaanAset->id_pemeriksaan_aset, $item->aset_id]) }} --}}"
-                                                                                                            method="POST"
-                                                                                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                                                                                                            @csrf
-                                                                                                            @method('DELETE')
-                                                                                                            <button
-                                                                                                                type="submit"
-                                                                                                                class="btn btn-outline-secondary btn-block"
-                                                                                                                style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px;">
-                                                                                                                <i
-                                                                                                                    class="fas fa-trash"></i>
-                                                                                                                Hapus
-                                                                                                            </button>
-                                                                                                        </form>
+                                                                                                    <form
+                                                                                                        action="{{--  {{ route ($role.'.delete_detail_pemeriksaan', [$item->id, $pemeriksaanAset->id_pemeriksaan_aset, $item->aset_id]) }} --}}"
+                                                                                                        method="POST"
+                                                                                                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                                                                                        @csrf
+                                                                                                        @method('DELETE')
+                                                                                                        <button
+                                                                                                            type="submit"
+                                                                                                            class="btn btn-outline-secondary btn-block
+                                                                                                            "
+                                                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px;"
+                                                                                                            @if (!$canEdit) disabled @endif>
+                                                                                                            <i
+                                                                                                                class="fas fa-trash"></i>
+                                                                                                            Hapus
+                                                                                                        </button>
+                                                                                                    </form>
                                                                                                     {{-- @endforeach --}}
                                                                                                 </div>
                                                                                             </div>
@@ -582,7 +600,18 @@
                                                                             $no = 1;
                                                                         @endphp
 
+
                                                                         @foreach ($detailPemeriksaan as $data)
+                                                                            @php
+                                                                                // Mendapatkan tanggal pemeriksaan yang terkait dengan data
+                                                                                $tanggal_pemeriksaan =
+                                                                                    $data->pemeriksaanAset
+                                                                                        ->tanggal_pemeriksaan;
+                                                                                // Membandingkan tanggal pemeriksaan dengan tanggal sekarang
+                                                                                $canEdit = \Carbon\Carbon::parse(
+                                                                                    $tanggal_pemeriksaan,
+                                                                                )->isToday();
+                                                                            @endphp
                                                                             @if ($data->kondisi == 'rusak')
                                                                                 <tr>
                                                                                     <td>{{ $no++ }}</td>
@@ -605,7 +634,9 @@
                                                                                             class="d-flex flex-column align-items-center">
                                                                                             <div
                                                                                                 class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
+                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan
+                                                                                                    @if (!$canEdit) disabled @endif
+                                                                                                    "
                                                                                                     type="button"
                                                                                                     data-toggle="modal"
                                                                                                     data-target="#UbahPemeriksaanModal"
@@ -626,17 +657,28 @@
                                                                                                 </a>
                                                                                             </div>
                                                                                             <div
-                                                                                                class="btn-group mb-2 card_hapus_barang">
+                                                                                                class="btn-group mb-2 mb-xl-0 card_hapus_detail">
                                                                                                 <div
-                                                                                                    class="btn-group btn-block">
-                                                                                                    <a onclick="$('#cover-spin').show(0)"
-                                                                                                        href="/{{ $role }}/aksi_hapus_barang"
-                                                                                                        class="btn btn-outline-secondary btn-block"
-                                                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
-                                                                                                        <i
-                                                                                                            class="fas fa-trash"></i>
-                                                                                                        Hapus
-                                                                                                    </a>
+                                                                                                    class="btn-group mb-2 mb-xl-0 btn-block">
+                                                                                                    {{-- @foreach ($detailPemeriksaan as $item) --}}
+                                                                                                    <form
+                                                                                                        action="{{--  {{ route ($role.'.delete_detail_pemeriksaan', [$item->id, $pemeriksaanAset->id_pemeriksaan_aset, $item->aset_id]) }} --}}"
+                                                                                                        method="POST"
+                                                                                                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                                                                                        @csrf
+                                                                                                        @method('DELETE')
+                                                                                                        <button
+                                                                                                            type="submit"
+                                                                                                            class="btn btn-outline-secondary btn-block
+                                                                                                            "
+                                                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px;"
+                                                                                                            @if (!$canEdit) disabled @endif>
+                                                                                                            <i
+                                                                                                                class="fas fa-trash"></i>
+                                                                                                            Hapus
+                                                                                                        </button>
+                                                                                                    </form>
+                                                                                                    {{-- @endforeach --}}
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -670,7 +712,18 @@
                                                                         @php
                                                                             $no = 1;
                                                                         @endphp
+
                                                                         @foreach ($detailPemeriksaan as $data)
+                                                                            @php
+                                                                                // Mendapatkan tanggal pemeriksaan yang terkait dengan data
+                                                                                $tanggal_pemeriksaan =
+                                                                                    $data->pemeriksaanAset
+                                                                                        ->tanggal_pemeriksaan;
+                                                                                // Membandingkan tanggal pemeriksaan dengan tanggal sekarang
+                                                                                $canEdit = \Carbon\Carbon::parse(
+                                                                                    $tanggal_pemeriksaan,
+                                                                                )->isToday();
+                                                                            @endphp
                                                                             @if ($data->kondisi == 'perlu service')
                                                                                 <tr>
                                                                                     <td>{{ $no++ }}</td>
@@ -693,7 +746,9 @@
                                                                                             class="d-flex flex-column align-items-center">
                                                                                             <div
                                                                                                 class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
+                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan
+                                                                                                @if (!$canEdit) disabled @endif
+                                                                                                "
                                                                                                     type="button"
                                                                                                     data-toggle="modal"
                                                                                                     data-target="#UbahPemeriksaanModal"
@@ -714,17 +769,28 @@
                                                                                                 </a>
                                                                                             </div>
                                                                                             <div
-                                                                                                class="btn-group mb-2 card_hapus_barang">
+                                                                                                class="btn-group mb-2 mb-xl-0 card_hapus_detail">
                                                                                                 <div
-                                                                                                    class="btn-group btn-block">
-                                                                                                    <a onclick="$('#cover-spin').show(0)"
-                                                                                                        href="/{{ $role }}/aksi_hapus_barang"
-                                                                                                        class="btn btn-outline-secondary btn-block"
-                                                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
-                                                                                                        <i
-                                                                                                            class="fas fa-trash"></i>
-                                                                                                        Hapus
-                                                                                                    </a>
+                                                                                                    class="btn-group mb-2 mb-xl-0 btn-block">
+                                                                                                    {{-- @foreach ($detailPemeriksaan as $item) --}}
+                                                                                                    <form
+                                                                                                        action="{{--  {{ route ($role.'.delete_detail_pemeriksaan', [$item->id, $pemeriksaanAset->id_pemeriksaan_aset, $item->aset_id]) }} --}}"
+                                                                                                        method="POST"
+                                                                                                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                                                                                        @csrf
+                                                                                                        @method('DELETE')
+                                                                                                        <button
+                                                                                                            type="submit"
+                                                                                                            class="btn btn-outline-secondary btn-block
+                                                                                                            "
+                                                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px;"
+                                                                                                            @if (!$canEdit) disabled @endif>
+                                                                                                            <i
+                                                                                                                class="fas fa-trash"></i>
+                                                                                                            Hapus
+                                                                                                        </button>
+                                                                                                    </form>
+                                                                                                    {{-- @endforeach --}}
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -755,59 +821,92 @@
                                                                     </tr>
 
                                                                     @if (($detailPemeriksaan->where('kondisi', 'hilang')->count() ?? 0) > 0)
-                                                                        <tr>
-                                                                            <td>{{ $no++ }}</td>
-                                                                            <td>{{ $data->aset->kode_aset }}</td>
-                                                                            <td>{{ $data->aset->nama_aset }}</td>
-                                                                            <td>{{ $data->aset->kategori_aset->kategori }}
-                                                                            </td>
-                                                                            <td>{{ $data->aset->lokasi_penyimpanan }}</td>
-                                                                            <td>{{ $data->kondisi }}</td>
-                                                                            <td>{{ $data->status_aset }}</td>
-                                                                            <td>{{ $data->aset->tgl_perolehan }}</td>
-                                                                            <td>{{ $data->masalah_teridentifikasi }}</td>
-                                                                            <td>{{ $data->tindakan_diperlukan }}</td>
-                                                                            <td>
-                                                                                <div
-                                                                                    class="d-flex flex-column align-items-center">
+                                                                    @php
+                                                                        $no =1;
+                                                                    @endphp
+                                                                        @foreach ($detailPemeriksaan as $data)
+                                                                            @php
+                                                                                // Mendapatkan tanggal pemeriksaan yang terkait dengan data
+                                                                                $tanggal_pemeriksaan =
+                                                                                    $data->pemeriksaanAset
+                                                                                        ->tanggal_pemeriksaan;
+                                                                                // Membandingkan tanggal pemeriksaan dengan tanggal sekarang
+                                                                                $canEdit = \Carbon\Carbon::parse(
+                                                                                    $tanggal_pemeriksaan,
+                                                                                )->isToday();
+                                                                            @endphp
+                                                                            @if ($data->kondisi == 'hilang')
+                                                                            <tr>
+                                                                                <td>{{ $no++ }}</td>
+                                                                                <td>{{ $data->aset->kode_aset }}</td>
+                                                                                <td>{{ $data->aset->nama_aset }}</td>
+                                                                                <td>{{ $data->aset->kategori_aset->kategori }}
+                                                                                </td>
+                                                                                <td>{{ $data->aset->lokasi_penyimpanan }}
+                                                                                </td>
+                                                                                <td>{{ $data->kondisi }}</td>
+                                                                                <td>{{ $data->status_aset }}</td>
+                                                                                <td>{{ $data->aset->tgl_perolehan }}</td>
+                                                                                <td>{{ $data->masalah_teridentifikasi }}
+                                                                                </td>
+                                                                                <td>{{ $data->tindakan_diperlukan }}</td>
+                                                                                <td>
                                                                                     <div
-                                                                                        class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                                        <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
-                                                                                            type="button"
-                                                                                            data-toggle="modal"
-                                                                                            data-target="#UbahPemeriksaanModal"
-                                                                                            data-aset-id="{{ $data->aset_id }}"
-                                                                                            data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
-                                                                                            data-lokasi-penyimpanan="{{ $data->aset->lokasi_penyimpanan }}"
-                                                                                            data-tgl-perolehan="{{ $data->aset->tgl_perolehan }}"
-                                                                                            data-kondisi="{{ $data->kondisi }}"
-                                                                                            data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
-                                                                                            data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
-                                                                                            data-status-aset="{{ $data->status_aset }}"
-                                                                                            data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
-                                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
-                                                                                            aria-expanded="false">
-                                                                                            &nbsp;&nbsp;<i
-                                                                                                class="fas fa-edit"></i>
-                                                                                            Ubah
-                                                                                        </a>
-                                                                                    </div>
-                                                                                    <div
-                                                                                        class="btn-group mb-2 card_hapus_barang">
-                                                                                        <div class="btn-group btn-block">
-                                                                                            <a onclick="$('#cover-spin').show(0)"
-                                                                                                href="/{{ $role }}/aksi_hapus_barang"
-                                                                                                class="btn btn-outline-secondary btn-block"
-                                                                                                style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
-                                                                                                <i
-                                                                                                    class="fas fa-trash"></i>
-                                                                                                Hapus
+                                                                                        class="d-flex flex-column align-items-center">
+                                                                                        <div
+                                                                                            class="btn-group mb-2 card_edit_pemeriksaan">
+                                                                                            <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan
+                                                                                            @if (!$canEdit) disabled @endif
+                                                                                            "
+                                                                                                type="button"
+                                                                                                data-toggle="modal"
+                                                                                                data-target="#UbahPemeriksaanModal"
+                                                                                                data-aset-id="{{ $data->aset_id }}"
+                                                                                                data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
+                                                                                                data-lokasi-penyimpanan="{{ $data->aset->lokasi_penyimpanan }}"
+                                                                                                data-tgl-perolehan="{{ $data->aset->tgl_perolehan }}"
+                                                                                                data-kondisi="{{ $data->kondisi }}"
+                                                                                                data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
+                                                                                                data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
+                                                                                                data-status-aset="{{ $data->status_aset }}"
+                                                                                                data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
+                                                                                                style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
+                                                                                                aria-expanded="false">
+                                                                                                &nbsp;&nbsp;<i
+                                                                                                    class="fas fa-edit"></i>
+                                                                                                Ubah
                                                                                             </a>
                                                                                         </div>
+                                                                                        <div
+                                                                                                class="btn-group mb-2 mb-xl-0 card_hapus_detail">
+                                                                                                <div
+                                                                                                    class="btn-group mb-2 mb-xl-0 btn-block">
+                                                                                                    {{-- @foreach ($detailPemeriksaan as $item) --}}
+                                                                                                    <form
+                                                                                                        action="{{--  {{ route ($role.'.delete_detail_pemeriksaan', [$item->id, $pemeriksaanAset->id_pemeriksaan_aset, $item->aset_id]) }} --}}"
+                                                                                                        method="POST"
+                                                                                                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                                                                                        @csrf
+                                                                                                        @method('DELETE')
+                                                                                                        <button
+                                                                                                            type="submit"
+                                                                                                            class="btn btn-outline-secondary btn-block
+                                                                                                            "
+                                                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px;"
+                                                                                                            @if (!$canEdit) disabled @endif>
+                                                                                                            <i
+                                                                                                                class="fas fa-trash"></i>
+                                                                                                            Hapus
+                                                                                                        </button>
+                                                                                                    </form>
+                                                                                                    {{-- @endforeach --}}
+                                                                                                </div>
+                                                                                            </div>
                                                                                     </div>
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
+                                                                                </td>
+                                                                            </tr>
+                                                                            @endif
+                                                                        @endforeach
                                                                     @else
                                                                         <tr>
                                                                             <td colspan="11" style="text-align:center">
@@ -1189,39 +1288,6 @@
                                                                                     </td>
                                                                                     <td>{{ $data->tindakan_diperlukan }}
                                                                                     </td>
-                                                                                    <td>
-                                                                                        <div
-                                                                                            class="d-flex flex-column align-items-center">
-                                                                                            <div
-                                                                                                class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
-                                                                                                    type="button"
-                                                                                                    data-toggle="modal"
-                                                                                                    data-target="#UbahPemeriksaanModal"
-                                                                                                    style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
-                                                                                                    id-detail={{ $data->id_detail_pemeriksaan_aset }}
-                                                                                                    aria-expanded="false">
-                                                                                                    &nbsp;&nbsp;<i
-                                                                                                        class="fas fa-edit"></i>
-                                                                                                    Ubah
-                                                                                                </a>
-                                                                                            </div>
-                                                                                            <div
-                                                                                                class="btn-group mb-2 card_hapus_barang">
-                                                                                                <div
-                                                                                                    class="btn-group btn-block">
-                                                                                                    <a onclick="$('#cover-spin').show(0)"
-                                                                                                        href="/{{ $role }}/aksi_hapus_barang"
-                                                                                                        class="btn btn-outline-secondary btn-block"
-                                                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
-                                                                                                        <i
-                                                                                                            class="fas fa-trash"></i>
-                                                                                                        Hapus
-                                                                                                    </a>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </td>
                                                                                 </tr>
                                                                             @endif
                                                                         @endforeach
@@ -1268,38 +1334,6 @@
                                                                                     <td>{{ $data->masalah_teridentifikasi }}
                                                                                     </td>
                                                                                     <td>{{ $data->tindakan_diperlukan }}
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <div
-                                                                                            class="d-flex flex-column align-items-center">
-                                                                                            <div
-                                                                                                class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
-                                                                                                    type="button"
-                                                                                                    data-toggle="modal"
-                                                                                                    data-target="#UbahPemeriksaanModal"
-                                                                                                    style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
-                                                                                                    aria-expanded="false">
-                                                                                                    &nbsp;&nbsp;<i
-                                                                                                        class="fas fa-edit"></i>
-                                                                                                    Ubah
-                                                                                                </a>
-                                                                                            </div>
-                                                                                            <div
-                                                                                                class="btn-group mb-2 card_hapus_barang">
-                                                                                                <div
-                                                                                                    class="btn-group btn-block">
-                                                                                                    <a onclick="$('#cover-spin').show(0)"
-                                                                                                        href="/{{ $role }}/aksi_hapus_barang"
-                                                                                                        class="btn btn-outline-secondary btn-block"
-                                                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
-                                                                                                        <i
-                                                                                                            class="fas fa-trash"></i>
-                                                                                                        Hapus
-                                                                                                    </a>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
                                                                                     </td>
                                                                                 </tr>
                                                                             @endif
@@ -1453,41 +1487,6 @@
 </script> --}}
 
 <script>
-    // $('#UbahPemeriksaanModal').on('show.bs.modal', function(event) {
-    //     var button = $(event.relatedTarget); // Tombol yang diklik untuk membuka modal
-
-    //     // Ambil data dari atribut data-*
-    //     var asetId = button.data('aset-id');
-    //     var kategoriAset = button.data('kategori-aset');
-    //     var lokasiPenyimpanan = button.data('lokasi-penyimpanan');
-    //     var tglPerolehan = button.data('tgl-perolehan');
-    //     var kondisi = button.data('kondisi');
-    //     var masalahTeridentifikasi = button.data('masalah-teridentifikasi');
-    //     var tindakanDiperlukan = button.data('tindakan-diperlukan');
-    //     var statusAset = button.data('status-aset');
-    //     var idDetail = button.data('id-detail');
-
-    //     // Isi modal dengan data tersebut
-    //     var modal = $(this);
-    //     modal.find('#edit_aset').val(asetId).trigger('change');
-    //     modal.find('#edit_kategori_aset').val(kategoriAset);
-    //     modal.find('#edit_lokasi_penyimpanan').val(lokasiPenyimpanan);
-    //     modal.find('#edit_tgl_perolehan').val(tglPerolehan);
-    //     modal.find('#edit_kondisi').val(kondisi);
-    //     modal.find('#edit_masalah_teridentifikasi').val(masalahTeridentifikasi);
-    //     modal.find('#edit_tindakan_diperlukan').val(tindakanDiperlukan);
-    //     modal.find('input[name="edit_status"][value="' + statusAset + '"]').prop('checked', true);
-    // });
-
-    // data-aset-id="{{ $data->aset_id }}"
-    // data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
-    // data-lokasi-penyimpanan="{{ $data->lokasi_penyimpanan }}"
-    // data-tgl-perolehan="{{ $data->tgl_perolehan }}"
-    // data-kondisi="{{ $data->kondisi }}"
-    // data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
-    // data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
-    // data-status-aset="{{ $data->status_aset }}"
-    // data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
     $(document).on('click', '.edit-pemeriksaan', function() {
         var id_detail = $(this).data('id-detail');
         var aset_id = $(this).data('aset-id');
@@ -1500,6 +1499,7 @@
         var status_aset = $(this).data('status-aset');
 
         // Isi form di dalam modal dengan data yang diterima
+        $('#edit_id_detail_pemeriksaan').val(id_detail); // Set value untuk select
         $('#edit_aset').val(aset_id); // Set value untuk select
         $('#edit_kategori_aset').val(kategori_aset);
         $('#edit_lokasi_penyimpanan').val(lokasi_penyimpanan);
@@ -1510,7 +1510,7 @@
         $('input[name="edit_status"][value="' + status_aset + '"]').prop('checked', true);
 
         // Set action URL untuk form edit
-        $('#editPemeriksaanForm').attr('action', 'pc/detail-pemeriksaan/update/' + id_detail);
+        //$('#editPemeriksaanForm').attr('action', 'pc/detail_pemeriksaan/update/' + id_detail);
     })
 </script>
 
@@ -1526,14 +1526,16 @@
                 </button>
             </div>
             <div class="modal-body" style="padding: 1rem;">
-                <form id="editPemeriksaanForm" method="POST">
+                <form id="editPemeriksaanForm" method="POST"
+                    action="/{{ $role }}/detail_pemeriksaan/update/">
                     @csrf
-                    @method('PUT')
-
                     <div class="form-group">
+                        <input type="text" class="form-control" id="edit_id_detail_pemeriksaan"
+                            name="edit_id_detail_pemeriksaan"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" hidden>
                         <label for="nama_aset" style="font-weight: bold; font-size: 14px;">Nama Aset</label>
                         <select class="form-control" id="edit_aset" name="edit_aset"
-                            onchange="toggleNewCategoryForm()">
+                            onchange="toggleNewCategoryForm()" required>
                             <option value="">Pilih Aset</option>
                             @foreach ($aset as $data)
                                 <option value="{{ $data->aset_id }}">{{ $data->nama_aset }}</option>
@@ -1571,7 +1573,7 @@
 
                     <label for="kondisi">Kondisi</label>
                     <select class="form-control" id="edit_kondisi" name="edit_kondisi"
-                        onchange="toggleNewCategoryForm()">
+                        onchange="toggleNewCategoryForm()" required>
                         <option value="">Pilih Kondisi</option>
                         <option value="baik">Baik</option>
                         <option value="rusak">Tidak Memadai (Rusak)</option>
@@ -1581,15 +1583,15 @@
                     <div class="form-group">
                         <label for="edit_masalah_teridentifikasi" style="font-weight: bold; font-size: 14px;">Masalah
                             Teridentifikasi</label>
-                        <textarea class="form-control" id="edit_masalah_teridentifikasi" rows="3"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"></textarea>
+                        <textarea class="form-control" id="edit_masalah_teridentifikasi" name="edit_masalah_teridentifikasi" rows="3"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required></textarea>
                     </div>
                     <div class="form-group">
                         <label for="edit_tindakan_diperlukan" style="font-weight: bold; font-size: 14px;">Tindakan
                             Yang
                             Diperlukan</label>
-                        <textarea class="form-control" id="edit_tindakan_diperlukan" rows="3"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"></textarea>
+                        <textarea class="form-control" id="edit_tindakan_diperlukan" name="edit_tindakan_diperlukan" rows="3"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-success"
                         style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
@@ -1617,7 +1619,7 @@
                     <div class="form-group">
                         <label for="nama_aset" style="font-weight: bold; font-size: 14px;">Nama Aset</label>
                         <select class="form-control" id="aset" name="aset"
-                            onchange="toggleNewCategoryForm()">
+                            onchange="toggleNewCategoryForm()" required>
                             <option value="">Pilih Aset</option>
                             @foreach ($aset as $data)
                                 <option value="{{ $data->aset_id }}">{{ $data->nama_aset }}</option>
@@ -1717,9 +1719,6 @@
     });
 </script>
 
-
-
-
 <!-- modal respon spv -->
 <div class="modal fade" id="responspvModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
@@ -1758,7 +1757,7 @@
                             style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
                     </div>
                     <div class="alert alert-info"
-                        style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; margin-top: 15px;">
+                        style="background-color: #CBF2D6; border-color: #CBF2D6; color: #155724; margin-top: 15px;">
                         <strong>INFORMASI</strong><br>Dengan klik tombol simpan, SPV mengetahui hasil pemeriksaan aset
                         dan meneruskannya ke Kepala Cabang.
                     </div>
@@ -1818,7 +1817,7 @@
                             style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
                     </div>
                     <div class="alert alert-info"
-                        style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; margin-top: 15px;">
+                        style="background-color: #CBF2D6; border-color: #CBF2D6; color: #155724; margin-top: 15px;">
                         <strong>INFORMASI</strong><br>Dengan klik tombol simpan, KC mengetahui hasil pemeriksaan aset.
                         Hasil pemeriksaan aset dapat digunakan sebagai lampiran pengajuan internal.
                     </div>
@@ -1907,7 +1906,6 @@
     }
 </script>
 
-
 {{-- script untuk dropdown status pemeriksaan --}}
 <script>
     var status = 'Belum Selesai Diinput';
@@ -1955,57 +1953,3 @@
 </script>
 
 @endsection
-
-{{-- <script>
-    var status = 'Belum Selesai Diinput';
-
-    function toggleDropdown() {
-        var dropdown = document.getElementById("statusPemeriksaanDropdown");
-        dropdown.classList.toggle("show");
-    }
-
-    function handleSelection(selection) {
-        status = selection;
-
-        // Mengatur teks tombol berdasarkan status
-        if (status === 'Selesai Diinput') {
-            document.getElementById("buttonText").textContent = 'Selesai Diinput';
-        } else {
-            document.getElementById("buttonText").textContent = 'Belum Selesai Diinput';
-        }
-
-        document.getElementById("statusPemeriksaanDropdown").classList.remove("show");
-
-        // Ambil ID Pemeriksaan Aset dari elemen hidden
-        var idPemeriksaanAset = document.getElementById("idPemeriksaanAset").value;
-
-        // Kirim data melalui AJAX
-        $.ajax({
-            url: '{{ route('pc.updateStatusPemeriksaan') }}',
-            method: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}',
-                id_pemeriksaan_aset: idPemeriksaanAset,
-                status_pemeriksaan: status
-            },
-            success: function(response) {
-                alert(response.message); // Tampilkan pesan sukses atau update UI lain sesuai kebutuhan
-            },
-            error: function(xhr) {
-                alert('Gagal mengubah status pemeriksaan');
-            }
-        });
-    }
-
-    window.onclick = function(event) {
-        if (!event.target.matches('#statusPemeriksaanButton') && !event.target.closest('.dropdown-menu')) {
-            var dropdowns = document.getElementsByClassName("dropdown-menu");
-            for (var i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                }
-            }
-        }
-    }
-</script> --}}
