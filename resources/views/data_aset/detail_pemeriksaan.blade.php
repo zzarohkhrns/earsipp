@@ -520,28 +520,37 @@
                                                                                                     data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
                                                                                                     data-status-aset="{{ $data->status_aset }}"
                                                                                                     data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
-                                                                                                    style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
-                                                                                                    aria-expanded="false">
-                                                                                                    &nbsp;&nbsp;<i
+                                                                                                    style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px;">
+                                                                                                    <i
                                                                                                         class="fas fa-edit"></i>
                                                                                                     Ubah
                                                                                                 </a>
                                                                                             </div>
                                                                                             <div
-                                                                                                class="btn-group mb-2 card_hapus_barang">
+                                                                                                class="btn-group mb-2 mb-xl-0 card_hapus_detail">
                                                                                                 <div
-                                                                                                    class="btn-group btn-block">
-                                                                                                    <a onclick="$('#cover-spin').show(0)"
-                                                                                                        href="/{{ $role }}/aksi_hapus_barang"
-                                                                                                        class="btn btn-outline-secondary btn-block"
-                                                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;">
-                                                                                                        <i
-                                                                                                            class="fas fa-trash"></i>
-                                                                                                        Hapus
-                                                                                                    </a>
+                                                                                                    class="btn-group mb-2 mb-xl-0 btn-block">
+                                                                                                    {{-- @foreach ($detailPemeriksaan as $item) --}}
+                                                                                                        <form
+                                                                                                            action="{{--  {{ route ($role.'.delete_detail_pemeriksaan', [$item->id, $pemeriksaanAset->id_pemeriksaan_aset, $item->aset_id]) }} --}}"
+                                                                                                            method="POST"
+                                                                                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                                                                                            @csrf
+                                                                                                            @method('DELETE')
+                                                                                                            <button
+                                                                                                                type="submit"
+                                                                                                                class="btn btn-outline-secondary btn-block"
+                                                                                                                style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px;">
+                                                                                                                <i
+                                                                                                                    class="fas fa-trash"></i>
+                                                                                                                Hapus
+                                                                                                            </button>
+                                                                                                        </form>
+                                                                                                    {{-- @endforeach --}}
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
+
                                                                                     </td>
                                                                                 </tr>
                                                                             @endif
@@ -768,14 +777,14 @@
                                                                                             data-toggle="modal"
                                                                                             data-target="#UbahPemeriksaanModal"
                                                                                             data-aset-id="{{ $data->aset_id }}"
-                                                                                                    data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
-                                                                                                    data-lokasi-penyimpanan="{{ $data->aset->lokasi_penyimpanan }}"
-                                                                                                    data-tgl-perolehan="{{ $data->aset->tgl_perolehan }}"
-                                                                                                    data-kondisi="{{ $data->kondisi }}"
-                                                                                                    data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
-                                                                                                    data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
-                                                                                                    data-status-aset="{{ $data->status_aset }}"
-                                                                                                    data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
+                                                                                            data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
+                                                                                            data-lokasi-penyimpanan="{{ $data->aset->lokasi_penyimpanan }}"
+                                                                                            data-tgl-perolehan="{{ $data->aset->tgl_perolehan }}"
+                                                                                            data-kondisi="{{ $data->kondisi }}"
+                                                                                            data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
+                                                                                            data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
+                                                                                            data-status-aset="{{ $data->status_aset }}"
+                                                                                            data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
                                                                                             style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
                                                                                             aria-expanded="false">
                                                                                             &nbsp;&nbsp;<i
@@ -1602,7 +1611,8 @@
                 </button>
             </div>
             <div class="modal-body" style="padding: 1rem;">
-                <form method="POST" action="{{ route('pc.detail_pemeriksaan.store', $pemeriksaanAset->id_pemeriksaan_aset) }}">
+                <form method="POST"
+                    action="{{ route('pc.detail_pemeriksaan.store', $pemeriksaanAset->id_pemeriksaan_aset) }}">
                     @csrf
                     <div class="form-group">
                         <label for="nama_aset" style="font-weight: bold; font-size: 14px;">Nama Aset</label>
@@ -1680,7 +1690,8 @@
                 url: '/pc/aset/data/' + asetId, // URL endpoint sesuai dengan route yang telah diatur
                 type: 'GET',
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Mengambil csrf_token dari meta tag
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                        'content') // Mengambil csrf_token dari meta tag
                 },
                 success: function(data) {
                     if (data.length > 0) {
@@ -1955,7 +1966,7 @@
 
     function handleSelection(selection) {
         status = selection;
-        
+
         // Mengatur teks tombol berdasarkan status
         if (status === 'Selesai Diinput') {
             document.getElementById("buttonText").textContent = 'Selesai Diinput';

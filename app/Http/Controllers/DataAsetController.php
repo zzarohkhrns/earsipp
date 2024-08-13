@@ -313,42 +313,33 @@ class DataAsetController extends Controller
         }
     }
 
-    // public function delete_data_detail($id)
+    // public function delete_detail_pemeriksaan($id_detail_pemeriksaan_aset, $id_pemeriksaan_aset, $aset_id)
     // {
     //     // Temukan data aset berdasarkan ID
-    //     $aset = Aset::find($id);
+    //     $aset = Aset::find($aset_id);
 
     //     if ($aset) {
-
-    //         $detailPemeriksaan = DetailPemeriksaanAset::where('aset_id', $id)->firstOrFail();
+    //         // Temukan detail pemeriksaan berdasarkan ID detail dan ID pemeriksaan aset
+    //         $detailPemeriksaan = DetailPemeriksaanAset::where('id_detail_pemeriksaan_aset', $id_detail_pemeriksaan_aset)
+    //             ->where('aset_id', $aset_id)
+    //             ->where('id_pemeriksaan_aset', $id_pemeriksaan_aset)
+    //             ->first();
 
     //         if ($detailPemeriksaan) {
-    //             $pemeriksaanAset_id = $detailPemeriksaan->id_pemeriksaan_aset;
-    //             $pemeriksaanAset = PemeriksaanAset::find($pemeriksaanAset_id);
     //             // Hapus detail pemeriksaan
     //             $detailPemeriksaan->delete();
 
-    //             //Hapus pemeriksaan
-    //             $pemeriksaanAset->delete();
-
-    //             // Hapus data aset
-    //             $aset->delete();
+    //             // Redirect dengan pesan sukses
+    //             return redirect()->route('detail_pemeriksaan')->with('success', 'Detail pemeriksaan berhasil dihapus.');
     //         } else {
-    //             // Hapus data aset
-    //             $aset->delete();
+    //             // Redirect dengan pesan error jika detail pemeriksaan tidak ditemukan
+    //             return redirect()->route('detail_pemeriksaan')->with('error', 'Detail pemeriksaan tidak ditemukan.');
     //         }
-
-
-    //         // Redirect dengan pesan sukses
-    //         //return redirect()->route('data_aset')->with('success', 'Data aset berhasil dihapus.');
-    //         //return redirect()->back()->with('success', 'Berhasil menghapus data.');
-    //         return view('data_aset.data_aset')->with('success', 'Data aset berhasil dihapus.');
     //     } else {
-    //         // Redirect dengan pesan error jika data tidak ditemukan
-    //         return redirect()->route('data_aset')->with('error', 'Data aset tidak ditemukan.');
+    //         // Redirect dengan pesan error jika data aset tidak ditemukan
+    //         return redirect()->route('detail_pemeriksaan')->with('error', 'Data aset tidak ditemukan.');
     //     }
     // }
-
 
     public function store_kontrol(Request $request)
     {
@@ -405,7 +396,6 @@ class DataAsetController extends Controller
             'pemeriksaanAset.supervisor.pengurusJabatan',
             'pemeriksaanAset.kc.pengguna',
             'pemeriksaanAset.kc.pengurusJabatan',
-            'pemeriksaanAset.kc.pengguna'
         ])->whereHas('pemeriksaanAset', function ($query) use ($id, $tgl) {
             $query->where('id_pemeriksaan_aset', $id)
                 ->where('tanggal_pemeriksaan', $tgl);
@@ -418,7 +408,7 @@ class DataAsetController extends Controller
                 ->unique('aset_id')
                 ->values();
 
-            // Hitung jumlah aset yang unik 
+            // Hitung jumlah aset yang unik
             $jumlahAset = $latestDetailPemeriksaan->count();
         } else {
             $jumlahAset = 0; // Set ke 0 jika tidak ada detail pemeriksaan ditemukan
@@ -487,10 +477,7 @@ class DataAsetController extends Controller
     //     return redirect()->back()->with('success', 'Detail Pemeriksaan berhasil diupdate');
     // }
 
-    public function update_detail_pemeriksaan(Request $request, $id)
-    {
-        
-    }
+    public function update_detail_pemeriksaan(Request $request, $id) {}
 
     public function getAsetDetail($id)
     {
