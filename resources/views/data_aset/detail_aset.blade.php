@@ -56,7 +56,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="card ijo-kiri">
+                    <div class="card ijo-atas">
                         <div class="card-body">
                             <div class="row card-detail-barang">
                                 <div class="col-12">
@@ -97,7 +97,7 @@
                                         </tr>
                                         <tr>
                                             <th style="width: 200px;" class="text-success">
-                                                <h4><b>{{ $aset->kode_aset ?? '0'}}</b></h4>
+                                                <h4><b>{{ $aset->kode_aset ?? '0' }}</b></h4>
                                             </th>
                                             <th style="width: 200px;"></th>
                                             <th style="width: 200px;"></th>
@@ -118,7 +118,7 @@
                                                 <td>{{ $barang->satuan }}</td>
                                                 <td>{{ $barang->lokasi_penyimpanan }}</td> --}}
                                             <td>{{ $aset->nama_aset ?? '0' }}</< /td>
-                                            <td>{{ $aset->kategori_aset->kategori ?? '0'}}</td>
+                                            <td>{{ $aset->kategori_aset->kategori ?? '0' }}</td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -133,7 +133,7 @@
                                             <th style="width: 100px;"></th>
                                         </tr>
                                         <tr>
-                                            <td>{{ $aset->tgl_perolehan ?? '0'}}</td>
+                                            <td>{{ $aset->tgl_perolehan ?? '0' }}</td>
                                             <td>{{ $aset->satuan ?? '0' }}</td>
                                             <td></td>
                                             <td></td>
@@ -150,7 +150,7 @@
                                         </tr>
                                         <tr>
                                             <td>{{ $aset->asal_perolehan ?? 'tidak ada asal perolehan' }}</td>
-                                            <td>{{ $aset->lokasi_penyimpanan ?? '0'}}</td>
+                                            <td>{{ $aset->lokasi_penyimpanan ?? '0' }}</td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -172,10 +172,10 @@
                 </div>
             </div>
 
-            {{-- tab menu kontrol dan keluar masuk barang --}}
+            {{-- tab menu pemeriksaan, keluar masuk barang, dan penyusutan nilai --}}
             <div class="row">
                 <div class="col-12">
-                    <div class="card ijo-kiri">
+                    <div class="card ijo-atas">
                         <div class="card-body">
                             <div class="row card-kontrol-barang">
                                 <div class="col-12">
@@ -220,24 +220,27 @@
                                                             </thead>
                                                             <tbody>
                                                                 @if ($detailPemeriksaan->isNotEmpty())
-                                                                @php
+                                                                    @php
                                                                         $no = 1;
-                                                                        @endphp
-                                                                        @foreach ($detailPemeriksaan as $item)
+                                                                    @endphp
+                                                                    @foreach ($detailPemeriksaan as $item)
                                                                         <tr>
                                                                             <td>{{ $no++ }}</td>
-                                                                            <td>{{ $item->pemeriksaanAset->tanggal_pemeriksaan }}</td>
+                                                                            <td>{{ $item->pemeriksaanAset->tanggal_pemeriksaan }}
+                                                                            </td>
                                                                             <td>{{ $item->kondisi }}</td>
                                                                             @if ($item->status_aset == 'aktif')
-                                                                            <td class="text-success">Aktif</td>
+                                                                                <td class="text-success">Aktif</td>
                                                                             @else
-                                                                            <td class="text-danger">Non aktif</td>
+                                                                                <td class="text-danger">Non aktif</td>
                                                                             @endif
                                                                             <td>{{ $item->masalah_teridentifikasi }}</td>
                                                                             <td>{{ $item->tindakan_diperlukan }}</td>
                                                                             <td>
-                                                                                <div class="d-flex flex-column align-items-center">
-                                                                                    <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                                                <div
+                                                                                    class="d-flex flex-column align-items-center">
+                                                                                    <div
+                                                                                        class="btn-group mb-2 mb-xl-0 btn-block">
                                                                                         <a onclick="$('#cover-spin').show(0)"
                                                                                             href="/{{ $role }}/arsip/aset/detail_pemeriksaan"
                                                                                             class="btn btn-outline-secondary"
@@ -250,14 +253,15 @@
                                                                                         <a href="/{{ $role }}/print-data"
                                                                                             class="btn btn-outline-secondary"
                                                                                             style="display: block; border-radius: 10px; width: 150px; padding: 10px; margin: 5px 0;">
-                                                                                            <i class="fas fa-file-alt"></i> Export
+                                                                                            <i class="fas fa-file-alt"></i>
+                                                                                            Export
                                                                                         </a>
                                                                                     </div>
                                                                                 </div>
                                                                             </td>
                                                                         </tr>
-                                                                        @endforeach
-                                                                    @endif
+                                                                    @endforeach
+                                                                @endif
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -394,59 +398,6 @@
         </div>
     </div>
 
-    <!-- modal tambah pemeriksaan -->
-    <div class="modal fade" id="pemeriksaanModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Tambah Pemeriksaan</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" style="padding-top: 0;">
-                    <form>
-                        <div class="form-group">
-                            <label for="tgl_pemeriksaan" style="font-weight: bold; font-size: 14px;">Tgl
-                                Pemeriksaan</label>
-                            <input type="text" class="form-control" id="tgl_pemeriksaan"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
-                        </div>
-                        <div class="form-group">
-                            <label for="manajemen_eksekutif" style="font-weight: bold; font-size: 14px;">Manajemen
-                                Eksekutif</label>
-                            <input type="text" class="form-control" id="manajemen_eksekutif"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
-                        </div>
-                        <div class="form-group">
-                            <label for="pemeriksa" style="font-weight: bold; font-size: 14px;">Pemeriksa</label>
-                            <input type="text" class="form-control" id="pemeriksa"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
-                        </div>
-                        <div class="form-group">
-                            <label for="supervisor" style="font-weight: bold; font-size: 14px;">Supervisor</label>
-                            <input type="text" class="form-control" id="supervisor"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
-                        </div>
-                        <div class="form-group">
-                            <label for="kepala_cabang" style="font-weight: bold; font-size: 14px;">Kepala Cabang</label>
-                            <input type="text" class="form-control" id="kepala_cabang"
-                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
-                        </div>
-                        <div class="alert alert-info"
-                            style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; margin-top: 15px;">
-                            <strong>INFORMASI</strong><br>Setelah berhasil menambahkan pemeriksaan, anda wajib melengkapi
-                            data pemeriksaan aset.
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer" style="border-top: none; padding-top: 0;">
-                    <button type="submit" class="btn btn-success">Simpan</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     {{-- modal ubah aset --}}
     <div class="modal fade" id="ubahasetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         aria-hidden="true">
@@ -459,14 +410,15 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="myForm" method="POST" action="/{{ $role }}/aset/data/update/{{ $aset->aset_id ?? '0'}}">
+                    <form id="myForm" method="POST"
+                        action="/{{ $role }}/aset/data/update/{{ $aset->aset_id ?? '0' }}">
                         @csrf
                         <div class="form-group">
                             <label for="kode">Kode Aset :</label>
-                            <input type="text" value="{{ $aset->aset_id ?? '0' }}" class="form-control" id="aset_id"
-                                name="aset_id" hidden>
-                            <input type="text" value="{{ $aset->kode_aset ?? '0' }}" class="form-control" id="kode_aset"
-                                name="kode_aset" readonly>
+                            <input type="text" value="{{ $aset->aset_id ?? '0' }}" class="form-control"
+                                id="aset_id" name="aset_id" hidden>
+                            <input type="text" value="{{ $aset->kode_aset ?? '0' }}" class="form-control"
+                                id="kode_aset" name="kode_aset" readonly>
                         </div>
                         <div class="form-group">
                             <label for="tgl_beli">Tgl Perolehan :</label>
@@ -475,22 +427,22 @@
                         </div>
                         <div class="form-group">
                             <label for="asal">Asal Perolehan :</label>
-                            <input type="text" class="form-control" value="{{ $aset->asal_perolehan ?? '-'}}"
+                            <input type="text" class="form-control" value="{{ $aset->asal_perolehan ?? '-' }}"
                                 id="asal_perolehan" name="asal_perolehan">
                         </div>
                         <div class="form-group">
                             <label for="name">Nama :</label>
-                            <input type="text" class="form-control" value="{{ $aset->nama_aset ?? '-'}}" id="nama_aset"
-                                name="nama_aset">
+                            <input type="text" class="form-control" value="{{ $aset->nama_aset ?? '-' }}"
+                                id="nama_aset" name="nama_aset">
                         </div>
                         <div class="form-group">
                             <label for="kategori">Kategori :</label>
                             <select class="form-control" id="kategori" name="kategori"
                                 onchange="toggleNewCategoryForm()">
                                 @foreach ($kategori as $kat)
-                                    <option value="{{ $kat->id_kategori ?? '-'}}"
+                                    <option value="{{ $kat->id_kategori ?? '-' }}"
                                         @if ($aset->id_kategori == $kat->id_kategori) selected @endif>
-                                        {{ $kat->kategori ?? '-'}}</option>
+                                        {{ $kat->kategori ?? '-' }}</option>
                                 @endforeach
                                 <option value="others">Lainnya</option>
                             </select>
@@ -504,20 +456,23 @@
                         </div>
                         <div class="form-grPoup">
                             <label for="satuan">Satuan :</label>
-                            <input type="text" class="form-control" value="{{ $aset->satuan ?? '-' }}" id="satuan"
-                                name="satuan">
+                            <input type="text" class="form-control" value="{{ $aset->satuan ?? '-' }}"
+                                id="satuan" name="satuan">
                         </div>
                         <div class="form-group">
                             <label for="lokasi">Lokasi Penyimpanan :</label>
                             <input type="text" class="form-control" id="lokasi"
-                                value="{{ $aset->lokasi_penyimpanan ?? '-'}}" name="lokasi_penyimpanan">
+                                value="{{ $aset->lokasi_penyimpanan ?? '-' }}" name="lokasi_penyimpanan">
                         </div>
                         <div class="form-group">
                             <label for="spesifikasi">Spesifikasi/Deskripsi :</label>
-                            <input type="text" class="form-control" value="{{ $aset->spesifikasi ?? '-'}}"
+                            <input type="text" class="form-control" value="{{ $aset->spesifikasi ?? '-' }}"
                                 id="spesifikasi" name="spesifikasi">
                         </div>
-                        <button type="submit" class="btn btn-success">Simpan</button>
+                        <div>
+                        <button type="submit" class="btn btn-success"
+                            style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
+                        </div>
                     </form>
                 </div>
             </div>

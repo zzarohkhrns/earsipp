@@ -324,7 +324,7 @@
                                                     data: formData,
                                                     success: function(response) {
                                                         console.log('Respons dari server:',
-                                                        response); // Ini akan menunjukkan respons dari server
+                                                            response); // Ini akan menunjukkan respons dari server
                                                         var newTableBody = $(response).find('#table-container').html();
                                                         if (newTableBody) {
                                                             $('#table-container').html(newTableBody);
@@ -626,8 +626,8 @@
                                         </div>
 
                                         {{-- tabel pemeriksaan --}}
-                                        <table id="example3" class="table table-bordered" style="width:100%">
-                                            <thead class="table-secondary">
+                                        <table id="example3" class="table table-bordered" style="width:100%;">
+                                            <thead class="table-secondary" style="text-align: center">
                                                 <tr>
                                                     <th>NO</th>
                                                     <th>Tgl Pemeriksaan</th>
@@ -922,7 +922,10 @@
                             <label for="spesifikasi">Spesifikasi/Deskripsi :</label>
                             <input type="text" class="form-control" id="spesifikasi" name="spesifikasi">
                         </div>
-                        <button type="submit" class="btn btn-success">Simpan</button>
+                        <div>
+                            <button type="submit" class="btn btn-success"
+                                style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -1065,8 +1068,9 @@
                                 melengkapi
                                 data pemeriksaan aset.
                             </div>
-                            <div class="modal-footer" style="border-top: none; padding-top: 0;">
-                                <button type="submit" class="btn btn-success">Simpan</button>
+                            <div>
+                                <button type="submit" class="btn btn-success"
+                                    style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
                             </div>
                         </div>
                     </form>

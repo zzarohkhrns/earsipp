@@ -214,19 +214,22 @@ Route::middleware('auth')->group(function () {
 
         //data aset
         Route::get('/arsip/aset/data', [DataAsetController::class, 'data'])->name('data_aset');
-        Route::get('/arsip/aset/detail_pemeriksaan/{id}/{tgl}', [DataAsetController::class, 'detail_pemeriksaan'])->name('detail_pemeriksaan');
         Route::post('/aset/data/tambah', [DataAsetController::class, 'store_data'])->name('aset.store');
-        Route::post('/detail_pemeriksaan/store/{id}', [DataAsetController::class, 'store_detail_pemeriksaan'])->name('detail_pemeriksaan.store');
-        Route::post('/detail_pemeriksaan/update/', [DataAsetController::class, 'update_detail_pemeriksaan'])->name('detail_pemeriksaan.update');
-        Route::delete('/delete-detail-pemeriksaan/{id_detail_pemeriksaan_aset}/{id_pemeriksaan_aset}/{aset_id}', [DataAsetController::class, 'delete_detail_pemeriksaan'])->name('delete_detail_pemeriksaan');
-
-        Route::get('/detail-pemeriksaan/{id}', [DetailPemeriksaanController::class, 'getDetailPemeriksaan']);
-        Route::post('/update-status-pemeriksaan', [DataAsetController::class, 'updateStatusPemeriksaan'])->name('updateStatusPemeriksaan');
-        Route::post('/pemeriksaan/store', [DataAsetController::class, 'store_pemeriksaan'])->name('pemeriksaan.store');
         Route::get('/aset/data/{id}', [DataAsetController::class, 'getDataAset']);
         //Route::post('/check-date', [DataAsetController::class, 'checkDate_Pemeriksaan'])->name('check-date');
         Route::post('/aset/data/update/{id}', [DataAsetController::class, 'update_data'])->name('aset.update');
         Route::post('/aset/data/delete/{id}', [DataAsetController::class, 'delete_data'])->name('aset.delete');
+        
+        Route::post('/pemeriksaan/store', [DataAsetController::class, 'store_pemeriksaan'])->name('pemeriksaan.store');
+        Route::get('/arsip/aset/detail_pemeriksaan/{id}/{tgl}', [DataAsetController::class, 'detail_pemeriksaan'])->name('detail_pemeriksaan');
+        Route::post('/detail_pemeriksaan/store/{id}', [DataAsetController::class, 'store_detail_pemeriksaan'])->name('detail_pemeriksaan.store');
+        Route::post('/spv/update/{id}', [DataAsetController::class, 'update_respon_spv'])->name('respon_spv.update');
+        Route::post('/kc/update/{id}', [DataAsetController::class, 'update_respon_kc'])->name('respon_kc.update');
+        Route::post('/detail_pemeriksaan/update/', [DataAsetController::class, 'update_detail_pemeriksaan'])->name('detail_pemeriksaan.update');
+        Route::delete('/delete-detail-pemeriksaan/{id}', [DataAsetController::class, 'delete_detail_pemeriksaan'])->name('delete_detail_pemeriksaan');
+        Route::get('/detail-pemeriksaan/{id}', [DetailPemeriksaanController::class, 'getDetailPemeriksaan']);
+        Route::post('/update-status-pemeriksaan', [DataAsetController::class, 'updateStatusPemeriksaan'])->name('updateStatusPemeriksaan');
+
         Route::get('/arsip/aset/detail/{id}', [DataAsetController::class, 'detail_aset'])->name('detail_aset');
         route::post('/arsip/aset/tambah_kontrol', [DataAsetController::class, 'store_kontrol'])->name('kontrol.store');
         Route::get('/print-kontrol', [DataAsetController::class, 'printKontrol'])->name('printKontrol');

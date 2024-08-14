@@ -84,12 +84,38 @@
             </div>
         </div>
     </div>
+    <!-- success jika berhasil menambah data -->
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show">
+            {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+
+    {{-- script untuk close --}}
+    <script>
+        $(document).ready(function() {
+            $('.alert .close').on('click', function() {
+                $(this).parent('.alert').hide();
+            });
+        });
+    </script>
 
     <section class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="card ijo-kiri">
+                    <div class="card ijo-atas">
                         <div class="card-body">
                             <div class="row card-detail-barang">
                                 <div class="col-12">
@@ -168,7 +194,23 @@
                                                                             <b>{{ $pemeriksaanAset->pcPengurus->pengguna->nama }}</b>
                                                                         </h5>
                                                                     </td>
-                                                                    <td></td>
+                                                                    <td>
+                                                                        <div
+                                                                            class="btn-group btn-block mb-2 mb-xl-0 card_hapus_barang">
+                                                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                                                <form {{-- action="/{{ $role }}/aset/data/delete/{{ $aset->aset_id }}" --}} method="POST"
+                                                                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                                                                    @csrf
+                                                                                    <button type="submit"
+                                                                                        class="btn btn-danger btn-block"
+                                                                                        style="padding: 10px; border-radius: 10px; border: none; width:205px;">
+                                                                                        <i class="fas fa-trash"></i>
+                                                                                        Hapus
+                                                                                    </button>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
                                                                 </tr>
 
                                                                 {{-- line 2 --}}
@@ -176,7 +218,9 @@
                                                                 <th>
                                                                     <h6><b>Jabatan</b></h6>
                                                                 </th>
-                                                                <th></th>
+                                                                <th>
+
+                                                                </th>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
@@ -522,7 +566,7 @@
                                                                                             <div
                                                                                                 class="btn-group mb-2 card_edit_pemeriksaan">
                                                                                                 <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan
-                                                                                                @if (!$canEdit) disabled @endif
+                                                                                                {{-- @if (!$canEdit) disabled @endif --}}
                                                                                                 "
                                                                                                     type="button"
                                                                                                     data-toggle="modal"
@@ -548,7 +592,7 @@
                                                                                                     class="btn-group mb-2 mb-xl-0 btn-block">
                                                                                                     {{-- @foreach ($detailPemeriksaan as $item) --}}
                                                                                                     <form
-                                                                                                        action="{{--  {{ route ($role.'.delete_detail_pemeriksaan', [$item->id, $pemeriksaanAset->id_pemeriksaan_aset, $item->aset_id]) }} --}}"
+                                                                                                        action="{{ route($role . '.delete_detail_pemeriksaan', $data->id_detail_pemeriksaan_aset) }}"
                                                                                                         method="POST"
                                                                                                         onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                                                                                         @csrf
@@ -558,7 +602,7 @@
                                                                                                             class="btn btn-outline-secondary btn-block
                                                                                                             "
                                                                                                             style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px;"
-                                                                                                            @if (!$canEdit) disabled @endif>
+                                                                                                            {{-- @if (!$canEdit) disabled @endif> --}}>
                                                                                                             <i
                                                                                                                 class="fas fa-trash"></i>
                                                                                                             Hapus
@@ -635,7 +679,7 @@
                                                                                             <div
                                                                                                 class="btn-group mb-2 card_edit_pemeriksaan">
                                                                                                 <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan
-                                                                                                    @if (!$canEdit) disabled @endif
+                                                                                                    {{-- @if (!$canEdit) disabled @endif --}}
                                                                                                     "
                                                                                                     type="button"
                                                                                                     data-toggle="modal"
@@ -662,7 +706,7 @@
                                                                                                     class="btn-group mb-2 mb-xl-0 btn-block">
                                                                                                     {{-- @foreach ($detailPemeriksaan as $item) --}}
                                                                                                     <form
-                                                                                                        action="{{--  {{ route ($role.'.delete_detail_pemeriksaan', [$item->id, $pemeriksaanAset->id_pemeriksaan_aset, $item->aset_id]) }} --}}"
+                                                                                                        action="{{ route($role . '.delete_detail_pemeriksaan', $data->id_detail_pemeriksaan_aset) }}"
                                                                                                         method="POST"
                                                                                                         onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                                                                                         @csrf
@@ -672,7 +716,7 @@
                                                                                                             class="btn btn-outline-secondary btn-block
                                                                                                             "
                                                                                                             style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px;"
-                                                                                                            @if (!$canEdit) disabled @endif>
+                                                                                                            {{-- @if (!$canEdit) disabled @endif> --}}>
                                                                                                             <i
                                                                                                                 class="fas fa-trash"></i>
                                                                                                             Hapus
@@ -747,7 +791,7 @@
                                                                                             <div
                                                                                                 class="btn-group mb-2 card_edit_pemeriksaan">
                                                                                                 <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan
-                                                                                                @if (!$canEdit) disabled @endif
+                                                                                                {{-- @if (!$canEdit) disabled @endif --}}
                                                                                                 "
                                                                                                     type="button"
                                                                                                     data-toggle="modal"
@@ -774,7 +818,7 @@
                                                                                                     class="btn-group mb-2 mb-xl-0 btn-block">
                                                                                                     {{-- @foreach ($detailPemeriksaan as $item) --}}
                                                                                                     <form
-                                                                                                        action="{{--  {{ route ($role.'.delete_detail_pemeriksaan', [$item->id, $pemeriksaanAset->id_pemeriksaan_aset, $item->aset_id]) }} --}}"
+                                                                                                        action="{{ route($role . '.delete_detail_pemeriksaan', $data->id_detail_pemeriksaan_aset) }}"
                                                                                                         method="POST"
                                                                                                         onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                                                                                         @csrf
@@ -784,7 +828,7 @@
                                                                                                             class="btn btn-outline-secondary btn-block
                                                                                                             "
                                                                                                             style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px;"
-                                                                                                            @if (!$canEdit) disabled @endif>
+                                                                                                            {{-- @if (!$canEdit) disabled @endif> --}}
                                                                                                             <i
                                                                                                                 class="fas fa-trash"></i>
                                                                                                             Hapus
@@ -821,9 +865,9 @@
                                                                     </tr>
 
                                                                     @if (($detailPemeriksaan->where('kondisi', 'hilang')->count() ?? 0) > 0)
-                                                                    @php
-                                                                        $no =1;
-                                                                    @endphp
+                                                                        @php
+                                                                            $no = 1;
+                                                                        @endphp
                                                                         @foreach ($detailPemeriksaan as $data)
                                                                             @php
                                                                                 // Mendapatkan tanggal pemeriksaan yang terkait dengan data
@@ -836,54 +880,56 @@
                                                                                 )->isToday();
                                                                             @endphp
                                                                             @if ($data->kondisi == 'hilang')
-                                                                            <tr>
-                                                                                <td>{{ $no++ }}</td>
-                                                                                <td>{{ $data->aset->kode_aset }}</td>
-                                                                                <td>{{ $data->aset->nama_aset }}</td>
-                                                                                <td>{{ $data->aset->kategori_aset->kategori }}
-                                                                                </td>
-                                                                                <td>{{ $data->aset->lokasi_penyimpanan }}
-                                                                                </td>
-                                                                                <td>{{ $data->kondisi }}</td>
-                                                                                <td>{{ $data->status_aset }}</td>
-                                                                                <td>{{ $data->aset->tgl_perolehan }}</td>
-                                                                                <td>{{ $data->masalah_teridentifikasi }}
-                                                                                </td>
-                                                                                <td>{{ $data->tindakan_diperlukan }}</td>
-                                                                                <td>
-                                                                                    <div
-                                                                                        class="d-flex flex-column align-items-center">
+                                                                                <tr>
+                                                                                    <td>{{ $no++ }}</td>
+                                                                                    <td>{{ $data->aset->kode_aset }}</td>
+                                                                                    <td>{{ $data->aset->nama_aset }}</td>
+                                                                                    <td>{{ $data->aset->kategori_aset->kategori }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->aset->lokasi_penyimpanan }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->kondisi }}</td>
+                                                                                    <td>{{ $data->status_aset }}</td>
+                                                                                    <td>{{ $data->aset->tgl_perolehan }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->masalah_teridentifikasi }}
+                                                                                    </td>
+                                                                                    <td>{{ $data->tindakan_diperlukan }}
+                                                                                    </td>
+                                                                                    <td>
                                                                                         <div
-                                                                                            class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                                            <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan
-                                                                                            @if (!$canEdit) disabled @endif
+                                                                                            class="d-flex flex-column align-items-center">
+                                                                                            <div
+                                                                                                class="btn-group mb-2 card_edit_pemeriksaan">
+                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan
+                                                                                            {{-- @if (!$canEdit) disabled @endif --}}
                                                                                             "
-                                                                                                type="button"
-                                                                                                data-toggle="modal"
-                                                                                                data-target="#UbahPemeriksaanModal"
-                                                                                                data-aset-id="{{ $data->aset_id }}"
-                                                                                                data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
-                                                                                                data-lokasi-penyimpanan="{{ $data->aset->lokasi_penyimpanan }}"
-                                                                                                data-tgl-perolehan="{{ $data->aset->tgl_perolehan }}"
-                                                                                                data-kondisi="{{ $data->kondisi }}"
-                                                                                                data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
-                                                                                                data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
-                                                                                                data-status-aset="{{ $data->status_aset }}"
-                                                                                                data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
-                                                                                                style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
-                                                                                                aria-expanded="false">
-                                                                                                &nbsp;&nbsp;<i
-                                                                                                    class="fas fa-edit"></i>
-                                                                                                Ubah
-                                                                                            </a>
-                                                                                        </div>
-                                                                                        <div
+                                                                                                    type="button"
+                                                                                                    data-toggle="modal"
+                                                                                                    data-target="#UbahPemeriksaanModal"
+                                                                                                    data-aset-id="{{ $data->aset_id }}"
+                                                                                                    data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
+                                                                                                    data-lokasi-penyimpanan="{{ $data->aset->lokasi_penyimpanan }}"
+                                                                                                    data-tgl-perolehan="{{ $data->aset->tgl_perolehan }}"
+                                                                                                    data-kondisi="{{ $data->kondisi }}"
+                                                                                                    data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
+                                                                                                    data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
+                                                                                                    data-status-aset="{{ $data->status_aset }}"
+                                                                                                    data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
+                                                                                                    style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
+                                                                                                    aria-expanded="false">
+                                                                                                    &nbsp;&nbsp;<i
+                                                                                                        class="fas fa-edit"></i>
+                                                                                                    Ubah
+                                                                                                </a>
+                                                                                            </div>
+                                                                                            <div
                                                                                                 class="btn-group mb-2 mb-xl-0 card_hapus_detail">
                                                                                                 <div
                                                                                                     class="btn-group mb-2 mb-xl-0 btn-block">
                                                                                                     {{-- @foreach ($detailPemeriksaan as $item) --}}
                                                                                                     <form
-                                                                                                        action="{{--  {{ route ($role.'.delete_detail_pemeriksaan', [$item->id, $pemeriksaanAset->id_pemeriksaan_aset, $item->aset_id]) }} --}}"
+                                                                                                        action="{{ route($role . '.delete_detail_pemeriksaan', $data->id_detail_pemeriksaan_aset) }}"
                                                                                                         method="POST"
                                                                                                         onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                                                                                         @csrf
@@ -893,18 +939,17 @@
                                                                                                             class="btn btn-outline-secondary btn-block
                                                                                                             "
                                                                                                             style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px;"
-                                                                                                            @if (!$canEdit) disabled @endif>
-                                                                                                            <i
-                                                                                                                class="fas fa-trash"></i>
+                                                                                                            {{-- @if (!$canEdit) disabled @endif> --}}
+                                                                                                            <i class="fas fa-trash"></i>
                                                                                                             Hapus
                                                                                                         </button>
                                                                                                     </form>
                                                                                                     {{-- @endforeach --}}
                                                                                                 </div>
                                                                                             </div>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
                                                                             @endif
                                                                         @endforeach
                                                                     @else
@@ -1033,10 +1078,10 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        @if ($pemeriksaanAset->status_sp == 'mengetahui')
+                                                                        @if ($pemeriksaanAset->status_spv == 'mengetahui')
                                                                             <h6 class="text-success">Mengetahui</h6>
                                                                         @else
-                                                                            <h6 class="text-warning">Belum</h6>
+                                                                            <h6 class="text-warning">Belum Mengetahui</h6>
                                                                         @endif
                                                                     </td>
                                                                     <td></td>
@@ -1121,9 +1166,9 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        @if ($pemeriksaanAset->tanggal_mengetahui_kc)
+                                                                        @if ($pemeriksaanAset->tgl_mengetahui_kc)
                                                                             <h6>
-                                                                                {{ $pemeriksaanAset->tanggal_mengetahui_kc }}
+                                                                                {{ $pemeriksaanAset->tgl_mengetahui_kc }}
                                                                             </h6>
                                                                         @else
                                                                             <h6>-</h6>
@@ -1382,7 +1427,6 @@
                                                                         </tr>
                                                                     @endif
                                                                 </tbody>
-
                                                             </table>
                                                         </div>
                                                     </div>
@@ -1653,7 +1697,8 @@
                         </div>
                     </div>
                     <label for="kategori">Kondisi</label>
-                    <select class="form-control" id="kondisi" name="kondisi" onchange="toggleNewCategoryForm()">
+                    <select class="form-control" id="kondisi" name="kondisi" onchange="toggleNewCategoryForm()"
+                        required>
                         <option value="">Pilih Kondisi</option>
                         <option value="baik">Baik</option>
                         <option value="rusak">Tidak Memadai (Rusak)</option>
@@ -1664,13 +1709,13 @@
                         <label for="masalah" style="font-weight: bold; font-size: 14px;">Masalah
                             Teridentifikasi</label>
                         <textarea class="form-control" id="masalah_teridentifikasi" rows="3" name="masalah_teridentifikasi"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"></textarea>
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required></textarea>
                     </div>
                     <div class="form-group">
                         <label for="tindakan" style="font-weight: bold; font-size: 14px;">Tindakan Yang
                             Diperlukan</label>
                         <textarea class="form-control" id="tindakan_diperlukan" rows="3" name="tindakan_diperlukan"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"></textarea>
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-success"
                         style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
@@ -1730,30 +1775,31 @@
                 </button>
             </div>
             <div class="modal-body" style="padding-top: 0;">
-                <form id="responspvForm">
+                <form id="responspvForm" method="POST" action="{{ route($role.'.respon_spv.update', $pemeriksaanAset->id_pemeriksaan_aset) }}">
+                    @csrf
                     <div class="form-group">
                         <label for="tgl_pemeriksaan" style="font-weight: bold; font-size: 14px;">Tgl
                             Pemeriksaan</label>
-                        <input type="date" class="form-control" id="tgl_pemeriksaan"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        <input type="date" class="form-control" id="tanggal_pemeriksaan" name="tanggal_pemeriksaan" value="{{ $pemeriksaanAset->tanggal_pemeriksaan }}"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
                     </div>
                     <div class="form-group">
                         <label for="kategori">Status SPV</label>
                         <select class="form-control" id="status_spv" name="status_spv"
                             onchange="toggleNewCategoryForm()">
                             <option value="">Pilih Status</option>
-                            <option value="mengetahui">Mengetahui</option>
-                            <option value="belum mengetahui">Belum Mengetahui</option>
+                            <option value="mengetahui" @if ($pemeriksaanAset->status_spv == "mengetahui") selected @endif>Mengetahui</option>
+                            <option value="belum" @if ($pemeriksaanAset->status_spv == "belum") selected @endif>Belum Mengetahui</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="tgl_respon" style="font-weight: bold; font-size: 14px;">Tgl Respon SPV</label>
-                        <input type="date" class="form-control" id="tgl_respon"
+                        <input type="date" class="form-control" id="tgl_mengetahui_spv" name="tgl_mengetahui_spv"
                             style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
                     </div>
                     <div class="form-group">
                         <label for="catatan_spv" style="font-weight: bold; font-size: 14px;">Catatan SPV</label>
-                        <input type="text" class="form-control" id="catatan_spv"
+                        <input type="text" class="form-control" id="catatan_spv" name="catatan_spv"
                             style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
                     </div>
                     <div class="alert alert-info"
@@ -1780,41 +1826,36 @@
                 </button>
             </div>
             <div class="modal-body" style="padding-top: 0;">
-                <form>
+                <form method="POST" action="{{ route($role.'.respon_kc.update', $pemeriksaanAset->id_pemeriksaan_aset) }}">
+                    @csrf
                     <div class="form-group">
                         <label for="tgl_pemeriksaan" style="font-weight: bold; font-size: 14px;">Tgl
                             Pemeriksaan</label>
-                        <input type="date" class="form-control" id="tgl_pemeriksaan"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
-                    </div>
-                    <div class="form-group">
-                        <label for="tgl_respon" style="font-weight: bold; font-size: 14px;">Tgl Respon SPV</label>
-                        <input type="date" class="form-control" id="tgl_respon"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
-                    </div>
-                    <div class="form-group">
-                        <label for="catatan_spv" style="font-weight: bold; font-size: 14px;">Catatan SPV</label>
-                        <input type="text" class="form-control" id="catatan_spv"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        <input type="date" class="form-control" id="tgl_pemeriksaan" value="{{ $pemeriksaanAset->tanggal_pemeriksaan }}"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
                     </div>
                     <div class="form-group">
                         <label for="kategori">Status KC</label>
-                        <select class="form-control" id="status_spv" name="status_spv"
+                        <select class="form-control" id="status_kc" name="status_kc" required
                             onchange="toggleNewCategoryForm()">
                             <option value="">Pilih Status</option>
-                            <option value="mengetahui">Mengetahui</option>
-                            <option value="belum mengetahui">Belum Mengetahui</option>
+                            <option value="mengetahui" @if ($pemeriksaanAset->status_kc == 'mengetahui')
+                                selected
+                            @endif>Mengetahui</option>
+                            <option value="belum" @if ($pemeriksaanAset->status_kc == 'belum')
+                                selected
+                            @endif>Belum Mengetahui</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="tgl_respon_kc" style="font-weight: bold; font-size: 14px;">Tgl Respon KC</label>
-                        <input type="date" class="form-control" id="tgl_respon_kc"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        <input type="date" class="form-control" id="tgl_mengetahui_kc" name="tgl_mengetahui_kc"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required>
                     </div>
                     <div class="form-group">
-                        <label for="catatan_kc" style="font-weight: bold; font-size: 14px;">Catatan SPV</label>
-                        <input type="text" class="form-control" id="catatan_kc"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        <label for="catatan_kc" style="font-weight: bold; font-size: 14px;">Catatan KC</label>
+                        <input type="text" class="form-control" id="catatan_kc" name="catatan_kc"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required>
                     </div>
                     <div class="alert alert-info"
                         style="background-color: #CBF2D6; border-color: #CBF2D6; color: #155724; margin-top: 15px;">
@@ -1908,47 +1949,26 @@
 
 {{-- script untuk dropdown status pemeriksaan --}}
 <script>
-    var status = 'Belum Selesai Diinput';
-
-    function toggleDropdown() {
-        var dropdown = document.getElementById("statusPemeriksaanDropdown");
-        dropdown.classList.toggle("show");
-    }
-
     function handleDropdownChange(selectElement) {
         var selectedValue = selectElement.value;
-
-        // Ambil ID Pemeriksaan Aset dari elemen hidden jika diperlukan
         var idPemeriksaanAset = document.getElementById("idPemeriksaanAset").value;
 
-        // Kirim data melalui AJAX ke server
         $.ajax({
-            url: '{{ route('pc.updateStatusPemeriksaan') }}',
+            url: '{{ route($role . '.updateStatusPemeriksaan') }}', // Pastikan ini sesuai dengan rute yang kamu definisikan
             method: 'POST',
             data: {
-                _token: '{{ csrf_token() }}', // CSRF token untuk keamanan
+                _token: '{{ csrf_token() }}',
                 id_pemeriksaan_aset: idPemeriksaanAset,
                 status_pemeriksaan: selectedValue
             },
             success: function(response) {
-                alert(response.message); // Tampilkan pesan sukses
+                alert(response.message);
             },
             error: function(xhr) {
-                alert('Gagal mengubah status pemeriksaan'); // Tampilkan pesan error
+                console.log(xhr.responseText); // Tampilkan respons error dari server
+                alert('Gagal mengubah status pemeriksaan');
             }
         });
-    }
-
-    window.onclick = function(event) {
-        if (!event.target.matches('#statusPemeriksaanButton') && !event.target.closest('.dropdown-menu')) {
-            var dropdowns = document.getElementsByClassName("dropdown-menu");
-            for (var i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                }
-            }
-        }
     }
 </script>
 
