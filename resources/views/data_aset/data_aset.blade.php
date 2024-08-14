@@ -312,32 +312,38 @@
                                             </div>
                                         </div>
 
-                                        <!-- Script AJAX untuk filter -->
+                                        {{-- script untuk filter --}}
                                         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                                         <script>
-                                            $(document).ready(function() {
-                                                $('#filter-form').on('change', 'input, select', function() {
-                                                    var formData = $('#filter-form').serialize();
-                                                    $.ajax({
-                                                        url: $('#filter-form').attr('action'),
-                                                        method: 'GET',
-                                                        data: formData,
-                                                        success: function(response) {
-                                                            var newTableBody = $(response).find('#table-container').html();
+                                            $('#filter-form').on('change', 'input, select', function() {
+                                                var formData = $('#filter-form').serialize();
+                                                console.log('Data yang dikirim:', formData); // Ini akan menunjukkan data yang dikirim
+                                                $.ajax({
+                                                    url: $('#filter-form').attr('action'),
+                                                    method: 'GET',
+                                                    data: formData,
+                                                    success: function(response) {
+                                                        console.log('Respons dari server:',
+                                                        response); // Ini akan menunjukkan respons dari server
+                                                        var newTableBody = $(response).find('#table-container').html();
+                                                        if (newTableBody) {
                                                             $('#table-container').html(newTableBody);
-                                                            window.history.pushState({}, '', $('#filter-form').attr('action') +
-                                                                '?' + formData);
-                                                        },
-                                                        error: function() {
-                                                            alert('Ada kesalahan dalam memfilter data.');
+                                                            window.history.pushState({}, '', $('#filter-form').attr('action') + '?' +
+                                                                formData);
+                                                        } else {
+                                                            alert('Data yang diharapkan tidak ditemukan dalam respons.');
                                                         }
-                                                    });
+                                                    },
+                                                    error: function() {
+                                                        alert('Ada kesalahan dalam memfilter data.');
+                                                    }
                                                 });
                                             });
                                         </script>
 
+
                                         <!-- Table barang -->
-                                        <table id="table-container" class="table table-bordered" style="width:100%;">
+                                        <table id="example3" class="table table-bordered" style="width:100%;">
                                             <thead class="table-secondary" style="text-align: center">
                                                 <tr>
                                                     <th>NO</th>
@@ -356,7 +362,7 @@
                                                     <tr>
                                                         <td>{{ $loop->iteration }}</td>
                                                         <td>
-                                                            <table id="example3"
+                                                            <table
                                                                 style="width:100%; border:none; border-collapse: collapse; font-size: 14px;">
                                                                 <tr>
                                                                     <td style="border: none; padding: 4px;">
@@ -368,31 +374,34 @@
                                                                         Tgl Pembelian
                                                                     </td>
                                                                     <td style="border: none; padding: 4px;">
-                                                                        <b>{{ $data->tgl_perolehan ?? 'data tidak tersedia' }}</b>
+                                                                        <b>{{ $data->tgl_perolehan ?? 'Data tidak tersedia' }}</b>
                                                                     </td>
                                                                 </tr>
-                                                                <?php
-                                                                // Ambil status dari data, default ke 'null' jika tidak ada
-                                                                $status = $data->latestDetailPemeriksaanAset->status_aset ?? 'null';
-                                                                
-                                                                // Tentukan warna tombol dan teks berdasarkan status
-                                                                if ($status === 'null') {
-                                                                    $warnaTombol = 'background-color: #a9a9a9; border-color: #a9a9a9;'; // Abu-abu untuk data tidak tersedia
-                                                                    $teksTombol = 'Data tidak tersedia';
-                                                                } else {
-                                                                    $warnaTombol = $status === 'aktif' ? 'background-color: #55CE71; border-color: #55CE71;' : 'background-color: rgb(255, 18, 18); border-color: rgb(255, 18, 18);';
-                                                                    $teksTombol = $status === 'aktif' ? 'Aktif' : 'Non Aktif';
-                                                                }
-                                                                
-                                                                // HTML untuk tombol
-                                                                $konten = "<button type='button' class='btn' style='border-radius: 10px; $warnaTombol; color:white; padding: 4px 8px; font-size: 14px;'>$teksTombol</button>";
-                                                                ?>
                                                                 <tr>
                                                                     <td style="border: none; padding: 4px;">
-                                                                        <?= $konten ?>
+                                                                        @php
+                                                                            $status =
+                                                                                $data->latestDetailPemeriksaanAset
+                                                                                    ->status_aset ?? 'null';
+                                                                            $warnaTombol =
+                                                                                $status === 'null'
+                                                                                    ? 'background-color: #a9a9a9;'
+                                                                                    : ($status === 'aktif'
+                                                                                        ? 'background-color: #55CE71;'
+                                                                                        : 'background-color: rgb(255, 18, 18);');
+                                                                            $teksTombol =
+                                                                                $status === 'null'
+                                                                                    ? 'Data tidak tersedia'
+                                                                                    : ($status === 'aktif'
+                                                                                        ? 'Aktif'
+                                                                                        : 'Non Aktif');
+                                                                        @endphp
+                                                                        <button type="button" class="btn"
+                                                                            style="border-radius: 10px; {{ $warnaTombol }} color: white; padding: 4px 8px; font-size: 14px;">
+                                                                            {{ $teksTombol }}
+                                                                        </button>
                                                                     </td>
                                                                 </tr>
-
                                                             </table>
                                                         </td>
                                                         <td>{{ $data->nama_aset }}</td>
@@ -401,7 +410,7 @@
                                                         <td>{{ $data->lokasi_penyimpanan }}</td>
                                                         <td>{{ $data->satuan }}</td>
                                                         <td>
-                                                            <table id="example3"
+                                                            <table
                                                                 style="width:100%; border:none; border-collapse: collapse;">
                                                                 <tr>
                                                                     <td style="border: none; padding: 8px;">
@@ -409,91 +418,87 @@
                                                                     </td>
                                                                     <td
                                                                         style="border: none; padding: 8px; text-align: right;">
-                                                                        <b> {{ $data->latestDetailPemeriksaanAset->pemeriksaanAset->tanggal_pemeriksaan ?? 'data tidak tersedia' }}
-                                                                        </b>
+                                                                        <b>{{ $data->latestDetailPemeriksaanAset->pemeriksaanAset->tanggal_pemeriksaan ?? 'Data tidak tersedia' }}</b>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td style="border: none; padding: 8px;">
-                                                                        Kondisi</td>
+                                                                        Kondisi
+                                                                    </td>
                                                                     <td
-                                                                        style="text-align: right; border: none; padding: 8px; color:{{ $data->latestDetailPemeriksaanAset
-                                                                            ? ($data->latestDetailPemeriksaanAset->kondisi == 'baik'
-                                                                                ? '#55CE71'
-                                                                                : ($data->latestDetailPemeriksaanAset->kondisi == 'rusak'
-                                                                                    ? 'rgb(255, 18, 18)'
-                                                                                    : 'inherit'))
-                                                                            : 'inherit' }}">
-                                                                        {{ $data->latestDetailPemeriksaanAset->kondisi ?? 'data tidak tersedia' }}
+                                                                        style="text-align: right; border: none; padding: 8px; color:
+                                                                        {{ $data->latestDetailPemeriksaanAset->kondisi == 'baik' ? '#55CE71' : ($data->latestDetailPemeriksaanAset->kondisi == 'rusak' ? 'rgb(255, 18, 18)' : 'inherit') }}">
+                                                                        {{ $data->latestDetailPemeriksaanAset->kondisi ?? 'Data tidak tersedia' }}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td style="border: none; padding: 8px;">
-                                                                        Status</td>
+                                                                        Status
+                                                                    </td>
                                                                     <td
-                                                                        style="border: none; padding: 8px; text-align: right;color:{{ $data->latestDetailPemeriksaanAset
-                                                                            ? ($data->latestDetailPemeriksaanAset->status_aset == 'aktif'
-                                                                                ? '#55CE71'
-                                                                                : ($data->latestDetailPemeriksaanAset->status_aset == 'non aktif'
-                                                                                    ? 'rgb(255, 18, 18)'
-                                                                                    : 'inherit'))
-                                                                            : 'inherit' }}">
-                                                                        {{ $data->latestDetailPemeriksaanAset->status_aset ?? 'data tidak tersedia' }}
+                                                                        style="border: none; padding: 8px; text-align: right; color:
+                                                                        {{ $data->latestDetailPemeriksaanAset->status_aset == 'aktif' ? '#55CE71' : ($data->latestDetailPemeriksaanAset->status_aset == 'non aktif' ? 'rgb(255, 18, 18)' : 'inherit') }}">
+                                                                        {{ $data->latestDetailPemeriksaanAset->status_aset ?? 'Data tidak tersedia' }}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td style="border: none; padding: 8px;">
-                                                                        Keterangan</td>
+                                                                        Keterangan
+                                                                    </td>
                                                                     <td
                                                                         style="border: none; padding: 8px; text-align: right;">
-                                                                        {{ $data->latestDetailPemeriksaanAset->keterangan ?? 'data tidak tersedia' }}
+                                                                        {{ $data->latestDetailPemeriksaanAset->keterangan ?? 'Data tidak tersedia' }}
                                                                     </td>
                                                                 </tr>
                                                             </table>
                                                         </td>
                                                         <td>
-                                                            <table id="example3"
+                                                            <table
                                                                 style="width:100%; border:none; border-collapse: collapse;">
                                                                 <tr>
                                                                     <td style="border: none; padding: 8px;">
-                                                                        Tgl Input</td>
+                                                                        Tgl Input
+                                                                    </td>
                                                                     <td style="border: none; padding: 8px;">
-                                                                        <b>Tgl
-                                                                            Input</b>
+                                                                        <b>Tgl Input</b>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td style="border: none; padding: 8px;">
-                                                                        Jml Masuk</td>
+                                                                        Jml Masuk
+                                                                    </td>
                                                                     <td style="border: none; padding: 8px;"
                                                                         class="text-success">
-                                                                        Jml Masuk</td>
+                                                                        Jml Masuk
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td style="border: none; padding: 8px;">
-                                                                        Jml Keluar</td>
+                                                                        Jml Keluar
+                                                                    </td>
                                                                     <td style="border: none; padding: 8px;"
                                                                         class="text-warning">
-                                                                        Jml Keluar</td>
+                                                                        Jml Keluar
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td style="border: none; padding: 8px;">
-                                                                        Sisa</td>
+                                                                        Sisa
+                                                                    </td>
                                                                     <td style="border: none; padding: 8px;">
-                                                                        Sisa</td>
+                                                                        Sisa
+                                                                    </td>
                                                                 </tr>
                                                             </table>
                                                         </td>
-
                                                         <td>
                                                             <div
                                                                 class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
                                                                 <div class="btn-group mb-2 mb-xl-0 btn-block">
                                                                     <a onclick="$('#cover-spin').show(0)"
                                                                         href="/{{ $role }}/arsip/aset/detail/{{ $data->aset_id }}"
-                                                                        {{-- /{{ $data->id_barang }}" --}}
                                                                         class="btn btn-outline-secondary btn-block"
-                                                                        style="display: block;border-radius:10px;">
+                                                                        style="display: block; border-radius:10px;">
                                                                         Detail Aset
                                                                     </a>
                                                                 </div>

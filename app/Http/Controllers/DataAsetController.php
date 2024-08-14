@@ -25,40 +25,18 @@ use Illuminate\Http\JsonResponse;
 
 class DataAsetController extends Controller
 {
-
     public function data(Request $request)
     {
-        //hanya mengambil aset yang memiliki detail pemeriksaan
-        $pemeriksaan = Aset::with([
+        // Mengambil aset yang memiliki detail pemeriksaan dan menerapkan filter
+        $asetQuery = Aset::with([
             'kategori_aset',
+            'latestDetailPemeriksaanAset.pemeriksaanAset',
             'detailPemeriksaanAset.pemeriksaanAset'
-        ])->whereHas('detailPemeriksaanAset', function ($query) {
-            // Filter agar hanya mengambil aset yang memiliki detail pemeriksaan
-            $query->whereNotNull('id_detail_pemeriksaan_aset');
-        })->get();
-
-        $pemeriksaan2 = PemeriksaanAset::with([
-            'detailPemeriksaanAset.aset.kategori_aset',
-            'pcPengurus.pengguna',
-            'pcPengurus.pengurusJabatan',
-            'supervisor.pengurusJabatan',
-            'kc.pengurusJabatan',
-            'supervisor.pengguna',
-            'kc.pengguna'
-        ])->get();
-
-
-        // Mengelompokkan berdasarkan nama pemeriksa dan tanggal_pemeriksaan dan memilih pemeriksaan terakhir untuk aset yang sama
-        $pemeriksaanGrouped = $pemeriksaan2->groupBy(function ($item) {
-            return $item->pcPengurus->pengguna->nama . '-' . $item->tanggal_pemeriksaan;
-        })->map(function ($group) {
-            return $group->sortByDesc('created_at')->unique('aset_id')->values();
-        });
-
-        $kategori = DB::table('kategori')->get();
-        //$kondisi = DB::table('kondisi')->get();
-        $asetQuery = Aset::with(['kategori_aset', 'latestDetailPemeriksaanAset.pemeriksaanAset', 'detailPemeriksaanAset.pemeriksaanAset']);
-        $role = 'pc';
+        ])
+            ->whereHas('detailPemeriksaanAset', function ($query) {
+                // Filter agar hanya mengambil aset yang memiliki detail pemeriksaan
+                $query->whereNotNull('id_detail_pemeriksaan_aset');
+            });
 
         // Ambil semua filter dari request
         $kategori_id = $request->input('kategori');
@@ -90,6 +68,26 @@ class DataAsetController extends Controller
         // Eksekusi query untuk mendapatkan data aset yang sudah difilter
         $aset = $asetQuery->get();
 
+        // Data pemeriksaan lainnya
+        $pemeriksaan2 = PemeriksaanAset::with([
+            'detailPemeriksaanAset.aset.kategori_aset',
+            'pcPengurus.pengguna',
+            'pcPengurus.pengurusJabatan',
+            'supervisor.pengurusJabatan',
+            'kc.pengurusJabatan',
+            'supervisor.pengguna',
+            'kc.pengguna'
+        ])->get();
+
+        // Mengelompokkan berdasarkan nama pemeriksa dan tanggal_pemeriksaan
+        $pemeriksaanGrouped = $pemeriksaan2->groupBy(function ($item) {
+            return $item->pcPengurus->pengguna->nama . '-' . $item->tanggal_pemeriksaan;
+        })->map(function ($group) {
+            return $group->sortByDesc('created_at')->unique('aset_id')->values();
+        });
+
+        $kategori = DB::table('kategori')->get();
+        $role = 'pc';
 
         // Mendapatkan divisi user yang sedang login dari database gocap
         $divisiUser = DB::connection('gocap')
@@ -100,14 +98,14 @@ class DataAsetController extends Controller
             ->first();
 
         if ($divisiUser) {
-            // Mengambil data id_pc_pengurus dan nama dari user table di database siftnu
+            // Mengambil data supervisor
             $supervisor = DB::connection('gocap')
                 ->table('pc_pengurus')
                 ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
-                ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus') // Join ke table user di database siftnu
+                ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus')
                 ->where('pengurus_jabatan.jabatan', 'Supervisor Cabang')
                 ->where('pengurus_jabatan.divisi', $divisiUser->divisi)
-                ->select('pc_pengurus.id_pc_pengurus as id_supervisor', 'siftnu.pengguna.nama as nama_supervisor') // Memilih kolom id dan nama dari table user
+                ->select('pc_pengurus.id_pc_pengurus as id_supervisor', 'siftnu.pengguna.nama as nama_supervisor')
                 ->first();
         } else {
             $supervisor = null;
@@ -121,9 +119,107 @@ class DataAsetController extends Controller
             ->select('pc_pengurus.id_pc_pengurus as id_kc', 'siftnu.pengguna.nama as nama_kc')
             ->first();
 
-
-        return view('data_aset.data_aset', compact('role', 'aset', 'kategori', 'pemeriksaan', 'pemeriksaan2', 'pemeriksaanGrouped', 'supervisor', 'kc'));
+        return view('data_aset.data_aset', compact('role', 'aset', 'kategori', 'pemeriksaan2', 'pemeriksaanGrouped', 'supervisor', 'kc'));
     }
+
+    // public function data(Request $request)
+    // {
+    //     //hanya mengambil aset yang memiliki detail pemeriksaan
+    //     $pemeriksaan = Aset::with([
+    //         'kategori_aset',
+    //         'detailPemeriksaanAset.pemeriksaanAset'
+    //     ])->whereHas('detailPemeriksaanAset', function ($query) {
+    //         // Filter agar hanya mengambil aset yang memiliki detail pemeriksaan
+    //         $query->whereNotNull('id_detail_pemeriksaan_aset');
+    //     })->get();
+
+    //     $pemeriksaan2 = PemeriksaanAset::with([
+    //         'detailPemeriksaanAset.aset.kategori_aset',
+    //         'pcPengurus.pengguna',
+    //         'pcPengurus.pengurusJabatan',
+    //         'supervisor.pengurusJabatan',
+    //         'kc.pengurusJabatan',
+    //         'supervisor.pengguna',
+    //         'kc.pengguna'
+    //     ])->get();
+
+
+    //     // Mengelompokkan berdasarkan nama pemeriksa dan tanggal_pemeriksaan dan memilih pemeriksaan terakhir untuk aset yang sama
+    //     $pemeriksaanGrouped = $pemeriksaan2->groupBy(function ($item) {
+    //         return $item->pcPengurus->pengguna->nama . '-' . $item->tanggal_pemeriksaan;
+    //     })->map(function ($group) {
+    //         return $group->sortByDesc('created_at')->unique('aset_id')->values();
+    //     });
+
+    //     $kategori = DB::table('kategori')->get();
+    //     //$kondisi = DB::table('kondisi')->get();
+    //     $asetQuery = Aset::with(['kategori_aset', 'latestDetailPemeriksaanAset.pemeriksaanAset', 'detailPemeriksaanAset.pemeriksaanAset']);
+    //     $role = 'pc';
+
+    //     // Ambil semua filter dari request
+    //     $kategori_id = $request->input('kategori');
+    //     $status = $request->input('status');
+    //     $tgl_pembelian_start = $request->input('tgl-pembelian-start');
+    //     $tgl_pembelian_end = $request->input('tgl-pembelian-end');
+
+    //     // Terapkan filter kategori
+    //     if ($kategori_id) {
+    //         $asetQuery->where('id_kategori', $kategori_id);
+    //     }
+
+    //     // Terapkan filter status
+    //     if ($status) {
+    //         $asetQuery->whereHas('latestDetailPemeriksaanAset', function ($query) use ($status) {
+    //             $query->where('status_aset', $status);
+    //         });
+    //     }
+
+    //     // Terapkan filter tanggal pembelian
+    //     if ($tgl_pembelian_start && $tgl_pembelian_end) {
+    //         $asetQuery->whereBetween('tgl_perolehan', [$tgl_pembelian_start, $tgl_pembelian_end]);
+    //     } elseif ($tgl_pembelian_start) {
+    //         $asetQuery->where('tgl_perolehan', '>=', $tgl_pembelian_start);
+    //     } elseif ($tgl_pembelian_end) {
+    //         $asetQuery->where('tgl_perolehan', '<=', $tgl_pembelian_end);
+    //     }
+
+    //     // Eksekusi query untuk mendapatkan data aset yang sudah difilter
+    //     $aset = $asetQuery->get();
+
+
+    //     // Mendapatkan divisi user yang sedang login dari database gocap
+    //     $divisiUser = DB::connection('gocap')
+    //         ->table('pc_pengurus')
+    //         ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
+    //         ->where('pc_pengurus.id_pc_pengurus', Auth::user()->gocap_id_pc_pengurus)
+    //         ->select('pengurus_jabatan.divisi')
+    //         ->first();
+
+    //     if ($divisiUser) {
+    //         // Mengambil data id_pc_pengurus dan nama dari user table di database siftnu
+    //         $supervisor = DB::connection('gocap')
+    //             ->table('pc_pengurus')
+    //             ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
+    //             ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus') // Join ke table user di database siftnu
+    //             ->where('pengurus_jabatan.jabatan', 'Supervisor Cabang')
+    //             ->where('pengurus_jabatan.divisi', $divisiUser->divisi)
+    //             ->select('pc_pengurus.id_pc_pengurus as id_supervisor', 'siftnu.pengguna.nama as nama_supervisor') // Memilih kolom id dan nama dari table user
+    //             ->first();
+    //     } else {
+    //         $supervisor = null;
+    //     }
+
+    //     $kc = DB::connection('gocap')
+    //         ->table('pc_pengurus')
+    //         ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
+    //         ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus')
+    //         ->where('pengurus_jabatan.jabatan', 'Kepala Cabang')
+    //         ->select('pc_pengurus.id_pc_pengurus as id_kc', 'siftnu.pengguna.nama as nama_kc')
+    //         ->first();
+
+
+    //     return view('data_aset.data_aset', compact('role', 'aset', 'kategori', 'pemeriksaan', 'pemeriksaan2', 'pemeriksaanGrouped', 'supervisor', 'kc'));
+    // }
 
     public function detail_aset($id)
     {
@@ -662,8 +758,7 @@ class DataAsetController extends Controller
             'edit_tindakan_diperlukan' => 'required|string',
         ]);
 
-        try
-        {
+        try {
 
             $detail_pemeriksaan = DetailPemeriksaanAset::findOrFail($request->edit_id_detail_pemeriksaan);
             $detail_pemeriksaan->aset_id = $request->edit_aset;
