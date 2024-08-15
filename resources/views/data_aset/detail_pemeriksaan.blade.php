@@ -174,18 +174,18 @@
                                                                         <h6><b>Pemeriksa</b></h6>
                                                                     </th>
                                                                     <th style="width: 30%">
-                                                                        <input type="hidden" id="idPemeriksaanAset"
-                                                                            value="{{ $pemeriksaanAset->id_pemeriksaan_aset }}">
                                                                         <div class="dropdown">
-                                                                            <select id="dropdownButton"
-                                                                                onchange="handleDropdownChange(this)"
-                                                                                style="padding: 10px; border-radius: 10px; border: none;">
-                                                                                <option value="Belum Selesai Diinput">Belum
-                                                                                    Selesai Diinput</option>
-                                                                                <option value="Selesai Diinput">Selesai
-                                                                                    Diinput</option>
-                                                                            </select>
-                                                                        </div>
+                                                                        <form action="{{ route($role.'.updateStatusPemeriksaan') }}" method="POST">
+                                                                            @csrf
+                                                                            <input type="hidden" name="id_pemeriksaan_aset" value="{{ $pemeriksaanAset->id_pemeriksaan_aset }}"> <!-- Ganti dengan ID dari item yang relevan -->
+                                                                            <div class="dropdown">
+                                                                                <select id="dropdownButton" name="status_pemeriksaan" onchange="this.form.submit()" style="padding: 10px; border-radius: 10px; border: none;">
+                                                                                    <option value="selesai" {{ $pemeriksaanAset->status_pemeriksaan == 'selesai' ? 'selected' : '' }}><i class="bi bi-check-circle-fill"></i>Selesai Diinput</option>
+                                                                                    <option value="belum" {{ $pemeriksaanAset->status_pemeriksaan == 'belum' ? 'selected' : '' }}><i class="bi bi-ban"></i>Belum Selesai Diinput</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </form>
+                                                                        </div>                                                                      
                                                                     </th>
                                                                 </tr>
                                                                 <tr>
@@ -205,8 +205,8 @@
                                                                                     <button type="submit"
                                                                                         class="btn btn-danger btn-block"
                                                                                         style="padding: 10px; border-radius: 10px; border: none; width:205px;"
-                                                                                        @if ($pemriksaanAset->status_pemeriksaan == 'selesai')
-                                                                                            disable
+                                                                                        @if ($pemeriksaanAset->status_pemeriksaan == 'selesai')
+                                                                                            disabled
                                                                                         @endif
                                                                                         >
                                                                                         <i class="fas fa-trash"></i>
@@ -496,6 +496,9 @@
                                                                 <button type="button" class="btn btn-success"
                                                                     data-toggle="modal"
                                                                     data-target="#TambahPemeriksaanModal"
+                                                                    @if ($pemeriksaanAset->status_pemeriksaan == 'selesai')
+                                                                        disabled
+                                                                    @endif
                                                                     style="background-color: rgb(0, 177, 0); color:white; border-radius:10px; width:150px;">
                                                                     <i class="fas fa-plus-circle"></i>
                                                                     <span>Tambah</span>
@@ -570,7 +573,7 @@
                                                                                             class="d-flex flex-column align-items-center">
                                                                                             <div
                                                                                                 class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan
+                                                                                                <button class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan
                                                                                                 {{-- @if (!$canEdit) disabled @endif --}}
                                                                                                 "
                                                                                                     type="button"
@@ -585,11 +588,14 @@
                                                                                                     data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
                                                                                                     data-status-aset="{{ $data->status_aset }}"
                                                                                                     data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
+                                                                                                    @if ($pemeriksaanAset->status_pemeriksaan == 'selesai')
+                                                                                                        disabled
+                                                                                                    @endif
                                                                                                     style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px;">
                                                                                                     <i
                                                                                                         class="fas fa-edit"></i>
                                                                                                     Ubah
-                                                                                                </a>
+                                                                                                </button>
                                                                                             </div>
                                                                                             <div
                                                                                                 class="btn-group mb-2 mb-xl-0 card_hapus_detail">
@@ -606,6 +612,9 @@
                                                                                                             type="submit"
                                                                                                             class="btn btn-outline-secondary btn-block
                                                                                                             "
+                                                                                                            @if ($pemeriksaanAset->status_pemeriksaan == 'selesai')
+                                                                                                                disabled
+                                                                                                            @endif
                                                                                                             style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px;"
                                                                                                             {{-- @if (!$canEdit) disabled @endif> --}}>
                                                                                                             <i
@@ -683,7 +692,7 @@
                                                                                             class="d-flex flex-column align-items-center">
                                                                                             <div
                                                                                                 class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan
+                                                                                                <button class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan
                                                                                                     {{-- @if (!$canEdit) disabled @endif --}}
                                                                                                     "
                                                                                                     type="button"
@@ -698,12 +707,15 @@
                                                                                                     data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
                                                                                                     data-status-aset="{{ $data->status_aset }}"
                                                                                                     data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
+                                                                                                    @if ($pemeriksaanAset->status_pemeriksaan == 'selesai')
+                                                                                                        disabled
+                                                                                                    @endif
                                                                                                     style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
                                                                                                     aria-expanded="false">
                                                                                                     &nbsp;&nbsp;<i
                                                                                                         class="fas fa-edit"></i>
                                                                                                     Ubah
-                                                                                                </a>
+                                                                                                </button>
                                                                                             </div>
                                                                                             <div
                                                                                                 class="btn-group mb-2 mb-xl-0 card_hapus_detail">
@@ -720,6 +732,9 @@
                                                                                                             type="submit"
                                                                                                             class="btn btn-outline-secondary btn-block
                                                                                                             "
+                                                                                                            @if ($pemeriksaanAset->status_pemeriksaan == 'selesai')
+                                                                                                                disabled
+                                                                                                            @endif
                                                                                                             style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px;"
                                                                                                             {{-- @if (!$canEdit) disabled @endif> --}}>
                                                                                                             <i
@@ -795,7 +810,7 @@
                                                                                             class="d-flex flex-column align-items-center">
                                                                                             <div
                                                                                                 class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan
+                                                                                                <button class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan
                                                                                                 {{-- @if (!$canEdit) disabled @endif --}}
                                                                                                 "
                                                                                                     type="button"
@@ -810,12 +825,15 @@
                                                                                                     data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
                                                                                                     data-status-aset="{{ $data->status_aset }}"
                                                                                                     data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
+                                                                                                    @if ($pemeriksaanAset->status_pemeriksaan == 'selesai')
+                                                                                                        disabled
+                                                                                                    @endif
                                                                                                     style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
                                                                                                     aria-expanded="false">
                                                                                                     &nbsp;&nbsp;<i
                                                                                                         class="fas fa-edit"></i>
                                                                                                     Ubah
-                                                                                                </a>
+                                                                                                </button>
                                                                                             </div>
                                                                                             <div
                                                                                                 class="btn-group mb-2 mb-xl-0 card_hapus_detail">
@@ -832,7 +850,10 @@
                                                                                                             type="submit"
                                                                                                             class="btn btn-outline-secondary btn-block
                                                                                                             "
-                                                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px;"
+                                                                                                            @if ($pemeriksaanAset->status_pemeriksaan == 'selesai')
+                                                                                                                disabled
+                                                                                                            @endif
+                                                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px;">
                                                                                                             {{-- @if (!$canEdit) disabled @endif> --}}
                                                                                                             <i
                                                                                                                 class="fas fa-trash"></i>
@@ -906,7 +927,7 @@
                                                                                             class="d-flex flex-column align-items-center">
                                                                                             <div
                                                                                                 class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                                                <a class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan
+                                                                                                <button class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan
                                                                                             {{-- @if (!$canEdit) disabled @endif --}}
                                                                                             "
                                                                                                     type="button"
@@ -921,12 +942,15 @@
                                                                                                     data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
                                                                                                     data-status-aset="{{ $data->status_aset }}"
                                                                                                     data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
+                                                                                                    @if ($pemeriksaanAset->status_pemeriksaan == 'selesai')
+                                                                                                        disabled
+                                                                                                    @endif
                                                                                                     style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
                                                                                                     aria-expanded="false">
                                                                                                     &nbsp;&nbsp;<i
                                                                                                         class="fas fa-edit"></i>
                                                                                                     Ubah
-                                                                                                </a>
+                                                                                                </button>
                                                                                             </div>
                                                                                             <div
                                                                                                 class="btn-group mb-2 mb-xl-0 card_hapus_detail">
@@ -941,9 +965,11 @@
                                                                                                         @method('DELETE')
                                                                                                         <button
                                                                                                             type="submit"
-                                                                                                            class="btn btn-outline-secondary btn-block
-                                                                                                            "
-                                                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px;"
+                                                                                                            class="btn btn-outline-secondary btn-block"
+                                                                                                            @if ($pemeriksaanAset->status_pemeriksaan == 'selesai')
+                                                                                                                disabled
+                                                                                                            @endif
+                                                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px;">
                                                                                                             {{-- @if (!$canEdit) disabled @endif> --}}
                                                                                                             <i class="fas fa-trash"></i>
                                                                                                             Hapus
@@ -1018,14 +1044,17 @@
                                                                     </th>
                                                                     <th style="width: 25%">
                                                                         <div class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                            <a class="btn btn-secondary btn-block intro-respon-spv respon-spv"
+                                                                            <button class="btn btn-secondary btn-block intro-respon-spv respon-spv"
                                                                                 type="button" data-toggle="modal"
                                                                                 data-target="#responspvModal"
+                                                                                @if ($pemeriksaanAset->status_pemeriksaan == 'belum')
+                                                                                    disabled
+                                                                                @endif
                                                                                 style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
                                                                                 aria-expanded="false">
                                                                                 &nbsp;&nbsp;<i class="fas fa-edit"></i>
                                                                                 Respon
-                                                                            </a>
+                                                                            </button>
                                                                         </div>
                                                                     </th>
                                                                 </tr>
@@ -1125,14 +1154,17 @@
                                                                     </th>
                                                                     <th style="width: 25%">
                                                                         <div class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                            <a class="btn btn-secondary btn-block intro-respon-kc respon-kc"
+                                                                            <button class="btn btn-secondary btn-block intro-respon-kc respon-kc"
                                                                                 type="button" data-toggle="modal"
                                                                                 data-target="#responkcModal"
+                                                                                @if ($pemeriksaanAset->status_pemeriksaan == 'belum')
+                                                                                    disabled
+                                                                                @endif
                                                                                 style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;"
                                                                                 aria-expanded="false">
                                                                                 &nbsp;&nbsp;<i class="fas fa-edit"></i>
                                                                                 Respon
-                                                                            </a>
+                                                                            </button>
                                                                         </div>
                                                                     </th>
                                                                 </tr>
@@ -1837,6 +1869,16 @@
                         <label for="tgl_pemeriksaan" style="font-weight: bold; font-size: 14px;">Tgl
                             Pemeriksaan</label>
                         <input type="date" class="form-control" id="tgl_pemeriksaan" value="{{ $pemeriksaanAset->tanggal_pemeriksaan }}"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="tgl_respon" style="font-weight: bold; font-size: 14px;">Tgl Respon SPV</label>
+                        <input type="date" class="form-control" id="tgl_mengetahui_spv" name="tgl_mengetahui_spv" value="{{ $pemeriksaanAset->tgl_mengetahui_spv }}"
+                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="catatan_spv" style="font-weight: bold; font-size: 14px;">Catatan SPV</label>
+                        <input type="text" class="form-control" id="catatan_spv" name="catatan_spv" value="{{ $pemeriksaanAset->catatan_spv }}"
                             style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
                     </div>
                     <div class="form-group">

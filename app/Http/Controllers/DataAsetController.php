@@ -28,32 +28,40 @@ class DataAsetController extends Controller
 
     //controller data_aset_blade
     public function data(Request $request)
+{
+    // Ambil semua filter dari request dengan nilai default jika tidak ada input
+    $kategori_id = $request->input('kategori', 'all');
+    $status = $request->input('status', 'all');
+    $tgl_pembelian_start = $request->input('tgl-pembelian-start');
+    $tgl_pembelian_end = $request->input('tgl-pembelian-end');
+
+    // Query dasar untuk mengambil aset yang memiliki detail pemeriksaan
+    $asetQuery = Aset::with([
+        'kategori_aset',
+        'latestDetailPemeriksaanAset.pemeriksaanAset',
+        'detailPemeriksaanAset.pemeriksaanAset'
+    ])
+    ->whereHas('detailPemeriksaanAset', function ($query) {
+        $query->whereNotNull('id_detail_pemeriksaan_aset');
+    });
+
+    if ($kategori_id == 'all' && $status == 'all' && !$tgl_pembelian_start && !$tgl_pembelian_end)
     {
-        // Mengambil aset yang memiliki detail pemeriksaan dan menerapkan filter
-        $asetQuery = Aset::with([
-            'kategori_aset',
-            'latestDetailPemeriksaanAset.pemeriksaanAset',
-            'detailPemeriksaanAset.pemeriksaanAset'
-        ])
-            ->whereHas('detailPemeriksaanAset', function ($query) {
-                // Filter agar hanya mengambil aset yang memiliki detail pemeriksaan
-                $query->whereNotNull('id_detail_pemeriksaan_aset');
-            });
-
-        // Ambil semua filter dari request
-        $kategori_id = $request->input('kategori');
-        $status = $request->input('status');
-        $tgl_pembelian_start = $request->input('tgl-pembelian-start');
-        $tgl_pembelian_end = $request->input('tgl-pembelian-end');
-
+        // Eksekusi query untuk mendapatkan data aset yang sudah difilter
+        $aset = $asetQuery->get();
+    }
+    else
+    {
         // Terapkan filter kategori
-        if ($kategori_id) {
-            $asetQuery->where('id_kategori', $kategori_id);
+        if ($kategori_id !== 'all') {
+            $asetQuery->whereHas('kategori_aset', function($query) use($kategori_id) {
+                $query->where('id_kategori', $kategori_id);
+            });
         }
 
         // Terapkan filter status
-        if ($status) {
-            $asetQuery->whereHas('latestDetailPemeriksaanAset', function ($query) use ($status) {
+        if ($status !== 'all') {
+            $asetQuery->whereHas('latestDetailPemeriksaanAset', function($query) use($status) {
                 $query->where('status_aset', $status);
             });
         }
@@ -66,63 +74,98 @@ class DataAsetController extends Controller
         } elseif ($tgl_pembelian_end) {
             $asetQuery->where('tgl_perolehan', '<=', $tgl_pembelian_end);
         }
-
-        // Eksekusi query untuk mendapatkan data aset yang sudah difilter
         $aset = $asetQuery->get();
-
-        // Data pemeriksaan lainnya
-        $pemeriksaan2 = PemeriksaanAset::with([
-            'detailPemeriksaanAset.aset.kategori_aset',
-            'pcPengurus.pengguna',
-            'pcPengurus.pengurusJabatan',
-            'supervisor.pengurusJabatan',
-            'kc.pengurusJabatan',
-            'supervisor.pengguna',
-            'kc.pengguna'
+    }
+    
+    
+    
+    // Data pemeriksaan lainnya
+    $pemeriksaan2 = PemeriksaanAset::with([
+        'detailPemeriksaanAset.aset.kategori_aset',
+        'pcPengurus.pengguna',
+        'pcPengurus.pengurusJabatan',
+        'supervisor.pengurusJabatan',
+        'kc.pengurusJabatan',
+        'supervisor.pengguna',
+        'kc.pengguna'
         ])->get();
+        
+    // Mengelompokkan berdasarkan nama pemeriksa dan tanggal_pemeriksaan
+    $pemeriksaanGrouped = $pemeriksaan2->groupBy(function ($item) {
+        return $item->pcPengurus->pengguna->nama . '-' . $item->tanggal_pemeriksaan;
+    })->map(function ($group) {
+        return $group->sortByDesc('created_at')->unique('aset_id')->values();
+    });
 
-        // Mengelompokkan berdasarkan nama pemeriksa dan tanggal_pemeriksaan
-        $pemeriksaanGrouped = $pemeriksaan2->groupBy(function ($item) {
-            return $item->pcPengurus->pengguna->nama . '-' . $item->tanggal_pemeriksaan;
-        })->map(function ($group) {
-            return $group->sortByDesc('created_at')->unique('aset_id')->values();
-        });
+    // Ambil semua filter dari request dengan nilai default jika tidak ada input
+    $tgl_pemeriksaan_start = $request->input('tgl-pemeriksaan-start');
+    $tgl_pemeriksaan_end = $request->input('tgl-pemeriksaan-end');
+    $status_spv = $request->input('status-spv');
+    $status_kc = $request->input('status-kc');
 
-        $kategori = DB::table('kategori')->get();
-        $role = 'pc';
 
-        // Mendapatkan divisi user yang sedang login dari database gocap
-        $divisiUser = DB::connection('gocap')
-            ->table('pc_pengurus')
-            ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
-            ->where('pc_pengurus.id_pc_pengurus', Auth::user()->gocap_id_pc_pengurus)
-            ->select('pengurus_jabatan.divisi')
-            ->first();
-
-        if ($divisiUser) {
-            // Mengambil data supervisor
-            $supervisor = DB::connection('gocap')
-                ->table('pc_pengurus')
-                ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
-                ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus')
-                ->where('pengurus_jabatan.jabatan', 'Supervisor Cabang')
-                ->where('pengurus_jabatan.divisi', $divisiUser->divisi)
-                ->select('pc_pengurus.id_pc_pengurus as id_supervisor', 'siftnu.pengguna.nama as nama_supervisor')
-                ->first();
-        } else {
-            $supervisor = null;
+    if ($status_spv == 'all' && $status_kc == 'all' && !$tgl_pemeriksaan_start && !$tgl_pemeriksaan_end)
+    {
+        $pemeriksaanGrouped = $pemeriksaanGrouped;
+    }
+    else
+    {
+        // Terapkan filter tanggal pemeriksaan
+        if ($tgl_pemeriksaan_start && $tgl_pemeriksaan_end) {
+            $pemeriksaanGrouped->whereBetween('tanggal_pemeriksaan', [$tgl_pemeriksaan_start, $tgl_pemeriksaan_end]);
+        } elseif ($tgl_pemeriksaan_start) {
+            $asetQuery->where('tanggal_pemeriksaan', '>=', $tgl_pemeriksaan_start);
+        } elseif ($tgl_pemeriksaan_end) {
+            $asetQuery->where('tanggal_pemeriksaan', '<=', $tgl_pemeriksaan_end);
         }
 
-        $kc = DB::connection('gocap')
+        if($status_spv!='all')
+        {
+            $pemeriksaanGrouped->where('status_spv', $status_spv);
+        }
+        if($status_kc!='all')
+        {
+            $pemeriksaanGrouped->where('status_kc', $status_kc);
+        }
+
+        $pemeriksaanGrouped = $pemeriksaanGrouped;
+    }
+
+    // Ambil kategori
+    $kategori = DB::table('kategori')->get();
+    $role = 'pc';
+
+    // Mendapatkan data user
+    $divisiUser = DB::connection('gocap')
+        ->table('pc_pengurus')
+        ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
+        ->where('pc_pengurus.id_pc_pengurus', Auth::user()->gocap_id_pc_pengurus)
+        ->select('pengurus_jabatan.divisi')
+        ->first();
+
+    $supervisor = null;
+    if ($divisiUser) {
+        $supervisor = DB::connection('gocap')
             ->table('pc_pengurus')
             ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
             ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus')
-            ->where('pengurus_jabatan.jabatan', 'Kepala Cabang')
-            ->select('pc_pengurus.id_pc_pengurus as id_kc', 'siftnu.pengguna.nama as nama_kc')
+            ->where('pengurus_jabatan.jabatan', 'Supervisor Cabang')
+            ->where('pengurus_jabatan.divisi', $divisiUser->divisi)
+            ->select('pc_pengurus.id_pc_pengurus as id_supervisor', 'siftnu.pengguna.nama as nama_supervisor')
             ->first();
-
-        return view('data_aset.data_aset', compact('role', 'aset', 'kategori', 'pemeriksaan2', 'pemeriksaanGrouped', 'supervisor', 'kc'));
     }
+
+    $kc = DB::connection('gocap')
+        ->table('pc_pengurus')
+        ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
+        ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus')
+        ->where('pengurus_jabatan.jabatan', 'Kepala Cabang')
+        ->select('pc_pengurus.id_pc_pengurus as id_kc', 'siftnu.pengguna.nama as nama_kc')
+        ->first();
+
+    return view('data_aset.data_aset', compact('kategori_id', 'status', 'tgl_pembelian_start', 'tgl_pembelian_end', 'role', 'aset', 'kategori', 'pemeriksaan2', 'pemeriksaanGrouped', 'supervisor', 'kc', 'tgl_pemeriksaan_start', 'tgl_pemeriksaan_end', 'status_spv', 'status_kc'));
+}
+
 
     public function filterAset(Request $request)
     {
@@ -401,7 +444,7 @@ class DataAsetController extends Controller
     {
         // Validasi input untuk memastikan data yang diterima valid
         $request->validate([
-            'id_pemeriksaan_aset' => 'required|exists:pemeriksaan_asets,id', // Cek apakah ID ada di database
+            'id_pemeriksaan_aset' => 'required', // Cek apakah ID ada di database
             'status_pemeriksaan' => 'required|string',
         ]);
 
@@ -413,10 +456,10 @@ class DataAsetController extends Controller
             $pemeriksaanAset->status_pemeriksaan = $request->status_pemeriksaan;
             $pemeriksaanAset->save();
 
-            return response()->json(['message' => 'Status pemeriksaan berhasil diperbarui!']);
+            return back()->with('success', 'Status updated successfully');
         } else {
             // Kembalikan pesan error jika data tidak ditemukan
-            return response()->json(['message' => 'Data tidak ditemukan!'], 404);
+            return back()->with('error', 'Status updated failed');
         }
     }
 
