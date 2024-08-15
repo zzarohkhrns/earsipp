@@ -201,9 +201,14 @@
                                                                                 <form {{-- action="/{{ $role }}/aset/data/delete/{{ $aset->aset_id }}" --}} method="POST"
                                                                                     onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                                                                     @csrf
+
                                                                                     <button type="submit"
                                                                                         class="btn btn-danger btn-block"
-                                                                                        style="padding: 10px; border-radius: 10px; border: none; width:205px;">
+                                                                                        style="padding: 10px; border-radius: 10px; border: none; width:205px;"
+                                                                                        @if ($pemriksaanAset->status_pemeriksaan == 'selesai')
+                                                                                            disable
+                                                                                        @endif
+                                                                                        >
                                                                                         <i class="fas fa-trash"></i>
                                                                                         Hapus
                                                                                     </button>
