@@ -15,7 +15,6 @@ class FilterAsetController extends Controller
 {
     public function __construct()
     {
-
         view()->composer('*', function ($view) {
 
             $earsip = config('app.database_earsip');

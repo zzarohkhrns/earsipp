@@ -18,6 +18,7 @@ use App\Http\Controllers\FilterMemoController;
 use App\Http\Controllers\BeritaUmumController;
 use App\Http\Controllers\DokumenDigitalController;
 use App\Http\Controllers\FilterBeritaController;
+use App\Http\Controllers\FilterDataAsetController;
 use App\Http\Controllers\FilterKegiatanController;
 use App\Http\Controllers\FilterSuratMasukController;
 use App\Http\Controllers\FilterSuratKeluarController;
@@ -214,6 +215,7 @@ Route::middleware('auth')->group(function () {
 
         //data aset
         Route::get('/arsip/aset/data', [DataAsetController::class, 'data'])->name('data_aset');
+        //::get('/arsip/aset/filterAset', [FilterDataAsetController::class, 'filter_data_aset'])->name('filter_aset');
         Route::post('/aset/data/tambah', [DataAsetController::class, 'store_data'])->name('aset.store');
         Route::get('/aset/data/{id}', [DataAsetController::class, 'getDataAset']);
         //Route::post('/check-date', [DataAsetController::class, 'checkDate_Pemeriksaan'])->name('check-date');
@@ -227,6 +229,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/kc/update/{id}', [DataAsetController::class, 'update_respon_kc'])->name('respon_kc.update');
         Route::post('/detail_pemeriksaan/update/', [DataAsetController::class, 'update_detail_pemeriksaan'])->name('detail_pemeriksaan.update');
         Route::delete('/delete-detail-pemeriksaan/{id}', [DataAsetController::class, 'delete_detail_pemeriksaan'])->name('delete_detail_pemeriksaan');
+        Route::delete('/delete-pemeriksaan/{id}', [DataAsetController::class, 'delete_pemeriksaan'])->name('delete_pemeriksaan');
         Route::get('/detail-pemeriksaan/{id}', [DetailPemeriksaanController::class, 'getDetailPemeriksaan']);
         Route::post('/update-status-pemeriksaan', [DataAsetController::class, 'updateStatusPemeriksaan'])->name('updateStatusPemeriksaan');
 

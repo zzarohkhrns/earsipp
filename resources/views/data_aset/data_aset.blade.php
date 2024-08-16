@@ -208,123 +208,71 @@
                                             <!-- Bagian Filter dan Tombol Aksi -->
                                             <div
                                                 style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                                                {{-- <div style="display: flex; align-items: center; max-width: 67%;">
-                                                </div> --}}
-                                                {{-- <form id="filter-form" method="POST" action="{{ url('/arsip/aset/data') }}"
-                                                    style="display: flex; align-items: center; gap: 10px;">
-                                                    @csrf --}}
-                                                    <!-- Filter Tanggal Pembelian -->
-                                                    {{-- <form method="GET" action="{{ url($role.'/arsip/aset/data') }}">
-                                                        @csrf
-                                                   <div style="display: flex; align-items: center; gap: 10px;" 
-                                                   id="filter-form">
-                                                            <div class="input-group" style="flex: 1;">
-                                                                <div class="input-group-prepend" style="border-radius: 10px;">
-                                                                    <span class="input-group-text custom-text">Tgl Pembelian</span>
-                                                                </div>
-                                                                <input type="date" id="tgl-pembelian-start" onchange="this.form.submit()" name="tgl-pembelian-start" class="form-control custom-input" value="{{ $tgl_pembelian_start ?? '' }}" style="min-width: 140px;">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text custom-text">-</span>
-                                                                </div>
-                                                                <input type="date" id="tgl-pembelian-end" onchange="this.form.submit()" value="{{ $tgl_pembelian_end ?? '' }}"
-                                                                    name="tgl-pembelian-end" class="form-control custom-input"
-                                                                    style="min-width: 140px;">
-                                                            </div>
-                                                        
-
-                                                        <!-- Filter Kategori -->
-                                                        <div class="input-group" style="flex: 0.5;">
-                                                            <div class="input-group-prepend">
-                                                                <div class="input-group-text">Kategori</div>
-                                                            </div>
-                                                            <select class="form-control" name="kategori" onchange="this.form.submit()"
-                                                                style="border-top-right-radius: 10px; border-bottom-right-radius:10px; min-width: 120px;">
-                                                                <option value="all" @if ($kategori_id) selected @endif>Semua</option>
-                                                                @foreach ($kategori as $kat)
-                                                                    <option value="{{ $kat->id_kategori }}"
-                                                                    @if ($kategori_id == $kat->id_kategori)
-                                                                        selected
-                                                                    @endif>
-                                                                    {{ $kat->kategori }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-
-                                                        <!-- Filter Status -->
-                                                        <div class="input-group" style="flex: 0.5;">
-                                                            <div class="input-group-prepend">
-                                                                <div class="input-group-text">Status</div>
-                                                            </div>
-                                                            <select class="form-control" name="status" onchange="this.form.submit()"
-                                                                style="border-top-right-radius: 10px; border-bottom-right-radius:10px; min-width: 120px;">
-                                                                <option value="all" @if (!$status) selected @endif>Semua</option>
-                                                                <option value="aktif" @if ($status == 'aktif') selected @endif>Aktif</option>
-                                                                <option value="non aktif" @if ($status == 'non aktif') selected @endif>Non Aktif</option>
-                                                            </select>
-                                                        </div>
-
-                                                        <!-- Tombol Refresh -->
-                                                        <div>
-                                                            <button type="button" class="btn btn-outline-secondary"
-                                                                style="width: 100px; border-radius:10px;"
-                                                                onclick="location.reload();">
-                                                                <i class="fas fa-sync-alt"></i>
-                                                            </button>
-                                                        </div>
-                                                   </div>
-                                                </form> --}}
                                                 {{-- </form> --}}
-                                                <form method="GET" action="{{ url($role.'/arsip/aset/data') }}">
+                                                <form method="GET" action="{{ url($role . '/arsip/aset/data') }}">
                                                     @csrf
-                                                    <div style="display: flex; align-items: center; gap: 10px;" id="filter-form">
+                                                    <div style="display: flex; align-items: center; gap: 10px;"
+                                                        id="filter-form">
                                                         <div class="input-group" style="flex: 1;">
                                                             <div class="input-group-prepend" style="border-radius: 10px;">
-                                                                <span class="input-group-text custom-text">Tgl Pembelian</span>
+                                                                <span class="input-group-text custom-text">Tgl
+                                                                    Pembelian</span>
                                                             </div>
-                                                            <input type="date" id="tgl-pembelian-start" onchange="this.form.submit()"
-                                                                name="tgl-pembelian-start" class="form-control custom-input" 
-                                                                value="{{ request('tgl-pembelian-start') ?? '' }}" {{-- Gunakan request() untuk mengambil nilai default --}}
-                                                                style="min-width: 140px;">
+                                                            <input type="date" id="tgl-pembelian-start"
+                                                                onchange="this.form.submit()" name="tgl-pembelian-start"
+                                                                class="form-control custom-input"
+                                                                value="{{ request('tgl-pembelian-start') ?? '' }}"
+                                                                {{-- Gunakan request() untuk mengambil nilai default --}} style="min-width: 140px;">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text custom-text">-</span>
                                                             </div>
-                                                            <input type="date" id="tgl-pembelian-end" onchange="this.form.submit()" 
-                                                                value="{{ request('tgl-pembelian-end') ?? '' }}" {{-- Gunakan request() untuk mengambil nilai default --}}
-                                                                name="tgl-pembelian-end" class="form-control custom-input"
-                                                                style="min-width: 140px;">
+                                                            <input type="date" id="tgl-pembelian-end"
+                                                                onchange="this.form.submit()"
+                                                                value="{{ request('tgl-pembelian-end') ?? '' }}"
+                                                                {{-- Gunakan request() untuk mengambil nilai default --}} name="tgl-pembelian-end"
+                                                                class="form-control custom-input" style="min-width: 140px;">
                                                         </div>
-                                                
+
                                                         <!-- Filter Kategori -->
                                                         <div class="input-group" style="flex: 0.5;">
                                                             <div class="input-group-prepend">
                                                                 <div class="input-group-text">Kategori</div>
                                                             </div>
-                                                            <select class="form-control" name="kategori" onchange="this.form.submit()"
+                                                            <select class="form-control" name="kategori"
+                                                                onchange="this.form.submit()"
                                                                 style="border-top-right-radius: 10px; border-bottom-right-radius:10px; min-width: 120px;">
-                                                                <option value="all" @if (request('kategori') == 'all') selected @endif>Semua</option>
+                                                                <option value="all"
+                                                                    @if (request('kategori') == 'all') selected @endif>Semua
+                                                                </option>
                                                                 @foreach ($kategori as $kat)
                                                                     <option value="{{ $kat->id_kategori }}"
-                                                                    @if (request('kategori') == $kat->id_kategori) selected @endif>
-                                                                    {{ $kat->kategori }}
+                                                                        @if (request('kategori') == $kat->id_kategori) selected @endif>
+                                                                        {{ $kat->kategori }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                
+
                                                         <!-- Filter Status -->
                                                         <div class="input-group" style="flex: 0.5;">
                                                             <div class="input-group-prepend">
                                                                 <div class="input-group-text">Status</div>
                                                             </div>
-                                                            <select class="form-control" name="status" onchange="this.form.submit()"
+                                                            <select class="form-control" name="status"
+                                                                onchange="this.form.submit()"
                                                                 style="border-top-right-radius: 10px; border-bottom-right-radius:10px; min-width: 120px;">
-                                                                <option value="all" @if (request('status') == 'all') selected @endif>Semua</option>
-                                                                <option value="aktif" @if (request('status') == 'aktif') selected @endif>Aktif</option>
-                                                                <option value="non aktif" @if (request('status') == 'non aktif') selected @endif>Non Aktif</option>
+                                                                <option value="all"
+                                                                    @if (request('status') == 'all') selected @endif>Semua
+                                                                </option>
+                                                                <option value="aktif"
+                                                                    @if (request('status') == 'aktif') selected @endif>Aktif
+                                                                </option>
+                                                                <option value="non aktif"
+                                                                    @if (request('status') == 'non aktif') selected @endif>Non
+                                                                    Aktif</option>
                                                             </select>
                                                         </div>
-                                                
+
                                                         <!-- Tombol Refresh -->
                                                         <div>
                                                             <button type="button" class="btn btn-outline-secondary"
@@ -336,7 +284,7 @@
                                                     </div>
                                                 </form>
 
-                                               <script>
+                                                <script>
                                                     function resetFilters() {
                                                         // Dapatkan URL saat ini tanpa query string
                                                         const baseUrl = window.location.origin + window.location.pathname;
@@ -344,8 +292,8 @@
                                                         window.location.href = baseUrl;
                                                     }
                                                 </script>
-                                                
-                                                
+
+
 
                                                 <!-- Tombol Aksi -->
                                                 <div
@@ -392,36 +340,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        {{-- script untuk filter --}}
-                                        {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                                        <script>
-                                            $('#filter-form').on('change', 'input, select', function() {
-                                                var formData = $('#filter-form').serialize();
-                                                console.log('Data yang dikirim:', formData); // Ini akan menunjukkan data yang dikirim
-                                                $.ajax({
-                                                    url: $('#filter-form').attr('action'),
-                                                    method: 'GET',
-                                                    data: formData,
-                                                    success: function(response) {
-                                                        console.log('Respons dari server:',
-                                                            response); // Ini akan menunjukkan respons dari server
-                                                        var newTableBody = $(response).find('#table-container').html();
-                                                        if (newTableBody) {
-                                                            $('#table-container').html(newTableBody);
-                                                            window.history.pushState({}, '', $('#filter-form').attr('action') + '?' +
-                                                                formData);
-                                                        } else {
-                                                            alert('Data yang diharapkan tidak ditemukan dalam respons.');
-                                                        }
-                                                    },
-                                                    error: function() {
-                                                        alert('Ada kesalahan dalam memfilter data.');
-                                                    }
-                                                });
-                                            });
-                                        </script> --}}
-
 
                                         <!-- Table barang -->
                                         <table id="example3" class="table table-bordered" style="width:100%;">
@@ -472,7 +390,7 @@
                                                                                         : 'background-color: rgb(255, 18, 18);');
                                                                             $teksTombol =
                                                                                 $status === 'null'
-                                                                                    ? 'Data tidak tersedia'
+                                                                                    ? 'Belum ada pemeriksaan'
                                                                                     : ($status === 'aktif'
                                                                                         ? 'Aktif'
                                                                                         : 'Non Aktif');
@@ -499,7 +417,7 @@
                                                                     </td>
                                                                     <td
                                                                         style="border: none; padding: 8px; text-align: right;">
-                                                                        <b>{{ $data->latestDetailPemeriksaanAset->pemeriksaanAset->tanggal_pemeriksaan ?? 'Data tidak tersedia' }}</b>
+                                                                        <b>{{ $data->latestDetailPemeriksaanAset->pemeriksaanAset->tanggal_pemeriksaan ?? 'Belum ada pemeriksaan' }}</b>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -508,8 +426,8 @@
                                                                     </td>
                                                                     <td
                                                                         style="text-align: right; border: none; padding: 8px; color:
-                                                                        {{ $data->latestDetailPemeriksaanAset->kondisi == 'baik' ? '#55CE71' : ($data->latestDetailPemeriksaanAset->kondisi == 'rusak' ? 'rgb(255, 18, 18)' : 'inherit') }}">
-                                                                        {{ $data->latestDetailPemeriksaanAset->kondisi ?? 'Data tidak tersedia' }}
+                                                                        {{ isset($data->latestDetailPemeriksaanAset) ? ($data->latestDetailPemeriksaanAset->kondisi == 'baik' ? '#55CE71' : ($data->latestDetailPemeriksaanAset->kondisi == 'rusak' ? 'rgb(255, 18, 18)' : 'inherit')) : '' }}">
+                                                                        {{ $data->latestDetailPemeriksaanAset->kondisi ?? 'Belum ada pemeriksaan' }}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -518,8 +436,8 @@
                                                                     </td>
                                                                     <td
                                                                         style="border: none; padding: 8px; text-align: right; color:
-                                                                        {{ $data->latestDetailPemeriksaanAset->status_aset == 'aktif' ? '#55CE71' : ($data->latestDetailPemeriksaanAset->status_aset == 'non aktif' ? 'rgb(255, 18, 18)' : 'inherit') }}">
-                                                                        {{ $data->latestDetailPemeriksaanAset->status_aset ?? 'Data tidak tersedia' }}
+                                                                        {{ isset($data->latestDetailPemeriksaanAset) ? ($data->latestDetailPemeriksaanAset->status_aset == 'aktif' ? '#55CE71' : ($data->latestDetailPemeriksaanAset->status_aset == 'non aktif' ? 'rgb(255, 18, 18)' : 'inherit')) : '' }}">
+                                                                        {{ $data->latestDetailPemeriksaanAset->status_aset ?? 'Belum ada pemeriksaan' }}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -528,7 +446,7 @@
                                                                     </td>
                                                                     <td
                                                                         style="border: none; padding: 8px; text-align: right;">
-                                                                        {{ $data->latestDetailPemeriksaanAset->keterangan ?? 'Data tidak tersedia' }}
+                                                                        {{ $data->latestDetailPemeriksaanAset->masalah_teridentifikasi ?? 'Belum ada pemeriksaan' }}
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -600,36 +518,49 @@
                                             <!-- Bagian Filter dan Tombol Aksi -->
                                             <div
                                                 style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                                                <form method="GET" action="{{ url($role.'/arsip/aset/data') }}">
+                                                <form method="GET" action="{{ url($role . '/arsip/aset/data') }}">
                                                     @csrf
-                                                    <div style="display: flex; align-items: center; gap: 10px;" id="filter-form">
+                                                    <div style="display: flex; align-items: center; gap: 10px;"
+                                                        id="filter-form">
+                                                        <input type="hidden" name="tab" value="pemeriksaan">
                                                         <div class="input-group" style="flex: 1;">
                                                             <div class="input-group-prepend" style="border-radius: 10px;">
-                                                                <span class="input-group-text custom-text">Tgl Pembelian</span>
+                                                                <span class="input-group-text custom-text">Tgl
+                                                                    Pemeriksaan</span>
                                                             </div>
-                                                            <input type="date" id="tgl-pemeriksaan-start" onchange="this.form.submit()"
-                                                                name="tgl-pemeriksaan-start" class="form-control custom-input" 
-                                                                value="{{ request('tgl-pemeriksaan-start') ?? '' }}" {{-- Gunakan request() untuk mengambil nilai default --}}
-                                                                style="min-width: 140px;">
+                                                            <input type="date" id="tgl-pemeriksaan-start"
+                                                                onchange="this.form.submit()" name="tgl-pemeriksaan-start"
+                                                                class="form-control custom-input"
+                                                                value="{{ request('tgl-pemeriksaan-start') ?? '' }}"
+                                                                {{-- Gunakan request() untuk mengambil nilai default --}} style="min-width: 140px;">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text custom-text">-</span>
                                                             </div>
-                                                            <input type="date" id="tgl-pemeriksaan-end" onchange="this.form.submit()" 
-                                                                value="{{ request('tgl-pemeriksaan-end') ?? '' }}" {{-- Gunakan request() untuk mengambil nilai default --}}
-                                                                name="tgl-pemeriksaan-end" class="form-control custom-input"
+                                                            <input type="date" id="tgl-pemeriksaan-end"
+                                                                onchange="this.form.submit()"
+                                                                value="{{ request('tgl-pemeriksaan-end') ?? '' }}"
+                                                                {{-- Gunakan request() untuk mengambil nilai default --}} name="tgl-pemeriksaan-end"
+                                                                class="form-control custom-input"
                                                                 style="min-width: 140px;">
                                                         </div>
-                                                
+
                                                         <!-- Filter Kategori -->
                                                         <div class="input-group" style="flex: 0.5;">
                                                             <div class="input-group-prepend">
                                                                 <div class="input-group-text">Status SPV</div>
                                                             </div>
-                                                            <select class="form-control" name="status_spv" onchange="this.form.submit();"
+                                                            <select class="form-control" name="status_spv"
+                                                                onchange="this.form.submit();"
                                                                 style="border-top-right-radius: 10px; border-bottom-right-radius:10px; min-width: 120px;">
-                                                                <option value="all" @if (request('status_spv') == 'all') selected @endif>Semua</option>
-                                                                <option value="mengetahui" @if (request('status_spv') == 'mengetahui') selected @endif>Mengetahui</option>
-                                                                <option value="belum" @if (request('status_spv') == 'belum') selected @endif>Belum Mengetahui</option>
+                                                                <option value="all"
+                                                                    @if (request('status_spv') == 'all') selected @endif>Semua
+                                                                </option>
+                                                                <option value="mengetahui"
+                                                                    @if (request('status_spv') == 'mengetahui') selected @endif>
+                                                                    Mengetahui</option>
+                                                                <option value="belum"
+                                                                    @if (request('status_spv') == 'belum') selected @endif>Belum
+                                                                    Mengetahui</option>
                                                             </select>
                                                         </div>
                                                         <!-- Filter Kategori -->
@@ -637,14 +568,21 @@
                                                             <div class="input-group-prepend">
                                                                 <div class="input-group-text">Status KC</div>
                                                             </div>
-                                                            <select class="form-control" name="status_kc" onchange="this.form.submit();"
+                                                            <select class="form-control" name="status_kc"
+                                                                onchange="this.form.submit();"
                                                                 style="border-top-right-radius: 10px; border-bottom-right-radius:10px; min-width: 120px;">
-                                                                <option value="all" @if (request('status_kc') == 'all') selected @endif>Semua</option>
-                                                                <option value="mengetahui" @if (request('status_kc') == 'mengetahui') selected @endif>Mengetahui</option>
-                                                                <option value="belum" @if (request('status_kc') == 'belum') selected @endif>Belum Mengetahui</option>
+                                                                <option value="all"
+                                                                    @if (request('status_kc') == 'all') selected @endif>Semua
+                                                                </option>
+                                                                <option value="mengetahui"
+                                                                    @if (request('status_kc') == 'mengetahui') selected @endif>
+                                                                    Mengetahui</option>
+                                                                <option value="belum"
+                                                                    @if (request('status_kc') == 'belum') selected @endif>
+                                                                    Belum Mengetahui</option>
                                                             </select>
                                                         </div>
-                                                
+
                                                         <!-- Tombol Refresh -->
                                                         <div>
                                                             <button type="button" class="btn btn-outline-secondary"
@@ -656,75 +594,15 @@
                                                     </div>
                                                 </form>
 
-                                               <script>
+                                                <script>
                                                     function resetFilters() {
                                                         // Dapatkan URL saat ini tanpa query string
                                                         const baseUrl = window.location.origin + window.location.pathname;
-                                                        // Arahkan ke URL dasar (tanpa filter)
+                                                        // Arahkan ke URL dasar (tanpa filter) dan tambahkan parameter tab
+                                                        //window.location.href = `${baseUrl}?tab=pemeriksaan`;
                                                         window.location.href = baseUrl;
                                                     }
                                                 </script>
-                                                {{-- <div style="display: flex; align-items: center; max-width: 67%;">
-                                                    
-                                                    <!-- Filter Tanggal Pembelian -->
-                                                    <div class="col-12 col-md-6 col-sm-12 mb-3 mt-3">
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend" style="border-radius: 10px;">
-                                                                <span class="input-group-text custom-text">Tgl
-                                                                    Pembelian</span>
-                                                            </div>
-                                                            <input type="date" id="tgl-pembelian-start"
-                                                                name="tgl-pembelian-start"
-                                                                class="form-control custom-input">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text custom-text">-</span>
-                                                            </div>
-                                                            <input type="date" id="tgl-pembelian-end"
-                                                                name="tgl-pembelian-end"
-                                                                class="form-control custom-input">
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Filter Kategori -->
-                                                    <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0 mt-2">
-                                                        <div class="input-group mb-2 mr-sm-2">
-                                                            <div class="input-group-prepend">
-                                                                <div class="input-group-text">Status SPV</div>
-                                                            </div>
-                                                            <select class="form-control" name="kategori"
-                                                                onchange="javascript:this.form.submit();"
-                                                                style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
-                                                                <option value="">Semua</option>
-                                                                <option value="mengetahui">Mengetahui</option>
-                                                                <option value="belum mengetahui">Belum Mengetahui</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Filter Status -->
-                                                    <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0 mt-2">
-                                                        <div class="input-group mb-2 mr-sm-2">
-                                                            <div class="input-group-prepend">
-                                                                <div class="input-group-text">Status KC</div>
-                                                            </div>
-                                                            <select class="form-control" name="status"
-                                                                onchange="javascript:this.form.submit();"
-                                                                style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
-                                                                <option value="">Semua</option>
-                                                                <option value="mengetahui">Mengetahui</option>
-                                                                <option value="belum mengetahui">Belum Mengetahui</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Tombol Refresh -->
-                                                    <div>
-                                                        <button class="btn btn-outline-secondary"
-                                                            style="width: 100px; border-radius:10px;">
-                                                            <i class="fas fa-sync-alt"></i>
-                                                        </button>
-                                                    </div>
-                                                </div> --}}
 
                                                 <!-- Tombol Aksi -->
                                                 <div
@@ -822,7 +700,8 @@
                                                                                     <td>baik</td>
                                                                                     <td>{{ $baikCount = $detail->detailPemeriksaanAset->where('kondisi', 'baik')->count() }}
                                                                                     </td>
-                                                                                    <td style="text-align: right">{{ $totalDetailPemeriksaan > 0 ? round(($baikCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
+                                                                                    <td style="text-align: right">
+                                                                                        {{ $totalDetailPemeriksaan > 0 ? round(($baikCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
@@ -830,7 +709,8 @@
                                                                                     <td class="text-primary">
                                                                                         {{ $rusakCount = $detail->detailPemeriksaanAset->where('kondisi', 'rusak')->count() }}
                                                                                     </td>
-                                                                                    <td style="text-align: right" class="text-primary">
+                                                                                    <td style="text-align: right"
+                                                                                        class="text-primary">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($rusakCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
@@ -839,7 +719,8 @@
                                                                                     <td class="text-warning">
                                                                                         {{ $serviceCount = $detail->detailPemeriksaanAset->where('kondisi', 'perlu service')->count() }}
                                                                                     </td>
-                                                                                    <td style="text-align: right" class="text-warning">
+                                                                                    <td style="text-align: right"
+                                                                                        class="text-warning">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($serviceCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
@@ -848,7 +729,8 @@
                                                                                     <td class="text-danger">
                                                                                         {{ $hilangCount = $detail->detailPemeriksaanAset->where('kondisi', 'hilang')->count() }}
                                                                                     </td>
-                                                                                    <td style="text-align: right" class="text-danger">
+                                                                                    <td style="text-align: right"
+                                                                                        class="text-danger">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($hilangCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
@@ -867,7 +749,8 @@
                                                                                     <td class="text-success">
                                                                                         {{ $aktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'aktif')->count() }}
                                                                                     </td>
-                                                                                    <td style="text-align: right" class="text-success">
+                                                                                    <td style="text-align: right"
+                                                                                        class="text-success">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($aktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
@@ -876,7 +759,8 @@
                                                                                     <td class="text-danger">
                                                                                         {{ $nonAktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'non aktif')->count() }}
                                                                                     </td>
-                                                                                    <td style="text-align: right" class="text-danger">
+                                                                                    <td style="text-align: right"
+                                                                                        class="text-danger">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($nonAktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>

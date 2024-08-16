@@ -198,17 +198,18 @@
                                                                         <div
                                                                             class="btn-group btn-block mb-2 mb-xl-0 card_hapus_barang">
                                                                             <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                                                <form {{-- action="/{{ $role }}/aset/data/delete/{{ $aset->aset_id }}" --}} method="POST"
+                                                                                <form
+                                                                                    action="{{ route($role . '.delete_pemeriksaan', $pemeriksaanAset->id_pemeriksaan_aset) }}"
+                                                                                    method="POST"
                                                                                     onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                                                                     @csrf
-
+                                                                                    @method('DELETE')
                                                                                     <button type="submit"
-                                                                                        class="btn btn-danger btn-block"
-                                                                                        style="padding: 10px; border-radius: 10px; border: none; width:205px;"
-                                                                                        @if ($pemeriksaanAset->status_pemeriksaan == 'selesai')
-                                                                                            disabled
-                                                                                        @endif
-                                                                                        >
+                                                                                        class="btn btn-danger btn-block
+                                                                                                            "
+                                                                                        @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif
+                                                                                        style="border-radius:10px; width: 205px; padding: 10px; margin-bottom: 10px;"
+                                                                                        {{-- @if (!$canEdit) disabled @endif> --}}>
                                                                                         <i class="fas fa-trash"></i>
                                                                                         Hapus
                                                                                     </button>
@@ -1498,74 +1499,6 @@
     @endsection
 
 </section>
-
-{{-- script untuk edit detail pemeriksaan --}}
-{{-- <script>
-    function editDetailPemeriksaan(id_detail_pemeriksaan_aset) {
-        $.ajax({
-            url: {{ $role }} '/detail-pemeriksaan/' +
-            id_detail_pemeriksaan_aset, // Ganti dengan route yang sesuai
-            type: 'GET',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                    'content') // Mengambil csrf_token dari meta tag
-            },
-            success: function(data) {
-                // Mengisi modal dengan data yang diterima
-                $('#aset').val(data.aset_id).trigger('change'); // Memilih aset dan memicu onchange
-                $('#kategori_aset').val(data.kategori_aset.kategori);
-                $('#lokasi_penyimpanan').val(data.lokasi_penyimpanan);
-                $('#tgl_perolehan').val(data.tgl_perolehan);
-                $('#kondisi').val(data.kondisi);
-                $('#masalah_teridentifikasi').val(data.masalah_teridentifikasi);
-                $('#tindakan_diperlukan').val(data.tindakan_diperlukan);
-                // Set nilai status aset (aktif/nonaktif)
-                $('input[name="status"][value="' + data.status_aset + '"]').prop('checked', true);
-
-                // Set form action URL untuk update data
-                $('#editPemeriksaanForm').attr('action', '/pc/detail-pemeriksaan/update/' +
-                    id_detail_pemeriksaan_aset);
-            },
-            error: function(xhr) {
-                console.error(xhr.responseText);
-            }
-        });
-    }
-
-    // Script untuk otomatisasi data saat dropdown aset diubah
-    $('#aset').change(function() {
-        var asetId = $(this).val(); // Mendapatkan nilai id aset yang dipilih
-        if (asetId) {
-            $.ajax({
-                url: '/pc/aset/data/' + asetId, // URL endpoint sesuai dengan route yang telah diatur
-                type: 'GET',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                        'content') // Mengambil csrf_token dari meta tag
-                },
-                success: function(data) {
-                    if (data.length > 0) {
-                        var aset = data[0];
-                        // Mengisi field yang sesuai dengan data yang diterima dari server
-                        $('#kategori_aset').val(aset.kategori_aset.kategori);
-                        $('#lokasi_penyimpanan').val(aset.lokasi_penyimpanan);
-                        $('#tgl_perolehan').val(aset.tgl_perolehan);
-                    } else {
-                        alert('Aset tidak ditemukan');
-                    }
-                },
-                error: function(xhr) {
-                    console.error(xhr.responseText);
-                }
-            });
-        } else {
-            // Mengosongkan field jika tidak ada aset yang dipilih
-            $('#kategori_aset').val('');
-            $('#lokasi_penyimpanan').val('');
-            $('#tgl_perolehan').val('');
-        }
-    });
-</script> --}}
 
 <script>
     $(document).on('click', '.edit-pemeriksaan', function() {

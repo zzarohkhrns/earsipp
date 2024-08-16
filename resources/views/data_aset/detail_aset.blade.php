@@ -470,8 +470,8 @@
                                 id="spesifikasi" name="spesifikasi">
                         </div>
                         <div>
-                        <button type="submit" class="btn btn-success"
-                            style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
+                            <button type="submit" class="btn btn-success"
+                                style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
                         </div>
                     </form>
                 </div>
