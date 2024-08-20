@@ -12,7 +12,7 @@ class Aset extends Model
     protected $primaryKey ='aset_id';
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = ['aset_id', 'kode_aset', 'nama_aset', 'tgl_perolehan', 'harga_perolehan', 'id_pc', 'id_upzis', 'satuan', 'id_kategori', 'spesifikasi', 'lokasi_penyimpanan', 'id_pc_pengurus', 'id_upzis_pengurus'];
+    protected $fillable = ['aset_id', 'kode_aset', 'asal_perolehan', 'nama_aset', 'tgl_perolehan', 'harga_perolehan', 'id_pc', 'id_upzis', 'satuan', 'id_kategori', 'spesifikasi', 'lokasi_penyimpanan', 'id_pc_pengurus', 'id_upzis_pengurus'];
 
 
     public static function generateKodeAset()
@@ -47,7 +47,7 @@ class Aset extends Model
     }
     public function latestDetailPemeriksaanAset()
     {
-                
+
         return $this->hasOne(DetailPemeriksaanAset::class, 'aset_id', 'aset_id')->latestOfMany('created_at')->orderBy('created_at', 'desc');
 
         // return $this->hasOne(DetailPemeriksaanAset::class, 'aset_id', 'aset_id')

@@ -40,7 +40,9 @@ class DataAsetController extends Controller
             'kategori_aset',
             'latestDetailPemeriksaanAset.pemeriksaanAset',
             'detailPemeriksaanAset.pemeriksaanAset'
-        ]); 
+        ]);
+
+        $kodeAset = Aset::getNextKodeAset();
 
         if ($kategori_id == 'all' && $status == 'all' && !$tgl_pembelian_start && !$tgl_pembelian_end) {
             // Eksekusi query untuk mendapatkan data aset yang sudah difilter
@@ -151,7 +153,7 @@ class DataAsetController extends Controller
             ->select('pc_pengurus.id_pc_pengurus as id_kc', 'siftnu.pengguna.nama as nama_kc')
             ->first();
 
-        return view('data_aset.data_aset', compact('kategori_id', 'status', 'tgl_pembelian_start', 'tgl_pembelian_end', 'role', 'aset', 'kategori', 'pemeriksaan2', 'pemeriksaanGrouped', 'supervisor', 'kc', 'tgl_pemeriksaan_start', 'tgl_pemeriksaan_end', 'status_spv', 'status_kc'));
+        return view('data_aset.data_aset', compact('kategori_id', 'status', 'kodeAset', 'tgl_pembelian_start', 'tgl_pembelian_end', 'role', 'aset', 'kategori', 'pemeriksaan2', 'pemeriksaanGrouped', 'supervisor', 'kc', 'tgl_pemeriksaan_start', 'tgl_pemeriksaan_end', 'status_spv', 'status_kc'));
     }
 
     public function detail_aset($id)
@@ -207,6 +209,7 @@ class DataAsetController extends Controller
             'tgl_perolehan' => 'required|date',
             'nama_aset' => 'required|string|max:255',
             'kategori' => 'required',
+            'asal_perolehan' => 'required',
             'satuan' => 'required|string|max:255',
             'lokasi_penyimpanan' => 'required|string|max:255',
             'spesifikasi' => 'nullable|string|max:255',
@@ -232,6 +235,7 @@ class DataAsetController extends Controller
                 'tgl_perolehan' => $request->tgl_perolehan,
                 'nama_aset' => $request->nama_aset,
                 'id_kategori' => $kategori_id,
+                'asal_perolehan' => $request->asal_perolehan,
                 'satuan' => $request->satuan,
                 'lokasi_penyimpanan' => $request->lokasi_penyimpanan,
                 'spesifikasi' => $request->spesifikasi,

@@ -1,5 +1,3 @@
-
-
 <!-- Tagsinput JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 
@@ -127,6 +125,18 @@
     });
 </script>
 
+{{-- script untuk rows click --}}
+{{-- <script>
+    $(document).ready(function() {
+        const currentUrl = window.location.pathname;
+        if (!currentUrl.includes('/arsip/aset/detail')) {
+            $('table tbody tr').click(function() {
+                window.location = $(this).data('url');
+            });
+        }
+    });
+</script> --}}
+
 {{-- auto hide alert --}}
 <script>
     $(document).ready(function() {
@@ -153,7 +163,7 @@
         window.livewire.on('alert_remove', () => {
             setTimeout(function() {
                 $(".badge-success").fadeOut('slow');
-            }, 5000); // 3 se   
+            }, 5000); // 3 se
         });
     });
 </script>
@@ -162,4 +172,4 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>

@@ -22,6 +22,14 @@
             cursor: pointer;
         }
 
+        .hover-pointer tr {
+            cursor: pointer;
+        }
+
+        .hover-pointer tr:hover {
+            background-color: #d4d2d2;
+        }
+
         .custom-input,
         .custom-text {
             height: 38px;
@@ -131,15 +139,20 @@
                                 <div class="col-12">
                                     <div class="d-flex align-items-center mb-2">
                                         <h5 class="d-flex mb-0">
-                                            <b class="text-success pl-2">Data Barang<br>Logistik dan Perlengkapan</b>
+                                            <b class="text-success pl-2">Data Aset<br>Logistik dan Perlengkapan</b>
                                         </h5>
                                         <div class="btn-group ml-5">
-                                            <a id="tab-dataAset" class="btn btn-light btn-block mt-2" style="width:150px;" onclick="openTab('dataAset')">Data Aset</a>
-                                            <a id="tab-pemeriksaan" class="btn btn-light btn-block ml-2" style="width:150px;" onclick="openTab('pemeriksaan')">Pemeriksaan</a>
-                                            <a id="tab-keluarMasuk" class="btn btn-light btn-block ml-2" style="width:150px;" onclick="openTab('keluarMasuk')">Keluar Masuk</a>
-                                            <a id="tab-penyusutanNilai" class="btn btn-light btn-block ml-2" style="width:150px;" onclick="openTab('penyusutanNilai')">Penyusutan Nilai</a>
+                                            <a id="tab-dataAset" class="btn btn-light btn-block mt-2" style="width:150px;"
+                                                onclick="openTab('dataAset')">Data Aset</a>
+                                            <a id="tab-pemeriksaan" class="btn btn-light btn-block ml-2"
+                                                style="width:150px;" onclick="openTab('pemeriksaan')">Pemeriksaan</a>
+                                            <a id="tab-keluarMasuk" class="btn btn-light btn-block ml-2"
+                                                style="width:150px;" onclick="openTab('keluarMasuk')">Keluar Masuk</a>
+                                            <a id="tab-penyusutanNilai" class="btn btn-light btn-block ml-2"
+                                                style="width:150px;" onclick="openTab('penyusutanNilai')">Penyusutan
+                                                Nilai</a>
                                         </div>
-                                        
+
                                         <script>
                                             function openTab(tabId) {
                                                 // Sembunyikan semua konten tab
@@ -147,29 +160,29 @@
                                                 for (var i = 0; i < contents.length; i++) {
                                                     contents[i].classList.remove('active');
                                                 }
-                                        
+
                                                 // Tampilkan konten tab yang dipilih
                                                 document.getElementById(tabId).classList.add('active');
-                                        
+
                                                 // Ubah warna tombol tab yang aktif
                                                 var buttons = document.querySelectorAll('.btn-group .btn');
                                                 buttons.forEach(button => {
                                                     button.classList.remove('btn-success');
                                                     button.classList.add('btn-light');
                                                 });
-                                        
+
                                                 // Tambahkan kelas 'btn-success' ke tombol yang aktif
                                                 document.getElementById('tab-' + tabId).classList.add('btn-success');
                                                 document.getElementById('tab-' + tabId).classList.remove('btn-light');
                                             }
-                                        
+
                                             // Inisialisasi tab pertama atau tab pemeriksaan jika query param tab=pemeriksaan
-                                            window.onload = function () {
+                                            window.onload = function() {
                                                 const urlParams = new URLSearchParams(window.location.search);
                                                 const activeTab = urlParams.get('tab') || 'dataAset'; // Default tab is dataAset
                                                 openTab(activeTab);
                                             }
-                                        </script>                                        
+                                        </script>
                                     </div>
 
                                     <!-- success jika berhasil menambah data -->
@@ -204,7 +217,7 @@
 
                                         {{-- menu filter --}}
                                         <div
-                                            style="border: 1px solid #e0e0e0; border-radius: 10px; background-color: #f9f9f9; padding: 10px; margin-bottom: 10px;">
+                                            style="border: 1px solid #e0e0e0; border-radius: 10px; background-color: #ffffff; padding: 10px; margin-bottom: 10px;">
                                             <!-- Bagian Filter dan Tombol Aksi -->
                                             <div
                                                 style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
@@ -215,58 +228,73 @@
                                                         id="filter-form">
                                                         <div class="input-group" style="flex: 1;">
                                                             <div class="input-group-prepend" style="border-radius: 10px;">
-                                                                <span class="input-group-text custom-text">Tgl Pembelian</span>
+                                                                <span class="input-group-text custom-text">Tgl
+                                                                    Pembelian</span>
                                                             </div>
-                                                            <div id="tgl-pembelian" class="form-control custom-input" style="align-items:stretch; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 280px">
+                                                            <div id="tgl-pembelian" class="form-control custom-input"
+                                                                style="align-items:stretch; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 280px">
                                                                 <span style="align-content:center"></span>
                                                             </div>
                                                         </div>
-                                                        
-                                                        <input type="hidden" onchange="this.form.submit()" id="tgl-pembelian-start" name="tgl-pembelian-start" value="{{ request('tgl-pembelian-start') }}">
-                                                        <input type="hidden" onchange="this.form.submit()" id="tgl-pembelian-end" name="tgl-pembelian-end" value="{{ request('tgl-pembelian-end') }}">
-                                                        
-                                                        <script type="text/javascript">
-                                                        $(function() {
-                                                            // Inisialisasi nilai tanggal dari input hidden atau gunakan default jika kosong
-                                                            var start = moment($('#tgl-pembelian-start').val(), 'YYYY-MM-DD').isValid() ? moment($('#tgl-pembelian-start').val(), 'YYYY-MM-DD') : moment().subtract(29, 'days');
-                                                            var end = moment($('#tgl-pembelian-end').val(), 'YYYY-MM-DD').isValid() ? moment($('#tgl-pembelian-end').val(), 'YYYY-MM-DD') : moment();
-                                                        
-                                                            function cb(start, end) {
-                                                                $('#tgl-pembelian span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                                                                $('#tgl-pembelian-start').val(start.format('YYYY-MM-DD'));
-                                                                $('#tgl-pembelian-end').val(end.format('YYYY-MM-DD'));
-                                                            }
-                                                        
-                                                            $('#tgl-pembelian').daterangepicker({
-                                                                startDate: start,
-                                                                endDate: end,
-                                                                ranges: {
-                                                                    'Hari ini': [moment(), moment()],
-                                                                    'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                                                                    '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
-                                                                    '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
-                                                                    'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
-                                                                    'Bulan Terakhir': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                                                                },
-                                                                locale: {
-                                                                    format: 'MMMM D, YYYY',
-                                                                    customRangeLabel: 'Pilih Tanggal'
-                                                                }
-                                                            }, cb);
-                                                        
-                                                            // Menangani tanggal saat apply pada daterangepicker
-                                                            $('#tgl-pembelian').on('apply.daterangepicker', function(ev, picker) {
-                                                                $('#tgl-pembelian-start').val(picker.startDate.format('YYYY-MM-DD'));
-                                                                $('#tgl-pembelian-end').val(picker.endDate.format('YYYY-MM-DD'));
-                                                                // Submit form secara otomatis setelah rentang tanggal dipilih
-                                                                $(this).closest('form').submit();
-                                                            });
-                                                        
-                                                            // Panggil callback untuk menampilkan range tanggal yang sudah di-set
-                                                            cb(start, end);
-                                                        });
-                                                        </script>
-                                                        
+
+                                                        <input type="hidden" onchange="this.form.submit()"
+                                                            id="tgl-pembelian-start" name="tgl-pembelian-start"
+                                                            value="{{ request('tgl-pembelian-start') }}">
+                                                        <input type="hidden" onchange="this.form.submit()"
+                                                            id="tgl-pembelian-end" name="tgl-pembelian-end"
+                                                            value="{{ request('tgl-pembelian-end') }}">
+
+                                                            <script type="text/javascript">
+                                                                $(function() {
+                                                                    // Set moment.js ke bahasa Indonesia
+                                                                    moment.locale('id');
+
+                                                                    // Inisialisasi nilai tanggal dari input hidden atau gunakan default jika kosong
+                                                                    var start = moment($('#tgl-pembelian-start').val(), 'YYYY-MM-DD').isValid() ? moment($('#tgl-pembelian-start').val(), 'YYYY-MM-DD') : moment().subtract(29, 'days');
+                                                                    var end = moment($('#tgl-pembelian-end').val(), 'YYYY-MM-DD').isValid() ? moment($('#tgl-pembelian-end').val(), 'YYYY-MM-DD') : moment();
+
+                                                                    function cb(start, end) {
+                                                                        $('#tgl-pembelian span').html(start.format('D MMMM YYYY') + ' - ' + end.format('D MMMM YYYY'));
+                                                                        $('#tgl-pembelian-start').val(start.format('YYYY-MM-DD'));
+                                                                        $('#tgl-pembelian-end').val(end.format('YYYY-MM-DD'));
+                                                                    }
+
+                                                                    $('#tgl-pembelian').daterangepicker({
+                                                                        startDate: start,
+                                                                        endDate: end,
+                                                                        ranges: {
+                                                                            'Hari ini': [moment(), moment()],
+                                                                            'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                                                            '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
+                                                                            '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
+                                                                            'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+                                                                            'Bulan Terakhir': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                                                        },
+                                                                        locale: {
+                                                                            format: 'D MMMM YYYY', // Format tanggal
+                                                                            applyLabel: 'Terapkan',
+                                                                            cancelLabel: 'Batal',
+                                                                            customRangeLabel: 'Pilih Tanggal',
+                                                                            daysOfWeek: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                                                                            monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+                                                                            firstDay: 1 // Set Senin sebagai hari pertama dalam seminggu
+                                                                        }
+                                                                    }, cb);
+
+                                                                    // Menangani tanggal saat apply pada daterangepicker
+                                                                    $('#tgl-pembelian').on('apply.daterangepicker', function(ev, picker) {
+                                                                        $('#tgl-pembelian-start').val(picker.startDate.format('YYYY-MM-DD'));
+                                                                        $('#tgl-pembelian-end').val(picker.endDate.format('YYYY-MM-DD'));
+                                                                        // Submit form secara otomatis setelah rentang tanggal dipilih
+                                                                        $(this).closest('form').submit();
+                                                                    });
+
+                                                                    // Panggil callback untuk menampilkan range tanggal yang sudah di-set
+                                                                    cb(start, end);
+                                                                });
+                                                            </script>
+
+
 
 
                                                         <!-- Filter Kategori -->
@@ -377,46 +405,49 @@
                                             </div>
                                         </div>
 
-                                        <!-- Table barang -->
-                                        <table id="example3" class="table table-bordered" style="width:100%; font-size: 13px;">
-                                            <thead class="table-secondary" style="text-align: center">
+                                        <!-- Table aset -->
+                                        <table id="example3" class="table table-bordered"
+                                            style="width:100%; font-size: 13px;">
+                                            <thead class="table-secondary" style="text-align: center; font-size: 16px;">
                                                 <tr>
                                                     <th>NO</th>
-                                                    <th>Kode Aset</th>
-                                                    <th>Nama Aset</th>
-                                                    <th>Kategori</th>
+                                                    <th style="width:24%;">Kode Aset</th>
+                                                    <th style="width:10%;">Nama Aset</th>
+                                                    <th style="width:10%;">Kategori</th>
                                                     <th>Lokasi Penyimpanan</th>
                                                     <th>Satuan</th>
-                                                    <th>Pemeriksaan</th>
-                                                    <th>Keluar Masuk</th>
-                                                    <th style="width: 150px;">Aksi</th>
+                                                    <th style="width:19%;">Pemeriksaan</th>
+                                                    <th style="width:19%;">Keluar Masuk</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody class="hover-pointer">
                                                 @foreach ($aset as $data)
-                                                    <tr>
+                                                    <tr
+                                                        data-url="/{{ $role }}/arsip/aset/detail/{{ $data->aset_id }}">
                                                         <td>{{ $loop->iteration }}</td>
                                                         <td>
                                                             <table
-                                                                style="width:100%; border:none; border-collapse: collapse; font-size: 13px;">
+                                                                style="width: 100%; border: none; border-collapse: collapse; font-size: 13px;">
                                                                 <tr>
                                                                     <td style="border: none; padding: 4px;">
                                                                         <b>{{ $data->kode_aset }}</b>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td style="border: none; padding: 4px;">
+                                                                    <td style="border: none; padding: 4px; width: 35%;">
                                                                         Tgl Pembelian
                                                                     </td>
-                                                                    <td style="border: none; padding: 4px;">
+                                                                    <td style="border: none; padding: 4px; width: 65%;">
                                                                         <b>{{ $data->tgl_perolehan ?? 'Data tidak tersedia' }}</b>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td style="border: none; padding: 4px; font-size: 12px;">
+                                                                    <td
+                                                                        style="border: none; padding: 4px; font-size: 12px;">
                                                                         @php
                                                                             $status =
-                                                                       $data->latestDetailPemeriksaanAset->status_aset ?? 'null';
+                                                                                $data->latestDetailPemeriksaanAset
+                                                                                    ->status_aset ?? 'null';
                                                                             $warnaTombol =
                                                                                 $status === 'null'
                                                                                     ? 'background-color: #a9a9a9;'
@@ -438,7 +469,7 @@
                                                                 </tr>
                                                             </table>
                                                         </td>
-                                                        <td>{{ $data->nama_aset }}</td>
+                                                        <td><b>{{ $data->nama_aset }}</b></td>
                                                         <td>{{ $data->kategori_aset->kategori ?? 'Tidak Ada Kategori' }}
                                                         </td>
                                                         <td>{{ $data->lokasi_penyimpanan }}</td>
@@ -452,7 +483,7 @@
                                                                     </td>
                                                                     <td
                                                                         style="border: none; padding: 8px; text-align: right;">
-                                                                        <b>{{ $data->latestDetailPemeriksaanAset->pemeriksaanAset->tanggal_pemeriksaan ?? 'Belum ada pemeriksaan' }}</b>
+                                                                        <b>{{ $data->latestDetailPemeriksaanAset->pemeriksaanAset->tanggal_pemeriksaan ?? '-' }}</b>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -462,7 +493,7 @@
                                                                     <td
                                                                         style="text-align: right; border: none; padding: 8px; color:
                                                                         {{ isset($data->latestDetailPemeriksaanAset) ? ($data->latestDetailPemeriksaanAset->kondisi == 'baik' ? '#55CE71' : ($data->latestDetailPemeriksaanAset->kondisi == 'rusak' ? 'rgb(255, 18, 18)' : 'inherit')) : '' }}">
-                                                                        {{ $data->latestDetailPemeriksaanAset->kondisi ?? 'Belum ada pemeriksaan' }}
+                                                                        {{ $data->latestDetailPemeriksaanAset->kondisi ?? '-' }}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -472,7 +503,7 @@
                                                                     <td
                                                                         style="border: none; padding: 8px; text-align: right; color:
                                                                         {{ isset($data->latestDetailPemeriksaanAset) ? ($data->latestDetailPemeriksaanAset->status_aset == 'aktif' ? '#55CE71' : ($data->latestDetailPemeriksaanAset->status_aset == 'non aktif' ? 'rgb(255, 18, 18)' : 'inherit')) : '' }}">
-                                                                        {{ $data->latestDetailPemeriksaanAset->status_aset ?? 'Belum ada pemeriksaan' }}
+                                                                        {{ $data->latestDetailPemeriksaanAset->status_aset ?? '-' }}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -481,7 +512,7 @@
                                                                     </td>
                                                                     <td
                                                                         style="border: none; padding: 8px; text-align: right;">
-                                                                        {{ $data->latestDetailPemeriksaanAset->masalah_teridentifikasi ?? 'Belum ada pemeriksaan' }}
+                                                                        {{ $data->latestDetailPemeriksaanAset->masalah_teridentifikasi ?? '-' }}
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -525,19 +556,6 @@
                                                                 </tr>
                                                             </table>
                                                         </td>
-                                                        <td>
-                                                            <div
-                                                                class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
-                                                                <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                                    <a onclick="$('#cover-spin').show(0)"
-                                                                        href="/{{ $role }}/arsip/aset/detail/{{ $data->aset_id }}"
-                                                                        class="btn btn-outline-secondary btn-block"
-                                                                        style="display: block; border-radius:10px;">
-                                                                        Detail Aset
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -549,7 +567,7 @@
 
                                         <!-- Menu untuk filter -->
                                         <div
-                                            style="border: 1px solid #e0e0e0; border-radius: 10px; background-color: #f9f9f9; padding: 10px; margin-bottom: 10px;">
+                                            style="border: 1px solid #e0e0e0; border-radius: 10px; background-color: #ffffff; padding: 10px; margin-bottom: 10px;">
                                             <!-- Bagian Filter dan Tombol Aksi -->
                                             <div
                                                 style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
@@ -560,80 +578,110 @@
                                                         <input type="hidden" name="tab" value="pemeriksaan">
                                                         <div class="input-group" style="flex: 1;">
                                                             <div class="input-group-prepend" style="border-radius: 10px;">
-                                                                <span class="input-group-text custom-text">Tgl Pemeriksaan</span>
+                                                                <span class="input-group-text custom-text">Tgl
+                                                                    Pemeriksaan</span>
                                                             </div>
-                                                            <div id="tgl-pemeriksaan" class="form-control custom-input" style="align-items:stretch; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 280px">
+                                                            <div id="tgl-pemeriksaan" class="form-control custom-input"
+                                                                style="align-items:stretch; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 280px">
                                                                 <span style="align-content:center"></span>
                                                             </div>
                                                         </div>
-                                                        
-                                                        <input type="hidden" onchange="this.form.submit()" id="tgl-pemeriksaan-start" name="tgl-pemeriksaan-start" value="{{ request('tgl-pemeriksaan-start') }}">
-                                                        <input type="hidden" onchange="this.form.submit()" id="tgl-pemeriksaan-end" name="tgl-pemeriksaan-end" value="{{ request('tgl-pemeriksaan-end') }}">
-                                                        
-                                                        <script type="text/javascript">
-                                                        $(function() {
-                                                            // Mengambil nilai dari input hidden atau atur defaultnya
-                                                            var startPemeriksaan = moment($('#tgl-pemeriksaan-start').val(), 'YYYY-MM-DD').isValid() ? moment($('#tgl-pemeriksaan-start').val(), 'YYYY-MM-DD') : moment().subtract(29, 'days');
-                                                            var endPemeriksaan = moment($('#tgl-pemeriksaan-end').val(), 'YYYY-MM-DD').isValid() ? moment($('#tgl-pemeriksaan-end').val(), 'YYYY-MM-DD') : moment();
-                                                        
-                                                            function cb(startPemeriksaan, endPemeriksaan) {
-                                                                $('#tgl-pemeriksaan span').html(startPemeriksaan.format('MMMM D, YYYY') + ' - ' + endPemeriksaan.format('MMMM D, YYYY'));
-                                                                $('#tgl-pemeriksaan-start').val(startPemeriksaan.format('YYYY-MM-DD'));
-                                                                $('#tgl-pemeriksaan-end').val(endPemeriksaan.format('YYYY-MM-DD'));
-                                                            }
-                                                        
-                                                            $('#tgl-pemeriksaan').daterangepicker({
-                                                                startDate: startPemeriksaan,
-                                                                endDate: endPemeriksaan,
-                                                                ranges: {
-                                                                    'Hari ini': [moment(), moment()],
-                                                                    'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                                                                    '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
-                                                                    '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
-                                                                    'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
-                                                                    'Bulan Terakhir': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                                                                },
-                                                                locale: {
-                                                                    format: 'MMMM D, YYYY',
-                                                                    customRangeLabel: 'Pilih Tanggal'
-                                                                }
-                                                            }, cb);
-                                                        
-                                                            // Menangani tanggal saat apply pada daterangepicker
-                                                            $('#tgl-pemeriksaan').on('apply.daterangepicker', function(ev, picker) {
-                                                                $('#tgl-pemeriksaan-start').val(picker.startDate.format('YYYY-MM-DD'));
-                                                                $('#tgl-pemeriksaan-end').val(picker.endDate.format('YYYY-MM-DD'));
-                                                                // Submit form secara otomatis setelah rentang tanggal dipilih
-                                                                $(this).closest('form').submit();
-                                                            });
-                                                        
-                                                            // Panggil callback untuk menampilkan range tanggal yang sudah di-set
-                                                            cb(startPemeriksaan, endPemeriksaan);
-                                                        });
-                                                        </script>
-                                                        
+
+                                                        <input type="hidden" onchange="this.form.submit()"
+                                                            id="tgl-pemeriksaan-start" name="tgl-pemeriksaan-start"
+                                                            value="{{ request('tgl-pemeriksaan-start') }}">
+                                                        <input type="hidden" onchange="this.form.submit()"
+                                                            id="tgl-pemeriksaan-end" name="tgl-pemeriksaan-end"
+                                                            value="{{ request('tgl-pemeriksaan-end') }}">
+
+                                                            <script type="text/javascript">
+                                                                $(function() {
+                                                                    // Set moment.js ke bahasa Indonesia
+                                                                    moment.locale('id');
+
+                                                                    // Inisialisasi nilai tanggal dari input hidden atau gunakan default jika kosong
+                                                                    var start = moment($('#tgl-pemeriksaan-start').val(), 'YYYY-MM-DD').isValid() ? moment($('#tgl-pemeriksaan-start').val(), 'YYYY-MM-DD') : moment().subtract(29, 'days');
+                                                                    var end = moment($('#tgl-pemeriksaan-end').val(), 'YYYY-MM-DD').isValid() ? moment($('#tgl-pemeriksaan-end').val(), 'YYYY-MM-DD') : moment();
+
+                                                                    function cb(start, end) {
+                                                                        $('#tgl-pemeriksaan span').html(start.format('D MMMM YYYY') + ' - ' + end.format('D MMMM YYYY'));
+                                                                        $('#tgl-pemeriksaan-start').val(start.format('YYYY-MM-DD'));
+                                                                        $('#tgl-pemeriksaan-end').val(end.format('YYYY-MM-DD'));
+                                                                    }
+
+                                                                    $('#tgl-pemeriksaan').daterangepicker({
+                                                                        startDate: start,
+                                                                        endDate: end,
+                                                                        ranges: {
+                                                                            'Hari ini': [moment(), moment()],
+                                                                            'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                                                            '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
+                                                                            '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
+                                                                            'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+                                                                            'Bulan Terakhir': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                                                        },
+                                                                        locale: {
+                                                                            format: 'D MMMM YYYY', // Format tanggal
+                                                                            applyLabel: 'Terapkan',
+                                                                            cancelLabel: 'Batal',
+                                                                            customRangeLabel: 'Pilih Tanggal',
+                                                                            daysOfWeek: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                                                                            monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+                                                                            firstDay: 1 // Set Senin sebagai hari pertama dalam seminggu
+                                                                        }
+                                                                    }, cb);
+
+                                                                    // Menangani tanggal saat apply pada daterangepicker
+                                                                    $('#tgl-pemeriksaan').on('apply.daterangepicker', function(ev, picker) {
+                                                                        $('#tgl-pemeriksaan-start').val(picker.startDate.format('YYYY-MM-DD'));
+                                                                        $('#tgl-pemeriksaan-end').val(picker.endDate.format('YYYY-MM-DD'));
+                                                                        // Submit form secara otomatis setelah rentang tanggal dipilih
+                                                                        $(this).closest('form').submit();
+                                                                    });
+
+                                                                    // Panggil callback untuk menampilkan range tanggal yang sudah di-set
+                                                                    cb(start, end);
+                                                                });
+                                                            </script>
+
 
                                                         <!-- Filter Kategori -->
                                                         <div class="input-group" style="flex: 0.5;">
                                                             <div class="input-group-prepend">
                                                                 <div class="input-group-text">Status SPV</div>
                                                             </div>
-                                                            <select class="form-control" name="filter_status_spv" onchange="this.form.submit();">
-                                                                <option value="all" {{ request('filter_status_spv', 'all') == 'all' ? 'selected' : '' }}>Semua</option>
-                                                                <option value="mengetahui" {{ request('filter_status_spv') == 'mengetahui' ? 'selected' : '' }}>Mengetahui</option>
-                                                                <option value="belum" {{ request('filter_status_spv') == 'belum' ? 'selected' : '' }}>Belum Mengetahui</option>
+                                                            <select class="form-control" name="filter_status_spv"
+                                                                onchange="this.form.submit();"
+                                                                style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
+                                                                <option value="all"
+                                                                    {{ request('filter_status_spv', 'all') == 'all' ? 'selected' : '' }}>
+                                                                    Semua</option>
+                                                                <option value="mengetahui"
+                                                                    {{ request('filter_status_spv') == 'mengetahui' ? 'selected' : '' }}>
+                                                                    Mengetahui</option>
+                                                                <option value="belum"
+                                                                    {{ request('filter_status_spv') == 'belum' ? 'selected' : '' }}>
+                                                                    Belum Mengetahui</option>
                                                             </select>
-                                                            
+
                                                         </div>
                                                         <!-- Filter Kategori -->
                                                         <div class="input-group" style="flex: 0.5;">
                                                             <div class="input-group-prepend">
                                                                 <div class="input-group-text">Status KC</div>
                                                             </div>
-                                                            <select class="form-control" name="filter_status_kc" onchange="this.form.submit();">
-                                                                <option value="all" {{ request('filter_status_kc', 'all') == 'all' ? 'selected' : '' }}>Semua</option>
-                                                                <option value="mengetahui" {{ request('filter_status_kc') == 'mengetahui' ? 'selected' : '' }}>Mengetahui</option>
-                                                                <option value="belum" {{ request('filter_status_kc') == 'belum' ? 'selected' : '' }}>Belum Mengetahui</option>
+                                                            <select class="form-control" name="filter_status_kc"
+                                                                onchange="this.form.submit();"
+                                                                style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
+                                                                <option value="all"
+                                                                    {{ request('filter_status_kc', 'all') == 'all' ? 'selected' : '' }}>
+                                                                    Semua</option>
+                                                                <option value="mengetahui"
+                                                                    {{ request('filter_status_kc') == 'mengetahui' ? 'selected' : '' }}>
+                                                                    Mengetahui</option>
+                                                                <option value="belum"
+                                                                    {{ request('filter_status_kc') == 'belum' ? 'selected' : '' }}>
+                                                                    Belum Mengetahui</option>
                                                             </select>
                                                         </div>
 
@@ -655,9 +703,9 @@
                                                         // Arahkan ke URL dasar (tanpa filter) dan tambahkan parameter tab
                                                         window.location.href = `${baseUrl}?tab=pemeriksaan`;
                                                     }
-                                                
+
                                                     // Deteksi tab pemeriksaan dari URL dan otomatis membuka tab tersebut
-                                                    document.addEventListener("DOMContentLoaded", function () {
+                                                    document.addEventListener("DOMContentLoaded", function() {
                                                         const urlParams = new URLSearchParams(window.location.search);
                                                         const tabParam = urlParams.get('tab');
                                                         if (tabParam === 'pemeriksaan') {
@@ -712,8 +760,9 @@
                                         </div>
 
                                         {{-- tabel pemeriksaan --}}
-                                        <table id="example3" class="table table-bordered" style="width:100%;">
-                                            <thead class="table-secondary" style="text-align: center">
+                                        <table id="example3" class="table table-bordered"
+                                            style="width:100%; font-size:13px;">
+                                            <thead class="table-secondary" style="text-align: center; font-size: 16px;">
                                                 <tr>
                                                     <th>NO</th>
                                                     <th>Tgl Pemeriksaan</th>
@@ -723,10 +772,10 @@
                                                     <th>Berdasarkan Status</th>
                                                     <th>Status SPV</th>
                                                     <th>Status KC</th>
-                                                    <th style="width: 150px;">Aksi</th>
+                                                    {{-- <th style="width: 150px;">Aksi</th> --}}
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody style="font-size:13px;" class="hover-pointer">
                                                 @php
                                                     $no = 1;
                                                 @endphp
@@ -736,7 +785,8 @@
                                                         [$namaPemeriksa, $tanggalPemeriksaan] = explode('-', $groupKey);
                                                     @endphp
                                                     @foreach ($details as $key => $detail)
-                                                        <tr>
+                                                        <tr
+                                                            data-url="/{{ $role }}/arsip/aset/detail_pemeriksaan/{{ $detail->id_pemeriksaan_aset }}/{{ $detail->tanggal_pemeriksaan }}">
                                                             @if ($key == 0)
                                                                 <td>{{ $no++ }}</td>
                                                                 <td>{{ $detail->tanggal_pemeriksaan }}</td>
@@ -751,85 +801,157 @@
                                                                         {{ $totalDetailPemeriksaan = $detail->detailPemeriksaanAset->count() }}
                                                                         Aset
                                                                     @else
-                                                                        -
+                                                                        0 Aset
                                                                     @endif
                                                                 </td>
                                                                 <td>
                                                                     @if ($detail->detailPemeriksaanAset->isNotEmpty())
-                                                                        <div>
-                                                                            <table id="example">
+                                                                        <table id="example">
+                                                                            <tbody>
                                                                                 <tr>
-                                                                                    <td>baik</td>
-                                                                                    <td>{{ $baikCount = $detail->detailPemeriksaanAset->where('kondisi', 'baik')->count() }}
+                                                                                    <td style="font-size: 13px;">baik
                                                                                     </td>
-                                                                                    <td style="text-align: right">
+                                                                                    <td style="font-size: 13px;">
+                                                                                        {{ $baikCount = $detail->detailPemeriksaanAset->where('kondisi', 'baik')->count() }}
+                                                                                    </td>
+                                                                                    <td
+                                                                                        style="text-align: right; font-size: 13px;">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($baikCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td>rusak</td>
-                                                                                    <td class="text-primary">
+                                                                                    <td style="font-size: 13px;">rusak
+                                                                                    </td>
+                                                                                    <td style="font-size: 13px;"
+                                                                                        class="text-primary">
                                                                                         {{ $rusakCount = $detail->detailPemeriksaanAset->where('kondisi', 'rusak')->count() }}
                                                                                     </td>
-                                                                                    <td style="text-align: right"
+                                                                                    <td style="text-align: right; font-size: 13px;"
                                                                                         class="text-primary">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($rusakCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td>perlu perbaikan</td>
-                                                                                    <td class="text-warning">
+                                                                                    <td style="font-size: 13px;">perlu
+                                                                                        perbaikan</td>
+                                                                                    <td style="font-size: 13px;"
+                                                                                        class="text-warning">
                                                                                         {{ $serviceCount = $detail->detailPemeriksaanAset->where('kondisi', 'perlu service')->count() }}
                                                                                     </td>
-                                                                                    <td style="text-align: right"
+                                                                                    <td style="text-align: right; font-size: 13px;"
                                                                                         class="text-warning">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($serviceCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td>hilang</td>
-                                                                                    <td class="text-danger">
+                                                                                    <td style="font-size: 13px;">hilang
+                                                                                    </td>
+                                                                                    <td style="font-size: 13px;"
+                                                                                        class="text-danger">
                                                                                         {{ $hilangCount = $detail->detailPemeriksaanAset->where('kondisi', 'hilang')->count() }}
                                                                                     </td>
-                                                                                    <td style="text-align: right"
+                                                                                    <td style="text-align: right; font-size: 13px;"
                                                                                         class="text-danger">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($hilangCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
-                                                                            </table>
-                                                                        </div>
+                                                                            </tbody>
+                                                                        </table>
                                                                     @else
-                                                                        -
+                                                                        <table id="example">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td style="font-size: 13px;">baik
+                                                                                    </td>
+                                                                                    <td style="font-size: 13px;">
+                                                                                        - </td>
+                                                                                    <td
+                                                                                        style="text-align: right; font-size: 13px;">
+                                                                                        - </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td style="font-size: 13px;">rusak
+                                                                                    </td>
+                                                                                    <td style="font-size: 13px;"
+                                                                                        class="text-primary">
+                                                                                        - </td>
+                                                                                    <td style="text-align: right; font-size: 13px;"
+                                                                                        class="text-primary">
+                                                                                        - </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td style="font-size: 13px;">perlu
+                                                                                        perbaikan</td>
+                                                                                    <td style="font-size: 13px;"
+                                                                                        class="text-warning">
+                                                                                        - </td>
+                                                                                    <td style="text-align: right; font-size: 13px;"
+                                                                                        class="text-warning">
+                                                                                        - </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td style="font-size: 13px;">hilang
+                                                                                    </td>
+                                                                                    <td style="font-size: 13px;"
+                                                                                        class="text-danger">
+                                                                                        - </td>
+                                                                                    <td style="text-align: right; font-size: 13px;"
+                                                                                        class="text-danger">
+                                                                                        - </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
                                                                     @endif
                                                                 </td>
                                                                 <td>
                                                                     @if ($detail->detailPemeriksaanAset->isNotEmpty())
-                                                                        <div>
-                                                                            <table id="example">
-                                                                                <tr>
-                                                                                    <td>Aktif</td>
-                                                                                    <td class="text-success">
-                                                                                        {{ $aktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'aktif')->count() }}
-                                                                                    </td>
-                                                                                    <td style="text-align: right"
-                                                                                        class="text-success">
-                                                                                        {{ $totalDetailPemeriksaan > 0 ? round(($aktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td>Non Aktif</td>
-                                                                                    <td class="text-danger">
-                                                                                        {{ $nonAktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'non aktif')->count() }}
-                                                                                    </td>
-                                                                                    <td style="text-align: right"
-                                                                                        class="text-danger">
-                                                                                        {{ $totalDetailPemeriksaan > 0 ? round(($nonAktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </table>
-                                                                        </div>
+                                                                        <table id="example">
+                                                                            <tr>
+                                                                                <td style="font-size: 13px;">Aktif</td>
+                                                                                <td style="font-size: 13px;"
+                                                                                    class="text-success">
+                                                                                    {{ $aktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'aktif')->count() ?? '-' }}
+                                                                                </td>
+                                                                                <td style="text-align: right; font-size: 13px;"
+                                                                                    class="text-success">
+                                                                                    {{ $totalDetailPemeriksaan > 0 ? round(($aktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 ?? '-' }}%
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="font-size: 13px;">Non Aktif
+                                                                                </td>
+                                                                                <td style="font-size: 13px;"
+                                                                                    class="text-danger">
+                                                                                    {{ $nonAktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'non aktif')->count() ?? '-' }}
+                                                                                </td>
+                                                                                <td style="text-align: right; font-size: 13px;"
+                                                                                    class="text-danger">
+                                                                                    {{ $totalDetailPemeriksaan > 0 ? round(($nonAktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 ?? '-' }}%
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
                                                                     @else
-                                                                        -
+                                                                        <table id="example">
+                                                                            <tr>
+                                                                                <td style="font-size: 13px;">Aktif</td>
+                                                                                <td style="font-size: 13px;"
+                                                                                    class="text-success">
+                                                                                    - </td>
+                                                                                <td style="text-align: right; font-size: 13px;"
+                                                                                    class="text-success">
+                                                                                    - </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="font-size: 13px;">Non Aktif
+                                                                                </td>
+                                                                                <td style="font-size: 13px;"
+                                                                                    class="text-danger">
+                                                                                    - </td>
+                                                                                <td style="text-align: right; font-size: 13px;"
+                                                                                    class="text-danger">
+                                                                                    - </td>
+                                                                            </tr>
+                                                                        </table>
                                                                     @endif
                                                                 </td>
                                                                 <td>
@@ -859,8 +981,8 @@
                                                                         </div>
                                                                     </div>
                                                                 </td>
-                                                                <td>
-                                                                    <div
+                                                                {{-- <td> --}}
+                                                                    {{-- <div
                                                                         class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
                                                                         <div class="btn-group mb-2 mb-xl-0 btn-block">
                                                                             <a onclick="$('#cover-spin').show(0)"
@@ -870,8 +992,8 @@
                                                                                 Detail
                                                                             </a>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="btn-group btn-block mb-2 mb-xl-0 card-tambah-kontrol"
+                                                                    </div> --}}
+                                                                    {{-- <div class="btn-group btn-block mb-2 mb-xl-0 card-tambah-kontrol"
                                                                         style="width: 150px;">
                                                                         <div class="btn-group mb-2 mb-xl-0 btn-block">
                                                                             <a href="/{{ $role }}/print-pemeriksaan-byid"
@@ -879,12 +1001,13 @@
                                                                                 class="btn btn-outline-secondary">
                                                                                 <i class="fi fi-sr-file"></i>Cetak PDF </a>
                                                                         </div>
-                                                                    </div>
-                                                                </td>
+                                                                    </div> --}}
+                                                                {{-- </td> --}}
                                                             @endif
                                                         </tr>
                                                     @endforeach
                                                 @endforeach
+                                            </tbody>
                                         </table>
                                     </div>
 
@@ -938,32 +1061,32 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Tambah Data Barang</h5>
+                    <h5 class="modal-title" id="myModalLabel">Tambah Data Aset</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="myForm" method="POST" action="{{ route('pc.aset.store') }}">
+                    <form id="myForm" method="POST" action="{{ route($role.'.aset.store') }}">
                         @csrf
                         <div class="form-group">
-                            <label for="kode">Kode Aset :</label>
-                            <input type="text" class="form-control" id="kode_aset" name="kode_aset" readonly>
+                            <label for="kode">Kode Aset </label>
+                            <input type="text" value="{{ $kodeAset }}" class="form-control" id="kode_aset" name="kode_aset" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="tgl_beli">Tgl Perolehan :</label>
+                            <label for="tgl_beli">Tgl Perolehan </label>
                             <input type="date" class="form-control" id="tgl_beli" name="tgl_perolehan">
                         </div>
                         <div class="form-group">
-                            <label for="asal">Asal Perolehan :</label>
-                            <input type="text" class="form-control" id="asal" name="asal">
+                            <label for="asal">Asal Perolehan </label>
+                            <input type="text" class="form-control" id="asal_perolehan" name="asal_perolehan">
                         </div>
                         <div class="form-group">
-                            <label for="name">Nama :</label>
+                            <label for="name">Nama </label>
                             <input type="text" class="form-control" id="name" name="nama_aset">
                         </div>
                         <div class="form-group">
-                            <label for="kategori">Kategori :</label>
+                            <label for="kategori">Kategori </label>
                             <select class="form-control" id="kategori" name="kategori"
                                 onchange="toggleNewCategoryForm()">
                                 <option value="">Pilih Kategori</option>
@@ -982,15 +1105,15 @@
                             </div>
                         </div>
                         <div class="form-grPoup">
-                            <label for="satuan">Satuan :</label>
+                            <label for="satuan">Satuan </label>
                             <input type="text" class="form-control" id="satuan" name="satuan">
                         </div>
                         <div class="form-group">
-                            <label for="lokasi">Lokasi Penyimpanan :</label>
+                            <label for="lokasi">Lokasi Penyimpanan </label>
                             <input type="text" class="form-control" id="lokasi" name="lokasi_penyimpanan">
                         </div>
                         <div class="form-group">
-                            <label for="spesifikasi">Spesifikasi/Deskripsi :</label>
+                            <label for="spesifikasi">Spesifikasi/Deskripsi </label>
                             <input type="text" class="form-control" id="spesifikasi" name="spesifikasi">
                         </div>
                         <div>
@@ -1004,7 +1127,7 @@
     </div>
 
     {{-- script menambah kode aset --}}
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             $('#tambahModal').on('show.bs.modal', function() {
                 $.ajax({
@@ -1020,7 +1143,7 @@
                 })
             })
         })
-    </script>
+    </script> --}}
 
     {{-- script untuk menyimpan kategori --}}
     <script>
@@ -1091,7 +1214,8 @@
                     </button>
                 </div>
                 <div class="modal-body" style="padding-top: 0;">
-                    <form id="myForm" method="POST" action="{{ route($role.'.pemeriksaan.store', ['tab' => 'pemeriksaan']) }}">
+                    <form id="myForm" method="POST"
+                        action="{{ route($role . '.pemeriksaan.store', ['tab' => 'pemeriksaan']) }}">
                         @csrf
                         <div class="form-group">
                             <label for="tgl_pemeriksaan" style="font-weight: bold; font-size: 14px;">Tgl
@@ -1150,23 +1274,49 @@
         </div>
     </div>
 
+    {{-- script untuk rows click --}}
+    <script>
+        $(document).ready(function() {
+            $('table tbody tr').click(function() {
+                window.location = $(this).data('url');
+            });
+        });
+    </script>
 
 @section('js')
-    <link src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></link>
-    <link src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></link>
-    <link src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></link>
-    <link src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></link>
-    <link src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></link>
-    <link src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></link>
-    <link src="{{ asset('assets/plugins/jszip/jszip.min.js') }}"></link>
-    <link src="{{ asset('assets/plugins/pdfmake/pdfmake.min.js') }}"></link>
-    <link src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></link>
+    <!-- CSS DataTables -->
+    {{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"> --}}
+
+    <link src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}">
+    </link>
+    <link src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}">
+    </link>
+    <link src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}">
+    </link>
+    <link src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}">
+    </link>
+    <link src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}">
+    </link>
+    <link src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}">
+    </link>
+    <link src="{{ asset('assets/plugins/jszip/jszip.min.js') }}">
+    </link>
+    <link src="{{ asset('assets/plugins/pdfmake/pdfmake.min.js') }}">
+    </link>
+    <link src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}">
+    </link>
     <scr src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></scr>
-    <link src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></link>
-    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <link src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}">
+    </link>
+
+    {{-- <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script> --}}
 
     <!-- AdminLTE -->
-    <link src="{{ asset('assets/dist/js/adminlte.js') }}"></link>
+    <link src="{{ asset('assets/dist/js/adminlte.js') }}">
+    </link>
 @endsection
 
 @endsection

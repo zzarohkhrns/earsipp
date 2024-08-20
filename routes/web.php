@@ -56,13 +56,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index']);
 
         //ASET DIGITAL
-        Route::get('/aset_umum', [AsetController::class, 'aset_umum']);
-        Route::get('/aset_wakaf', [AsetController::class, 'aset_wakaf']);
-        Route::get('/tambah_aset/{link}', [AsetController::class, 'tambah_aset'])->name('tambah_aset');
-        Route::post('/aksi_tambah_aset/{link}', [AsetController::class, 'aksi_tambah_aset'])->name('aksi_tambah_aset');
-        Route::post('/aksi_hapus_aset/{id}', [AsetController::class, 'aksi_hapus_aset'])->name('aksi_hapus_aset');
-        Route::get('/detail_aset/{link}/{id}', [AsetController::class, 'detail_aset'])->name('detail_aset');
-        Route::put('/aksi_edit_aset/{id}', [AsetController::class, 'aksi_edit_aset'])->name('aksi_edit_aset');
+        // Route::get('/aset_umum', [AsetController::class, 'aset_umum']);
+        // Route::get('/aset_wakaf', [AsetController::class, 'aset_wakaf']);
+        // Route::get('/tambah_aset/{link}', [AsetController::class, 'tambah_aset'])->name('tambah_aset');
+        // Route::post('/aksi_tambah_aset/{link}', [AsetController::class, 'aksi_tambah_aset'])->name('aksi_tambah_aset');
+        // Route::post('/aksi_hapus_aset/{id}', [AsetController::class, 'aksi_hapus_aset'])->name('aksi_hapus_aset');
+        // Route::get('/detail_aset/{link}/{id}', [AsetController::class, 'detail_aset'])->name('detail_aset');
+        // Route::put('/aksi_edit_aset/{id}', [AsetController::class, 'aksi_edit_aset'])->name('aksi_edit_aset');
 
         //KATEGORI ASET
         Route::get('/kategori_aset', [AsetController::class, 'kategori_aset'])->name('kategori_aset');
@@ -221,7 +221,15 @@ Route::middleware('auth')->group(function () {
         //Route::post('/check-date', [DataAsetController::class, 'checkDate_Pemeriksaan'])->name('check-date');
         Route::post('/aset/data/update/{id}', [DataAsetController::class, 'update_data'])->name('aset.update');
         Route::post('/aset/data/delete/{id}', [DataAsetController::class, 'delete_data'])->name('aset.delete');
-        
+
+        Route::get('/arsip/aset/detail/{id}', [DataAsetController::class, 'detail_aset'])->name('detail_aset');
+        route::post('/arsip/aset/tambah_kontrol', [DataAsetController::class, 'store_kontrol'])->name('kontrol.store');
+        Route::get('/print-kontrol', [DataAsetController::class, 'printKontrol'])->name('printKontrol');
+        Route::get('/print-keluar', [DataAsetController::class, 'printKeluar'])->name('printKeluar');
+        Route::get('/aset/next-kode-aset', [DataAsetController::class, 'getNextKodeAset'])->name('aset.nextKodeAset');
+        Route::post('/kategori/store', [DataAsetController::class, 'store_kategori'])->name('kategori.store');
+        Route::post('/filter/aset', [DataAsetController::class, 'FilterAset'])->name('filter_aset');
+
         Route::post('/pemeriksaan/store', [DataAsetController::class, 'store_pemeriksaan'])->name('pemeriksaan.store');
         Route::get('/arsip/aset/detail_pemeriksaan/{id}/{tgl}', [DataAsetController::class, 'detail_pemeriksaan'])->name('detail_pemeriksaan');
         Route::post('/detail_pemeriksaan/store/{id}', [DataAsetController::class, 'store_detail_pemeriksaan'])->name('detail_pemeriksaan.store');
@@ -233,13 +241,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/detail-pemeriksaan/{id}', [DetailPemeriksaanController::class, 'getDetailPemeriksaan']);
         Route::post('/update-status-pemeriksaan', [DataAsetController::class, 'updateStatusPemeriksaan'])->name('updateStatusPemeriksaan');
 
-        Route::get('/arsip/aset/detail/{id}', [DataAsetController::class, 'detail_aset'])->name('detail_aset');
-        route::post('/arsip/aset/tambah_kontrol', [DataAsetController::class, 'store_kontrol'])->name('kontrol.store');
-        Route::get('/print-kontrol', [DataAsetController::class, 'printKontrol'])->name('printKontrol');
-        Route::get('/print-keluar', [DataAsetController::class, 'printKeluar'])->name('printKeluar');
-        Route::get('/aset/next-kode-aset', [DataAsetController::class, 'getNextKodeAset'])->name('aset.nextKodeAset');
-        Route::post('/kategori/store', [DataAsetController::class, 'store_kategori'])->name('kategori.store');
-        Route::post('/filter/aset', [DataAsetController::class, 'FilterAset'])->name('filter_aset');
 
     });
 

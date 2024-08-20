@@ -13,6 +13,7 @@
             border-top-left-radius: .25rem;
             border-top-right-radius: .25rem;
             color: black;
+            font-size: 16px;
             /* Warna teks tab tidak aktif */
         }
 
@@ -65,14 +66,14 @@
 
                                         {{-- Line 1 --}}
                                         <tr>
-                                            <th style="width: 200px;"><b>Kode Aset</b></th>
+                                            <th style="width: 200px;"><b style="font-size:16px;">Kode Aset</b></th>
                                             <th style="width: 200px;"></th>
                                             <th style="width: 200px;"></th>
                                             <th style="width: 100px;">
                                                 <div class="btn-group btn-block mb-2 mb-xl-0 card_edit_barang">
                                                     <a class="btn btn-success intro-ubah-detail-aset ml-1 mr- edit-aset"
                                                         type="button" data-toggle="modal" data-target="#ubahasetModal"
-                                                        style="border-radius:10px;" aria-expanded="false">
+                                                        style="border-radius:10px; font-size:12px;" aria-expanded="false">
                                                         &nbsp;&nbsp;<i class="fas fa-edit"></i> Edit
                                                     </a>
                                                 </div>
@@ -86,7 +87,7 @@
                                                             onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                                             @csrf
                                                             <button type="submit" class="btn btn-danger btn-block"
-                                                                style="display: block; border-radius:10px; width: 160px">
+                                                                style="display: block; border-radius:10px; width: 160px;font-size:12px;">
                                                                 <i class="fas fa-trash"></i>
                                                                 Hapus
                                                             </button>
@@ -97,7 +98,7 @@
                                         </tr>
                                         <tr>
                                             <th style="width: 200px;" class="text-success">
-                                                <h4><b>{{ $aset->kode_aset ?? '0' }}</b></h4>
+                                                <b style="font-size:19px;">{{ $aset->kode_aset ?? '0' }}</b>
                                             </th>
                                             <th style="width: 200px;"></th>
                                             <th style="width: 200px;"></th>
@@ -107,8 +108,8 @@
 
                                         {{-- Line 2 --}}
                                         <tr>
-                                            <th style="width: 200px;"><b>Nama Barang</b></th>
-                                            <th style="width: 200px;"><b>Kategori</b></th>
+                                            <th style="width: 200px;"><b style="font-size:16px;">Nama Barang</b></th>
+                                            <th style="width: 200px;"><b style="font-size:16px;">Kategori</b></th>
                                             <th style="width: 200px;"></th>
                                             <th style="width: 100px;"></th>
                                             <th style="width: 100px;"></th>
@@ -117,7 +118,7 @@
                                             {{-- <td>{{ $barang->nama }}</td>
                                                 <td>{{ $barang->satuan }}</td>
                                                 <td>{{ $barang->lokasi_penyimpanan }}</td> --}}
-                                            <td>{{ $aset->nama_aset ?? '0' }}</< /td>
+                                            <td>{{ $aset->nama_aset ?? '0' }}</td>
                                             <td>{{ $aset->kategori_aset->kategori ?? '0' }}</td>
                                             <td></td>
                                             <td></td>
@@ -126,8 +127,8 @@
 
                                         {{-- Line 3 --}}
                                         <tr>
-                                            <th style="width: 200px;"><b>Tanggal Pembelian</b></th>
-                                            <th style="width: 200px;"><b>Satuan</b></th>
+                                            <th style="width: 200px;"><b style="font-size:16px;">Tanggal Pembelian</b></th>
+                                            <th style="width: 200px;"><b style="font-size:16px;">Satuan</b></th>
                                             <th style="width: 200px;"></th>
                                             <th style="width: 100px;"></th>
                                             <th style="width: 100px;"></th>
@@ -142,8 +143,8 @@
 
                                         {{-- Line 4 --}}
                                         <tr>
-                                            <th style="width: 200px;"><b>Asal Perolehan</b></th>
-                                            <th style="width: 200px;"><b>Lokasi Penyimpanan</b></th>
+                                            <th style="width: 200px;"><b style="font-size:16px;">Asal Perolehan</b></th>
+                                            <th style="width: 200px;"><b style="font-size:16px;">Lokasi Penyimpanan</b></th>
                                             <th style="width: 200px;"></th>
                                             <th style="width: 100px;"></th>
                                             <th style="width: 100px;"></th>
@@ -158,7 +159,7 @@
 
                                         {{-- Line 5 --}}
                                         <tr>
-                                            <td><b>Spesifikasi</b></td>
+                                            <td><b style="font-size:16px;">Spesifikasi</b></td>
                                         </tr>
                                         <tr>
                                             {{-- <td colspan="4">{{ $barang->spesifikasi }}</td> --}}
@@ -183,18 +184,18 @@
                                         <li class="nav-item">
                                             <a class="nav-link active" id="kontrol-barang-tab" data-toggle="tab"
                                                 href="#kontrol-barang" role="tab" aria-controls="kontrol-barang"
-                                                aria-selected="true">DATA PEMERIKSAAN</a>
+                                                aria-selected="true"  style="font-size: 16px;">Data Pemeriksaan</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" id="keluar-masuk-barang-tab" data-toggle="tab"
                                                 href="#keluar-masuk-barang" role="tab"
-                                                aria-controls="keluar-masuk-barang" aria-selected="false">DATA KELUAR
-                                                MASUK</a>
+                                                aria-controls="keluar-masuk-barang" aria-selected="false"  style="font-size: 16px;">Data Keluar
+                                                Masuk</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" id="penyusutan-nilai-tab" data-toggle="tab"
                                                 href="#penyusutan-nilai" role="tab" aria-controls="penyusutan-nilai"
-                                                aria-selected="false">DATA PENYUSUTAN NILAI</a>
+                                                aria-selected="false"  style="font-size: 16px;">Data Penyusutan Nilai</a>
                                         </li>
                                     </ul>
 
@@ -206,19 +207,19 @@
                                                 <div class="row card-kontrol-barang">
                                                     <div class="col-12">
                                                         <table id="example3" class="table table-bordered"
-                                                            style="width:100%;">
-                                                            <thead class="table-secondary" style="text-align: center">
+                                                            style="width:100%; font-size: 13px;">
+                                                            <thead class="table-secondary" style="text-align: center; font-size: 16px;">
                                                                 <tr>
-                                                                    <th>NO</th>
-                                                                    <th>Tgl Pemeriksaan</th>
-                                                                    <th>Kondisi</th>
-                                                                    <th>Status</th>
-                                                                    <th>Masalah Teridentifikasi</th>
-                                                                    <th>Tindakan Yang Diperlukan</th>
+                                                                    <th >No</th>
+                                                                    <th >Tgl Pemeriksaan</th>
+                                                                    <th >Kondisi</th>
+                                                                    <th >Status</th>
+                                                                    <th >Masalah Teridentifikasi</th>
+                                                                    <th >Tindakan Yang Diperlukan</th>
                                                                     <th style="width: 150px;">Aksi</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>
+                                                            <tbody style="font-size: 13px;">
                                                                 @if ($detailPemeriksaan->isNotEmpty())
                                                                     @php
                                                                         $no = 1;
@@ -244,7 +245,7 @@
                                                                                         <a onclick="$('#cover-spin').show(0)"
                                                                                             href="/{{ $role }}/arsip/aset/detail_pemeriksaan"
                                                                                             class="btn btn-outline-secondary"
-                                                                                            style="display: block; border-radius: 10px; width: 150px; padding: 10px; margin: 5px 0;">
+                                                                                            style="display: block; border-radius: 10px; width: 150px; padding: 10px; margin: 5px 0;font-size:12px;">
                                                                                             Detail
                                                                                         </a>
                                                                                     </div>
@@ -252,7 +253,7 @@
                                                                                         class="btn-group mb-2 card_pemeriksaan btn-block">
                                                                                         <a href="/{{ $role }}/print-data"
                                                                                             class="btn btn-outline-secondary"
-                                                                                            style="display: block; border-radius: 10px; width: 150px; padding: 10px; margin: 5px 0;">
+                                                                                            style="display: block; border-radius: 10px; width: 150px; padding: 10px; margin: 5px 0;font-size:12px;">
                                                                                             <i class="fas fa-file-alt"></i>
                                                                                             Export
                                                                                         </a>
