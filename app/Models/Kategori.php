@@ -15,6 +15,6 @@ class Kategori extends Model
 
     public function aset()
     {
-        return $this->hasMany(Aset::class, 'id_kategori', 'id_kategori');
+        return $this->hasMany(Aset::class, 'id_kategori', 'id_kategori')->orderBy('created_at', 'desc');
     }
 }

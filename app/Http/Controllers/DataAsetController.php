@@ -40,14 +40,11 @@ class DataAsetController extends Controller
             'kategori_aset',
             'latestDetailPemeriksaanAset.pemeriksaanAset',
             'detailPemeriksaanAset.pemeriksaanAset'
-        ]); // Mengurutkan berdasarkan created_at dari yang terbaru
-        // ->whereHas('detailPemeriksaanAset', function ($query) {
-        //     $query->whereNotNull('id_detail_pemeriksaan_aset');
-        // });
+        ]); 
 
         if ($kategori_id == 'all' && $status == 'all' && !$tgl_pembelian_start && !$tgl_pembelian_end) {
             // Eksekusi query untuk mendapatkan data aset yang sudah difilter
-            $aset = $asetQuery->get();
+            $aset = $asetQuery->orderBy('created_at', 'desc')->get();
         } else {
             // Terapkan filter kategori
             if ($kategori_id !== 'all') {
@@ -71,10 +68,8 @@ class DataAsetController extends Controller
             } elseif ($tgl_pembelian_end) {
                 $asetQuery->where('tgl_perolehan', '<=', $tgl_pembelian_end);
             }
-            $aset = $asetQuery->get();
+            $aset = $asetQuery->orderBy('created_at', 'desc')->get();
         }
-
-
 
         // Data pemeriksaan lainnya
         $pemeriksaanQuery = PemeriksaanAset::with([
@@ -85,17 +80,16 @@ class DataAsetController extends Controller
             'kc.pengurusJabatan',
             'supervisor.pengguna',
             'kc.pengguna'
-        ])->get();
+        ]);
 
         // Ambil semua filter dari request dengan nilai default jika tidak ada input
         $tgl_pemeriksaan_start = $request->input('tgl-pemeriksaan-start');
         $tgl_pemeriksaan_end = $request->input('tgl-pemeriksaan-end');
-        $status_spv = $request->input('status-spv');
-        $status_kc = $request->input('status-kc');
-
+        $status_spv = $request->input('filter_status_spv', 'all');
+        $status_kc = $request->input('filter_status_kc', 'all');
 
         if ($status_spv == 'all' && $status_kc == 'all' && !$tgl_pemeriksaan_start && !$tgl_pemeriksaan_end) {
-            $pemeriksaan2 = $pemeriksaanQuery;
+            $pemeriksaan2 = $pemeriksaanQuery->get();
         } else {
             // Terapkan filter tanggal pemeriksaan
             if ($tgl_pemeriksaan_start && $tgl_pemeriksaan_end) {
@@ -113,16 +107,16 @@ class DataAsetController extends Controller
                 $pemeriksaanQuery->where('status_kc', $status_kc);
             }
 
-            $pemeriksaan2 = $pemeriksaanQuery;
+            $pemeriksaan2 = $pemeriksaanQuery->get();
         }
 
-        // Mengelompokkan berdasarkan nama pemeriksa dan tanggal_pemeriksaan
-        $pemeriksaanGrouped = $pemeriksaan2->groupBy(function ($item) {
+        $pemeriksaanGrouped = $pemeriksaan2->sortByDesc('created_at')
+        ->groupBy(function ($item) {
             return $item->pcPengurus->pengguna->nama . '-' . $item->tanggal_pemeriksaan;
-        })->map(function ($group) {
-            return $group->sortByDesc('created_at')->unique('aset_id')->values();
+        })
+        ->map(function ($group) {
+            return $group->unique('aset_id')->values();
         });
-
 
 
         // Ambil kategori
@@ -158,41 +152,6 @@ class DataAsetController extends Controller
             ->first();
 
         return view('data_aset.data_aset', compact('kategori_id', 'status', 'tgl_pembelian_start', 'tgl_pembelian_end', 'role', 'aset', 'kategori', 'pemeriksaan2', 'pemeriksaanGrouped', 'supervisor', 'kc', 'tgl_pemeriksaan_start', 'tgl_pemeriksaan_end', 'status_spv', 'status_kc'));
-    }
-
-
-    public function filterAset(Request $request)
-    {
-        // Ambil data filter dari request
-        $tglStart = $request->input('tgl-pembelian-start');
-        $tglEnd = $request->input('tgl-pembelian-end');
-        $kategori = $request->input('kategori');
-        $status = $request->input('status');
-
-        // Query untuk mendapatkan data yang sesuai dengan filter
-        $query = Aset::query();
-
-        if ($tglStart) {
-            $query->whereDate('tgl_pembelian', '>=', $tglStart);
-        }
-
-        if ($tglEnd) {
-            $query->whereDate('tgl_pembelian', '<=', $tglEnd);
-        }
-
-        if ($kategori) {
-            $query->where('id_kategori', $kategori);
-        }
-
-        if ($status) {
-            $query->where('status', $status);
-        }
-
-        // Dapatkan hasil dari query
-        $data = $query->get();
-
-        // Kembalikan data yang difilter ke view
-        return view('data_aset.data_aset', ['data' => $data]);
     }
 
     public function detail_aset($id)
@@ -380,7 +339,9 @@ class DataAsetController extends Controller
         }
     }
 
+    // controller pemeriksaan.blade dan detail_pemeriksaan.blade
 
+    // tampil data detail pemeriksaan aset
     public function detail_pemeriksaan($id, $tgl)
     {
         $role = 'pc';
@@ -433,7 +394,7 @@ class DataAsetController extends Controller
         return view('data_aset.detail_pemeriksaan', compact('role', 'detailPemeriksaan', 'jumlahAset', 'pemeriksaanAset', 'kategori', 'aset'));
     }
 
-
+    // update status pemeriksaan
     public function updateStatusPemeriksaan(Request $request)
     {
         // Validasi input untuk memastikan data yang diterima valid
@@ -457,6 +418,7 @@ class DataAsetController extends Controller
         }
     }
 
+    // update respon spv
     public function update_respon_spv(Request $request, $id)
     {
         $request->validate([
@@ -481,6 +443,7 @@ class DataAsetController extends Controller
         }
     }
 
+    // update respon kc
     public function update_respon_kc(Request $request, $id)
     {
         $request->validate([
@@ -505,9 +468,10 @@ class DataAsetController extends Controller
         }
     }
 
-
+    // simpan data pemeriksaan
     public function store_pemeriksaan(Request $request)
     {
+        $role = 'pc';
         $request->validate([
             'id_pemeriksa' => 'required',
             'tanggal_pemeriksaan' => ['required'],
@@ -525,13 +489,16 @@ class DataAsetController extends Controller
             ]);
 
             session()->flash('active_tab', 'pemeriksaan');
-            return redirect()->back()->with('success', 'Data berhasil ditambahkan');
+            //return redirect()->back()->with('success', 'Data berhasil ditambahkan');
+            return redirect()->route($role . '.data_aset', ['tab' => 'pemeriksaan'])
+            ->with('success', 'Pemeriksaan berhasil ditambahkan');
         } catch (Exception $e) {
             session()->flash('active_tab', 'pemeriksaan');
             return redirect()->back()->with('error', 'Data gagal ditambahkan.');
         }
     }
 
+    // simpan data detail pemeriksaan
     public function store_detail_pemeriksaan(Request $request, $id)
     {
         // Validasi input
@@ -558,8 +525,7 @@ class DataAsetController extends Controller
         return redirect()->back()->with('success', 'Data pemeriksaan berhasil ditambahkan.');
     }
 
-
-
+    // update detail pemeriksaan
     public function update_detail_pemeriksaan(Request $request)
     {
         $request->validate([
@@ -588,7 +554,7 @@ class DataAsetController extends Controller
         }
     }
 
-
+    // delete detail pemeriksaan
     public function delete_detail_pemeriksaan($id)
     {
         $detailPemeriksaan = DetailPemeriksaanAset::find($id);
@@ -601,6 +567,7 @@ class DataAsetController extends Controller
         }
     }
 
+    // delete pemeriksaan
     public function delete_pemeriksaan($id)
     {
         $Pemeriksaan = PemeriksaanAset::find($id);

@@ -43,18 +43,12 @@ class Aset extends Model
 
     public function detailPemeriksaanAset()
     {
-        return $this->hasMany(DetailPemeriksaanAset::class, 'aset_id', 'aset_id');
+        return $this->hasMany(DetailPemeriksaanAset::class, 'aset_id', 'aset_id')->orderBy('created_at', 'desc');
     }
     public function latestDetailPemeriksaanAset()
     {
-        // return $this->hasOne(DetailPemeriksaanAset::class, 'aset_id', 'aset_id')
-        //         ->where('id_detail_pemeriksaan_aset', function($query) {
-        //             $query->selectRaw('MAX(id_detail_pemeriksaan_aset)')
-        //                   ->from('detail_pemeriksaan_aset')
-        //                   ->whereColumn('aset_id', 'aset_id');
-        //         });
                 
-        return $this->hasOne(DetailPemeriksaanAset::class, 'aset_id', 'aset_id')->latestOfMany('created_at');
+        return $this->hasOne(DetailPemeriksaanAset::class, 'aset_id', 'aset_id')->latestOfMany('created_at')->orderBy('created_at', 'desc');
 
         // return $this->hasOne(DetailPemeriksaanAset::class, 'aset_id', 'aset_id')
         //         ->where('id_detail_pemeriksaan_aset', function($query) {

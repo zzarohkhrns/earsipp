@@ -134,16 +134,12 @@
                                             <b class="text-success pl-2">Data Barang<br>Logistik dan Perlengkapan</b>
                                         </h5>
                                         <div class="btn-group ml-5">
-                                            <a class="btn btn-success btn-block mt-2" style="width:150px;"
-                                                onclick="openTab('dataAset')">Data Aset</a>
-                                            <a class="btn btn-light btn-block ml-2" style="width:150px;"
-                                                onclick="openTab('pemeriksaan')">Pemeriksaan</a>
-                                            <a class="btn btn-light btn-block ml-2" style="width:150px;"
-                                                onclick="openTab('keluarMasuk')">Keluar Masuk</a>
-                                            <a class="btn btn-light btn-block ml-2" style="width:150px;"
-                                                onclick="openTab('penyusutanNilai')">Penyusutan Nilai</a>
+                                            <a id="tab-dataAset" class="btn btn-light btn-block mt-2" style="width:150px;" onclick="openTab('dataAset')">Data Aset</a>
+                                            <a id="tab-pemeriksaan" class="btn btn-light btn-block ml-2" style="width:150px;" onclick="openTab('pemeriksaan')">Pemeriksaan</a>
+                                            <a id="tab-keluarMasuk" class="btn btn-light btn-block ml-2" style="width:150px;" onclick="openTab('keluarMasuk')">Keluar Masuk</a>
+                                            <a id="tab-penyusutanNilai" class="btn btn-light btn-block ml-2" style="width:150px;" onclick="openTab('penyusutanNilai')">Penyusutan Nilai</a>
                                         </div>
-
+                                        
                                         <script>
                                             function openTab(tabId) {
                                                 // Sembunyikan semua konten tab
@@ -151,25 +147,29 @@
                                                 for (var i = 0; i < contents.length; i++) {
                                                     contents[i].classList.remove('active');
                                                 }
-
+                                        
                                                 // Tampilkan konten tab yang dipilih
                                                 document.getElementById(tabId).classList.add('active');
-
+                                        
                                                 // Ubah warna tombol tab yang aktif
                                                 var buttons = document.querySelectorAll('.btn-group .btn');
                                                 buttons.forEach(button => {
                                                     button.classList.remove('btn-success');
                                                     button.classList.add('btn-light');
                                                 });
-
+                                        
                                                 // Tambahkan kelas 'btn-success' ke tombol yang aktif
-                                                event.target.classList.add('btn-success');
-                                                event.target.classList.remove('btn-light');
+                                                document.getElementById('tab-' + tabId).classList.add('btn-success');
+                                                document.getElementById('tab-' + tabId).classList.remove('btn-light');
                                             }
-
-                                            // Inisialisasi tab pertama sebagai aktif
-                                            document.getElementById('dataAset').classList.add('active');
-                                        </script>
+                                        
+                                            // Inisialisasi tab pertama atau tab pemeriksaan jika query param tab=pemeriksaan
+                                            window.onload = function () {
+                                                const urlParams = new URLSearchParams(window.location.search);
+                                                const activeTab = urlParams.get('tab') || 'dataAset'; // Default tab is dataAset
+                                                openTab(activeTab);
+                                            }
+                                        </script>                                        
                                     </div>
 
                                     <!-- success jika berhasil menambah data -->
@@ -215,23 +215,59 @@
                                                         id="filter-form">
                                                         <div class="input-group" style="flex: 1;">
                                                             <div class="input-group-prepend" style="border-radius: 10px;">
-                                                                <span class="input-group-text custom-text">Tgl
-                                                                    Pembelian</span>
+                                                                <span class="input-group-text custom-text">Tgl Pembelian</span>
                                                             </div>
-                                                            <input type="date" id="tgl-pembelian-start"
-                                                                onchange="this.form.submit()" name="tgl-pembelian-start"
-                                                                class="form-control custom-input"
-                                                                value="{{ request('tgl-pembelian-start') ?? '' }}"
-                                                                {{-- Gunakan request() untuk mengambil nilai default --}} style="min-width: 140px;">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text custom-text">-</span>
+                                                            <div id="tgl-pembelian" class="form-control custom-input" style="align-items:stretch; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 280px">
+                                                                <span style="align-content:center"></span>
                                                             </div>
-                                                            <input type="date" id="tgl-pembelian-end"
-                                                                onchange="this.form.submit()"
-                                                                value="{{ request('tgl-pembelian-end') ?? '' }}"
-                                                                {{-- Gunakan request() untuk mengambil nilai default --}} name="tgl-pembelian-end"
-                                                                class="form-control custom-input" style="min-width: 140px;">
                                                         </div>
+                                                        
+                                                        <input type="hidden" onchange="this.form.submit()" id="tgl-pembelian-start" name="tgl-pembelian-start" value="{{ request('tgl-pembelian-start') }}">
+                                                        <input type="hidden" onchange="this.form.submit()" id="tgl-pembelian-end" name="tgl-pembelian-end" value="{{ request('tgl-pembelian-end') }}">
+                                                        
+                                                        <script type="text/javascript">
+                                                        $(function() {
+                                                            // Inisialisasi nilai tanggal dari input hidden atau gunakan default jika kosong
+                                                            var start = moment($('#tgl-pembelian-start').val(), 'YYYY-MM-DD').isValid() ? moment($('#tgl-pembelian-start').val(), 'YYYY-MM-DD') : moment().subtract(29, 'days');
+                                                            var end = moment($('#tgl-pembelian-end').val(), 'YYYY-MM-DD').isValid() ? moment($('#tgl-pembelian-end').val(), 'YYYY-MM-DD') : moment();
+                                                        
+                                                            function cb(start, end) {
+                                                                $('#tgl-pembelian span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                                                                $('#tgl-pembelian-start').val(start.format('YYYY-MM-DD'));
+                                                                $('#tgl-pembelian-end').val(end.format('YYYY-MM-DD'));
+                                                            }
+                                                        
+                                                            $('#tgl-pembelian').daterangepicker({
+                                                                startDate: start,
+                                                                endDate: end,
+                                                                ranges: {
+                                                                    'Hari ini': [moment(), moment()],
+                                                                    'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                                                    '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
+                                                                    '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
+                                                                    'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+                                                                    'Bulan Terakhir': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                                                },
+                                                                locale: {
+                                                                    format: 'MMMM D, YYYY',
+                                                                    customRangeLabel: 'Pilih Tanggal'
+                                                                }
+                                                            }, cb);
+                                                        
+                                                            // Menangani tanggal saat apply pada daterangepicker
+                                                            $('#tgl-pembelian').on('apply.daterangepicker', function(ev, picker) {
+                                                                $('#tgl-pembelian-start').val(picker.startDate.format('YYYY-MM-DD'));
+                                                                $('#tgl-pembelian-end').val(picker.endDate.format('YYYY-MM-DD'));
+                                                                // Submit form secara otomatis setelah rentang tanggal dipilih
+                                                                $(this).closest('form').submit();
+                                                            });
+                                                        
+                                                            // Panggil callback untuk menampilkan range tanggal yang sudah di-set
+                                                            cb(start, end);
+                                                        });
+                                                        </script>
+                                                        
+
 
                                                         <!-- Filter Kategori -->
                                                         <div class="input-group" style="flex: 0.5;">
@@ -342,7 +378,7 @@
                                         </div>
 
                                         <!-- Table barang -->
-                                        <table id="example3" class="table table-bordered" style="width:100%;">
+                                        <table id="example3" class="table table-bordered" style="width:100%; font-size: 13px;">
                                             <thead class="table-secondary" style="text-align: center">
                                                 <tr>
                                                     <th>NO</th>
@@ -362,7 +398,7 @@
                                                         <td>{{ $loop->iteration }}</td>
                                                         <td>
                                                             <table
-                                                                style="width:100%; border:none; border-collapse: collapse; font-size: 14px;">
+                                                                style="width:100%; border:none; border-collapse: collapse; font-size: 13px;">
                                                                 <tr>
                                                                     <td style="border: none; padding: 4px;">
                                                                         <b>{{ $data->kode_aset }}</b>
@@ -377,11 +413,10 @@
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td style="border: none; padding: 4px;">
+                                                                    <td style="border: none; padding: 4px; font-size: 12px;">
                                                                         @php
                                                                             $status =
-                                                                                $data->latestDetailPemeriksaanAset
-                                                                                    ->status_aset ?? 'null';
+                                                                       $data->latestDetailPemeriksaanAset->status_aset ?? 'null';
                                                                             $warnaTombol =
                                                                                 $status === 'null'
                                                                                     ? 'background-color: #a9a9a9;'
@@ -396,7 +431,7 @@
                                                                                         : 'Non Aktif');
                                                                         @endphp
                                                                         <button type="button" class="btn"
-                                                                            style="border-radius: 10px; {{ $warnaTombol }} color: white; padding: 4px 8px; font-size: 14px;">
+                                                                            style="border-radius: 10px; {{ $warnaTombol }} color: white; padding: 4px 8px; font-size: 12px;">
                                                                             {{ $teksTombol }}
                                                                         </button>
                                                                     </td>
@@ -525,61 +560,80 @@
                                                         <input type="hidden" name="tab" value="pemeriksaan">
                                                         <div class="input-group" style="flex: 1;">
                                                             <div class="input-group-prepend" style="border-radius: 10px;">
-                                                                <span class="input-group-text custom-text">Tgl
-                                                                    Pemeriksaan</span>
+                                                                <span class="input-group-text custom-text">Tgl Pemeriksaan</span>
                                                             </div>
-                                                            <input type="date" id="tgl-pemeriksaan-start"
-                                                                onchange="this.form.submit()" name="tgl-pemeriksaan-start"
-                                                                class="form-control custom-input"
-                                                                value="{{ request('tgl-pemeriksaan-start') ?? '' }}"
-                                                                {{-- Gunakan request() untuk mengambil nilai default --}} style="min-width: 140px;">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text custom-text">-</span>
+                                                            <div id="tgl-pemeriksaan" class="form-control custom-input" style="align-items:stretch; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 280px">
+                                                                <span style="align-content:center"></span>
                                                             </div>
-                                                            <input type="date" id="tgl-pemeriksaan-end"
-                                                                onchange="this.form.submit()"
-                                                                value="{{ request('tgl-pemeriksaan-end') ?? '' }}"
-                                                                {{-- Gunakan request() untuk mengambil nilai default --}} name="tgl-pemeriksaan-end"
-                                                                class="form-control custom-input"
-                                                                style="min-width: 140px;">
                                                         </div>
+                                                        
+                                                        <input type="hidden" onchange="this.form.submit()" id="tgl-pemeriksaan-start" name="tgl-pemeriksaan-start" value="{{ request('tgl-pemeriksaan-start') }}">
+                                                        <input type="hidden" onchange="this.form.submit()" id="tgl-pemeriksaan-end" name="tgl-pemeriksaan-end" value="{{ request('tgl-pemeriksaan-end') }}">
+                                                        
+                                                        <script type="text/javascript">
+                                                        $(function() {
+                                                            // Mengambil nilai dari input hidden atau atur defaultnya
+                                                            var startPemeriksaan = moment($('#tgl-pemeriksaan-start').val(), 'YYYY-MM-DD').isValid() ? moment($('#tgl-pemeriksaan-start').val(), 'YYYY-MM-DD') : moment().subtract(29, 'days');
+                                                            var endPemeriksaan = moment($('#tgl-pemeriksaan-end').val(), 'YYYY-MM-DD').isValid() ? moment($('#tgl-pemeriksaan-end').val(), 'YYYY-MM-DD') : moment();
+                                                        
+                                                            function cb(startPemeriksaan, endPemeriksaan) {
+                                                                $('#tgl-pemeriksaan span').html(startPemeriksaan.format('MMMM D, YYYY') + ' - ' + endPemeriksaan.format('MMMM D, YYYY'));
+                                                                $('#tgl-pemeriksaan-start').val(startPemeriksaan.format('YYYY-MM-DD'));
+                                                                $('#tgl-pemeriksaan-end').val(endPemeriksaan.format('YYYY-MM-DD'));
+                                                            }
+                                                        
+                                                            $('#tgl-pemeriksaan').daterangepicker({
+                                                                startDate: startPemeriksaan,
+                                                                endDate: endPemeriksaan,
+                                                                ranges: {
+                                                                    'Hari ini': [moment(), moment()],
+                                                                    'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                                                    '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
+                                                                    '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
+                                                                    'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+                                                                    'Bulan Terakhir': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                                                },
+                                                                locale: {
+                                                                    format: 'MMMM D, YYYY',
+                                                                    customRangeLabel: 'Pilih Tanggal'
+                                                                }
+                                                            }, cb);
+                                                        
+                                                            // Menangani tanggal saat apply pada daterangepicker
+                                                            $('#tgl-pemeriksaan').on('apply.daterangepicker', function(ev, picker) {
+                                                                $('#tgl-pemeriksaan-start').val(picker.startDate.format('YYYY-MM-DD'));
+                                                                $('#tgl-pemeriksaan-end').val(picker.endDate.format('YYYY-MM-DD'));
+                                                                // Submit form secara otomatis setelah rentang tanggal dipilih
+                                                                $(this).closest('form').submit();
+                                                            });
+                                                        
+                                                            // Panggil callback untuk menampilkan range tanggal yang sudah di-set
+                                                            cb(startPemeriksaan, endPemeriksaan);
+                                                        });
+                                                        </script>
+                                                        
 
                                                         <!-- Filter Kategori -->
                                                         <div class="input-group" style="flex: 0.5;">
                                                             <div class="input-group-prepend">
                                                                 <div class="input-group-text">Status SPV</div>
                                                             </div>
-                                                            <select class="form-control" name="status_spv"
-                                                                onchange="this.form.submit();"
-                                                                style="border-top-right-radius: 10px; border-bottom-right-radius:10px; min-width: 120px;">
-                                                                <option value="all"
-                                                                    @if (request('status_spv') == 'all') selected @endif>Semua
-                                                                </option>
-                                                                <option value="mengetahui"
-                                                                    @if (request('status_spv') == 'mengetahui') selected @endif>
-                                                                    Mengetahui</option>
-                                                                <option value="belum"
-                                                                    @if (request('status_spv') == 'belum') selected @endif>Belum
-                                                                    Mengetahui</option>
+                                                            <select class="form-control" name="filter_status_spv" onchange="this.form.submit();">
+                                                                <option value="all" {{ request('filter_status_spv', 'all') == 'all' ? 'selected' : '' }}>Semua</option>
+                                                                <option value="mengetahui" {{ request('filter_status_spv') == 'mengetahui' ? 'selected' : '' }}>Mengetahui</option>
+                                                                <option value="belum" {{ request('filter_status_spv') == 'belum' ? 'selected' : '' }}>Belum Mengetahui</option>
                                                             </select>
+                                                            
                                                         </div>
                                                         <!-- Filter Kategori -->
                                                         <div class="input-group" style="flex: 0.5;">
                                                             <div class="input-group-prepend">
                                                                 <div class="input-group-text">Status KC</div>
                                                             </div>
-                                                            <select class="form-control" name="status_kc"
-                                                                onchange="this.form.submit();"
-                                                                style="border-top-right-radius: 10px; border-bottom-right-radius:10px; min-width: 120px;">
-                                                                <option value="all"
-                                                                    @if (request('status_kc') == 'all') selected @endif>Semua
-                                                                </option>
-                                                                <option value="mengetahui"
-                                                                    @if (request('status_kc') == 'mengetahui') selected @endif>
-                                                                    Mengetahui</option>
-                                                                <option value="belum"
-                                                                    @if (request('status_kc') == 'belum') selected @endif>
-                                                                    Belum Mengetahui</option>
+                                                            <select class="form-control" name="filter_status_kc" onchange="this.form.submit();">
+                                                                <option value="all" {{ request('filter_status_kc', 'all') == 'all' ? 'selected' : '' }}>Semua</option>
+                                                                <option value="mengetahui" {{ request('filter_status_kc') == 'mengetahui' ? 'selected' : '' }}>Mengetahui</option>
+                                                                <option value="belum" {{ request('filter_status_kc') == 'belum' ? 'selected' : '' }}>Belum Mengetahui</option>
                                                             </select>
                                                         </div>
 
@@ -587,7 +641,7 @@
                                                         <div>
                                                             <button type="button" class="btn btn-outline-secondary"
                                                                 style="width: 100px; border-radius:10px;"
-                                                                onclick="resetFilters()">
+                                                                onclick="resetFiltersPemeriksaan()">
                                                                 <i class="fas fa-sync-alt"></i>
                                                             </button>
                                                         </div>
@@ -595,13 +649,21 @@
                                                 </form>
 
                                                 <script>
-                                                    function resetFilters() {
+                                                    function resetFiltersPemeriksaan() {
                                                         // Dapatkan URL saat ini tanpa query string
                                                         const baseUrl = window.location.origin + window.location.pathname;
                                                         // Arahkan ke URL dasar (tanpa filter) dan tambahkan parameter tab
-                                                        //window.location.href = `${baseUrl}?tab=pemeriksaan`;
-                                                        window.location.href = baseUrl;
+                                                        window.location.href = `${baseUrl}?tab=pemeriksaan`;
                                                     }
+                                                
+                                                    // Deteksi tab pemeriksaan dari URL dan otomatis membuka tab tersebut
+                                                    document.addEventListener("DOMContentLoaded", function () {
+                                                        const urlParams = new URLSearchParams(window.location.search);
+                                                        const tabParam = urlParams.get('tab');
+                                                        if (tabParam === 'pemeriksaan') {
+                                                            openTab(tabParam); // Sesuaikan 'dataAset' dengan ID tab pemeriksaan
+                                                        }
+                                                    });
                                                 </script>
 
                                                 <!-- Tombol Aksi -->
@@ -828,26 +890,6 @@
 
                                     {{-- tab keluar masuk --}}
                                     <div id="keluarMasuk" class="tab-content" style="width: 99%; padding:10px; mt-1">
-                                        <h5 class="text-success"><b>Keluar Masuk</b></h5>
-                                        <div class="btn-group btn-block mb-2 mb-xl-3 card-tambah-kontrol"
-                                            style="width:150px">
-                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                <button type="button" class="btn btn-success" data-toggle="modal"
-                                                    href="#keluarModal"
-                                                    style="background-color: rgb(0, 177, 0); color: white;">
-                                                    <i class="fas fa-plus-circle"></i>
-                                                    <span>Tambah</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="btn-group btn-block mb-2 mb-xl-4 card-tambah-kontrol"
-                                            style="width:150px">
-                                            <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                <a href="/{{ $role }}/print-keluar"
-                                                    class="btn btn-outline-secondary">
-                                                    <i class="fi fi-rs-print"></i>Cetak PDF</a>
-                                            </div>
-                                        </div>
                                         <table id="example3" class="table table-bordered" style="width:100%">
                                             <thead class="table-secondary">
                                                 <tr>
@@ -864,7 +906,6 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -1050,7 +1091,7 @@
                     </button>
                 </div>
                 <div class="modal-body" style="padding-top: 0;">
-                    <form id="myForm" method="POST" action="{{ route('pc.pemeriksaan.store') }}">
+                    <form id="myForm" method="POST" action="{{ route($role.'.pemeriksaan.store', ['tab' => 'pemeriksaan']) }}">
                         @csrf
                         <div class="form-group">
                             <label for="tgl_pemeriksaan" style="font-weight: bold; font-size: 14px;">Tgl
@@ -1111,21 +1152,21 @@
 
 
 @section('js')
-    <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/jszip/jszip.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/pdfmake/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <link src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></link>
+    <link src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></link>
+    <link src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></link>
+    <link src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></link>
+    <link src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></link>
+    <link src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></link>
+    <link src="{{ asset('assets/plugins/jszip/jszip.min.js') }}"></link>
+    <link src="{{ asset('assets/plugins/pdfmake/pdfmake.min.js') }}"></link>
+    <link src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></link>
+    <scr src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></scr>
+    <link src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></link>
     <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 
     <!-- AdminLTE -->
-    <script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
+    <link src="{{ asset('assets/dist/js/adminlte.js') }}"></link>
 @endsection
 
 @endsection
