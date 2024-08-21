@@ -8,6 +8,16 @@
 @section('content')
 
     <style>
+        .dropdown select {
+            border-radius: 10px;
+            width: 150px;
+            padding: 10px;
+            margin: 5px 0;
+            font-size: 12px;
+            background-color: white;
+            border: 1px solid #6c757d;
+        }
+
         .nav-tabs .nav-link {
             border: 1px solid transparent;
             border-top-left-radius: .25rem;
@@ -184,18 +194,19 @@
                                         <li class="nav-item">
                                             <a class="nav-link active" id="kontrol-barang-tab" data-toggle="tab"
                                                 href="#kontrol-barang" role="tab" aria-controls="kontrol-barang"
-                                                aria-selected="true"  style="font-size: 16px;">Data Pemeriksaan</a>
+                                                aria-selected="true" style="font-size: 16px;">Data Pemeriksaan</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" id="keluar-masuk-barang-tab" data-toggle="tab"
                                                 href="#keluar-masuk-barang" role="tab"
-                                                aria-controls="keluar-masuk-barang" aria-selected="false"  style="font-size: 16px;">Data Keluar
+                                                aria-controls="keluar-masuk-barang" aria-selected="false"
+                                                style="font-size: 16px;">Data Keluar
                                                 Masuk</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" id="penyusutan-nilai-tab" data-toggle="tab"
                                                 href="#penyusutan-nilai" role="tab" aria-controls="penyusutan-nilai"
-                                                aria-selected="false"  style="font-size: 16px;">Data Penyusutan Nilai</a>
+                                                aria-selected="false" style="font-size: 16px;">Data Penyusutan Nilai</a>
                                         </li>
                                     </ul>
 
@@ -208,14 +219,15 @@
                                                     <div class="col-12">
                                                         <table id="example3" class="table table-bordered"
                                                             style="width:100%; font-size: 13px;">
-                                                            <thead class="table-secondary" style="text-align: center; font-size: 16px;">
+                                                            <thead
+                                                                style="text-align: center; font-size: 16px;">
                                                                 <tr>
-                                                                    <th >No</th>
-                                                                    <th >Tgl Pemeriksaan</th>
-                                                                    <th >Kondisi</th>
-                                                                    <th >Status</th>
-                                                                    <th >Masalah Teridentifikasi</th>
-                                                                    <th >Tindakan Yang Diperlukan</th>
+                                                                    <th>No</th>
+                                                                    <th>Tgl Pemeriksaan</th>
+                                                                    <th>Kondisi</th>
+                                                                    <th>Status</th>
+                                                                    <th>Masalah Teridentifikasi</th>
+                                                                    <th>Tindakan Yang Diperlukan</th>
                                                                     <th style="width: 150px;">Aksi</th>
                                                                 </tr>
                                                             </thead>
@@ -240,24 +252,22 @@
                                                                             <td>
                                                                                 <div
                                                                                     class="d-flex flex-column align-items-center">
-                                                                                    <div
-                                                                                        class="btn-group mb-2 mb-xl-0 btn-block">
-                                                                                        <a onclick="$('#cover-spin').show(0)"
-                                                                                            href="/{{ $role }}/arsip/aset/detail_pemeriksaan"
-                                                                                            class="btn btn-outline-secondary"
-                                                                                            style="display: block; border-radius: 10px; width: 150px; padding: 10px; margin: 5px 0;font-size:12px;">
-                                                                                            Detail
-                                                                                        </a>
+                                                                                    <div class="dropdown">
+                                                                                        <select id="options" name="options">
+                                                                                            <option style="background-color: white" value="">Aksi</option>
+                                                                                            <option style="background-color: white" value="/{{ $role }}/arsip/aset/detail_pemeriksaan/{{ $item->pemeriksaanAset->id_pemeriksaan_aset }}/{{ $item->pemeriksaanAset->tanggal_pemeriksaan }}">Detail</option>
+                                                                                            <option style="background-color: white" value="/{{ $role }}/print-data">Export</option>
+                                                                                        </select>
                                                                                     </div>
-                                                                                    <div
-                                                                                        class="btn-group mb-2 card_pemeriksaan btn-block">
-                                                                                        <a href="/{{ $role }}/print-data"
-                                                                                            class="btn btn-outline-secondary"
-                                                                                            style="display: block; border-radius: 10px; width: 150px; padding: 10px; margin: 5px 0;font-size:12px;">
-                                                                                            <i class="fas fa-file-alt"></i>
-                                                                                            Export
-                                                                                        </a>
-                                                                                    </div>
+
+                                                                                    <script>
+                                                                                        document.getElementById('options').addEventListener('change', function() {
+                                                                                            var value = this.value;
+                                                                                            if (value) {
+                                                                                                window.location.href = value;
+                                                                                            }
+                                                                                        });
+                                                                                    </script>
                                                                                 </div>
                                                                             </td>
                                                                         </tr>
@@ -578,6 +588,13 @@
 
     <!-- AdminLTE -->
     <script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
 @endsection
 
 @endsection

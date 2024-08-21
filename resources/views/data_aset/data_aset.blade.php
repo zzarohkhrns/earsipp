@@ -217,11 +217,9 @@
 
                                         {{-- menu filter --}}
                                         <div
-                                            style="border: 1px solid #e0e0e0; border-radius: 10px; background-color: #ffffff; padding: 10px; margin-bottom: 10px;">
+                                            style="border: 1px solid #e0e0e0; border-radius: 10px; background-color: #ffffff; padding: 10px; margin-bottom: 10px; width: 100%;">
                                             <!-- Bagian Filter dan Tombol Aksi -->
-                                            <div
-                                                style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                                                {{-- </form> --}}
+                                            <div style=" width: 100%; margin-right: 0px;">
                                                 <form method="GET" action="{{ url($role . '/arsip/aset/data') }}">
                                                     @csrf
                                                     <div style="display: flex; align-items: center; gap: 10px;"
@@ -244,58 +242,60 @@
                                                             id="tgl-pembelian-end" name="tgl-pembelian-end"
                                                             value="{{ request('tgl-pembelian-end') }}">
 
-                                                            <script type="text/javascript">
-                                                                $(function() {
-                                                                    // Set moment.js ke bahasa Indonesia
-                                                                    moment.locale('id');
+                                                        <script type="text/javascript">
+                                                            $(function() {
+                                                                // Set moment.js ke bahasa Indonesia
+                                                                moment.locale('id');
 
-                                                                    // Inisialisasi nilai tanggal dari input hidden atau gunakan default jika kosong
-                                                                    var start = moment($('#tgl-pembelian-start').val(), 'YYYY-MM-DD').isValid() ? moment($('#tgl-pembelian-start').val(), 'YYYY-MM-DD') : moment().subtract(29, 'days');
-                                                                    var end = moment($('#tgl-pembelian-end').val(), 'YYYY-MM-DD').isValid() ? moment($('#tgl-pembelian-end').val(), 'YYYY-MM-DD') : moment();
+                                                                // Inisialisasi nilai tanggal dari input hidden atau gunakan default jika kosong
+                                                                var start = moment($('#tgl-pembelian-start').val(), 'YYYY-MM-DD').isValid() ? moment($(
+                                                                    '#tgl-pembelian-start').val(), 'YYYY-MM-DD') : moment().subtract(29, 'days');
+                                                                var end = moment($('#tgl-pembelian-end').val(), 'YYYY-MM-DD').isValid() ? moment($('#tgl-pembelian-end')
+                                                                    .val(), 'YYYY-MM-DD') : moment();
 
-                                                                    function cb(start, end) {
-                                                                        $('#tgl-pembelian span').html(start.format('D MMMM YYYY') + ' - ' + end.format('D MMMM YYYY'));
-                                                                        $('#tgl-pembelian-start').val(start.format('YYYY-MM-DD'));
-                                                                        $('#tgl-pembelian-end').val(end.format('YYYY-MM-DD'));
+                                                                function cb(start, end) {
+                                                                    $('#tgl-pembelian span').html(start.format('D MMMM YYYY') + ' - ' + end.format('D MMMM YYYY'));
+                                                                    $('#tgl-pembelian-start').val(start.format('YYYY-MM-DD'));
+                                                                    $('#tgl-pembelian-end').val(end.format('YYYY-MM-DD'));
+                                                                }
+
+                                                                $('#tgl-pembelian').daterangepicker({
+                                                                    startDate: start,
+                                                                    endDate: end,
+                                                                    ranges: {
+                                                                        'Hari ini': [moment(), moment()],
+                                                                        'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                                                        '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
+                                                                        '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
+                                                                        'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+                                                                        'Bulan Terakhir': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+                                                                            'month').endOf('month')]
+                                                                    },
+                                                                    locale: {
+                                                                        format: 'D MMMM YYYY', // Format tanggal
+                                                                        applyLabel: 'Terapkan',
+                                                                        cancelLabel: 'Batal',
+                                                                        customRangeLabel: 'Pilih Tanggal',
+                                                                        daysOfWeek: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                                                                        monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus',
+                                                                            'September', 'Oktober', 'November', 'Desember'
+                                                                        ],
+                                                                        firstDay: 1 // Set Senin sebagai hari pertama dalam seminggu
                                                                     }
+                                                                }, cb);
 
-                                                                    $('#tgl-pembelian').daterangepicker({
-                                                                        startDate: start,
-                                                                        endDate: end,
-                                                                        ranges: {
-                                                                            'Hari ini': [moment(), moment()],
-                                                                            'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                                                                            '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
-                                                                            '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
-                                                                            'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
-                                                                            'Bulan Terakhir': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                                                                        },
-                                                                        locale: {
-                                                                            format: 'D MMMM YYYY', // Format tanggal
-                                                                            applyLabel: 'Terapkan',
-                                                                            cancelLabel: 'Batal',
-                                                                            customRangeLabel: 'Pilih Tanggal',
-                                                                            daysOfWeek: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
-                                                                            monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
-                                                                            firstDay: 1 // Set Senin sebagai hari pertama dalam seminggu
-                                                                        }
-                                                                    }, cb);
-
-                                                                    // Menangani tanggal saat apply pada daterangepicker
-                                                                    $('#tgl-pembelian').on('apply.daterangepicker', function(ev, picker) {
-                                                                        $('#tgl-pembelian-start').val(picker.startDate.format('YYYY-MM-DD'));
-                                                                        $('#tgl-pembelian-end').val(picker.endDate.format('YYYY-MM-DD'));
-                                                                        // Submit form secara otomatis setelah rentang tanggal dipilih
-                                                                        $(this).closest('form').submit();
-                                                                    });
-
-                                                                    // Panggil callback untuk menampilkan range tanggal yang sudah di-set
-                                                                    cb(start, end);
+                                                                // Menangani tanggal saat apply pada daterangepicker
+                                                                $('#tgl-pembelian').on('apply.daterangepicker', function(ev, picker) {
+                                                                    $('#tgl-pembelian-start').val(picker.startDate.format('YYYY-MM-DD'));
+                                                                    $('#tgl-pembelian-end').val(picker.endDate.format('YYYY-MM-DD'));
+                                                                    // Submit form secara otomatis setelah rentang tanggal dipilih
+                                                                    $(this).closest('form').submit();
                                                                 });
-                                                            </script>
 
-
-
+                                                                // Panggil callback untuk menampilkan range tanggal yang sudah di-set
+                                                                cb(start, end);
+                                                            });
+                                                        </script>
 
                                                         <!-- Filter Kategori -->
                                                         <div class="input-group" style="flex: 0.5;">
@@ -345,9 +345,26 @@
                                                                 <i class="fas fa-sync-alt"></i>
                                                             </button>
                                                         </div>
+
+                                                        <!-- Tombol Tambah -->
+                                                        <div>
+                                                            <button type="button" class="btn btn-success"
+                                                                data-toggle="modal" data-target="#tambahModal"
+                                                                style="background-color: rgb(0, 177, 0); color: white; border-radius:10px; width: 150px; margin-left:20px;">
+                                                                <i class="fas fa-plus-circle"></i> Tambah
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        style="margin-top: 10px; display:flex; justify-content:flex-end;margin:auto; margin-top:10px;">
+                                                        <button href="/{{ $role }}/print-data"
+                                                            style="border-radius:10px; width: 150px;"
+                                                            class="btn btn-outline-secondary">
+                                                            <i class="fas fa-file-alt"
+                                                                style="margin-right:2px;"></i>Export
+                                                        </button>
                                                     </div>
                                                 </form>
-
                                                 <script>
                                                     function resetFilters() {
                                                         // Dapatkan URL saat ini tanpa query string
@@ -356,40 +373,10 @@
                                                         window.location.href = baseUrl;
                                                     }
                                                 </script>
-
-
-
-                                                <!-- Tombol Aksi -->
-                                                <div
-                                                    style="display: flex; flex-direction: column; align-items: center; margin-left: 0px;">
-                                                    <div class="btn-group btn-block mb-2 mb-xl-0 mt-1 card-tambah-periksa"
-                                                        style="width: 150px; margin-bottom: 10px;">
-                                                        <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                            <button type="button" class="btn btn-success"
-                                                                data-toggle="modal" data-target="#tambahModal"
-                                                                style="background-color:  rgb(0, 177, 0); color: white; border-radius:10px;">
-                                                                <i class="fas fa-plus-circle"></i>
-                                                                <span>Tambah </span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="btn-group btn-block mb-2 mb-xl-0 card-tambah-kontrol"
-                                                        style="width: 150px;">
-                                                        <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                            <a href="/{{ $role }}/print-data"
-                                                                style=" border-radius:10px;"
-                                                                class="btn btn-outline-secondary">
-                                                                <i class="fas fa-file-alt"
-                                                                    style="margin-right:2px;"></i>Export
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
 
-
                                             <!-- Keterangan Data -->
-                                            <div class="col-12 col-md-10 col-sm-12 mb-2 mb-xl-0">
+                                            <div>
                                                 <div class="d-flex flex-row bd-highlight align-items-center">
                                                     <div class="p-2 bd-highlight">
                                                         <i class="fas fa-info-circle"></i>
@@ -408,10 +395,11 @@
                                         <!-- Table aset -->
                                         <table id="example3" class="table table-bordered"
                                             style="width:100%; font-size: 13px;">
-                                            <thead class="table-secondary" style="text-align: center; font-size: 16px;">
+                                            <thead class="table-secondary"
+                                                style="text-align: center; font-size: 16px; background-color:white">
                                                 <tr>
-                                                    <th>NO</th>
-                                                    <th style="width:24%;">Kode Aset</th>
+                                                    <th style="width:5%;">No</th>
+                                                    <th style="width:20%;">Kode Aset</th>
                                                     <th style="width:10%;">Nama Aset</th>
                                                     <th style="width:10%;">Kategori</th>
                                                     <th>Lokasi Penyimpanan</th>
@@ -433,11 +421,12 @@
                                                                         <b>{{ $data->kode_aset }}</b>
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <td style="border: none; padding: 4px; width: 35%;">
+                                                                <tr style="display: flex; justify-content: space-between;">
+                                                                    <td style="border: none;padding: 4px; flex: 2;">
                                                                         Tgl Pembelian
                                                                     </td>
-                                                                    <td style="border: none; padding: 4px; width: 65%;">
+                                                                    <td
+                                                                        style="border: none;padding: 4px; flex: 2; font-size: 12px;text-align:right;">
                                                                         <b>{{ $data->tgl_perolehan ?? 'Data tidak tersedia' }}</b>
                                                                     </td>
                                                                 </tr>
@@ -469,92 +458,106 @@
                                                                 </tr>
                                                             </table>
                                                         </td>
-                                                        <td><b>{{ $data->nama_aset }}</b></td>
-                                                        <td>{{ $data->kategori_aset->kategori ?? 'Tidak Ada Kategori' }}
+                                                        <td style="text-align:center;"><b>{{ $data->nama_aset }}</b></td>
+                                                        <td style="text-align:center;">
+                                                            {{ $data->kategori_aset->kategori ?? 'Tidak Ada Kategori' }}
                                                         </td>
-                                                        <td>{{ $data->lokasi_penyimpanan }}</td>
-                                                        <td>{{ $data->satuan }}</td>
+                                                        <td style="text-align:center;">{{ $data->lokasi_penyimpanan }}
+                                                        </td>
+                                                        <td style="text-align:center;">{{ $data->satuan }}</td>
                                                         <td>
                                                             <table
                                                                 style="width:100%; border:none; border-collapse: collapse;">
                                                                 <tr>
-                                                                    <td style="border: none; padding: 8px;">
-                                                                        Tgl Pemeriksaan
+                                                                    <td
+                                                                        style="border: none; padding: 4px; line-height: 1.2;">
+                                                                        Tgl
                                                                     </td>
                                                                     <td
-                                                                        style="border: none; padding: 8px; text-align: right;">
+                                                                        style="border: none; padding: 4px; text-align: right; font-size: 12px; line-height: 1.2;">
                                                                         <b>{{ $data->latestDetailPemeriksaanAset->pemeriksaanAset->tanggal_pemeriksaan ?? '-' }}</b>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td style="border: none; padding: 8px;">
+                                                                    <td
+                                                                        style="border: none; padding: 4px; line-height: 1.2;">
                                                                         Kondisi
                                                                     </td>
                                                                     <td
-                                                                        style="text-align: right; border: none; padding: 8px; color:
-                                                                        {{ isset($data->latestDetailPemeriksaanAset) ? ($data->latestDetailPemeriksaanAset->kondisi == 'baik' ? '#55CE71' : ($data->latestDetailPemeriksaanAset->kondisi == 'rusak' ? 'rgb(255, 18, 18)' : 'inherit')) : '' }}">
+                                                                        style="text-align: right; border: none; padding: 4px; color:
+                                                                        {{ isset($data->latestDetailPemeriksaanAset) ? ($data->latestDetailPemeriksaanAset->kondisi == 'baik' ? '#55CE71' : ($data->latestDetailPemeriksaanAset->kondisi == 'rusak' ? 'rgb(255, 18, 18)' : 'inherit')) : '' }}; line-height: 1.2;">
                                                                         {{ $data->latestDetailPemeriksaanAset->kondisi ?? '-' }}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td style="border: none; padding: 8px;">
+                                                                    <td
+                                                                        style="border: none; padding: 4px; line-height: 1.2;">
                                                                         Status
                                                                     </td>
                                                                     <td
-                                                                        style="border: none; padding: 8px; text-align: right; color:
-                                                                        {{ isset($data->latestDetailPemeriksaanAset) ? ($data->latestDetailPemeriksaanAset->status_aset == 'aktif' ? '#55CE71' : ($data->latestDetailPemeriksaanAset->status_aset == 'non aktif' ? 'rgb(255, 18, 18)' : 'inherit')) : '' }}">
+                                                                        style="border: none; padding: 4px; text-align: right; color:
+                                                                        {{ isset($data->latestDetailPemeriksaanAset) ? ($data->latestDetailPemeriksaanAset->status_aset == 'aktif' ? '#55CE71' : ($data->latestDetailPemeriksaanAset->status_aset == 'non aktif' ? 'rgb(255, 18, 18)' : 'inherit')) : '' }}; line-height: 1.2;">
                                                                         {{ $data->latestDetailPemeriksaanAset->status_aset ?? '-' }}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td style="border: none; padding: 8px;">
+                                                                    <td
+                                                                        style="border: none; padding: 4px; line-height: 1.2;">
                                                                         Keterangan
                                                                     </td>
                                                                     <td
-                                                                        style="border: none; padding: 8px; text-align: right;">
+                                                                        style="border: none; padding: 4px; text-align: right; line-height: 1.2;">
                                                                         {{ $data->latestDetailPemeriksaanAset->masalah_teridentifikasi ?? '-' }}
                                                                     </td>
                                                                 </tr>
                                                             </table>
+
                                                         </td>
                                                         <td>
                                                             <table
-                                                                style="width:100%; border:none; border-collapse: collapse;">
+                                                                style="width:100%; border:none; border-collapse: collapse; font-size:13px;">
                                                                 <tr>
-                                                                    <td style="border: none; padding: 8px;">
+                                                                    <td
+                                                                        style="border: none; padding: 4px; line-height: 1.2;">
                                                                         Tgl Input
                                                                     </td>
-                                                                    <td style="border: none; padding: 8px;">
+                                                                    <td
+                                                                        style="border: none; padding: 4px; font-size:12px; line-height: 1.2;">
                                                                         <b>Tgl Input</b>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td style="border: none; padding: 8px;">
+                                                                    <td
+                                                                        style="border: none; padding: 4px; line-height: 1.2;">
                                                                         Jml Masuk
                                                                     </td>
-                                                                    <td style="border: none; padding: 8px;"
+                                                                    <td style="border: none; padding: 4px; line-height: 1.2;"
                                                                         class="text-success">
                                                                         Jml Masuk
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td style="border: none; padding: 8px;">
+                                                                    <td
+                                                                        style="border: none; padding: 4px; line-height: 1.2;">
                                                                         Jml Keluar
                                                                     </td>
-                                                                    <td style="border: none; padding: 8px;"
+                                                                    <td style="border: none; padding: 4px; line-height: 1.2;"
                                                                         class="text-warning">
                                                                         Jml Keluar
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td style="border: none; padding: 8px;">
+                                                                    <td
+                                                                        style="border: none; padding: 4px; line-height: 1.2;">
                                                                         Sisa
                                                                     </td>
-                                                                    <td style="border: none; padding: 8px;">
+                                                                    <td
+                                                                        style="border: none; padding: 4px; line-height: 1.2;">
                                                                         Sisa
                                                                     </td>
                                                                 </tr>
                                                             </table>
+
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -594,56 +597,60 @@
                                                             id="tgl-pemeriksaan-end" name="tgl-pemeriksaan-end"
                                                             value="{{ request('tgl-pemeriksaan-end') }}">
 
-                                                            <script type="text/javascript">
-                                                                $(function() {
-                                                                    // Set moment.js ke bahasa Indonesia
-                                                                    moment.locale('id');
+                                                        <script type="text/javascript">
+                                                            $(function() {
+                                                                // Set moment.js ke bahasa Indonesia
+                                                                moment.locale('id');
 
-                                                                    // Inisialisasi nilai tanggal dari input hidden atau gunakan default jika kosong
-                                                                    var start = moment($('#tgl-pemeriksaan-start').val(), 'YYYY-MM-DD').isValid() ? moment($('#tgl-pemeriksaan-start').val(), 'YYYY-MM-DD') : moment().subtract(29, 'days');
-                                                                    var end = moment($('#tgl-pemeriksaan-end').val(), 'YYYY-MM-DD').isValid() ? moment($('#tgl-pemeriksaan-end').val(), 'YYYY-MM-DD') : moment();
+                                                                // Inisialisasi nilai tanggal dari input hidden atau gunakan default jika kosong
+                                                                var start = moment($('#tgl-pemeriksaan-start').val(), 'YYYY-MM-DD').isValid() ? moment($(
+                                                                    '#tgl-pemeriksaan-start').val(), 'YYYY-MM-DD') : moment().subtract(29, 'days');
+                                                                var end = moment($('#tgl-pemeriksaan-end').val(), 'YYYY-MM-DD').isValid() ? moment($(
+                                                                    '#tgl-pemeriksaan-end').val(), 'YYYY-MM-DD') : moment();
 
-                                                                    function cb(start, end) {
-                                                                        $('#tgl-pemeriksaan span').html(start.format('D MMMM YYYY') + ' - ' + end.format('D MMMM YYYY'));
-                                                                        $('#tgl-pemeriksaan-start').val(start.format('YYYY-MM-DD'));
-                                                                        $('#tgl-pemeriksaan-end').val(end.format('YYYY-MM-DD'));
+                                                                function cb(start, end) {
+                                                                    $('#tgl-pemeriksaan span').html(start.format('D MMMM YYYY') + ' - ' + end.format('D MMMM YYYY'));
+                                                                    $('#tgl-pemeriksaan-start').val(start.format('YYYY-MM-DD'));
+                                                                    $('#tgl-pemeriksaan-end').val(end.format('YYYY-MM-DD'));
+                                                                }
+
+                                                                $('#tgl-pemeriksaan').daterangepicker({
+                                                                    startDate: start,
+                                                                    endDate: end,
+                                                                    ranges: {
+                                                                        'Hari ini': [moment(), moment()],
+                                                                        'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                                                        '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
+                                                                        '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
+                                                                        'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+                                                                        'Bulan Terakhir': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+                                                                            'month').endOf('month')]
+                                                                    },
+                                                                    locale: {
+                                                                        format: 'D MMMM YYYY', // Format tanggal
+                                                                        applyLabel: 'Terapkan',
+                                                                        cancelLabel: 'Batal',
+                                                                        customRangeLabel: 'Pilih Tanggal',
+                                                                        daysOfWeek: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                                                                        monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus',
+                                                                            'September', 'Oktober', 'November', 'Desember'
+                                                                        ],
+                                                                        firstDay: 1 // Set Senin sebagai hari pertama dalam seminggu
                                                                     }
+                                                                }, cb);
 
-                                                                    $('#tgl-pemeriksaan').daterangepicker({
-                                                                        startDate: start,
-                                                                        endDate: end,
-                                                                        ranges: {
-                                                                            'Hari ini': [moment(), moment()],
-                                                                            'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                                                                            '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
-                                                                            '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
-                                                                            'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
-                                                                            'Bulan Terakhir': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                                                                        },
-                                                                        locale: {
-                                                                            format: 'D MMMM YYYY', // Format tanggal
-                                                                            applyLabel: 'Terapkan',
-                                                                            cancelLabel: 'Batal',
-                                                                            customRangeLabel: 'Pilih Tanggal',
-                                                                            daysOfWeek: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
-                                                                            monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
-                                                                            firstDay: 1 // Set Senin sebagai hari pertama dalam seminggu
-                                                                        }
-                                                                    }, cb);
-
-                                                                    // Menangani tanggal saat apply pada daterangepicker
-                                                                    $('#tgl-pemeriksaan').on('apply.daterangepicker', function(ev, picker) {
-                                                                        $('#tgl-pemeriksaan-start').val(picker.startDate.format('YYYY-MM-DD'));
-                                                                        $('#tgl-pemeriksaan-end').val(picker.endDate.format('YYYY-MM-DD'));
-                                                                        // Submit form secara otomatis setelah rentang tanggal dipilih
-                                                                        $(this).closest('form').submit();
-                                                                    });
-
-                                                                    // Panggil callback untuk menampilkan range tanggal yang sudah di-set
-                                                                    cb(start, end);
+                                                                // Menangani tanggal saat apply pada daterangepicker
+                                                                $('#tgl-pemeriksaan').on('apply.daterangepicker', function(ev, picker) {
+                                                                    $('#tgl-pemeriksaan-start').val(picker.startDate.format('YYYY-MM-DD'));
+                                                                    $('#tgl-pemeriksaan-end').val(picker.endDate.format('YYYY-MM-DD'));
+                                                                    // Submit form secara otomatis setelah rentang tanggal dipilih
+                                                                    $(this).closest('form').submit();
                                                                 });
-                                                            </script>
 
+                                                                // Panggil callback untuk menampilkan range tanggal yang sudah di-set
+                                                                cb(start, end);
+                                                            });
+                                                        </script>
 
                                                         <!-- Filter Kategori -->
                                                         <div class="input-group" style="flex: 0.5;">
@@ -655,16 +662,19 @@
                                                                 style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
                                                                 <option value="all"
                                                                     {{ request('filter_status_spv', 'all') == 'all' ? 'selected' : '' }}>
-                                                                    Semua</option>
+                                                                    Semua
+                                                                </option>
                                                                 <option value="mengetahui"
                                                                     {{ request('filter_status_spv') == 'mengetahui' ? 'selected' : '' }}>
-                                                                    Mengetahui</option>
+                                                                    Mengetahui
+                                                                </option>
                                                                 <option value="belum"
                                                                     {{ request('filter_status_spv') == 'belum' ? 'selected' : '' }}>
-                                                                    Belum Mengetahui</option>
+                                                                    Belum Mengetahui
+                                                                </option>
                                                             </select>
-
                                                         </div>
+
                                                         <!-- Filter Kategori -->
                                                         <div class="input-group" style="flex: 0.5;">
                                                             <div class="input-group-prepend">
@@ -675,17 +685,19 @@
                                                                 style="border-top-right-radius: 10px; border-bottom-right-radius:10px;">
                                                                 <option value="all"
                                                                     {{ request('filter_status_kc', 'all') == 'all' ? 'selected' : '' }}>
-                                                                    Semua</option>
+                                                                    Semua
+                                                                </option>
                                                                 <option value="mengetahui"
                                                                     {{ request('filter_status_kc') == 'mengetahui' ? 'selected' : '' }}>
-                                                                    Mengetahui</option>
+                                                                    Mengetahui
+                                                                </option>
                                                                 <option value="belum"
                                                                     {{ request('filter_status_kc') == 'belum' ? 'selected' : '' }}>
-                                                                    Belum Mengetahui</option>
+                                                                    Belum Mengetahui
+                                                                </option>
                                                             </select>
                                                         </div>
 
-                                                        <!-- Tombol Refresh -->
                                                         <div>
                                                             <button type="button" class="btn btn-outline-secondary"
                                                                 style="width: 100px; border-radius:10px;"
@@ -693,6 +705,24 @@
                                                                 <i class="fas fa-sync-alt"></i>
                                                             </button>
                                                         </div>
+
+                                                        <!-- Tombol Tambah -->
+                                                        <div>
+                                                            <button type="button" class="btn btn-success"
+                                                                data-toggle="modal" data-target="#pemeriksaanModal"
+                                                                style="background-color: rgb(0, 177, 0); color: white; border-radius:10px; width: 150px; margin-left:20px;">
+                                                                <i class="fas fa-plus-circle"></i> Tambah
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        style="margin-top: 10px; display:flex; justify-content:flex-end;margin:auto; margin-top:10px;">
+                                                        <button href="/{{ $role }}/print-data"
+                                                            style="border-radius:10px; width: 150px;"
+                                                            class="btn btn-outline-secondary">
+                                                            <i class="fas fa-file-alt"
+                                                                style="margin-right:2px;"></i>Export
+                                                        </button>
                                                     </div>
                                                 </form>
 
@@ -713,33 +743,6 @@
                                                         }
                                                     });
                                                 </script>
-
-                                                <!-- Tombol Aksi -->
-                                                <div
-                                                    style="display: flex; flex-direction: column; align-items: center; margin-left: 0px;">
-                                                    <div class="btn-group btn-block mb-2 mb-xl-0 mt-1 card-tambah-periksa"
-                                                        style="width: 150px; margin-bottom: 10px;">
-                                                        <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                            <button type="button" class="btn btn-success"
-                                                                data-toggle="modal" data-target="#pemeriksaanModal"
-                                                                style="background-color:  rgb(0, 177, 0); color: white; border-radius:10px;">
-                                                                <i class="fas fa-plus-circle"></i>
-                                                                <span>Tambah </span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="btn-group btn-block mb-2 mb-xl-0 card-tambah-kontrol"
-                                                        style="width: 150px;">
-                                                        <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                            <a href="/{{ $role }}/print-data"
-                                                                style=" border-radius:10px;"
-                                                                class="btn btn-outline-secondary">
-                                                                <i class="fas fa-file-alt"
-                                                                    style="margin-right:2px;"></i>Export
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
 
                                             <!-- Keterangan Data -->
@@ -749,30 +752,27 @@
                                                         <i class="fas fa-info-circle"></i>
                                                     </div>
                                                     <div class="p-1 bd-highlight">
-                                                        <span>
-                                                            Data Aset PC Lazisnu Cilacap. Dapat ditambahkan oleh
-                                                            Staff
-                                                            Logistik dan Perlengkapan.
-                                                        </span>
+                                                        <span>Data Aset PC Lazisnu Cilacap. Dapat ditambahkan oleh Staff
+                                                            Logistik dan Perlengkapan.</span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
+
                                         {{-- tabel pemeriksaan --}}
                                         <table id="example3" class="table table-bordered"
                                             style="width:100%; font-size:13px;">
-                                            <thead class="table-secondary" style="text-align: center; font-size: 16px;">
+                                            <thead class="table-secondary" style="text-align: center; font-size: 16px;background-color:white">
                                                 <tr>
-                                                    <th>NO</th>
-                                                    <th>Tgl Pemeriksaan</th>
-                                                    <th>Pemeriksa</th>
+                                                    <th>No</th>
+                                                    <th style="width: 10%;">Tgl Pemeriksaan</th>
+                                                    <th style="width: 17%;">Pemeriksa</th>
                                                     <th>Aset Diperiksa</th>
-                                                    <th>Berdasarkan Kondisi</th>
-                                                    <th>Berdasarkan Status</th>
-                                                    <th>Status SPV</th>
-                                                    <th>Status KC</th>
-                                                    {{-- <th style="width: 150px;">Aksi</th> --}}
+                                                    <th style="width: 20%;">Berdasarkan Kondisi</th>
+                                                    <th style="width: 17%;">Berdasarkan Status</th>
+                                                    <th style="width: 17%;">Status SPV</th>
+                                                    <th style="width: 17%;">Status KC</th>
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size:13px;" class="hover-pointer">
@@ -789,7 +789,7 @@
                                                             data-url="/{{ $role }}/arsip/aset/detail_pemeriksaan/{{ $detail->id_pemeriksaan_aset }}/{{ $detail->tanggal_pemeriksaan }}">
                                                             @if ($key == 0)
                                                                 <td>{{ $no++ }}</td>
-                                                                <td>{{ $detail->tanggal_pemeriksaan }}</td>
+                                                                <td><b>{{ $detail->tanggal_pemeriksaan }}</b></td>
                                                                 <td><b>
                                                                         {{ $namaPemeriksa }}
                                                                     </b>
@@ -806,98 +806,68 @@
                                                                 </td>
                                                                 <td>
                                                                     @if ($detail->detailPemeriksaanAset->isNotEmpty())
-                                                                        <table id="example">
+                                                                        <table id="example" style="border-collapse: collapse; width: 100%;">
                                                                             <tbody>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px;">baik
-                                                                                    </td>
-                                                                                    <td style="font-size: 13px;">
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">baik</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">
                                                                                         {{ $baikCount = $detail->detailPemeriksaanAset->where('kondisi', 'baik')->count() }}
                                                                                     </td>
-                                                                                    <td
-                                                                                        style="text-align: right; font-size: 13px;">
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($baikCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px;">rusak
-                                                                                    </td>
-                                                                                    <td style="font-size: 13px;"
-                                                                                        class="text-primary">
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">rusak</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-primary">
                                                                                         {{ $rusakCount = $detail->detailPemeriksaanAset->where('kondisi', 'rusak')->count() }}
                                                                                     </td>
-                                                                                    <td style="text-align: right; font-size: 13px;"
-                                                                                        class="text-primary">
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-primary">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($rusakCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px;">perlu
-                                                                                        perbaikan</td>
-                                                                                    <td style="font-size: 13px;"
-                                                                                        class="text-warning">
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">perlu perbaikan</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-warning">
                                                                                         {{ $serviceCount = $detail->detailPemeriksaanAset->where('kondisi', 'perlu service')->count() }}
                                                                                     </td>
-                                                                                    <td style="text-align: right; font-size: 13px;"
-                                                                                        class="text-warning">
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-warning">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($serviceCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px;">hilang
-                                                                                    </td>
-                                                                                    <td style="font-size: 13px;"
-                                                                                        class="text-danger">
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">hilang</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-danger">
                                                                                         {{ $hilangCount = $detail->detailPemeriksaanAset->where('kondisi', 'hilang')->count() }}
                                                                                     </td>
-                                                                                    <td style="text-align: right; font-size: 13px;"
-                                                                                        class="text-danger">
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-danger">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($hilangCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
                                                                     @else
-                                                                        <table id="example">
+                                                                        <table id="example" style="border-collapse: collapse; width: 100%;">
                                                                             <tbody>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px;">baik
-                                                                                    </td>
-                                                                                    <td style="font-size: 13px;">
-                                                                                        - </td>
-                                                                                    <td
-                                                                                        style="text-align: right; font-size: 13px;">
-                                                                                        - </td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">baik</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">-</td>
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;">-</td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px;">rusak
-                                                                                    </td>
-                                                                                    <td style="font-size: 13px;"
-                                                                                        class="text-primary">
-                                                                                        - </td>
-                                                                                    <td style="text-align: right; font-size: 13px;"
-                                                                                        class="text-primary">
-                                                                                        - </td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">rusak</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-primary">-</td>
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-primary">-</td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px;">perlu
-                                                                                        perbaikan</td>
-                                                                                    <td style="font-size: 13px;"
-                                                                                        class="text-warning">
-                                                                                        - </td>
-                                                                                    <td style="text-align: right; font-size: 13px;"
-                                                                                        class="text-warning">
-                                                                                        - </td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">perlu perbaikan</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-warning">-</td>
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-warning">-</td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px;">hilang
-                                                                                    </td>
-                                                                                    <td style="font-size: 13px;"
-                                                                                        class="text-danger">
-                                                                                        - </td>
-                                                                                    <td style="text-align: right; font-size: 13px;"
-                                                                                        class="text-danger">
-                                                                                        - </td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">hilang</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-danger">-</td>
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-danger">-</td>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
@@ -905,61 +875,53 @@
                                                                 </td>
                                                                 <td>
                                                                     @if ($detail->detailPemeriksaanAset->isNotEmpty())
-                                                                        <table id="example">
-                                                                            <tr>
-                                                                                <td style="font-size: 13px;">Aktif</td>
-                                                                                <td style="font-size: 13px;"
-                                                                                    class="text-success">
-                                                                                    {{ $aktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'aktif')->count() ?? '-' }}
-                                                                                </td>
-                                                                                <td style="text-align: right; font-size: 13px;"
-                                                                                    class="text-success">
-                                                                                    {{ $totalDetailPemeriksaan > 0 ? round(($aktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 ?? '-' }}%
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td style="font-size: 13px;">Non Aktif
-                                                                                </td>
-                                                                                <td style="font-size: 13px;"
-                                                                                    class="text-danger">
-                                                                                    {{ $nonAktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'non aktif')->count() ?? '-' }}
-                                                                                </td>
-                                                                                <td style="text-align: right; font-size: 13px;"
-                                                                                    class="text-danger">
-                                                                                    {{ $totalDetailPemeriksaan > 0 ? round(($nonAktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 ?? '-' }}%
-                                                                                </td>
-                                                                            </tr>
+                                                                        <table id="example" style="border-collapse: collapse; width: 100%;">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">Aktif</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-success">
+                                                                                        {{ $aktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'aktif')->count() ?? '-' }}
+                                                                                    </td>
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-success">
+                                                                                        {{ $totalDetailPemeriksaan > 0 ? round(($aktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 ?? '-' }}%
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">Non Aktif</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-danger">
+                                                                                        {{ $nonAktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'non aktif')->count() ?? '-' }}
+                                                                                    </td>
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-danger">
+                                                                                        {{ $totalDetailPemeriksaan > 0 ? round(($nonAktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 ?? '-' }}%
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
                                                                         </table>
                                                                     @else
-                                                                        <table id="example">
-                                                                            <tr>
-                                                                                <td style="font-size: 13px;">Aktif</td>
-                                                                                <td style="font-size: 13px;"
-                                                                                    class="text-success">
-                                                                                    - </td>
-                                                                                <td style="text-align: right; font-size: 13px;"
-                                                                                    class="text-success">
-                                                                                    - </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td style="font-size: 13px;">Non Aktif
-                                                                                </td>
-                                                                                <td style="font-size: 13px;"
-                                                                                    class="text-danger">
-                                                                                    - </td>
-                                                                                <td style="text-align: right; font-size: 13px;"
-                                                                                    class="text-danger">
-                                                                                    - </td>
-                                                                            </tr>
+                                                                        <table id="example" style="border-collapse: collapse; width: 100%;">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">Aktif</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-success">-</td>
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-success">-</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">Non Aktif</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-danger">-</td>
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-danger">-</td>
+                                                                                </tr>
+                                                                            </tbody>
                                                                         </table>
                                                                     @endif
                                                                 </td>
+
                                                                 <td>
                                                                     <div>
                                                                         @if ($detail->status_spv == 'mengetahui')
                                                                             <div class="text-success">Mengetahui</div>
                                                                         @else
-                                                                            <div class="text-danger">Belum Mengetahui</div>
+                                                                            <div class="text-danger">Belum Mengetahui
+                                                                            </div>
                                                                         @endif
                                                                         <div>
                                                                             <b>{{ $detail->supervisor->pengguna->nama }}</b>
@@ -974,35 +936,16 @@
                                                                         @if ($detail->status_kc == 'mengetahui')
                                                                             <div class="text-success">Mengetahui</div>
                                                                         @else
-                                                                            <div class="text-danger">Belum Mengetahui</div>
+                                                                            <div class="text-danger">Belum Mengetahui
+                                                                            </div>
                                                                         @endif
-                                                                        <div><b>{{ $detail->kc->pengguna->nama }}</b></div>
-                                                                        <div>{{ $detail->kc->pengurusJabatan->jabatan }}
+                                                                        <div><b>{{ $detail->kc->pengguna->nama }}</b>
+                                                                        </div>
+                                                                        <div>
+                                                                            {{ $detail->kc->pengurusJabatan->jabatan }}
                                                                         </div>
                                                                     </div>
                                                                 </td>
-                                                                {{-- <td> --}}
-                                                                    {{-- <div
-                                                                        class="btn-group btn-block mb-2 mb-xl-0 card_detail_barang">
-                                                                        <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                                            <a onclick="$('#cover-spin').show(0)"
-                                                                                href="/{{ $role }}/arsip/aset/detail_pemeriksaan/{{ $detail->id_pemeriksaan_aset }}/{{ $detail->tanggal_pemeriksaan }}"
-                                                                                class="btn btn-outline-secondary btn-block"
-                                                                                style="display: block;border-radius:10px;">
-                                                                                Detail
-                                                                            </a>
-                                                                        </div>
-                                                                    </div> --}}
-                                                                    {{-- <div class="btn-group btn-block mb-2 mb-xl-0 card-tambah-kontrol"
-                                                                        style="width: 150px;">
-                                                                        <div class="btn-group mb-2 mb-xl-0 btn-block">
-                                                                            <a href="/{{ $role }}/print-pemeriksaan-byid"
-                                                                                style="border-radius:10px;"
-                                                                                class="btn btn-outline-secondary">
-                                                                                <i class="fi fi-sr-file"></i>Cetak PDF </a>
-                                                                        </div>
-                                                                    </div> --}}
-                                                                {{-- </td> --}}
                                                             @endif
                                                         </tr>
                                                     @endforeach
@@ -1067,11 +1010,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="myForm" method="POST" action="{{ route($role.'.aset.store') }}">
+                    <form id="myForm" method="POST" action="{{ route($role . '.aset.store') }}">
                         @csrf
                         <div class="form-group">
                             <label for="kode">Kode Aset </label>
-                            <input type="text" value="{{ $kodeAset }}" class="form-control" id="kode_aset" name="kode_aset" readonly>
+                            <input type="text" value="{{ $kodeAset }}" class="form-control" id="kode_aset"
+                                name="kode_aset" readonly>
                         </div>
                         <div class="form-group">
                             <label for="tgl_beli">Tgl Perolehan </label>
@@ -1284,39 +1228,20 @@
     </script>
 
 @section('js')
-    <!-- CSS DataTables -->
-    {{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"> --}}
-
-    <link src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}">
-    </link>
-    <link src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}">
-    </link>
-    <link src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}">
-    </link>
-    <link src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}">
-    </link>
-    <link src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}">
-    </link>
-    <link src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}">
-    </link>
-    <link src="{{ asset('assets/plugins/jszip/jszip.min.js') }}">
-    </link>
-    <link src="{{ asset('assets/plugins/pdfmake/pdfmake.min.js') }}">
-    </link>
-    <link src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}">
-    </link>
-    <scr src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></scr>
-    <link src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}">
-    </link>
-
-    {{-- <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script> --}}
-
+    <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <!-- AdminLTE -->
-    <link src="{{ asset('assets/dist/js/adminlte.js') }}">
-    </link>
+    <script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
 @endsection
 
 @endsection
