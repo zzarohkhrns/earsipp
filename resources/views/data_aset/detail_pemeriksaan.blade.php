@@ -519,7 +519,7 @@
                                                                     <span>Tambah</span>
                                                                 </button>
                                                             </div>
-                                                            <table id="example3" class="table table-bordered"
+                                                            <table id="pemeriksaanTable" class="table table-bordered"
                                                                 style="width:100%;">
                                                                 <thead class="table-secondary"
                                                                     style="text-align: center; font-size:16;">
@@ -1259,7 +1259,7 @@
                                                                         style="margin-right: 5px"></i>Export
                                                                 </button>
                                                             </div>
-                                                            <table id="example3" class="table table-bordered"
+                                                            <table id="statusSpvKcTable" class="table table-bordered"
                                                                 style="width:100%;">
                                                                 <thead class="table-secondary"
                                                                     style="text-align: center; font-size:16;">
@@ -1515,483 +1515,496 @@
                 </div>
             </div>
         </div>
+    </section>
 
-    @section('js')
-        <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/jszip/jszip.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/pdfmake/pdfmake.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></script>
-        <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <script>
+        $(document).on('click', '.edit-pemeriksaan', function() {
+            var id_detail = $(this).data('id-detail');
+            var aset_id = $(this).data('aset-id');
+            var kategori_aset = $(this).data('kategori-aset');
+            var lokasi_penyimpanan = $(this).data('lokasi-penyimpanan');
+            var tgl_perolehan = $(this).data('tgl-perolehan');
+            var kondisi = $(this).data('kondisi');
+            var masalah_teridentifikasi = $(this).data('masalah-teridentifikasi');
+            var tindakan_diperlukan = $(this).data('tindakan-diperlukan');
+            var status_aset = $(this).data('status-aset');
 
-        <!-- AdminLTE -->
-        <script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
-    @endsection
+            // Isi form di dalam modal dengan data yang diterima
+            $('#edit_id_detail_pemeriksaan').val(id_detail); // Set value untuk select
+            $('#edit_aset').val(aset_id); // Set value untuk select
+            $('#edit_kategori_aset').val(kategori_aset);
+            $('#edit_lokasi_penyimpanan').val(lokasi_penyimpanan);
+            $('#edit_tgl_perolehan').val(tgl_perolehan);
+            $('#edit_kondisi').val(kondisi);
+            $('#edit_masalah_teridentifikasi').val(masalah_teridentifikasi);
+            $('#edit_tindakan_diperlukan').val(tindakan_diperlukan);
+            $('input[name="edit_status"][value="' + status_aset + '"]').prop('checked', true);
 
-</section>
+            // Set action URL untuk form edit
+            //$('#editPemeriksaanForm').attr('action', 'pc/detail_pemeriksaan/update/' + id_detail);
+        })
+    </script>
 
-<script>
-    $(document).on('click', '.edit-pemeriksaan', function() {
-        var id_detail = $(this).data('id-detail');
-        var aset_id = $(this).data('aset-id');
-        var kategori_aset = $(this).data('kategori-aset');
-        var lokasi_penyimpanan = $(this).data('lokasi-penyimpanan');
-        var tgl_perolehan = $(this).data('tgl-perolehan');
-        var kondisi = $(this).data('kondisi');
-        var masalah_teridentifikasi = $(this).data('masalah-teridentifikasi');
-        var tindakan_diperlukan = $(this).data('tindakan-diperlukan');
-        var status_aset = $(this).data('status-aset');
-
-        // Isi form di dalam modal dengan data yang diterima
-        $('#edit_id_detail_pemeriksaan').val(id_detail); // Set value untuk select
-        $('#edit_aset').val(aset_id); // Set value untuk select
-        $('#edit_kategori_aset').val(kategori_aset);
-        $('#edit_lokasi_penyimpanan').val(lokasi_penyimpanan);
-        $('#edit_tgl_perolehan').val(tgl_perolehan);
-        $('#edit_kondisi').val(kondisi);
-        $('#edit_masalah_teridentifikasi').val(masalah_teridentifikasi);
-        $('#edit_tindakan_diperlukan').val(tindakan_diperlukan);
-        $('input[name="edit_status"][value="' + status_aset + '"]').prop('checked', true);
-
-        // Set action URL untuk form edit
-        //$('#editPemeriksaanForm').attr('action', 'pc/detail_pemeriksaan/update/' + id_detail);
-    })
-</script>
-
-{{-- modal ubah data pemeriksaan barang --}}
-<div class="modal fade" id="UbahPemeriksaanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Ubah Data Pemeriksaan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="padding: 1rem;">
-                <form id="editPemeriksaanForm" method="POST"
-                    action="/{{ $role }}/detail_pemeriksaan/update/">
-                    @csrf
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="edit_id_detail_pemeriksaan"
-                            name="edit_id_detail_pemeriksaan"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" hidden>
-                        <label for="nama_aset" style="font-weight: bold; font-size: 14px;">Nama Aset</label>
-                        <select class="form-control" id="edit_aset" name="edit_aset"
-                            onchange="toggleNewCategoryForm()" required>
-                            <option value="">Pilih Aset</option>
-                            @foreach ($aset as $data)
-                                <option value="{{ $data->aset_id }}">{{ $data->nama_aset }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_kategori_aset">Kategori :</label>
-                        <input type="text" class="form-control" id="edit_kategori_aset"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_lokasi_penyimpanan" style="font-weight: bold; font-size: 14px;">Lokasi
-                            Aset</label>
-                        <input type="text" class="form-control" id="edit_lokasi_penyimpanan"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_tgl_perolehan" style="font-weight: bold; font-size: 14px;">Tgl
-                            Pembelian</label>
-                        <input type="date" class="form-control" id="edit_tgl_perolehan"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label style="font-weight: bold; font-size: 14px;">Status</label><br>
-                        <div style="display: flex; align-items: center;">
-                            <input type="radio" id="edit_status_aset_aktif" name="edit_status" value="aktif"
-                                checked style="margin-right: 5px;">
-                            <label for="edit_status_aset_aktif" style="margin-right: 20px;">Aktif</label>
-                            <input type="radio" id="status_aset_nonaktif" name="edit_status" value="non aktif"
-                                style="margin-right: 5px;">
-                            <label for="status_aset_nonaktif">Non Aktif</label>
+    {{-- modal ubah data pemeriksaan barang --}}
+    <div class="modal fade" id="UbahPemeriksaanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Ubah Data Pemeriksaan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 1rem;">
+                    <form id="editPemeriksaanForm" method="POST"
+                        action="/{{ $role }}/detail_pemeriksaan/update/">
+                        @csrf
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="edit_id_detail_pemeriksaan"
+                                name="edit_id_detail_pemeriksaan"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" hidden>
+                            <label for="nama_aset" style="font-weight: bold; font-size: 14px;">Nama Aset</label>
+                            <select class="form-control" id="edit_aset" name="edit_aset"
+                                onchange="toggleNewCategoryForm()" required>
+                                <option value="">Pilih Aset</option>
+                                @foreach ($aset as $data)
+                                    <option value="{{ $data->aset_id }}">{{ $data->nama_aset }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label for="edit_kategori_aset">Kategori :</label>
+                            <input type="text" class="form-control" id="edit_kategori_aset"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_lokasi_penyimpanan" style="font-weight: bold; font-size: 14px;">Lokasi
+                                Aset</label>
+                            <input type="text" class="form-control" id="edit_lokasi_penyimpanan"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_tgl_perolehan" style="font-weight: bold; font-size: 14px;">Tgl
+                                Pembelian</label>
+                            <input type="date" class="form-control" id="edit_tgl_perolehan"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label style="font-weight: bold; font-size: 14px;">Status</label><br>
+                            <div style="display: flex; align-items: center;">
+                                <input type="radio" id="edit_status_aset_aktif" name="edit_status" value="aktif"
+                                    checked style="margin-right: 5px;">
+                                <label for="edit_status_aset_aktif" style="margin-right: 20px;">Aktif</label>
+                                <input type="radio" id="status_aset_nonaktif" name="edit_status" value="non aktif"
+                                    style="margin-right: 5px;">
+                                <label for="status_aset_nonaktif">Non Aktif</label>
+                            </div>
+                        </div>
 
-                    <label for="kondisi">Kondisi</label>
-                    <select class="form-control" id="edit_kondisi" name="edit_kondisi"
-                        onchange="toggleNewCategoryForm()" required>
-                        <option value="">Pilih Kondisi</option>
-                        <option value="baik">Baik</option>
-                        <option value="rusak">Tidak Memadai (Rusak)</option>
-                        <option value="perlu service">Perlu Perbaikan</option>
-                        <option value="hilang">Hilang</option>
-                    </select>
-                    <div class="form-group">
-                        <label for="edit_masalah_teridentifikasi" style="font-weight: bold; font-size: 14px;">Masalah
-                            Teridentifikasi</label>
-                        <textarea class="form-control" id="edit_masalah_teridentifikasi" name="edit_masalah_teridentifikasi" rows="3"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_tindakan_diperlukan" style="font-weight: bold; font-size: 14px;">Tindakan
-                            Yang
-                            Diperlukan</label>
-                        <textarea class="form-control" id="edit_tindakan_diperlukan" name="edit_tindakan_diperlukan" rows="3"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-success"
-                        style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
-                </form>
+                        <label for="kondisi">Kondisi</label>
+                        <select class="form-control" id="edit_kondisi" name="edit_kondisi"
+                            onchange="toggleNewCategoryForm()" required>
+                            <option value="">Pilih Kondisi</option>
+                            <option value="baik">Baik</option>
+                            <option value="rusak">Tidak Memadai (Rusak)</option>
+                            <option value="perlu service">Perlu Perbaikan</option>
+                            <option value="hilang">Hilang</option>
+                        </select>
+                        <div class="form-group">
+                            <label for="edit_masalah_teridentifikasi" style="font-weight: bold; font-size: 14px;">Masalah
+                                Teridentifikasi</label>
+                            <textarea class="form-control" id="edit_masalah_teridentifikasi" name="edit_masalah_teridentifikasi" rows="3"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_tindakan_diperlukan" style="font-weight: bold; font-size: 14px;">Tindakan
+                                Yang
+                                Diperlukan</label>
+                            <textarea class="form-control" id="edit_tindakan_diperlukan" name="edit_tindakan_diperlukan" rows="3"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success"
+                            style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-{{-- modal tambah data pemeriksaan barang --}}
-<div class="modal fade" id="TambahPemeriksaanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Tambah Data Pemeriksaan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="padding: 1rem;">
-                <form method="POST"
-                    action="{{ route('pc.detail_pemeriksaan.store', $pemeriksaanAset->id_pemeriksaan_aset) }}">
-                    @csrf
-                    <div class="form-group">
-                        <label for="nama_aset" style="font-weight: bold; font-size: 14px;">Nama Aset</label>
-                        <select class="form-control" id="aset" name="aset"
-                            onchange="toggleNewCategoryForm()" required>
-                            <option value="">Pilih Aset</option>
-                            @foreach ($aset as $data)
-                                <option value="{{ $data->aset_id }}">{{ $data->nama_aset }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="kategori">Kategori :</label>
-                        <input type="text" class="form-control" id="kategori_aset" name="kategori_aset"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="lokasi_aset" style="font-weight: bold; font-size: 14px;">Lokasi Aset</label>
-                        <input type="text" class="form-control" id="lokasi_penyimpanan" name="lokasi_penyimpanan"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="tgl_pembelian" style="font-weight: bold; font-size: 14px;">Tgl Pembelian</label>
-                        <input type="date" class="form-control" id="tgl_perolehan" name="tgl_perolehan"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label style="font-weight: bold; font-size: 14px;">Status</label><br>
-                        <div style="display: flex; align-items: center;">
-                            <input type="radio" id="status_aset" name="status_aset" value="aktif" checked
-                                style="margin-right: 5px;">
-                            <label for="aktif" style="margin-right: 20px;">Aktif</label>
-                            <input type="radio" id="status_aset" name="status_aset" value="non aktif"
-                                style="margin-right: 5px;">
-                            <label for="nonaktif">Non Aktif</label>
+    {{-- modal tambah data pemeriksaan barang --}}
+    <div class="modal fade" id="TambahPemeriksaanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Tambah Data Pemeriksaan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 1rem;">
+                    <form method="POST"
+                        action="{{ route('pc.detail_pemeriksaan.store', $pemeriksaanAset->id_pemeriksaan_aset) }}">
+                        @csrf
+                        <div class="form-group">
+                            <label for="nama_aset" style="font-weight: bold; font-size: 14px;">Nama Aset</label>
+                            <select class="form-control" id="aset" name="aset"
+                                onchange="toggleNewCategoryForm()" required>
+                                <option value="">Pilih Aset</option>
+                                @foreach ($aset as $data)
+                                    <option value="{{ $data->aset_id }}">{{ $data->nama_aset }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </div>
-                    <label for="kategori">Kondisi</label>
-                    <select class="form-control" id="kondisi" name="kondisi" onchange="toggleNewCategoryForm()"
-                        required>
-                        <option value="">Pilih Kondisi</option>
-                        <option value="baik">Baik</option>
-                        <option value="rusak">Tidak Memadai (Rusak)</option>
-                        <option value="perlu service">Perlu Perbaikan</option>
-                        <option value="hilang">Hilang</option>
-                    </select>
-                    <div class="form-group">
-                        <label for="masalah" style="font-weight: bold; font-size: 14px;">Masalah
-                            Teridentifikasi</label>
-                        <textarea class="form-control" id="masalah_teridentifikasi" rows="3" name="masalah_teridentifikasi"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="tindakan" style="font-weight: bold; font-size: 14px;">Tindakan Yang
-                            Diperlukan</label>
-                        <textarea class="form-control" id="tindakan_diperlukan" rows="3" name="tindakan_diperlukan"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-success"
-                        style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
-                </form>
+                        <div class="form-group">
+                            <label for="kategori">Kategori :</label>
+                            <input type="text" class="form-control" id="kategori_aset" name="kategori_aset"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="lokasi_aset" style="font-weight: bold; font-size: 14px;">Lokasi Aset</label>
+                            <input type="text" class="form-control" id="lokasi_penyimpanan" name="lokasi_penyimpanan"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="tgl_pembelian" style="font-weight: bold; font-size: 14px;">Tgl Pembelian</label>
+                            <input type="date" class="form-control" id="tgl_perolehan" name="tgl_perolehan"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label style="font-weight: bold; font-size: 14px;">Status</label><br>
+                            <div style="display: flex; align-items: center;">
+                                <input type="radio" id="status_aset" name="status_aset" value="aktif" checked
+                                    style="margin-right: 5px;">
+                                <label for="aktif" style="margin-right: 20px;">Aktif</label>
+                                <input type="radio" id="status_aset" name="status_aset" value="non aktif"
+                                    style="margin-right: 5px;">
+                                <label for="nonaktif">Non Aktif</label>
+                            </div>
+                        </div>
+                        <label for="kategori">Kondisi</label>
+                        <select class="form-control" id="kondisi" name="kondisi" onchange="toggleNewCategoryForm()"
+                            required>
+                            <option value="">Pilih Kondisi</option>
+                            <option value="baik">Baik</option>
+                            <option value="rusak">Tidak Memadai (Rusak)</option>
+                            <option value="perlu service">Perlu Perbaikan</option>
+                            <option value="hilang">Hilang</option>
+                        </select>
+                        <div class="form-group">
+                            <label for="masalah" style="font-weight: bold; font-size: 14px;">Masalah
+                                Teridentifikasi</label>
+                            <textarea class="form-control" id="masalah_teridentifikasi" rows="3" name="masalah_teridentifikasi"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="tindakan" style="font-weight: bold; font-size: 14px;">Tindakan Yang
+                                Diperlukan</label>
+                            <textarea class="form-control" id="tindakan_diperlukan" rows="3" name="tindakan_diperlukan"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success"
+                            style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
-{{-- script untuk otomatisasi data aset pada tambah pemeriksaan --}}
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script>
-    $('#aset').change(function() {
-        var asetId = $(this).val(); // Mendapatkan nilai id aset yang dipilih
-        console.log(asetId); // Log id aset untuk memastikan onchange berfungsi
-        if (asetId) {
-            $.ajax({
-                url: '/pc/aset/data/' + asetId, // URL endpoint sesuai dengan route yang telah diatur
-                type: 'GET',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                        'content') // Mengambil csrf_token dari meta tag
-                },
-                success: function(data) {
-                    if (data.length > 0) {
-                        var aset = data[0];
-                        // Mengisi field yang sesuai dengan data yang diterima dari server
-                        $('#kategori_aset').val(aset.kategori_aset.kategori);
-                        $('#lokasi_penyimpanan').val(aset.lokasi_penyimpanan);
-                        $('#tgl_perolehan').val(aset.tgl_perolehan);
-                    } else {
-                        alert('Aset tidak ditemukan');
+    {{-- script untuk otomatisasi data aset pada tambah pemeriksaan --}}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script>
+        $('#aset').change(function() {
+            var asetId = $(this).val(); // Mendapatkan nilai id aset yang dipilih
+            console.log(asetId); // Log id aset untuk memastikan onchange berfungsi
+            if (asetId) {
+                $.ajax({
+                    url: '/pc/aset/data/' + asetId, // URL endpoint sesuai dengan route yang telah diatur
+                    type: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                            'content') // Mengambil csrf_token dari meta tag
+                    },
+                    success: function(data) {
+                        if (data.length > 0) {
+                            var aset = data[0];
+                            // Mengisi field yang sesuai dengan data yang diterima dari server
+                            $('#kategori_aset').val(aset.kategori_aset.kategori);
+                            $('#lokasi_penyimpanan').val(aset.lokasi_penyimpanan);
+                            $('#tgl_perolehan').val(aset.tgl_perolehan);
+                        } else {
+                            alert('Aset tidak ditemukan');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
                     }
+                });
+            } else {
+                // Mengosongkan field jika tidak ada aset yang dipilih
+                $('#kategori_aset').val('');
+                $('#lokasi_penyimpanan').val('');
+                $('#tgl_perolehan').val('');
+            }
+        });
+    </script>
+
+    <!-- modal respon spv -->
+    <div class="modal fade" id="responspvModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Respon SPV - Pemeriksaan Aset</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding-top: 0;">
+                    <form id="responspvForm" method="POST"
+                        action="{{ route($role . '.respon_spv.update', $pemeriksaanAset->id_pemeriksaan_aset) }}">
+                        @csrf
+                        <div class="form-group">
+                            <label for="tgl_pemeriksaan" style="font-weight: bold; font-size: 14px;">Tgl
+                                Pemeriksaan</label>
+                            <input type="date" class="form-control" id="tanggal_pemeriksaan"
+                                name="tanggal_pemeriksaan" value="{{ $pemeriksaanAset->tanggal_pemeriksaan }}"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="kategori">Status SPV</label>
+                            <select class="form-control" id="status_spv" name="status_spv"
+                                onchange="toggleNewCategoryForm()">
+                                <option value="">Pilih Status</option>
+                                <option value="mengetahui" @if ($pemeriksaanAset->status_spv == 'mengetahui') selected @endif>Mengetahui
+                                </option>
+                                <option value="belum" @if ($pemeriksaanAset->status_spv == 'belum') selected @endif>Belum Mengetahui
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tgl_respon" style="font-weight: bold; font-size: 14px;">Tgl Respon SPV</label>
+                            <input type="date" class="form-control" id="tgl_mengetahui_spv" name="tgl_mengetahui_spv"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        </div>
+                        <div class="form-group">
+                            <label for="catatan_spv" style="font-weight: bold; font-size: 14px;">Catatan SPV</label>
+                            <input type="text" class="form-control" id="catatan_spv" name="catatan_spv"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        </div>
+                        <div class="alert alert-info"
+                            style="background-color: #CBF2D6; border-color: #CBF2D6; color: #155724; margin-top: 15px;">
+                            <strong>INFORMASI</strong><br>Dengan klik tombol simpan, SPV mengetahui hasil pemeriksaan aset
+                            dan meneruskannya ke Kepala Cabang.
+                        </div>
+                        <button type="submit" class="btn btn-success"
+                            style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal respon kc -->
+    <div class="modal fade" id="responkcModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Respon KC - Pemeriksaan Aset</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding-top: 0;">
+                    <form method="POST"
+                        action="{{ route($role . '.respon_kc.update', $pemeriksaanAset->id_pemeriksaan_aset) }}">
+                        @csrf
+                        <div class="form-group">
+                            <label for="tgl_pemeriksaan" style="font-weight: bold; font-size: 14px;">Tgl
+                                Pemeriksaan</label>
+                            <input type="date" class="form-control" id="tgl_pemeriksaan"
+                                value="{{ $pemeriksaanAset->tanggal_pemeriksaan }}"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="tgl_respon" style="font-weight: bold; font-size: 14px;">Tgl Respon SPV</label>
+                            <input type="date" class="form-control" id="tgl_mengetahui_spv" name="tgl_mengetahui_spv"
+                                value="{{ $pemeriksaanAset->tgl_mengetahui_spv }}"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="catatan_spv" style="font-weight: bold; font-size: 14px;">Catatan SPV</label>
+                            <input type="text" class="form-control" id="catatan_spv" name="catatan_spv"
+                                value="{{ $pemeriksaanAset->catatan_spv }}"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="kategori">Status KC</label>
+                            <select class="form-control" id="status_kc" name="status_kc" required
+                                onchange="toggleNewCategoryForm()">
+                                <option value="">Pilih Status</option>
+                                <option value="mengetahui" @if ($pemeriksaanAset->status_kc == 'mengetahui') selected @endif>Mengetahui
+                                </option>
+                                <option value="belum" @if ($pemeriksaanAset->status_kc == 'belum') selected @endif>Belum Mengetahui
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tgl_respon_kc" style="font-weight: bold; font-size: 14px;">Tgl Respon KC</label>
+                            <input type="date" class="form-control" id="tgl_mengetahui_kc" name="tgl_mengetahui_kc"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="catatan_kc" style="font-weight: bold; font-size: 14px;">Catatan KC</label>
+                            <input type="text" class="form-control" id="catatan_kc" name="catatan_kc"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required>
+                        </div>
+                        <div class="alert alert-info"
+                            style="background-color: #CBF2D6; border-color: #CBF2D6; color: #155724; margin-top: 15px;">
+                            <strong>INFORMASI</strong><br>Dengan klik tombol simpan, KC mengetahui hasil pemeriksaan aset.
+                            Hasil pemeriksaan aset dapat digunakan sebagai lampiran pengajuan internal.
+                        </div>
+                        <button type="submit" class="btn btn-success"
+                            style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- script untuk menyimpan kategori --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pasang event listener pada tombol "Tambah Kategori"
+            document.getElementById('addCategoryButton').addEventListener('click', function() {
+                addCategory();
+            });
+
+            // Menampilkan atau menyembunyikan form kategori baru berdasarkan pilihan
+            toggleNewCategoryForm();
+        });
+
+        function toggleNewCategoryForm() {
+            var select = document.getElementById('kategori');
+            var newCategoryForm = document.getElementById('newCategoryForm');
+            if (select.value === 'others') {
+                newCategoryForm.style.display = 'block';
+            } else {
+                newCategoryForm.style.display = 'none';
+            }
+        }
+
+        function addCategory() {
+            var newCategory = document.getElementById('newKategori').value.trim();
+            if (newCategory) {
+                // Kirim kategori baru ke server
+                $.ajax({
+                    url: '{{ route('pc.kategori.store') }}',
+                    type: 'POST',
+                    data: {
+                        nama: newCategory,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        if (data.id) {
+                            var select = document.getElementById('kategori');
+                            var option = document.createElement('option');
+                            option.value = data.id; // Gunakan ID dari respons (id_kategori)
+                            option.text = data.nama; // Gunakan nama dari respons (kategori)
+                            select.add(option);
+                            select.value = data.id; // Setel kategori baru sebagai yang dipilih
+                            document.getElementById('newKategori').value = ''; // Kosongkan input
+                            document.getElementById('newCategoryForm').style.display =
+                                'none'; // Sembunyikan form setelah menambah
+                        } else {
+                            alert('Gagal menambahkan kategori.');
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert('Gagal menyimpan kategori baru.');
+                    }
+                });
+            } else {
+                alert('Silakan masukkan nama kategori baru.');
+            }
+        }
+    </script>
+
+    {{-- script untuk dropdown status pemeriksaan --}}
+    <script>
+        function handleDropdownChange(selectElement) {
+            var selectedValue = selectElement.value;
+            var idPemeriksaanAset = document.getElementById("idPemeriksaanAset").value;
+
+            $.ajax({
+                url: '{{ route($role . '.updateStatusPemeriksaan') }}', // Pastikan ini sesuai dengan rute yang kamu definisikan
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id_pemeriksaan_aset: idPemeriksaanAset,
+                    status_pemeriksaan: selectedValue
+                },
+                success: function(response) {
+                    alert(response.message);
                 },
                 error: function(xhr) {
-                    console.error(xhr.responseText);
+                    console.log(xhr.responseText); // Tampilkan respons error dari server
+                    alert('Gagal mengubah status pemeriksaan');
                 }
             });
-        } else {
-            // Mengosongkan field jika tidak ada aset yang dipilih
-            $('#kategori_aset').val('');
-            $('#lokasi_penyimpanan').val('');
-            $('#tgl_perolehan').val('');
         }
-    });
-</script>
+    </script>
 
-<!-- modal respon spv -->
-<div class="modal fade" id="responspvModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Respon SPV - Pemeriksaan Aset</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="padding-top: 0;">
-                <form id="responspvForm" method="POST"
-                    action="{{ route($role . '.respon_spv.update', $pemeriksaanAset->id_pemeriksaan_aset) }}">
-                    @csrf
-                    <div class="form-group">
-                        <label for="tgl_pemeriksaan" style="font-weight: bold; font-size: 14px;">Tgl
-                            Pemeriksaan</label>
-                        <input type="date" class="form-control" id="tanggal_pemeriksaan"
-                            name="tanggal_pemeriksaan" value="{{ $pemeriksaanAset->tanggal_pemeriksaan }}"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="kategori">Status SPV</label>
-                        <select class="form-control" id="status_spv" name="status_spv"
-                            onchange="toggleNewCategoryForm()">
-                            <option value="">Pilih Status</option>
-                            <option value="mengetahui" @if ($pemeriksaanAset->status_spv == 'mengetahui') selected @endif>Mengetahui
-                            </option>
-                            <option value="belum" @if ($pemeriksaanAset->status_spv == 'belum') selected @endif>Belum Mengetahui
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="tgl_respon" style="font-weight: bold; font-size: 14px;">Tgl Respon SPV</label>
-                        <input type="date" class="form-control" id="tgl_mengetahui_spv" name="tgl_mengetahui_spv"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
-                    </div>
-                    <div class="form-group">
-                        <label for="catatan_spv" style="font-weight: bold; font-size: 14px;">Catatan SPV</label>
-                        <input type="text" class="form-control" id="catatan_spv" name="catatan_spv"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
-                    </div>
-                    <div class="alert alert-info"
-                        style="background-color: #CBF2D6; border-color: #CBF2D6; color: #155724; margin-top: 15px;">
-                        <strong>INFORMASI</strong><br>Dengan klik tombol simpan, SPV mengetahui hasil pemeriksaan aset
-                        dan meneruskannya ke Kepala Cabang.
-                    </div>
-                    <button type="submit" class="btn btn-success"
-                        style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+@section('js')
+<script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/jszip/jszip.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/pdfmake/pdfmake.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 
-<!-- modal respon kc -->
-<div class="modal fade" id="responkcModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Respon KC - Pemeriksaan Aset</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="padding-top: 0;">
-                <form method="POST"
-                    action="{{ route($role . '.respon_kc.update', $pemeriksaanAset->id_pemeriksaan_aset) }}">
-                    @csrf
-                    <div class="form-group">
-                        <label for="tgl_pemeriksaan" style="font-weight: bold; font-size: 14px;">Tgl
-                            Pemeriksaan</label>
-                        <input type="date" class="form-control" id="tgl_pemeriksaan"
-                            value="{{ $pemeriksaanAset->tanggal_pemeriksaan }}"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="tgl_respon" style="font-weight: bold; font-size: 14px;">Tgl Respon SPV</label>
-                        <input type="date" class="form-control" id="tgl_mengetahui_spv" name="tgl_mengetahui_spv"
-                            value="{{ $pemeriksaanAset->tgl_mengetahui_spv }}"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="catatan_spv" style="font-weight: bold; font-size: 14px;">Catatan SPV</label>
-                        <input type="text" class="form-control" id="catatan_spv" name="catatan_spv"
-                            value="{{ $pemeriksaanAset->catatan_spv }}"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="kategori">Status KC</label>
-                        <select class="form-control" id="status_kc" name="status_kc" required
-                            onchange="toggleNewCategoryForm()">
-                            <option value="">Pilih Status</option>
-                            <option value="mengetahui" @if ($pemeriksaanAset->status_kc == 'mengetahui') selected @endif>Mengetahui
-                            </option>
-                            <option value="belum" @if ($pemeriksaanAset->status_kc == 'belum') selected @endif>Belum Mengetahui
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="tgl_respon_kc" style="font-weight: bold; font-size: 14px;">Tgl Respon KC</label>
-                        <input type="date" class="form-control" id="tgl_mengetahui_kc" name="tgl_mengetahui_kc"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="catatan_kc" style="font-weight: bold; font-size: 14px;">Catatan KC</label>
-                        <input type="text" class="form-control" id="catatan_kc" name="catatan_kc"
-                            style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required>
-                    </div>
-                    <div class="alert alert-info"
-                        style="background-color: #CBF2D6; border-color: #CBF2D6; color: #155724; margin-top: 15px;">
-                        <strong>INFORMASI</strong><br>Dengan klik tombol simpan, KC mengetahui hasil pemeriksaan aset.
-                        Hasil pemeriksaan aset dapat digunakan sebagai lampiran pengajuan internal.
-                    </div>
-                    <button type="submit" class="btn btn-success"
-                        style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- AdminLTE -->
+<script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
 
-{{-- script --}}
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-{{-- script berpindah tab --}}
 <script>
     $(document).ready(function() {
+        // Fungsi untuk menginisialisasi DataTables
+        function initDataTables() {
+            // Inisialisasi DataTables hanya jika belum diinisialisasi
+            if (!$.fn.DataTable.isDataTable('#pemeriksaanTable')) {
+                $('#pemeriksaanTable').DataTable();
+            }
+            if (!$.fn.DataTable.isDataTable('#statusSpvKcTable')) {
+                $('#statusSpvKcTable').DataTable();
+            }
+        }
+
+        // Inisialisasi DataTables pada tab aktif
+        function handleTabChange() {
+            $('#myTab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                initDataTables();
+            });
+        }
+
+        // Inisialisasi DataTables pada halaman load
+        initDataTables();
+        handleTabChange();
+
+        // Custom tab switcher (optional)
         $('#myTab a').on('click', function(e) {
             e.preventDefault();
-            $('#myTab a').css('color', '#6c757d');
-            $('#myTab a').css('font-weight', 'normal');
-            $(this).css('color', '#28a745');
-            $(this).css('font-weight', 'bold');
             $(this).tab('show');
         });
     });
 </script>
+@endsection
 
-{{-- script untuk menyimpan kategori --}}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Pasang event listener pada tombol "Tambah Kategori"
-        document.getElementById('addCategoryButton').addEventListener('click', function() {
-            addCategory();
-        });
-
-        // Menampilkan atau menyembunyikan form kategori baru berdasarkan pilihan
-        toggleNewCategoryForm();
-    });
-
-    function toggleNewCategoryForm() {
-        var select = document.getElementById('kategori');
-        var newCategoryForm = document.getElementById('newCategoryForm');
-        if (select.value === 'others') {
-            newCategoryForm.style.display = 'block';
-        } else {
-            newCategoryForm.style.display = 'none';
-        }
-    }
-
-    function addCategory() {
-        var newCategory = document.getElementById('newKategori').value.trim();
-        if (newCategory) {
-            // Kirim kategori baru ke server
-            $.ajax({
-                url: '{{ route('pc.kategori.store') }}',
-                type: 'POST',
-                data: {
-                    nama: newCategory,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(data) {
-                    if (data.id) {
-                        var select = document.getElementById('kategori');
-                        var option = document.createElement('option');
-                        option.value = data.id; // Gunakan ID dari respons (id_kategori)
-                        option.text = data.nama; // Gunakan nama dari respons (kategori)
-                        select.add(option);
-                        select.value = data.id; // Setel kategori baru sebagai yang dipilih
-                        document.getElementById('newKategori').value = ''; // Kosongkan input
-                        document.getElementById('newCategoryForm').style.display =
-                            'none'; // Sembunyikan form setelah menambah
-                    } else {
-                        alert('Gagal menambahkan kategori.');
-                    }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Gagal menyimpan kategori baru.');
-                }
-            });
-        } else {
-            alert('Silakan masukkan nama kategori baru.');
-        }
-    }
-</script>
-
-{{-- script untuk dropdown status pemeriksaan --}}
-<script>
-    function handleDropdownChange(selectElement) {
-        var selectedValue = selectElement.value;
-        var idPemeriksaanAset = document.getElementById("idPemeriksaanAset").value;
-
-        $.ajax({
-            url: '{{ route($role . '.updateStatusPemeriksaan') }}', // Pastikan ini sesuai dengan rute yang kamu definisikan
-            method: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}',
-                id_pemeriksaan_aset: idPemeriksaanAset,
-                status_pemeriksaan: selectedValue
-            },
-            success: function(response) {
-                alert(response.message);
-            },
-            error: function(xhr) {
-                console.log(xhr.responseText); // Tampilkan respons error dari server
-                alert('Gagal mengubah status pemeriksaan');
-            }
-        });
-    }
-</script>
-
+@endsection
 @endsection

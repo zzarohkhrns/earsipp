@@ -7,6 +7,8 @@
 @section('css')
 @section('content')
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <style>
         .tab-content {
             display: none;
@@ -142,47 +144,16 @@
                                             <b class="text-success pl-2">Data Aset<br>Logistik dan Perlengkapan</b>
                                         </h5>
                                         <div class="btn-group ml-5">
-                                            <a id="tab-dataAset" class="btn btn-light btn-block mt-2" style="width:150px;"
+                                            <a id="tab-dataAset" class="btn btn-light btn-block mt-2" style="width:150px;font-size:16px;"
                                                 onclick="openTab('dataAset')">Data Aset</a>
                                             <a id="tab-pemeriksaan" class="btn btn-light btn-block ml-2"
-                                                style="width:150px;" onclick="openTab('pemeriksaan')">Pemeriksaan</a>
+                                                style="width:150px;font-size:16px;" onclick="openTab('pemeriksaan')">Pemeriksaan</a>
                                             <a id="tab-keluarMasuk" class="btn btn-light btn-block ml-2"
-                                                style="width:150px;" onclick="openTab('keluarMasuk')">Keluar Masuk</a>
+                                                style="width:150px;font-size:16px;" onclick="openTab('keluarMasuk')">Keluar Masuk</a>
                                             <a id="tab-penyusutanNilai" class="btn btn-light btn-block ml-2"
-                                                style="width:150px;" onclick="openTab('penyusutanNilai')">Penyusutan
+                                                style="width:150px;font-size:16px;" onclick="openTab('penyusutanNilai')">Penyusutan
                                                 Nilai</a>
                                         </div>
-
-                                        <script>
-                                            function openTab(tabId) {
-                                                // Sembunyikan semua konten tab
-                                                var contents = document.getElementsByClassName('tab-content');
-                                                for (var i = 0; i < contents.length; i++) {
-                                                    contents[i].classList.remove('active');
-                                                }
-
-                                                // Tampilkan konten tab yang dipilih
-                                                document.getElementById(tabId).classList.add('active');
-
-                                                // Ubah warna tombol tab yang aktif
-                                                var buttons = document.querySelectorAll('.btn-group .btn');
-                                                buttons.forEach(button => {
-                                                    button.classList.remove('btn-success');
-                                                    button.classList.add('btn-light');
-                                                });
-
-                                                // Tambahkan kelas 'btn-success' ke tombol yang aktif
-                                                document.getElementById('tab-' + tabId).classList.add('btn-success');
-                                                document.getElementById('tab-' + tabId).classList.remove('btn-light');
-                                            }
-
-                                            // Inisialisasi tab pertama atau tab pemeriksaan jika query param tab=pemeriksaan
-                                            window.onload = function() {
-                                                const urlParams = new URLSearchParams(window.location.search);
-                                                const activeTab = urlParams.get('tab') || 'dataAset'; // Default tab is dataAset
-                                                openTab(activeTab);
-                                            }
-                                        </script>
                                     </div>
 
                                     <!-- success jika berhasil menambah data -->
@@ -217,7 +188,7 @@
 
                                         {{-- menu filter --}}
                                         <div
-                                            style="border: 1px solid #e0e0e0; border-radius: 10px; background-color: #ffffff; padding: 10px; margin-bottom: 10px; width: 100%;">
+                                            style="border: 1px solid #e0e0e0; border-radius: 10px; background-color: #ffffff; padding: 10px; margin-bottom: 10px; width: 100%; font-size:16px;">
                                             <!-- Bagian Filter dan Tombol Aksi -->
                                             <div style=" width: 100%; margin-right: 0px;">
                                                 <form method="GET" action="{{ url($role . '/arsip/aset/data') }}">
@@ -381,7 +352,7 @@
                                                     <div class="p-2 bd-highlight">
                                                         <i class="fas fa-info-circle"></i>
                                                     </div>
-                                                    <div class="p-1 bd-highlight">
+                                                    <div class="p-1 bd-highlight" style="font-size: 16px;">
                                                         <span>
                                                             Data Aset PC Lazisnu Cilacap. Dapat ditambahkan oleh
                                                             Staff
@@ -393,9 +364,9 @@
                                         </div>
 
                                         <!-- Table aset -->
-                                        <table id="example3" class="table table-bordered"
+                                        <table id="tableDataAset" class="table table-bordered"
                                             style="width:100%; font-size: 13px;">
-                                            <thead class="table-secondary"
+                                            <thead
                                                 style="text-align: center; font-size: 16px; background-color:white">
                                                 <tr>
                                                     <th style="width:5%;">No</th>
@@ -451,7 +422,7 @@
                                                                                         : 'Non Aktif');
                                                                         @endphp
                                                                         <button type="button" class="btn"
-                                                                            style="border-radius: 10px; {{ $warnaTombol }} color: white; padding: 4px 8px; font-size: 12px;">
+                                                                            style="border-radius: 10px; {{ $warnaTombol }} color: white; padding: 2px 6px; font-size: 12px; line-height: 1;">
                                                                             {{ $teksTombol }}
                                                                         </button>
                                                                     </td>
@@ -522,7 +493,7 @@
                                                                         Tgl Input
                                                                     </td>
                                                                     <td
-                                                                        style="border: none; padding: 4px; font-size:12px; line-height: 1.2;">
+                                                                        style="border: none; padding: 4px; font-size:12px; line-height: 1.2; text-align:right;">
                                                                         <b>Tgl Input</b>
                                                                     </td>
                                                                 </tr>
@@ -531,7 +502,7 @@
                                                                         style="border: none; padding: 4px; line-height: 1.2;">
                                                                         Jml Masuk
                                                                     </td>
-                                                                    <td style="border: none; padding: 4px; line-height: 1.2;"
+                                                                    <td style="border: none; padding: 4px; line-height: 1.2; text-align:right;"
                                                                         class="text-success">
                                                                         Jml Masuk
                                                                     </td>
@@ -541,7 +512,7 @@
                                                                         style="border: none; padding: 4px; line-height: 1.2;">
                                                                         Jml Keluar
                                                                     </td>
-                                                                    <td style="border: none; padding: 4px; line-height: 1.2;"
+                                                                    <td style="border: none; padding: 4px; line-height: 1.2; text-align:right;"
                                                                         class="text-warning">
                                                                         Jml Keluar
                                                                     </td>
@@ -552,12 +523,11 @@
                                                                         Sisa
                                                                     </td>
                                                                     <td
-                                                                        style="border: none; padding: 4px; line-height: 1.2;">
+                                                                        style="border: none; padding: 4px; line-height: 1.2; text-align:right;">
                                                                         Sisa
                                                                     </td>
                                                                 </tr>
                                                             </table>
-
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -751,7 +721,7 @@
                                                     <div class="p-2 bd-highlight">
                                                         <i class="fas fa-info-circle"></i>
                                                     </div>
-                                                    <div class="p-1 bd-highlight">
+                                                    <div class="p-1 bd-highlight" style="font-size: 16px;">
                                                         <span>Data Aset PC Lazisnu Cilacap. Dapat ditambahkan oleh Staff
                                                             Logistik dan Perlengkapan.</span>
                                                     </div>
@@ -761,9 +731,10 @@
 
 
                                         {{-- tabel pemeriksaan --}}
-                                        <table id="example3" class="table table-bordered"
+                                        <table id="tablePemeriksaan" class="table table-bordered"
                                             style="width:100%; font-size:13px;">
-                                            <thead class="table-secondary" style="text-align: center; font-size: 16px;background-color:white">
+                                            <thead
+                                                style="text-align: center; font-size: 16px;background-color:white">
                                                 <tr>
                                                     <th>No</th>
                                                     <th style="width: 10%;">Tgl Pemeriksaan</th>
@@ -804,117 +775,170 @@
                                                                         0 Aset
                                                                     @endif
                                                                 </td>
-                                                                <td>
+                                                                <td style="padding: 5px;">
                                                                     @if ($detail->detailPemeriksaanAset->isNotEmpty())
-                                                                        <table id="example" style="border-collapse: collapse; width: 100%;">
+                                                                        <table id="example"
+                                                                            style="border-collapse: collapse; width: 100%; margin: 0;">
                                                                             <tbody>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">baik</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">
+                                                                                    <td
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;">
+                                                                                        baik</td>
+                                                                                    <td
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;">
                                                                                         {{ $baikCount = $detail->detailPemeriksaanAset->where('kondisi', 'baik')->count() }}
                                                                                     </td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;">
+                                                                                    <td
+                                                                                        style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($baikCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">rusak</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-primary">
+                                                                                    <td
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;">
+                                                                                        rusak</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                        class="text-primary">
                                                                                         {{ $rusakCount = $detail->detailPemeriksaanAset->where('kondisi', 'rusak')->count() }}
                                                                                     </td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-primary">
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                        class="text-primary">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($rusakCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">perlu perbaikan</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-warning">
+                                                                                    <td
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;">
+                                                                                        perlu perbaikan</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                        class="text-warning">
                                                                                         {{ $serviceCount = $detail->detailPemeriksaanAset->where('kondisi', 'perlu service')->count() }}
                                                                                     </td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-warning">
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                        class="text-warning">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($serviceCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">hilang</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-danger">
+                                                                                    <td
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;">
+                                                                                        hilang</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                        class="text-danger">
                                                                                         {{ $hilangCount = $detail->detailPemeriksaanAset->where('kondisi', 'hilang')->count() }}
                                                                                     </td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-danger">
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                        class="text-danger">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($hilangCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
                                                                     @else
-                                                                        <table id="example" style="border-collapse: collapse; width: 100%;">
+                                                                        <table id="example"
+                                                                            style="border-collapse: collapse; width: 100%; margin: 0;">
                                                                             <tbody>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">baik</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">-</td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;">-</td>
+                                                                                    <td
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;width:40%;">
+                                                                                        baik</td>
+                                                                                    <td
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;width:30%;">
+                                                                                        -</td>
+                                                                                    <td
+                                                                                        style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;width:30%;">
+                                                                                        -</td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">rusak</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-primary">-</td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-primary">-</td>
+                                                                                    <td
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;width:40%;">
+                                                                                        rusak</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
+                                                                                        class="text-primary">-</td>
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
+                                                                                        class="text-primary">-</td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">perlu perbaikan</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-warning">-</td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-warning">-</td>
+                                                                                    <td
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;width:40%;">
+                                                                                        perlu perbaikan</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
+                                                                                        class="text-warning">-</td>
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
+                                                                                        class="text-warning">-</td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">hilang</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-danger">-</td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-danger">-</td>
+                                                                                    <td
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;width:40%;">
+                                                                                        hilang</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
+                                                                                        class="text-danger">-</td>
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
+                                                                                        class="text-danger">-</td>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
                                                                     @endif
                                                                 </td>
-                                                                <td>
+                                                                <td style="padding: 10px;">
                                                                     @if ($detail->detailPemeriksaanAset->isNotEmpty())
-                                                                        <table id="example" style="border-collapse: collapse; width: 100%;">
+                                                                        <table id="example"
+                                                                            style="border-collapse: collapse; width: 100%; margin: 0;">
                                                                             <tbody>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">Aktif</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-success">
+                                                                                    <td
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;">
+                                                                                        Aktif</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                        class="text-success">
                                                                                         {{ $aktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'aktif')->count() ?? '-' }}
                                                                                     </td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-success">
-                                                                                        {{ $totalDetailPemeriksaan > 0 ? round(($aktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 ?? '-' }}%
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                        class="text-success">
+                                                                                        {{ $totalDetailPemeriksaan > 0 ? round(($aktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">Non Aktif</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-danger">
+                                                                                    <td
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;">
+                                                                                        Non Aktif</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                        class="text-danger">
                                                                                         {{ $nonAktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'non aktif')->count() ?? '-' }}
                                                                                     </td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-danger">
-                                                                                        {{ $totalDetailPemeriksaan > 0 ? round(($nonAktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 ?? '-' }}%
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                        class="text-danger">
+                                                                                        {{ $totalDetailPemeriksaan > 0 ? round(($nonAktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
                                                                     @else
-                                                                        <table id="example" style="border-collapse: collapse; width: 100%;">
+                                                                        <table id="example"
+                                                                            style="border-collapse: collapse; width: 100%; margin: 0;">
                                                                             <tbody>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">Aktif</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-success">-</td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-success">-</td>
+                                                                                    <td
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;">
+                                                                                        Aktif</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                        class="text-success">-</td>
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                        class="text-success">-</td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;">Non Aktif</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;" class="text-danger">-</td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;" class="text-danger">-</td>
+                                                                                    <td
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;">
+                                                                                        Non Aktif</td>
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                        class="text-danger">-</td>
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                        class="text-danger">-</td>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
                                                                     @endif
                                                                 </td>
-
                                                                 <td>
                                                                     <div>
                                                                         @if ($detail->status_spv == 'mengetahui')
@@ -956,8 +980,8 @@
 
                                     {{-- tab keluar masuk --}}
                                     <div id="keluarMasuk" class="tab-content" style="width: 99%; padding:10px; mt-1">
-                                        <table id="example3" class="table table-bordered" style="width:100%">
-                                            <thead class="table-secondary">
+                                        <table id="tableKeluarMasuk" class="table table-bordered" style="width:100%">
+                                            <thead>
                                                 <tr>
                                                     <th>NO</th>
                                                     <th>Diinput Oleh</th>
@@ -1069,25 +1093,6 @@
             </div>
         </div>
     </div>
-
-    {{-- script menambah kode aset --}}
-    {{-- <script>
-        $(document).ready(function() {
-            $('#tambahModal').on('show.bs.modal', function() {
-                $.ajax({
-                    url: "{{ route('pc.aset.nextKodeAset') }}",
-                    method: 'GET',
-                    success: function(data) {
-                        console.log(data);
-                        $('#kode_aset').val(data.kode_aset);
-                    },
-                    error: function() {
-                        alert('Gagal mendapatkan kode aset baru');
-                    }
-                })
-            })
-        })
-    </script> --}}
 
     {{-- script untuk menyimpan kategori --}}
     <script>
@@ -1242,6 +1247,59 @@
     <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <!-- AdminLTE -->
     <script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
+
+    <script>
+        function openTab(tabId) {
+            // Sembunyikan semua konten tab
+            var contents = document.getElementsByClassName('tab-content');
+            for (var i = 0; i < contents.length; i++) {
+                contents[i].classList.remove('active');
+            }
+
+            // Tampilkan konten tab yang dipilih
+            document.getElementById(tabId).classList.add('active');
+
+            // Inisialisasi DataTables hanya setelah tab aktif
+            if (tabId === 'dataAset') {
+                setTimeout(function() {
+                    $('#tableDataAset').DataTable();
+                }, 100);
+            }
+            if (tabId === 'pemeriksaan') {
+                setTimeout(function() {
+                    $('#tablePemeriksaan').DataTable();
+                }, 100);
+            }
+            if (tabId === 'keluarMasuk') {
+                setTimeout(function() {
+                    $('#tableKeluarMasuk').DataTable();
+                }, 100);
+            }
+            if (tabId === 'penyusutanNilai') {
+                setTimeout(function() {
+                    $('#tablePenyusutanNilai').DataTable();
+                }, 100);
+            }
+
+            // Ubah warna tombol tab yang aktif
+            var buttons = document.querySelectorAll('.btn-group .btn');
+            buttons.forEach(button => {
+                button.classList.remove('btn-success');
+                button.classList.add('btn-light');
+            });
+
+            // Tambahkan kelas 'btn-success' ke tombol yang aktif
+            document.getElementById('tab-' + tabId).classList.add('btn-success');
+            document.getElementById('tab-' + tabId).classList.remove('btn-light');
+        }
+
+        // Inisialisasi tab pertama atau tab pemeriksaan jika query param tab=pemeriksaan
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const activeTab = urlParams.get('tab') || 'dataAset'; // Default tab is dataAset
+            openTab(activeTab);
+        }
+    </script>
 @endsection
 
 @endsection

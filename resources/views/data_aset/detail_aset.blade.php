@@ -9,7 +9,7 @@
 
     <style>
         .dropdown select {
-            border-radius: 10px;
+            border-radius: 5px;
             width: 150px;
             padding: 10px;
             margin: 5px 0;
@@ -83,7 +83,8 @@
                                                 <div class="btn-group btn-block mb-2 mb-xl-0 card_edit_barang">
                                                     <a class="btn btn-success intro-ubah-detail-aset ml-1 mr- edit-aset"
                                                         type="button" data-toggle="modal" data-target="#ubahasetModal"
-                                                        style="border-radius:10px; font-size:12px;" aria-expanded="false">
+                                                        style="border-radius:10px; font-size:12px;background-color: #28a745;color: white;"
+                                                        aria-expanded="false">
                                                         &nbsp;&nbsp;<i class="fas fa-edit"></i> Edit
                                                     </a>
                                                 </div>
@@ -192,35 +193,32 @@
                                 <div class="col-12">
                                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link active" id="kontrol-barang-tab" data-toggle="tab"
-                                                href="#kontrol-barang" role="tab" aria-controls="kontrol-barang"
-                                                aria-selected="true" style="font-size: 16px;">Data Pemeriksaan</a>
+                                            <a class="nav-link active" id="kontrol-aset-tab" data-toggle="tab"
+                                                href="#kontrol-aset" role="tab" aria-controls="kontrol-aset"
+                                                aria-selected="true">Riwayat Pemeriksaan</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="keluar-masuk-barang-tab" data-toggle="tab"
-                                                href="#keluar-masuk-barang" role="tab"
-                                                aria-controls="keluar-masuk-barang" aria-selected="false"
-                                                style="font-size: 16px;">Data Keluar
-                                                Masuk</a>
+                                            <a class="nav-link" id="keluar-masuk-tab" data-toggle="tab" href="#keluar-masuk"
+                                                role="tab" aria-controls="keluar-masuk-" aria-selected="false">Riwayat
+                                                Keluar Masuk</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" id="penyusutan-nilai-tab" data-toggle="tab"
                                                 href="#penyusutan-nilai" role="tab" aria-controls="penyusutan-nilai"
-                                                aria-selected="false" style="font-size: 16px;">Data Penyusutan Nilai</a>
+                                                aria-selected="false">Penyusutan Nilai</a>
                                         </li>
                                     </ul>
 
                                     {{-- tab pemeriksaan --}}
-                                    <div class="tab-content" id="myTabContent">
-                                        <div class="tab-pane fade show active" id="kontrol-barang" role="tabpanel"
-                                            aria-labelledby="kontrol-barang-tab">
+                                    <div class="tab-content" id="TabContent">
+                                        <div class="tab-pane fade show active" id="kontrol-aset" role="tabpanel"
+                                            aria-labelledby="kontrol-aset-tab">
                                             <div class="card-body">
-                                                <div class="row card-kontrol-barang">
+                                                <div class="row card-kontrol-aset">
                                                     <div class="col-12">
-                                                        <table id="example3" class="table table-bordered"
+                                                        <table id="kontrolAset" class="table table-bordered"
                                                             style="width:100%; font-size: 13px;">
-                                                            <thead
-                                                                style="text-align: center; font-size: 16px;">
+                                                            <thead style="text-align: center; font-size: 16px;">
                                                                 <tr>
                                                                     <th>No</th>
                                                                     <th>Tgl Pemeriksaan</th>
@@ -253,10 +251,21 @@
                                                                                 <div
                                                                                     class="d-flex flex-column align-items-center">
                                                                                     <div class="dropdown">
-                                                                                        <select id="options" name="options">
-                                                                                            <option style="background-color: white" value="">Aksi</option>
-                                                                                            <option style="background-color: white" value="/{{ $role }}/arsip/aset/detail_pemeriksaan/{{ $item->pemeriksaanAset->id_pemeriksaan_aset }}/{{ $item->pemeriksaanAset->tanggal_pemeriksaan }}">Detail</option>
-                                                                                            <option style="background-color: white" value="/{{ $role }}/print-data">Export</option>
+                                                                                        <select id="options"
+                                                                                            name="options"
+                                                                                            style="padding: 2px 4px; height: auto; font-size: 12px; line-height: 1.2;">
+                                                                                            <option
+                                                                                                style="background-color: white"
+                                                                                                value="">Aksi
+                                                                                            </option>
+                                                                                            <option
+                                                                                                style="background-color: white"
+                                                                                                value="/{{ $role }}/arsip/aset/detail_pemeriksaan/{{ $item->pemeriksaanAset->id_pemeriksaan_aset }}/{{ $item->pemeriksaanAset->tanggal_pemeriksaan }}">
+                                                                                                Detail</option>
+                                                                                            <option
+                                                                                                style="background-color: white"
+                                                                                                value="/{{ $role }}/print-data">
+                                                                                                Export</option>
                                                                                         </select>
                                                                                     </div>
 
@@ -281,26 +290,30 @@
                                         </div>
 
                                         {{-- tab keluar masuk barang --}}
-                                        <div class="tab-pane fade" id="keluar-masuk-barang" role="tabpanel"
-                                            aria-labelledby="keluar-masuk-barang-tab">
+                                        <div class="tab-pane fade" id="keluar-masuk" role="tabpanel"
+                                            aria-labelledby="keluar-masuk-tab">
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <table id="example3" class="table table-bordered"
-                                                            style="width:100%;">
-                                                            <thead class="table-secondary" style="text-align: center">
+                                                        <table id="keluarMasuk" class="table table-bordered"
+                                                            style="width:100%; font-size: 13px;">
+                                                            <thead style="text-align: center; font-size: 16px;">
                                                                 <tr>
-                                                                    <th>NO</th>
-                                                                    <th>Tgl Pemeriksaan</th>
-                                                                    <th>Kondisi</th>
-                                                                    <th>Status</th>
-                                                                    <th>Masalah Teridentifikasi</th>
-                                                                    <th>Tindakan Yang Diperlukan</th>
+                                                                    <th>No</th>
+                                                                    <th>Diinput Oleh</th>
+                                                                    <th>Tanggal Input</th>
+                                                                    <th>Keluar</th>
+                                                                    <th>Masuk</th>
+                                                                    <th>Sisa</th>
+                                                                    <th>Keterangan</th>
+                                                                    <th>Respon KC</th>
                                                                     <th style="width: 150px;">Aksi</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
+                                                                    <td></td>
+                                                                    <td></td>
                                                                     <td></td>
                                                                     <td></td>
                                                                     <td></td>
@@ -322,11 +335,11 @@
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <table id="example3" class="table table-bordered"
-                                                            style="width:100%;">
-                                                            <thead class="table-secondary" style="text-align: center">
+                                                        <table id="penyusutanNilai" class="table table-bordered"
+                                                            style="width:100%; font-size: 13px;">
+                                                            <thead style="text-align: center; font-size: 16px;">
                                                                 <tr>
-                                                                    <th>NO</th>
+                                                                    <th>No</th>
                                                                     <th>Tgl Pemeriksaan</th>
                                                                     <th>Kondisi</th>
                                                                     <th>Status</th>
@@ -589,12 +602,55 @@
     <!-- AdminLTE -->
     <script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        $(document).ready(function() {
+            // Inisialisasi DataTables untuk setiap tabel
+            function initDataTables() {
+                $('#kontrolAset').DataTable();
+                $('#keluarMasuk').DataTable();
+                $('#penyusutanNilai').DataTable();
+            }
 
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+            // Fungsi untuk membuka tab dan menginisialisasi DataTables
+            function openTab(tabId) {
+                // Sembunyikan semua konten tab
+                var contents = document.getElementsByClassName('tab-pane');
+                for (var i = 0; i < contents.length; i++) {
+                    contents[i].classList.remove('show', 'active');
+                }
 
+                // Tampilkan konten tab yang dipilih
+                document.getElementById(tabId).classList.add('show', 'active');
+
+                // Inisialisasi DataTables jika tab adalah 'kontrol-aset'
+                if (tabId === 'kontrol-aset') {
+                    $('#kontrolAset').DataTable();
+                }
+                if (tabId === 'keluar-masuk') {
+                    $('#keluarMasuk').DataTable();
+                }
+                if (tabId === 'penyusutan-nilai') {
+                    $('#penyusutanNilai').DataTable();
+                }
+            }
+
+            // Inisialisasi tab pertama atau tab yang diatur oleh query parameter
+            window.onload = function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const activeTab = urlParams.get('tab') || 'kontrol-aset'; // Default tab is kontrol-aset
+                openTab(activeTab);
+            }
+
+            // Event listener untuk tab change
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+                var target = $(e.target).attr("href").substr(1);
+                openTab(target);
+            });
+
+            // Inisialisasi DataTables pada halaman load
+            initDataTables();
+        });
+    </script>
 @endsection
 
 @endsection
