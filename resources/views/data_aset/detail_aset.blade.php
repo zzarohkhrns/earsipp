@@ -198,7 +198,7 @@
                                                 aria-selected="true">Riwayat Pemeriksaan</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="keluar-masuk-tab" data-toggle="tab" href="#keluar-masuk"
+                                            <a class="nav-link" id="keluar-masuk-tab" data-toggle="tab" href="#w"
                                                 role="tab" aria-controls="keluar-masuk-" aria-selected="false">Riwayat
                                                 Keluar Masuk</a>
                                         </li>

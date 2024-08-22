@@ -224,7 +224,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/arsip/aset/detail/{id}', [DataAsetController::class, 'detail_aset'])->name('detail_aset');
         route::post('/arsip/aset/tambah_kontrol', [DataAsetController::class, 'store_kontrol'])->name('kontrol.store');
-        Route::get('/print-kontrol', [DataAsetController::class, 'printKontrol'])->name('printKontrol');
+        Route::get('/print-data/{id}', [DataAsetController::class, 'exportPdf'])->name('exportPdf');
         Route::get('/print-keluar', [DataAsetController::class, 'printKeluar'])->name('printKeluar');
         Route::get('/aset/next-kode-aset', [DataAsetController::class, 'getNextKodeAset'])->name('aset.nextKodeAset');
         Route::post('/kategori/store', [DataAsetController::class, 'store_kategori'])->name('kategori.store');

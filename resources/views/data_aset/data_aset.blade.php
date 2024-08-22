@@ -328,7 +328,7 @@
                                                     </div>
                                                     <div
                                                         style="margin-top: 10px; display:flex; justify-content:flex-end;margin:auto; margin-top:10px;">
-                                                        <button href="/{{ $role }}/print-data"
+                                                        <button href="/{{ $role }}/print-d"
                                                             style="border-radius:10px; width: 150px;"
                                                             class="btn btn-outline-secondary">
                                                             <i class="fas fa-file-alt"
@@ -540,10 +540,9 @@
 
                                         <!-- Menu untuk filter -->
                                         <div
-                                            style="border: 1px solid #e0e0e0; border-radius: 10px; background-color: #ffffff; padding: 10px; margin-bottom: 10px;">
+                                            style="border: 1px solid #e0e0e0; border-radius: 10px; background-color: #ffffff; padding: 10px; margin-bottom: 10px; width: 100%; font-size:16px;">
                                             <!-- Bagian Filter dan Tombol Aksi -->
-                                            <div
-                                                style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                                            <div style=" width: 100%; margin-right: 0px;">
                                                 <form method="GET" action="{{ url($role . '/arsip/aset/data') }}">
                                                     @csrf
                                                     <div style="display: flex; align-items: center; gap: 10px;"
@@ -685,15 +684,12 @@
                                                             </button>
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        style="margin-top: 10px; display:flex; justify-content:flex-end;margin:auto; margin-top:10px;">
-                                                        <button href="/{{ $role }}/print-data"
-                                                            style="border-radius:10px; width: 150px;"
-                                                            class="btn btn-outline-secondary">
-                                                            <i class="fas fa-file-alt"
-                                                                style="margin-right:2px;"></i>Export
-                                                        </button>
-                                                    </div>
+                                                    <div style="margin-top: 10px; display: flex; justify-content: flex-end; margin-top: 10px;">
+                                                        <a href="/{{ $role }}/print-data" class="btn btn-outline-secondary" 
+                                                           style="border-radius: 10px; width: 150px; text-align: center;">
+                                                            <i class="fas fa-file-alt" style="margin-right: 5px;"></i>Export
+                                                        </a>
+                                                    </div>                                                    
                                                 </form>
 
                                                 <script>
@@ -843,37 +839,37 @@
                                                                                         style="font-size: 13px; line-height: 1.2; padding: 4px;width:40%;">
                                                                                         baik</td>
                                                                                     <td
-                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;width:30%;">
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;width:30%;text-align:center;">
                                                                                         -</td>
                                                                                     <td
-                                                                                        style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;width:30%;">
+                                                                                        style="text-align: center; font-size: 13px; line-height: 1.2; padding: 4px;width:30%;">
                                                                                         -</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td
                                                                                         style="font-size: 13px; line-height: 1.2; padding: 4px;width:40%;">
                                                                                         rusak</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;width:30%;text-align:center;"
                                                                                         class="text-primary">-</td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
+                                                                                    <td style="text-align:center; font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
                                                                                         class="text-primary">-</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td
                                                                                         style="font-size: 13px; line-height: 1.2; padding: 4px;width:40%;">
                                                                                         perlu perbaikan</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;width:30%;text-align:center;"
                                                                                         class="text-warning">-</td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
+                                                                                    <td style="text-align:center; font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
                                                                                         class="text-warning">-</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td
                                                                                         style="font-size: 13px; line-height: 1.2; padding: 4px;width:40%;">
                                                                                         hilang</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;width:30%;text-align:center;"
                                                                                         class="text-danger">-</td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
+                                                                                    <td style="ttext-align:center; font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
                                                                                         class="text-danger">-</td>
                                                                                 </tr>
                                                                             </tbody>

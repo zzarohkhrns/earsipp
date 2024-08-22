@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DataAsetController extends Controller
 {
@@ -113,12 +114,12 @@ class DataAsetController extends Controller
         }
 
         $pemeriksaanGrouped = $pemeriksaan2->sortByDesc('created_at')
-        ->groupBy(function ($item) {
-            return $item->pcPengurus->pengguna->nama . '-' . $item->tanggal_pemeriksaan;
-        })
-        ->map(function ($group) {
-            return $group->unique('aset_id')->values();
-        });
+            ->groupBy(function ($item) {
+                return $item->pcPengurus->pengguna->nama . '-' . $item->tanggal_pemeriksaan;
+            })
+            ->map(function ($group) {
+                return $group->unique('aset_id')->values();
+            });
 
 
         // Ambil kategori
@@ -398,6 +399,26 @@ class DataAsetController extends Controller
         return view('data_aset.detail_pemeriksaan', compact('role', 'detailPemeriksaan', 'jumlahAset', 'pemeriksaanAset', 'kategori', 'aset'));
     }
 
+    public function exportPdf($id)
+    {
+        $pemeriksaanAset = PemeriksaanAset::with([
+            'pcPengurus.pengguna',
+            'pcPengurus.pengurusJabatan',
+            'supervisor.pengguna',
+            'supervisor.pengurusJabatan',
+            'kc.pengguna',
+            'kc.pengurusJabatan',
+            'detailPemeriksaanAset.aset.kategori_aset',
+        ])->findOrFail($id);
+
+        
+
+        $pdf = PDF::loadView('data_aset.export_pemeriksaan', compact('pemeriksaanAset'));
+        $pdf->setPaper('A4', 'portrait');
+        return $pdf->stream('data_pemeriksaan.pdf');
+    }
+
+
     // update status pemeriksaan
     public function updateStatusPemeriksaan(Request $request)
     {
@@ -495,7 +516,7 @@ class DataAsetController extends Controller
             session()->flash('active_tab', 'pemeriksaan');
             //return redirect()->back()->with('success', 'Data berhasil ditambahkan');
             return redirect()->route($role . '.data_aset', ['tab' => 'pemeriksaan'])
-            ->with('success', 'Pemeriksaan berhasil ditambahkan');
+                ->with('success', 'Pemeriksaan berhasil ditambahkan');
         } catch (Exception $e) {
             session()->flash('active_tab', 'pemeriksaan');
             return redirect()->back()->with('error', 'Data gagal ditambahkan.');

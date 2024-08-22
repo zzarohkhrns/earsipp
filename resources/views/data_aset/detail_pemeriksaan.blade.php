@@ -124,14 +124,16 @@
                                         <div class="col-12">
                                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                                 <li class="nav-item">
-                                                    <a class="nav-link active" id="pemeriksaan-tab" data-toggle="tab"
+                                                    <a class="nav-link active" id="detail-pemeriksaan-tab" data-toggle="tab"
                                                         href="#pemeriksaan" role="tab" aria-controls="pemeriksaan"
-                                                        aria-selected="true" style="font-size: 16px;">1. Pemeriksaan</a>
+                                                        {{-- onclick="openTab('detail-pemeriksaan')" --}} aria-selected="true"
+                                                        style="font-size: 16px;">1. Pemeriksaan</a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link" id="status-spv-kc-tab" data-toggle="tab"
                                                         href="#status-spv-kc" role="tab" aria-controls="status-spv-kc"
-                                                        aria-selected="false" style="font-size: 16px;">2. Status SPV &
+                                                        {{-- onclick="openTab('status-spv-kc')" --}} aria-selected="false"
+                                                        style="font-size: 16px;">2. Status SPV &
                                                         KC</a>
                                                 </li>
                                             </ul>
@@ -140,7 +142,7 @@
 
                                                 {{-- tab pemeriksaaan --}}
                                                 <div class="tab-pane fade show active" id="pemeriksaan" role="tabpanel"
-                                                    aria-labelledby="pemeriksaan-tab">
+                                                    aria-labelledby="detail-pemeriksaan-tab">
                                                     <div class="col-12 mt-3">
                                                         <div class="status-buttons">
                                                             @if ($pemeriksaanAset->status_pemeriksaan == 'selesai')
@@ -311,7 +313,7 @@
                                                                 </table>
                                                                 <div class="btn-group btn-block mb-2 mb-xl-0 card-tambah-kontrol"
                                                                     style="margin-left: 20px;">
-                                                                    <button href="/{{ $role }}/print-data"
+                                                                    <button href="/{{ $role }}/print-data/{{ $pemeriksaanAset->id_pemeriksaan_aset }}"
                                                                         style="border-radius: 10px; padding: 10px; margin: 0; width: 150px; font-size:12px; margin-left: 190px; margin-right:10px;"
                                                                         class="btn btn-success">
                                                                         <i class="fas fa-file-alt"></i> Export
@@ -1251,13 +1253,12 @@
                                                                 class="d-flex justify-content-between align-items-center mb-3">
                                                                 <b style="font-size: 16px;">Hasil Pemeriksaan
                                                                     Aset</b>
-
-                                                                <button href="/{{ $role }}/print-data"
-                                                                    style="border-radius: 10px; padding: 10px; margin: 0; width: 150px; font-size:12px;"
-                                                                    class="btn btn-success">
+                                                                <a href="/{{ $role }}/print-data/{{ $pemeriksaanAset->id_pemeriksaan_aset }}"
+                                                                    class="btn btn-success"
+                                                                    style="border-radius: 10px; padding: 10px; margin: 0; width: 150px; font-size:12px;">
                                                                     <i class="fas fa-file-alt"
-                                                                        style="margin-right: 5px"></i>Export
-                                                                </button>
+                                                                        style="margin-right: 5px;"></i>Export
+                                                                </a>
                                                             </div>
                                                             <table id="statusSpvKcTable" class="table table-bordered"
                                                                 style="width:100%;">
@@ -1957,53 +1958,105 @@
     </script>
 
 @section('js')
-<script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/jszip/jszip.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/pdfmake/pdfmake.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 
-<!-- AdminLTE -->
-<script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
+    <!-- AdminLTE -->
+    <script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
 
-<script>
-    $(document).ready(function() {
-        // Fungsi untuk menginisialisasi DataTables
-        function initDataTables() {
-            // Inisialisasi DataTables hanya jika belum diinisialisasi
-            if (!$.fn.DataTable.isDataTable('#pemeriksaanTable')) {
-                $('#pemeriksaanTable').DataTable();
+    <script src="path/to/jquery.min.js"></script>
+    <script src="path/to/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            function initDataTables() {
+                // Hancurkan DataTables yang sudah ada sebelum inisialisasi ulang
+                if ($.fn.DataTable.isDataTable('#pemeriksaanTable')) {
+                    $('#pemeriksaanTable').DataTable().destroy();
+                }
+                if ($.fn.DataTable.isDataTable('#statusSpvKcTable')) {
+                    $('#statusSpvKcTable').DataTable().destroy();
+                }
+
+                // Inisialisasi ulang DataTables
+                $('#pemeriksaanTable').DataTable({
+                    responsive: true,
+                    autoWidth: false,
+                });
+                $('#statusSpvKcTable').DataTable({
+                    responsive: true,
+                    autoWidth: false,
+                });
             }
-            if (!$.fn.DataTable.isDataTable('#statusSpvKcTable')) {
-                $('#statusSpvKcTable').DataTable();
+
+            function handleTabChange() {
+                $('#myTab a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+                    setTimeout(function() {
+                        initDataTables(); // Inisialisasi DataTables ketika tab berubah
+                    }, 300);
+                });
             }
-        }
 
-        // Inisialisasi DataTables pada tab aktif
-        function handleTabChange() {
-            $('#myTab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                initDataTables();
-            });
-        }
-
-        // Inisialisasi DataTables pada halaman load
-        initDataTables();
-        handleTabChange();
-
-        // Custom tab switcher (optional)
-        $('#myTab a').on('click', function(e) {
-            e.preventDefault();
-            $(this).tab('show');
+            // Inisialisasi DataTables pada halaman load
+            initDataTables();
+            handleTabChange();
         });
-    });
-</script>
+
+
+        //     $(document).ready(function() {
+        //     // Inisialisasi DataTables untuk setiap tabel
+        //     function initDataTables() {
+        //         $('# ').DataTable();
+        //         $('#statusSpvKcTable').DataTable();
+        //     }
+
+        //     // Fungsi untuk membuka tab dan menginisialisasi DataTables
+        //     function openTab(tabId) {
+        //         // Sembunyikan semua konten tab
+        //         var contents = document.getElementsByClassName('tab-pane');
+        //         for (var i = 0; i < contents.length; i++) {
+        //             contents[i].classList.remove('show', 'active');
+        //         }
+
+        //         // Tampilkan konten tab yang dipilih
+        //         document.getElementById(tabId).classList.add('show', 'active');
+
+        //         // Inisialisasi DataTables jika tab adalah 'kontrol-aset'
+        //         if (tabId === 'detail-pemeriksaan') {
+        //             $('#pemeriksaanTab').DataTable();
+        //         }
+        //         if (tabId === 'status-spv-kc') {
+        //             $('#statusSpvKcTable').DataTable();
+        //         }
+        //     }
+
+        //     // Inisialisasi tab pertama atau tab yang diatur oleh query parameter
+        //     window.onload = function() {
+        //         const urlParams = new URLSearchParams(window.location.search);
+        //         const activeTab = urlParams.get('tab') || 'detail-pemeriksaan'; // Default tab is kontrol-aset
+        //         openTab(activeTab);
+        //     }
+
+        //     // Event listener untuk tab change
+        //     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+        //         var target = $(e.target).attr("href").substr(1);
+        //         openTab(target);
+        //     });
+
+        //     // Inisialisasi DataTables pada halaman load
+        //     initDataTables();
+        // });
+    </script>
 @endsection
 
 @endsection
