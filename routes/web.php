@@ -224,11 +224,11 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/arsip/aset/detail/{id}', [DataAsetController::class, 'detail_aset'])->name('detail_aset');
         route::post('/arsip/aset/tambah_kontrol', [DataAsetController::class, 'store_kontrol'])->name('kontrol.store');
-        Route::get('/print-data/{id}', [DataAsetController::class, 'exportPdf'])->name('exportPdf');
         Route::get('/print-keluar', [DataAsetController::class, 'printKeluar'])->name('printKeluar');
         Route::get('/aset/next-kode-aset', [DataAsetController::class, 'getNextKodeAset'])->name('aset.nextKodeAset');
         Route::post('/kategori/store', [DataAsetController::class, 'store_kategori'])->name('kategori.store');
         Route::post('/filter/aset', [DataAsetController::class, 'FilterAset'])->name('filter_aset');
+        Route::get('/print-aset', [DataAsetController::class, 'export_aset'])->name('export-aset');
 
         Route::post('/pemeriksaan/store', [DataAsetController::class, 'store_pemeriksaan'])->name('pemeriksaan.store');
         Route::get('/arsip/aset/detail_pemeriksaan/{id}/{tgl}', [DataAsetController::class, 'detail_pemeriksaan'])->name('detail_pemeriksaan');
@@ -240,6 +240,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('/delete-pemeriksaan/{id}', [DataAsetController::class, 'delete_pemeriksaan'])->name('delete_pemeriksaan');
         Route::get('/detail-pemeriksaan/{id}', [DetailPemeriksaanController::class, 'getDetailPemeriksaan']);
         Route::post('/update-status-pemeriksaan', [DataAsetController::class, 'updateStatusPemeriksaan'])->name('updateStatusPemeriksaan');
+        Route::get('/print-detail/{id}/{tgl}', [DataAsetController::class, 'exportPdfDetailPemeriksaan'])->name('exportPdfDetailPemeriksaan');
+        Route::get('/print-data-pemeriksaan', [DataAsetController::class, 'export_pemeriksaan'])->name('exportPdfPemeriksaan');
 
 
     });

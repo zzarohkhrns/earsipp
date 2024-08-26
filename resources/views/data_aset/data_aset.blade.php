@@ -326,14 +326,11 @@
                                                             </button>
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        style="margin-top: 10px; display:flex; justify-content:flex-end;margin:auto; margin-top:10px;">
-                                                        <button href="/{{ $role }}/print-d"
-                                                            style="border-radius:10px; width: 150px;"
-                                                            class="btn btn-outline-secondary">
-                                                            <i class="fas fa-file-alt"
-                                                                style="margin-right:2px;"></i>Export
-                                                        </button>
+                                                    <div style="margin-top: 10px; display: flex; justify-content: flex-end; margin-top: 10px;">
+                                                        <a href="/{{ $role }}/print-aset" class="btn btn-outline-secondary"
+                                                           style="border-radius: 10px; width: 150px; text-align: center;" target="_blank">
+                                                            <i class="fas fa-file-alt" style="margin-right: 5px;"></i>Export
+                                                        </a>
                                                     </div>
                                                 </form>
                                                 <script>
@@ -370,10 +367,10 @@
                                                 style="text-align: center; font-size: 16px; background-color:white">
                                                 <tr>
                                                     <th style="width:5%;">No</th>
-                                                    <th style="width:20%;">Kode Aset</th>
+                                                    <th style="width:17%;">Kode Aset</th>
                                                     <th style="width:10%;">Nama Aset</th>
                                                     <th style="width:10%;">Kategori</th>
-                                                    <th>Lokasi Penyimpanan</th>
+                                                    <th style="width:10%;">Lokasi Penyimpanan</th>
                                                     <th>Satuan</th>
                                                     <th style="width:19%;">Pemeriksaan</th>
                                                     <th style="width:19%;">Keluar Masuk</th>
@@ -685,11 +682,11 @@
                                                         </div>
                                                     </div>
                                                     <div style="margin-top: 10px; display: flex; justify-content: flex-end; margin-top: 10px;">
-                                                        <a href="/{{ $role }}/print-data" class="btn btn-outline-secondary" 
-                                                           style="border-radius: 10px; width: 150px; text-align: center;">
+                                                        <a href="/{{ $role }}/print-data-pemeriksaan" class="btn btn-outline-secondary"
+                                                           style="border-radius: 10px; width: 150px; text-align: center;" target="_blank">
                                                             <i class="fas fa-file-alt" style="margin-right: 5px;"></i>Export
                                                         </a>
-                                                    </div>                                                    
+                                                    </div>
                                                 </form>
 
                                                 <script>
@@ -778,14 +775,14 @@
                                                                             <tbody>
                                                                                 <tr>
                                                                                     <td
-                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;">
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px; width:50%;">
                                                                                         baik</td>
                                                                                     <td
-                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;">
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px; width:25%; text-align:center;">
                                                                                         {{ $baikCount = $detail->detailPemeriksaanAset->where('kondisi', 'baik')->count() }}
                                                                                     </td>
                                                                                     <td
-                                                                                        style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;">
+                                                                                        style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px; width:25%;">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($baikCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
@@ -793,7 +790,7 @@
                                                                                     <td
                                                                                         style="font-size: 13px; line-height: 1.2; padding: 4px;">
                                                                                         rusak</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px; text-align:center;"
                                                                                         class="text-primary">
                                                                                         {{ $rusakCount = $detail->detailPemeriksaanAset->where('kondisi', 'rusak')->count() }}
                                                                                     </td>
@@ -806,7 +803,7 @@
                                                                                     <td
                                                                                         style="font-size: 13px; line-height: 1.2; padding: 4px;">
                                                                                         perlu perbaikan</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px; text-align:center;"
                                                                                         class="text-warning">
                                                                                         {{ $serviceCount = $detail->detailPemeriksaanAset->where('kondisi', 'perlu service')->count() }}
                                                                                     </td>
@@ -819,7 +816,7 @@
                                                                                     <td
                                                                                         style="font-size: 13px; line-height: 1.2; padding: 4px;">
                                                                                         hilang</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px; text-align:center;"
                                                                                         class="text-danger">
                                                                                         {{ $hilangCount = $detail->detailPemeriksaanAset->where('kondisi', 'hilang')->count() }}
                                                                                     </td>
@@ -836,40 +833,40 @@
                                                                             <tbody>
                                                                                 <tr>
                                                                                     <td
-                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;width:40%;">
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;width:50%;">
                                                                                         baik</td>
                                                                                     <td
-                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;width:30%;text-align:center;">
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;width:25%;text-align:center;">
                                                                                         -</td>
                                                                                     <td
-                                                                                        style="text-align: center; font-size: 13px; line-height: 1.2; padding: 4px;width:30%;">
+                                                                                        style="text-align: center; font-size: 13px; line-height: 1.2; padding: 4px;width:25%;">
                                                                                         -</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td
-                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;width:40%;">
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;width:50%;">
                                                                                         rusak</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;width:30%;text-align:center;"
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;width:25%;text-align:center;"
                                                                                         class="text-primary">-</td>
-                                                                                    <td style="text-align:center; font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
+                                                                                    <td style="text-align:center; font-size: 13px; line-height: 1.2; padding: 4px;width:25%;"
                                                                                         class="text-primary">-</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td
-                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;width:40%;">
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;width:50%;">
                                                                                         perlu perbaikan</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;width:30%;text-align:center;"
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;width:25%;text-align:center;"
                                                                                         class="text-warning">-</td>
-                                                                                    <td style="text-align:center; font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
+                                                                                    <td style="text-align:center; font-size: 13px; line-height: 1.2; padding: 4px;width:25%;"
                                                                                         class="text-warning">-</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td
-                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;width:40%;">
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;width:50%;">
                                                                                         hilang</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;width:30%;text-align:center;"
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;width:25%;text-align:center;"
                                                                                         class="text-danger">-</td>
-                                                                                    <td style="ttext-align:center; font-size: 13px; line-height: 1.2; padding: 4px;width:30%;"
+                                                                                    <td style="ttext-align:center; font-size: 13px; line-height: 1.2; padding: 4px;width:25%;"
                                                                                         class="text-danger">-</td>
                                                                                 </tr>
                                                                             </tbody>
@@ -883,26 +880,26 @@
                                                                             <tbody>
                                                                                 <tr>
                                                                                     <td
-                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;">
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px; width:50%;">
                                                                                         Aktif</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px; width:25%;text-align: center;"
                                                                                         class="text-success">
                                                                                         {{ $aktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'aktif')->count() ?? '-' }}
                                                                                     </td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px; width:25%;"
                                                                                         class="text-success">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($aktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td
-                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;">
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px; width:50%;">
                                                                                         Non Aktif</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px; width:25%;text-align:center;"
                                                                                         class="text-danger">
                                                                                         {{ $nonAktifCount = $detail->detailPemeriksaanAset->where('status_aset', 'non aktif')->count() ?? '-' }}
                                                                                     </td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px; width:25%;"
                                                                                         class="text-danger">
                                                                                         {{ $totalDetailPemeriksaan > 0 ? round(($nonAktifCount / $totalDetailPemeriksaan) * 100, 2) : 0 }}%
                                                                                     </td>
@@ -915,20 +912,20 @@
                                                                             <tbody>
                                                                                 <tr>
                                                                                     <td
-                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;">
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px; width:50%;">
                                                                                         Aktif</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px; width:25%; text-align: center;"
                                                                                         class="text-success">-</td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px; width:25%;"
                                                                                         class="text-success">-</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td
-                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px;">
+                                                                                        style="font-size: 13px; line-height: 1.2; padding: 4px; width:50%;">
                                                                                         Non Aktif</td>
-                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                    <td style="font-size: 13px; line-height: 1.2; padding: 4px; width:25%; text-align:center"
                                                                                         class="text-danger">-</td>
-                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px;"
+                                                                                    <td style="text-align: right; font-size: 13px; line-height: 1.2; padding: 4px; width:25%;"
                                                                                         class="text-danger">-</td>
                                                                                 </tr>
                                                                             </tbody>

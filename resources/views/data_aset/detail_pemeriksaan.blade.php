@@ -147,23 +147,23 @@
                                                         <div class="status-buttons">
                                                             @if ($pemeriksaanAset->status_pemeriksaan == 'selesai')
                                                                 <button class="btn btn-success"
-                                                                    style="border-radius: 10px;font-size: 12px; color: white;">Selesai
+                                                                    style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Selesai
                                                                     Input
                                                                     Pemeriksaan</button>
                                                             @else
                                                                 <button class="btn btn-warning"
-                                                                    style="border-radius: 10px;font-size: 12px; color: white;">Belum
+                                                                    style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Belum
                                                                     Selesai Input
                                                                     Pemeriksaan</button>
                                                             @endif
                                                             @if ($pemeriksaanAset->status_spv == 'mengetahui')
                                                                 <button class="btn btn-success"
-                                                                    style="border-radius: 10px;font-size: 12px; color: white;">Diteruskan
+                                                                    style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Diteruskan
                                                                     Ke SPV, SPV
                                                                     Mengetahui</button>
                                                             @else
                                                                 <button class="btn btn-warning"
-                                                                    style="border-radius: 10px;font-size: 12px; color: white;">Diteruskan
+                                                                    style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Diteruskan
                                                                     Ke SPV, SPV Belum
                                                                     Mengetahui</button>
                                                             @endif
@@ -195,7 +195,7 @@
                                                                                     <select id="dropdownButton"
                                                                                         name="status_pemeriksaan"
                                                                                         onchange="this.form.submit()"
-                                                                                        style="border-radius: 10px; padding: 10px; margin: 0; width: 150px; font-size:12px;">
+                                                                                        style="border-radius: 10px; padding: 6px; margin: 0; width: 150px; font-size:12px;">
                                                                                         <option value="selesai"
                                                                                             {{ $pemeriksaanAset->status_pemeriksaan == 'selesai' ? 'selected' : '' }}>
                                                                                             <i
@@ -232,7 +232,7 @@
                                                                                 <button type="submit"
                                                                                     class="btn btn-danger btn-block"
                                                                                     @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif
-                                                                                    style="border-radius: 10px; padding: 10px; margin: 0; width: 150px; font-size:12px;">
+                                                                                    style="border-radius: 10px; padding: 5px; margin: 0; width: 150px; font-size:12px;">
                                                                                     <i class="fas fa-trash"></i> Hapus
                                                                                 </button>
                                                                             </form>
@@ -313,11 +313,11 @@
                                                                 </table>
                                                                 <div class="btn-group btn-block mb-2 mb-xl-0 card-tambah-kontrol"
                                                                     style="margin-left: 20px;">
-                                                                    <button href="/{{ $role }}/print-data/{{ $pemeriksaanAset->id_pemeriksaan_aset }}"
-                                                                        style="border-radius: 10px; padding: 10px; margin: 0; width: 150px; font-size:12px; margin-left: 190px; margin-right:10px;"
-                                                                        class="btn btn-success">
+                                                                    <a href="/{{ $role }}/print-detail/{{ $pemeriksaanAset->id_pemeriksaan_aset }}/{{ $pemeriksaanAset->tanggal_pemeriksaan }}"
+                                                                        style="border-radius: 10px; padding: 5px; margin: 0; width: 150px; font-size:12px; margin-left: 190px; margin-right:10px;"
+                                                                        class="btn btn-success" target="_blank">
                                                                         <i class="fas fa-file-alt"></i> Export
-                                                                    </button>
+                                                                    </a>
                                                                 </div>
                                                             </div>
                                                             <table id="example"
@@ -516,14 +516,14 @@
                                                                     data-toggle="modal"
                                                                     data-target="#TambahPemeriksaanModal"
                                                                     @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif
-                                                                    style="border-radius: 10px; padding: 10px; margin: 0; width: 150px; font-size:12px;">
+                                                                    style="border-radius: 10px; padding: 5px; margin: 0; width: 150px; font-size:12px;">
                                                                     <i class="fas fa-plus-circle"></i>
                                                                     <span>Tambah</span>
                                                                 </button>
                                                             </div>
                                                             <table id="pemeriksaanTable" class="table table-bordered"
                                                                 style="width:100%;">
-                                                                <thead class="table-secondary"
+                                                                <thead
                                                                     style="text-align: center; font-size:16;">
                                                                     <tr>
                                                                         <th>No.</th>
@@ -538,7 +538,7 @@
                                                                             Teridentifikasi</th>
                                                                         <th>Tindakan Yang
                                                                             Diperlukan</th>
-                                                                        <th style="width: 150px;">
+                                                                        <th style="width: 100px;">
                                                                             Aksi</th>
                                                                     </tr>
                                                                 </thead>
@@ -607,7 +607,7 @@
                                                                                                     data-status-aset="{{ $data->status_aset }}"
                                                                                                     data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
                                                                                                     @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif
-                                                                                                    style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; font-size:12px;">
+                                                                                                    style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; font-size:12px;">
                                                                                                     <i
                                                                                                         class="fas fa-edit"></i>
                                                                                                     Ubah
@@ -629,7 +629,7 @@
                                                                                                             class="btn btn-outline-secondary btn-block
                                                                                                             "
                                                                                                             @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif
-                                                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px; font-size:12px;"
+                                                                                                            style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin-bottom: 10px; font-size:12px;"
                                                                                                             {{-- @if (!$canEdit) disabled @endif> --}}>
                                                                                                             <i
                                                                                                                 class="fas fa-trash"></i>
@@ -722,7 +722,7 @@
                                                                                                     data-status-aset="{{ $data->status_aset }}"
                                                                                                     data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
                                                                                                     @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif
-                                                                                                    style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0; font-size:12px;"
+                                                                                                    style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin: 0; font-size:12px;"
                                                                                                     aria-expanded="false">
                                                                                                     &nbsp;&nbsp;<i
                                                                                                         class="fas fa-edit"></i>
@@ -745,7 +745,7 @@
                                                                                                             class="btn btn-outline-secondary btn-block
                                                                                                             "
                                                                                                             @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif
-                                                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px; font-size:12px;"
+                                                                                                            style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin-bottom: 10px; font-size:12px;"
                                                                                                             {{-- @if (!$canEdit) disabled @endif> --}}>
                                                                                                             <i
                                                                                                                 class="fas fa-trash"></i>
@@ -836,7 +836,7 @@
                                                                                                     data-status-aset="{{ $data->status_aset }}"
                                                                                                     data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
                                                                                                     @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif
-                                                                                                    style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0; font-size:12px;"
+                                                                                                    style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin: 0; font-size:12px;"
                                                                                                     aria-expanded="false">
                                                                                                     &nbsp;&nbsp;<i
                                                                                                         class="fas fa-edit"></i>
@@ -859,7 +859,7 @@
                                                                                                             class="btn btn-outline-secondary btn-block
                                                                                                             "
                                                                                                             @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif
-                                                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px; font-size:12px;">
+                                                                                                            style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin-bottom: 10px; font-size:12px;">
                                                                                                             {{-- @if (!$canEdit) disabled @endif> --}}
                                                                                                             <i
                                                                                                                 class="fas fa-trash"></i>
@@ -947,7 +947,7 @@
                                                                                                     data-status-aset="{{ $data->status_aset }}"
                                                                                                     data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
                                                                                                     @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif
-                                                                                                    style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0; font-size:12px;"
+                                                                                                    style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin: 0; font-size:12px;"
                                                                                                     aria-expanded="false">
                                                                                                     &nbsp;&nbsp;<i
                                                                                                         class="fas fa-edit"></i>
@@ -969,7 +969,7 @@
                                                                                                             type="submit"
                                                                                                             class="btn btn-outline-secondary btn-block"
                                                                                                             @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif
-                                                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin-bottom: 10px; font-size:12px;">
+                                                                                                            style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin-bottom: 10px; font-size:12px;">
                                                                                                             {{-- @if (!$canEdit) disabled @endif> --}}
                                                                                                             <i
                                                                                                                 class="fas fa-trash"></i>
@@ -1005,33 +1005,33 @@
                                                         <div class="status-buttons">
                                                             @if ($pemeriksaanAset->status_pemeriksaan == 'selesai')
                                                                 <button class="btn btn-success"
-                                                                    style="border-radius: 10px; font-size: 12px; color: white;">Selesai
+                                                                    style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Selesai
                                                                     Input
                                                                     Pemeriksaan</button>
                                                             @else
                                                                 <button class="btn btn-warning"
-                                                                    style="border-radius: 10px; font-size: 12px; color: white;">Belum
+                                                                    style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Belum
                                                                     Selesai Input
                                                                     Pemeriksaan</button>
                                                             @endif
                                                             @if ($pemeriksaanAset->status_spv == 'mengetahui')
                                                                 <button class="btn btn-success"
-                                                                    style="border-radius: 10px; font-size: 12px; color: white;">SPV
+                                                                    style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">SPV
                                                                     Mengetahui</button>
                                                             @else
                                                                 <button class="btn btn-warning"
-                                                                    style="border-radius: 10px; font-size: 12px; color: white;">SPV
+                                                                    style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">SPV
                                                                     Belum
                                                                     Mengetahui</button>
                                                             @endif
                                                             @if ($pemeriksaanAset->status_kc == 'mengetahui')
                                                                 <button class="btn btn-success"
-                                                                    style="border-radius: 10px; font-size: 12px; color: white;">Diteruskan
+                                                                    style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Diteruskan
                                                                     Ke KC, KC
                                                                     Mengetahui</button>
                                                             @else
                                                                 <button class="btn btn-warning"
-                                                                    style="border-radius: 10px; font-size: 12px; color: white;">Diteruskan
+                                                                    style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Diteruskan
                                                                     Ke KC, KC Belum
                                                                     Mengetahui</button>
                                                             @endif
@@ -1056,7 +1056,7 @@
                                                                                 type="button" data-toggle="modal"
                                                                                 data-target="#responspvModal"
                                                                                 @if ($pemeriksaanAset->status_pemeriksaan == 'belum') disabled @endif
-                                                                                style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0; font-size:12px;"
+                                                                                style="border-radius:10px; width: 150px; max-width: 150px; padding: 5px; margin: 0; font-size:12px;"
                                                                                 aria-expanded="false">
                                                                                 &nbsp;&nbsp;<i class="fas fa-edit"></i>
                                                                                 Respon
@@ -1160,7 +1160,7 @@
                                                                                 type="button" data-toggle="modal"
                                                                                 data-target="#responkcModal"
                                                                                 @if ($pemeriksaanAset->status_pemeriksaan == 'belum') disabled @endif
-                                                                                style="border-radius:10px; width: 150px; max-width: 150px; padding: 10px; margin: 0;font-size:12px;"
+                                                                                style="border-radius:10px; width: 150px; max-width: 150px; padding: 5px; margin: 0;font-size:12px;"
                                                                                 aria-expanded="false">
                                                                                 &nbsp;&nbsp;<i class="fas fa-edit"></i>
                                                                                 Respon
@@ -1253,16 +1253,16 @@
                                                                 class="d-flex justify-content-between align-items-center mb-3">
                                                                 <b style="font-size: 16px;">Hasil Pemeriksaan
                                                                     Aset</b>
-                                                                <a href="/{{ $role }}/print-data/{{ $pemeriksaanAset->id_pemeriksaan_aset }}"
+                                                                <a href="/{{ $role }}/print-detail/{{ $pemeriksaanAset->id_pemeriksaan_aset }}/{{ $pemeriksaanAset->tanggal_pemeriksaan }}"
                                                                     class="btn btn-success"
-                                                                    style="border-radius: 10px; padding: 10px; margin: 0; width: 150px; font-size:12px;">
+                                                                    style="border-radius: 10px; padding: 5px; margin: 0; width: 150px; font-size:12px;" target="_blank">
                                                                     <i class="fas fa-file-alt"
                                                                         style="margin-right: 5px;"></i>Export
                                                                 </a>
                                                             </div>
                                                             <table id="statusSpvKcTable" class="table table-bordered"
                                                                 style="width:100%;">
-                                                                <thead class="table-secondary"
+                                                                <thead
                                                                     style="text-align: center; font-size:16;">
                                                                     <tr>
                                                                         <th>No.</th>

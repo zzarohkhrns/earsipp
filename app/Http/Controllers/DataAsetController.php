@@ -23,6 +23,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class DataAsetController extends Controller
 {
@@ -344,6 +345,59 @@ class DataAsetController extends Controller
         }
     }
 
+    public function export_aset()
+    {
+        $aset = Aset::with([
+            'kategori_aset',
+            'latestDetailPemeriksaanAset.pemeriksaanAset',
+            'detailPemeriksaanAset.pemeriksaanAset'
+        ])->get();
+
+        // Ambil tanggal saat ini
+        $tanggalSekarang = Carbon::now()->format('d-m-y');
+
+        // Buat nama file PDF dengan tanggal saat ini
+        $filename = "form_aset_{$tanggalSekarang}.pdf";
+
+        $pdf = PDF::loadView('data_aset.export_aset', compact('aset'));
+        $pdf->setPaper('A4', 'portrait');
+        return $pdf->stream($filename);
+    }
+    public function export_pemeriksaan()
+    {
+        // Data pemeriksaan lainnya
+        $pemeriksaanQuery = PemeriksaanAset::with([
+            'detailPemeriksaanAset.aset.kategori_aset',
+            'pcPengurus.pengguna',
+            'pcPengurus.pengurusJabatan',
+            'supervisor.pengurusJabatan',
+            'kc.pengurusJabatan',
+            'supervisor.pengguna',
+            'kc.pengguna'
+        ])->get();
+
+        $pemeriksaanGrouped = $pemeriksaanQuery->sortByDesc('created_at')
+            ->groupBy(function ($item) {
+                return $item->pcPengurus->pengguna->nama . '-' . $item->tanggal_pemeriksaan;
+            })
+            ->map(function ($group) {
+                return $group->unique('aset_id')->values();
+            });
+
+
+
+        // Ambil tanggal saat ini
+        $tanggalSekarang = Carbon::now()->format('d-m-y');
+
+        // Buat nama file PDF dengan tanggal saat ini
+        $filename = "form_pemeriksaan_{$tanggalSekarang}.pdf";
+
+        $pdf = PDF::loadView('data_aset.export_pemeriksaan_aset', compact('pemeriksaanGrouped', 'pemeriksaanQuery'));
+        $pdf->setPaper('A4', 'portrait');
+        return $pdf->stream($filename);
+    }
+
+
     // controller pemeriksaan.blade dan detail_pemeriksaan.blade
 
     // tampil data detail pemeriksaan aset
@@ -399,8 +453,9 @@ class DataAsetController extends Controller
         return view('data_aset.detail_pemeriksaan', compact('role', 'detailPemeriksaan', 'jumlahAset', 'pemeriksaanAset', 'kategori', 'aset'));
     }
 
-    public function exportPdf($id)
+    public function exportPdfDetailPemeriksaan($id, $tgl)
     {
+        // Cari Pemeriksaan Aset
         $pemeriksaanAset = PemeriksaanAset::with([
             'pcPengurus.pengguna',
             'pcPengurus.pengurusJabatan',
@@ -409,15 +464,49 @@ class DataAsetController extends Controller
             'kc.pengguna',
             'kc.pengurusJabatan',
             'detailPemeriksaanAset.aset.kategori_aset',
-        ])->findOrFail($id);
+        ])->where('id_pemeriksaan_aset', $id)
+            ->where('tanggal_pemeriksaan', $tgl)
+            ->firstOrFail();
 
-        
+        // Mencari Detail Pemeriksaan Aset
+        $detailPemeriksaan = DetailPemeriksaanAset::with([
+            'aset.kategori_aset',
+            'pemeriksaanAset.pcPengurus.pengguna',
+            'pemeriksaanAset.pcPengurus.pengurusJabatan',
+            'pemeriksaanAset.supervisor.pengguna',
+            'pemeriksaanAset.supervisor.pengurusJabatan',
+            'pemeriksaanAset.kc.pengguna',
+            'pemeriksaanAset.kc.pengurusJabatan',
+        ])->whereHas('pemeriksaanAset', function ($query) use ($id, $tgl) {
+            $query->where('id_pemeriksaan_aset', $id)
+                ->where('tanggal_pemeriksaan', $tgl);
+        })->get();
 
-        $pdf = PDF::loadView('data_aset.export_pemeriksaan', compact('pemeriksaanAset'));
+        // Menghitung jumlah detail pemeriksaan yang ditemukan
+        if ($detailPemeriksaan->isNotEmpty()) {
+            // Ambil data pemeriksaan terbaru untuk setiap aset_id
+            $latestDetailPemeriksaan = $detailPemeriksaan->sortByDesc('created_at')
+                ->unique('aset_id')
+                ->values();
+
+            // Hitung jumlah aset yang unik
+            $jumlahAset = $latestDetailPemeriksaan->count();
+        } else {
+            $jumlahAset = 0; // Set ke 0 jika tidak ada detail pemeriksaan ditemukan
+        }
+
+        // Format tanggal pemeriksaan
+        $tanggalPemeriksaan = Carbon::parse($tgl)->format('d-m-y');
+
+        // Buat nama file PDF dengan tanggal pemeriksaan
+        $filename = "form_detail_pemeriksaan_{$tanggalPemeriksaan}.pdf";
+
+        $pdf = PDF::loadView('data_aset.export_detail_pemeriksaan', compact('detailPemeriksaan', 'pemeriksaanAset', 'jumlahAset'));
         $pdf->setPaper('A4', 'portrait');
-        return $pdf->stream('data_pemeriksaan.pdf');
-    }
 
+        // Stream PDF dengan nama file yang sudah ditentukan
+        return $pdf->stream($filename);
+    }
 
     // update status pemeriksaan
     public function updateStatusPemeriksaan(Request $request)
