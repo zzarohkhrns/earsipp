@@ -1,6 +1,6 @@
 @extends('main')
 
-@section('detail_barang', 'active menu-open')
+@section('data_barang', 'active menu-open')
 @section('barang', 'menu-open')
 
 @section('css')

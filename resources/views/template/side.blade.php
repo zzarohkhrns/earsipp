@@ -122,7 +122,7 @@
                     </li>
 
                     <li class="nav-item @yield('barang') card-seven">
-                        <a href="#" class="nav-link @yield('aset')">
+                        <a href="#" class="nav-link @yield('data_barang')">
                             <i class="nav-icon fas fa-box" style="font-size:17px;"></i>
                             <p>Data Aset<i class="right fas fa-angle-left"></i></p>
                         </a>
@@ -130,7 +130,7 @@
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a onclick="$('#cover-spin').show(0)" href="/{{ $role }}/arsip/aset/data"
-                                    class="nav-link @yield('data_aset')">
+                                    class="nav-link @yield('data_barang')">
                                     <i class="nav-icon fas fa-genderless"></i>
                                     <p>Data Aset</p>
                                 </a>

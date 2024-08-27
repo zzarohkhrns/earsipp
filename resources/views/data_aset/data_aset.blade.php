@@ -380,7 +380,7 @@
                                                 @foreach ($aset as $data)
                                                     <tr
                                                         data-url="/{{ $role }}/arsip/aset/detail/{{ $data->aset_id }}">
-                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td style="text-align: center;">{{ $loop->iteration }}</td>
                                                         <td>
                                                             <table
                                                                 style="width: 100%; border: none; border-collapse: collapse; font-size: 13px;">
@@ -394,7 +394,7 @@
                                                                         Tgl Pembelian
                                                                     </td>
                                                                     <td
-                                                                        style="border: none;padding: 4px; flex: 2; font-size: 12px;text-align:right;">
+                                                                        style="border: none;padding: 4px; flex: 2; font-size: 12px;text-align:left;">
                                                                         <b>{{ $data->tgl_perolehan ?? 'Data tidak tersedia' }}</b>
                                                                     </td>
                                                                 </tr>
@@ -752,15 +752,15 @@
                                                         <tr
                                                             data-url="/{{ $role }}/arsip/aset/detail_pemeriksaan/{{ $detail->id_pemeriksaan_aset }}/{{ $detail->tanggal_pemeriksaan }}">
                                                             @if ($key == 0)
-                                                                <td>{{ $no++ }}</td>
-                                                                <td><b>{{ $detail->tanggal_pemeriksaan }}</b></td>
+                                                                <td style="text-align: center;">{{ $no++ }}</td>
+                                                                <td style="text-align: center;"><b>{{ $detail->tanggal_pemeriksaan }}</b></td>
                                                                 <td><b>
                                                                         {{ $namaPemeriksa }}
                                                                     </b>
                                                                     <br>
                                                                     {{ $detail->pcPengurus->pengurusJabatan->jabatan }}
                                                                 </td>
-                                                                <td>
+                                                                <td style="text-align: center;">
                                                                     @if ($detail->detailPemeriksaanAset->isNotEmpty())
                                                                         {{ $totalDetailPemeriksaan = $detail->detailPemeriksaanAset->count() }}
                                                                         Aset
