@@ -10,12 +10,12 @@
     <style>
         .dropdown select {
             border-radius: 5px;
-            width: 150px;
+            width: 100px;
             padding: 10px;
             margin: 5px 0;
             font-size: 12px;
             background-color: white;
-            border: 1px solid #6c757d;
+            border: 1px solid gray;
         }
 
         .nav-tabs .nav-link {
@@ -226,7 +226,7 @@
                                                                     <th>Status</th>
                                                                     <th>Masalah Teridentifikasi</th>
                                                                     <th>Tindakan Yang Diperlukan</th>
-                                                                    <th style="width: 150px;">Aksi</th>
+                                                                    <th style="width: 100px;">Aksi</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody style="font-size: 13px;">
@@ -253,17 +253,17 @@
                                                                                     <div class="dropdown">
                                                                                         <select id="options"
                                                                                             name="options"
-                                                                                            style="padding: 2px 4px; height: auto; font-size: 12px; line-height: 1.2;">
+                                                                                            style="padding: 2px 2px; height: auto; font-size: 12px; line-height: 1.2;">
                                                                                             <option
-                                                                                                style="background-color: white"
-                                                                                                value="">Aksi
+                                                                                                style="background-color: white;"
+                                                                                                value="">Kelola
                                                                                             </option>
                                                                                             <option
-                                                                                                style="background-color: white"
+                                                                                                style="background-color: white;"
                                                                                                 value="/{{ $role }}/arsip/aset/detail_pemeriksaan/{{ $item->pemeriksaanAset->id_pemeriksaan_aset }}/{{ $item->pemeriksaanAset->tanggal_pemeriksaan }}">
                                                                                                 Detail</option>
                                                                                             <option
-                                                                                                style="background-color: white"
+                                                                                                style="background-color: white;"
                                                                                                 value="/{{ $role }}/print-data">
                                                                                                 Export</option>
                                                                                         </select>
