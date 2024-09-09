@@ -198,8 +198,8 @@
                                                 aria-selected="true">Riwayat Pemeriksaan</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="keluar-masuk-tab" data-toggle="tab" href="#w"
-                                                role="tab" aria-controls="keluar-masuk-" aria-selected="false">Riwayat
+                                            <a class="nav-link" id="keluar-masuk-tab" data-toggle="tab" href="#keluar-masuk"
+                                                role="tab" aria-controls="keluar-masuk" aria-selected="false">Riwayat
                                                 Keluar Masuk</a>
                                         </li>
                                         <li class="nav-item">
@@ -255,6 +255,7 @@
                                                                                             name="options"
                                                                                             style="padding: 2px 2px; height: auto; font-size: 12px; line-height: 1.2;">
                                                                                             <option
+                                                                                                hidden="true"
                                                                                                 style="background-color: white;"
                                                                                                 value="">Kelola
                                                                                             </option>

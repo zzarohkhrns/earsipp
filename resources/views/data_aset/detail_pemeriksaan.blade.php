@@ -65,6 +65,8 @@
         }
     </style>
 
+
+
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -126,13 +128,13 @@
                                                 <li class="nav-item">
                                                     <a class="nav-link active" id="detail-pemeriksaan-tab" data-toggle="tab"
                                                         href="#pemeriksaan" role="tab" aria-controls="pemeriksaan"
-                                                        {{-- onclick="openTab('detail-pemeriksaan')" --}} aria-selected="true"
+                                                        onclick="openTab('detail-pemeriksaan')" aria-selected="true"
                                                         style="font-size: 16px;">1. Pemeriksaan</a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link" id="status-spv-kc-tab" data-toggle="tab"
                                                         href="#status-spv-kc" role="tab" aria-controls="status-spv-kc"
-                                                        {{-- onclick="openTab('status-spv-kc')" --}} aria-selected="false"
+                                                        onclick="openTab('status-spv-kc')" aria-selected="false"
                                                         style="font-size: 16px;">2. Status SPV &
                                                         KC</a>
                                                 </li>
@@ -523,8 +525,7 @@
                                                             </div>
                                                             <table id="pemeriksaanTable" class="table table-bordered"
                                                                 style="width:100%;">
-                                                                <thead
-                                                                    style="text-align: center; font-size:16;">
+                                                                <thead style="text-align: center; font-size:16;">
                                                                     <tr>
                                                                         <th>No.</th>
                                                                         <th>Kode Aset</th>
@@ -1255,15 +1256,15 @@
                                                                     Aset</b>
                                                                 <a href="/{{ $role }}/print-detail/{{ $pemeriksaanAset->id_pemeriksaan_aset }}/{{ $pemeriksaanAset->tanggal_pemeriksaan }}"
                                                                     class="btn btn-success"
-                                                                    style="border-radius: 10px; padding: 5px; margin: 0; width: 150px; font-size:12px;" target="_blank">
+                                                                    style="border-radius: 10px; padding: 5px; margin: 0; width: 150px; font-size:12px;"
+                                                                    target="_blank">
                                                                     <i class="fas fa-file-alt"
                                                                         style="margin-right: 5px;"></i>Export
                                                                 </a>
                                                             </div>
                                                             <table id="statusSpvKcTable" class="table table-bordered"
                                                                 style="width:100%;">
-                                                                <thead
-                                                                    style="text-align: center; font-size:16;">
+                                                                <thead style="text-align: center; font-size:16;">
                                                                     <tr>
                                                                         <th>No.</th>
                                                                         <th>Kode Aset</th>
@@ -1874,6 +1875,106 @@
         </div>
     </div>
 
+    <script>
+        $(document).ready(function() {
+            function initDataTables() {
+                // Hancurkan DataTables yang sudah ada sebelum inisialisasi ulang
+                if ($.fn.DataTable.isDataTable('#pemeriksaanTable')) {
+                    $('#pemeriksaanTable').DataTable().destroy();
+                }
+                if ($.fn.DataTable.isDataTable('#statusSpvKcTable')) {
+                    $('#statusSpvKcTable').DataTable().destroy();
+                }
+
+                // Inisialisasi ulang DataTables
+                $('#pemeriksaanTable').DataTable({
+                    responsive: true,
+                    autoWidth: false,
+                    lengthChange: true, // Mengaktifkan fitur show entries
+                    searching: true, // Mengaktifkan fitur pencarian
+                    pageLength: 10 // Jumlah baris default
+                });
+
+                $('#statusSpvKcTable').DataTable({
+                    responsive: true,
+                    autoWidth: false,
+                    lengthChange: true, // Mengaktifkan fitur show entries
+                    searching: true, // Mengaktifkan fitur pencarian
+                    pageLength: 10 // Jumlah baris default
+                });
+            }
+
+            function handleTabChange() {
+                $('#myTab a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+                    setTimeout(function() {
+                        initDataTables(); // Inisialisasi DataTables ketika tab berubah
+                    }, 300);
+                });
+            }
+
+            // Inisialisasi DataTables pada halaman load
+            initDataTables();
+            handleTabChange();
+        });
+
+
+
+        // // $(document).ready(function() {
+        // // Fungsi untuk membuka tab dan menginisialisasi DataTables
+        // $(document).ready(function() {
+        //     // Fungsi untuk inisialisasi DataTables
+        //     function initDataTable(tableId) {
+        //         if (!$.fn.DataTable.isDataTable(tableId)) {
+        //             $(tableId).DataTable({
+        //                 responsive: true, // Membuat tabel responsif
+        //                 autoWidth: false, // Menonaktifkan auto width
+        //                 lengthChange: true, // Menampilkan dropdown "Show entries"
+        //                 searching: true, // Mengaktifkan fitur pencarian
+        //                 paging: true, // Mengaktifkan pagination
+        //                 pageLength: 10, // Default jumlah baris per halaman
+        //                 language: {
+        //                     search: "Cari:", // Mengubah label pencarian
+        //                     lengthMenu: "Tampilkan _MENU_ entri", // Label untuk "Show entries"
+        //                     paginate: {
+        //                         next: "Berikutnya",
+        //                         previous: "Sebelumnya"
+        //                     }
+        //                 }
+        //             });
+        //         }
+        //     }
+
+        //     // Inisialisasi DataTables untuk tabel Pemeriksaan
+        //     initDataTable('#pemeriksaanTable');
+
+        //     // Inisialisasi DataTables untuk tabel Status SPV & KC
+        //     initDataTable('#statusSpvKcTable');
+
+        //     // Fungsi untuk membuka tab dan inisialisasi DataTables
+        //     function openTab(tabId) {
+        //         if (tabId === 'pemeriksaan') {
+        //             initDataTable('#pemeriksaanTable');
+        //         } else if (tabId === 'status-spv-kc') {
+        //             initDataTable('#statusSpvKcTable');
+        //         }
+        //     }
+
+        //     // Inisialisasi tab pertama atau tab yang diatur oleh query parameter saat halaman dimuat
+        //     window.onload = function() {
+        //         const urlParams = new URLSearchParams(window.location.search);
+        //         const activeTab = urlParams.get('tab') || 'pemeriksaan'; // Default tab 'pemeriksaan'
+        //         openTab(activeTab); // Inisialisasi tabel untuk tab yang pertama dibuka
+        //     }
+
+        //     // Event listener untuk perubahan tab, inisialisasi DataTables ketika tab aktif berubah
+        //     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+        //         var targetTabId = $(e.target).attr("href").substr(
+        //         1); // Mendapatkan id tab dari href tanpa '#'
+        //         openTab(targetTabId); // Panggil fungsi untuk menginisialisasi tabel pada tab yang aktif
+        //     });
+        // });
+    </script>
+
     {{-- script untuk menyimpan kategori --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1974,90 +2075,7 @@
     <!-- AdminLTE -->
     <script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
 
-    <script src="path/to/jquery.min.js"></script>
-    <script src="path/to/bootstrap.bundle.min.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            function initDataTables() {
-                // Hancurkan DataTables yang sudah ada sebelum inisialisasi ulang
-                if ($.fn.DataTable.isDataTable('#pemeriksaanTable')) {
-                    $('#pemeriksaanTable').DataTable().destroy();
-                }
-                if ($.fn.DataTable.isDataTable('#statusSpvKcTable')) {
-                    $('#statusSpvKcTable').DataTable().destroy();
-                }
-
-                // Inisialisasi ulang DataTables
-                $('#pemeriksaanTable').DataTable({
-                    responsive: true,
-                    autoWidth: false,
-                });
-                $('#statusSpvKcTable').DataTable({
-                    responsive: true,
-                    autoWidth: false,
-                });
-            }
-
-            function handleTabChange() {
-                $('#myTab a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-                    setTimeout(function() {
-                        initDataTables(); // Inisialisasi DataTables ketika tab berubah
-                    }, 300);
-                });
-            }
-
-            // Inisialisasi DataTables pada halaman load
-            initDataTables();
-            handleTabChange();
-        });
-
-
-        //     $(document).ready(function() {
-        //     // Inisialisasi DataTables untuk setiap tabel
-        //     function initDataTables() {
-        //         $('# ').DataTable();
-        //         $('#statusSpvKcTable').DataTable();
-        //     }
-
-        //     // Fungsi untuk membuka tab dan menginisialisasi DataTables
-        //     function openTab(tabId) {
-        //         // Sembunyikan semua konten tab
-        //         var contents = document.getElementsByClassName('tab-pane');
-        //         for (var i = 0; i < contents.length; i++) {
-        //             contents[i].classList.remove('show', 'active');
-        //         }
-
-        //         // Tampilkan konten tab yang dipilih
-        //         document.getElementById(tabId).classList.add('show', 'active');
-
-        //         // Inisialisasi DataTables jika tab adalah 'kontrol-aset'
-        //         if (tabId === 'detail-pemeriksaan') {
-        //             $('#pemeriksaanTab').DataTable();
-        //         }
-        //         if (tabId === 'status-spv-kc') {
-        //             $('#statusSpvKcTable').DataTable();
-        //         }
-        //     }
-
-        //     // Inisialisasi tab pertama atau tab yang diatur oleh query parameter
-        //     window.onload = function() {
-        //         const urlParams = new URLSearchParams(window.location.search);
-        //         const activeTab = urlParams.get('tab') || 'detail-pemeriksaan'; // Default tab is kontrol-aset
-        //         openTab(activeTab);
-        //     }
-
-        //     // Event listener untuk tab change
-        //     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-        //         var target = $(e.target).attr("href").substr(1);
-        //         openTab(target);
-        //     });
-
-        //     // Inisialisasi DataTables pada halaman load
-        //     initDataTables();
-        // });
-    </script>
 @endsection
-
 @endsection
 @endsection

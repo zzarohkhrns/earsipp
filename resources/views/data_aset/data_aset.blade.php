@@ -10,20 +10,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
+        /* Tab content styling */
         .tab-content {
-            display: none;
-            /* Sembunyikan semua konten tab */
+            display: none; /* Sembunyikan semua konten tab */
         }
 
         .tab-content.active {
-            display: block;
-            /* Tampilkan konten tab yang aktif */
+            display: block; /* Tampilkan konten tab yang aktif */
         }
 
         .btn-group .btn {
             cursor: pointer;
         }
 
+        /* Hover effect on table rows */
         .hover-pointer tr {
             cursor: pointer;
         }
@@ -32,41 +32,39 @@
             background-color: #d4d2d2;
         }
 
+        /* Konsistensi input dan text */
         .custom-input,
         .custom-text {
             height: 38px;
-            /* Set tinggi yang konsisten */
             font-size: 1rem;
-            /* Ukuran font yang sama */
             line-height: 1.5;
-            /* Garis tengah yang seragam */
             border-radius: 10px;
         }
 
+        /* Mengatur radius pada input group */
         .input-group-prepend .input-group-text {
             border-radius: 10px;
-            /* Hilangkan border-radius untuk keseragaman */
         }
 
+        /* Kontainer filter responsif */
         .filter-container {
             display: flex;
             flex-wrap: wrap;
             align-items: flex-start;
-            /* Align items at the start of the container */
             justify-content: space-between;
         }
 
+        /* Setiap item filter */
         .filter-item {
             flex: 1;
             margin: 10px 15px;
             min-width: 250px;
-            /* Minimum width to make filters wider */
         }
 
+        /* Tombol filter */
         .filter-buttons {
             display: flex;
             flex-direction: column;
-            /* Stack buttons vertically */
             align-items: center;
             margin: 10px 15px;
         }
@@ -76,12 +74,14 @@
             margin-bottom: 10px;
         }
 
+        /* Bagian info */
         .info-section {
             display: flex;
             align-items: center;
             margin-top: 10px;
         }
 
+        /* Style untuk form date, kategori, dan status */
         .filter-date,
         .filter-kategori,
         .filter-status {
@@ -89,27 +89,44 @@
             align-items: center;
         }
 
-        /* Mengatur style tabel */
-        #example {
-            width: 250px;
-            /* Menyesuaikan lebar tabel dengan konten */
-            border-collapse: collapse;
-            /* Menghapus ruang antar border */
-            margin: 20px 0;
-            /* Menambahkan margin atas dan bawah tabel */
+        /* Responsive behavior */
+        @media (max-width: 768px) {
+            /* Pada layar kecil, setiap elemen filter memenuhi lebar penuh */
+            .filter-item {
+                flex-basis: 100%;
+            }
+
+            /* Stack tombol secara vertikal pada layar kecil */
+            .filter-buttons {
+                width: 100%;
+            }
+
+            .filter-buttons .btn {
+                width: 100%;
+            }
+
+            /* Stack export button below the filter form */
+            .export-button {
+                width: 100%;
+                text-align: center;
+            }
         }
 
-        /* Menghapus border pada sel tabel */
-        #example td {
-            border: none;
-            /* Menghapus border */
-            padding: 8px 12px;
-            /* Menambahkan padding pada sel */
-            font-size: 16px;
-            /* Mengatur ukuran font */
-            /* Menyelaraskan teks ke tengah */
+        /* Styling untuk layar besar */
+        @media (min-width: 768px) {
+            /* Elemen filter dalam baris */
+            .filter-item {
+                flex: 1;
+                margin-right: 10px;
+            }
+
+            /* Atur tombol export */
+            .export-button {
+                margin-left: auto;
+            }
         }
     </style>
+
 
     <div class="content-header">
         <div class="container-fluid">
