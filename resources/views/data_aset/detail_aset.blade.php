@@ -70,7 +70,7 @@
                     <div class="card ijo-atas">
                         <div class="card-body">
                             <div class="row card-detail-barang">
-                                <div class="col-12">
+                                <div class="table-responsive">
                                     {{-- Data detail barang --}}
                                     <table id="example3" style="width:100%">
 
@@ -81,17 +81,17 @@
                                             <th style="width: 200px;"></th>
                                             <th style="width: 100px;">
                                                 <div class="btn-group btn-block mb-2 mb-xl-0 card_edit_barang">
-                                                    <a class="btn btn-success intro-ubah-detail-aset ml-1 mr- edit-aset"
+                                                    <button class="btn btn-success intro-ubah-detail-aset ml-1 mr- edit-aset"
                                                         type="button" data-toggle="modal" data-target="#ubahasetModal"
-                                                        style="border-radius:10px; font-size:12px;background-color: #28a745;color: white;"
+                                                        style="width: 160px; border-radius:10px; font-size:12px;background-color: #28a745;color: white;"
                                                         aria-expanded="false">
                                                         &nbsp;&nbsp;<i class="fas fa-edit"></i> Edit
-                                                    </a>
+                                                    </button>
                                                 </div>
                                             </th>
                                             <th style="width: 100px;">
                                                 <div class="btn-group btn-block mb-2 mb-xl-0 card_hapus_barang">
-                                                    <div class="btn-group mb-2 mb-xl-0 btn-block">
+                                                    {{-- <div class="btn-group mb-2 mb-xl-0 btn-block"> --}}
                                                         <form
                                                             action="/{{ $role }}/aset/data/delete/{{ $aset->aset_id }}"
                                                             method="POST"
@@ -103,7 +103,7 @@
                                                                 Hapus
                                                             </button>
                                                         </form>
-                                                    </div>
+                                                    {{-- </div> --}}
                                                 </div>
                                             </th>
                                         </tr>
@@ -215,7 +215,7 @@
                                             aria-labelledby="kontrol-aset-tab">
                                             <div class="card-body">
                                                 <div class="row card-kontrol-aset">
-                                                    <div class="col-12">
+                                                    <div class="table-responsive">
                                                         <table id="kontrolAset" class="table table-bordered"
                                                             style="width:100%; font-size: 13px;">
                                                             <thead style="text-align: center; font-size: 16px;">
@@ -295,7 +295,7 @@
                                             aria-labelledby="keluar-masuk-tab">
                                             <div class="card-body">
                                                 <div class="row">
-                                                    <div class="col-12">
+                                                    <div class="table-responsive">
                                                         <table id="keluarMasuk" class="table table-bordered"
                                                             style="width:100%; font-size: 13px;">
                                                             <thead style="text-align: center; font-size: 16px;">
@@ -335,7 +335,7 @@
                                             aria-labelledby="penyusutan-nilai-tab">
                                             <div class="card-body">
                                                 <div class="row">
-                                                    <div class="col-12">
+                                                    <div class="table-responsive">
                                                         <table id="penyusutanNilai" class="table table-bordered"
                                                             style="width:100%; font-size: 13px;">
                                                             <thead style="text-align: center; font-size: 16px;">
