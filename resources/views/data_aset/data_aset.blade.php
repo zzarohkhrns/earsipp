@@ -78,14 +78,13 @@
                         <div class="card-body">
                             <div class="row card-data-barang">
                                 <div class="col-12">
-                                    <div class="container d-flex flex-wrap ustify-content-center ml-3 mr-3"
+                                    <div class="container d-flex flex-wrap col-12 ml-3 mr-3"
                                         style="padding: 0; width:100%;">
-                                        <div>
-                                            <h5 class="mb-0 mr-3">
-                                                <b class="text-success">Data Aset<br>Logistik dan Perlengkapan</b>
-                                            </h5>
-                                        </div>
-                                        <div class="btn-group d-flex flex-wrap ustify-content-center" style="width: 100%;">
+                                        <h5 class="mb-0">
+                                            <b class="text-success">Data Aset<br>Logistik dan Perlengkapan</b>
+                                        </h5>
+                                        <div class="btn-group d-flex flex-wrap justify-content-center mr-4"
+                                            style="width: 100%;">
                                             <button id="tab-dataAset" class="btn btn-light btn-block mt-2 mr-3"
                                                 style="width: 150px; font-size: 16px;" onclick="openTab('dataAset')">Data
                                                 Aset</button>
@@ -708,7 +707,8 @@
                                                                         </a>
                                                                         <button type="button"
                                                                             class="btn btn-success btn-sm btn-custom ml-2"
-                                                                            data-toggle="modal" data-target="#pemeriksaanModal"
+                                                                            data-toggle="modal"
+                                                                            data-target="#pemeriksaanModal"
                                                                             style="background-color: #28a745; color: white;">
                                                                             <i class="fas fa-plus-circle"></i> Tambah
                                                                         </button>
@@ -723,7 +723,7 @@
                                                                     // Arahkan ke URL dasar (tanpa filter) dan tambahkan parameter tab
                                                                     window.location.href = `${baseUrl}?tab=pemeriksaan`;
                                                                 }
-            
+
                                                                 // Deteksi tab pemeriksaan dari URL dan otomatis membuka tab tersebut
                                                                 document.addEventListener("DOMContentLoaded", function() {
                                                                     const urlParams = new URLSearchParams(window.location.search);

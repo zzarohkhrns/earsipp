@@ -39,6 +39,16 @@
         .tab-content {
             width: 100%;
         }
+
+        @media (max-width: 768px) {
+            .table-responsive.d-flex {
+                flex-direction: column;
+            }
+
+            .d-flex.justify-content-end {
+                margin-top: 10px;
+            }
+        }
     </style>
 
 
@@ -70,113 +80,93 @@
                     <div class="card ijo-atas">
                         <div class="card-body">
                             <div class="row card-detail-barang">
-                                <div class="table-responsive">
-                                    {{-- Data detail barang --}}
-                                    <table id="example3" style="width:100%">
+                                <div class="table-responsive d-flex justify-content-between align-items-start">
+                                    <!-- Div tabel -->
+                                    <div class="table-responsive" style="flex-grow: 1;">
+                                        <table id="example3" style="width:100%">
+                                            {{-- Line 1 --}}
+                                            <tr>
+                                                <th style="width: 200px;"><b style="font-size:16px;">Kode Aset</b></th>
+                                                <th style="width: 200px;"></th>
+                                                <th style="width: 200px;"></th>
+                                            </tr>
+                                            <tr>
+                                                <th style="width: 200px;" class="text-success">
+                                                    <b style="font-size:19px;">{{ $aset->kode_aset ?? '0' }}</b>
+                                                </th>
+                                                <th style="width: 200px;"></th>
+                                                <th style="width: 200px;"></th>
+                                            </tr>
 
-                                        {{-- Line 1 --}}
-                                        <tr>
-                                            <th style="width: 200px;"><b style="font-size:16px;">Kode Aset</b></th>
-                                            <th style="width: 200px;"></th>
-                                            <th style="width: 200px;"></th>
-                                            <th style="width: 100px;">
-                                                <div class="btn-group btn-block mb-2 mb-xl-0 card_edit_barang">
-                                                    <button class="btn btn-success intro-ubah-detail-aset ml-1 mr- edit-aset"
-                                                        type="button" data-toggle="modal" data-target="#ubahasetModal"
-                                                        style="width: 160px; border-radius:10px; font-size:12px;background-color: #28a745;color: white;"
-                                                        aria-expanded="false">
-                                                        &nbsp;&nbsp;<i class="fas fa-edit"></i> Edit
-                                                    </button>
-                                                </div>
-                                            </th>
-                                            <th style="width: 100px;">
-                                                <div class="btn-group btn-block mb-2 mb-xl-0 card_hapus_barang">
-                                                    {{-- <div class="btn-group mb-2 mb-xl-0 btn-block"> --}}
-                                                        <form
-                                                            action="/{{ $role }}/aset/data/delete/{{ $aset->aset_id }}"
-                                                            method="POST"
-                                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-danger btn-block"
-                                                                style="display: block; border-radius:10px; width: 160px;font-size:12px;">
-                                                                <i class="fas fa-trash"></i>
-                                                                Hapus
-                                                            </button>
-                                                        </form>
-                                                    {{-- </div> --}}
-                                                </div>
-                                            </th>
-                                        </tr>
-                                        <tr>
-                                            <th style="width: 200px;" class="text-success">
-                                                <b style="font-size:19px;">{{ $aset->kode_aset ?? '0' }}</b>
-                                            </th>
-                                            <th style="width: 200px;"></th>
-                                            <th style="width: 200px;"></th>
-                                            <th style="width: 100px;"></th>
-                                            <th style="width: 100px;"></th>
-                                        </tr>
+                                            {{-- Line 2 --}}
+                                            <tr>
+                                                <th style="width: 200px;"><b style="font-size:16px;">Nama Barang</b></th>
+                                                <th style="width: 200px;"><b style="font-size:16px;">Kategori</b></th>
+                                                <th style="width: 200px;"></th>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ $aset->nama_aset ?? '0' }}</td>
+                                                <td>{{ $aset->kategori_aset->kategori ?? '0' }}</td>
+                                                <td></td>
+                                            </tr>
 
-                                        {{-- Line 2 --}}
-                                        <tr>
-                                            <th style="width: 200px;"><b style="font-size:16px;">Nama Barang</b></th>
-                                            <th style="width: 200px;"><b style="font-size:16px;">Kategori</b></th>
-                                            <th style="width: 200px;"></th>
-                                            <th style="width: 100px;"></th>
-                                            <th style="width: 100px;"></th>
-                                        </tr>
-                                        <tr>
-                                            {{-- <td>{{ $barang->nama }}</td>
-                                                <td>{{ $barang->satuan }}</td>
-                                                <td>{{ $barang->lokasi_penyimpanan }}</td> --}}
-                                            <td>{{ $aset->nama_aset ?? '0' }}</td>
-                                            <td>{{ $aset->kategori_aset->kategori ?? '0' }}</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+                                            {{-- Line 3 --}}
+                                            <tr>
+                                                <th style="width: 200px;"><b style="font-size:16px;">Tanggal Pembelian</b>
+                                                </th>
+                                                <th style="width: 200px;"><b style="font-size:16px;">Satuan</b></th>
+                                                <th style="width: 200px;"></th>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ $aset->tgl_perolehan ?? '0' }}</td>
+                                                <td>{{ $aset->satuan ?? '0' }}</td>
+                                                <td></td>
+                                            </tr>
 
-                                        {{-- Line 3 --}}
-                                        <tr>
-                                            <th style="width: 200px;"><b style="font-size:16px;">Tanggal Pembelian</b></th>
-                                            <th style="width: 200px;"><b style="font-size:16px;">Satuan</b></th>
-                                            <th style="width: 200px;"></th>
-                                            <th style="width: 100px;"></th>
-                                            <th style="width: 100px;"></th>
-                                        </tr>
-                                        <tr>
-                                            <td>{{ $aset->tgl_perolehan ?? '0' }}</td>
-                                            <td>{{ $aset->satuan ?? '0' }}</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+                                            {{-- Line 4 --}}
+                                            <tr>
+                                                <th style="width: 200px;"><b style="font-size:16px;">Asal Perolehan</b></th>
+                                                <th style="width: 200px;"><b style="font-size:16px;">Lokasi Penyimpanan</b>
+                                                </th>
+                                                <th style="width: 200px;"></th>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ $aset->asal_perolehan ?? 'tidak ada asal perolehan' }}</td>
+                                                <td>{{ $aset->lokasi_penyimpanan ?? '0' }}</td>
+                                                <td></td>
+                                            </tr>
 
-                                        {{-- Line 4 --}}
-                                        <tr>
-                                            <th style="width: 200px;"><b style="font-size:16px;">Asal Perolehan</b></th>
-                                            <th style="width: 200px;"><b style="font-size:16px;">Lokasi Penyimpanan</b></th>
-                                            <th style="width: 200px;"></th>
-                                            <th style="width: 100px;"></th>
-                                            <th style="width: 100px;"></th>
-                                        </tr>
-                                        <tr>
-                                            <td>{{ $aset->asal_perolehan ?? 'tidak ada asal perolehan' }}</td>
-                                            <td>{{ $aset->lokasi_penyimpanan ?? '0' }}</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+                                            {{-- Line 5 --}}
+                                            <tr>
+                                                <td><b style="font-size:16px;">Spesifikasi</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">{{ $aset->spesifikasi ?? '0' }}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
 
-                                        {{-- Line 5 --}}
-                                        <tr>
-                                            <td><b style="font-size:16px;">Spesifikasi</b></td>
-                                        </tr>
-                                        <tr>
-                                            {{-- <td colspan="4">{{ $barang->spesifikasi }}</td> --}}
-                                            <td colspan="2">{{ $aset->spesifikasi ?? '0' }}</td>
-                                        </tr>
-                                    </table>
+                                    <!-- Div tombol -->
+                                    <div class="d-flex justify-content-end mb-2 mb-xl-0">
+                                        <div class="btn-group">
+                                            <button class="btn btn-success intro-ubah-detail-aset ml-1 mr-2 edit-aset"
+                                                type="button" data-toggle="modal" data-target="#ubahasetModal"
+                                                style="width: 160px; border-radius:10px; font-size:12px;background-color: #28a745;color: white;"
+                                                aria-expanded="false">
+                                                &nbsp;&nbsp;<i class="fas fa-edit"></i> Edit
+                                            </button>
+                                            <form action="/{{ $role }}/aset/data/delete/{{ $aset->aset_id }}"
+                                                method="POST"
+                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                                @csrf
+                                                <button type="submit" class="btn btn-danger"
+                                                    style="display: block; border-radius:10px; width: 160px;font-size:12px;">
+                                                    <i class="fas fa-trash"></i>
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -254,8 +244,7 @@
                                                                                         <select id="options"
                                                                                             name="options"
                                                                                             style="padding: 2px 2px; height: auto; font-size: 12px; line-height: 1.2;">
-                                                                                            <option
-                                                                                                hidden="true"
+                                                                                            <option hidden="true"
                                                                                                 style="background-color: white;"
                                                                                                 value="">Kelola
                                                                                             </option>
