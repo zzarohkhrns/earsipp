@@ -7,7 +7,6 @@
 @section('css')
 @section('content')
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
         .container .d-flex {
@@ -76,7 +75,7 @@
                 <div class="col-12">
                     <div class="card ijo-atas">
                         <div class="card-body">
-                            <div class="row card-data-barang">
+                            <div class="row card-kontrol-barang">
                                 <div class="col-12">
                                     <div class="container d-flex flex-wrap col-12 ml-3 mr-3"
                                         style="padding: 0; width:100%;">
