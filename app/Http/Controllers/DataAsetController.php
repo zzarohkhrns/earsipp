@@ -231,7 +231,7 @@ class DataAsetController extends Controller
         }
 
         try {
-            Aset::create([
+            $aset = Aset::create([
                 'aset_id' => (string) Str::uuid(),
                 'kode_aset' => $request->kode_aset,
                 'tgl_perolehan' => $request->tgl_perolehan,
@@ -242,7 +242,7 @@ class DataAsetController extends Controller
                 'lokasi_penyimpanan' => $request->lokasi_penyimpanan,
                 'spesifikasi' => $request->spesifikasi,
             ]);
-            return redirect()->back()->with('success', 'Data berhasil ditambahkan.');
+            return redirect()->route('pc.detail_aset', $aset->aset_id);
         } catch (\Exception $e) {
             Log::error('Error saat menyimpan data barang: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Data gagal ditambahkan.');
@@ -594,7 +594,7 @@ class DataAsetController extends Controller
         ]);
 
         try {
-            PemeriksaanAset::create([
+            $pemeriksaan = PemeriksaanAset::create([
                 'id_pemeriksaan_aset' => (string) Str::uuid(),
                 'tanggal_pemeriksaan' => $request->tanggal_pemeriksaan,
                 'id_pemeriksa' => $request->id_pemeriksa,
@@ -604,8 +604,12 @@ class DataAsetController extends Controller
 
             session()->flash('active_tab', 'pemeriksaan');
             //return redirect()->back()->with('success', 'Data berhasil ditambahkan');
-            return redirect()->route($role . '.data_aset', ['tab' => 'pemeriksaan'])
-                ->with('success', 'Pemeriksaan berhasil ditambahkan');
+            // return redirect()->route($role . '.data_aset', ['tab' => 'pemeriksaan'])
+            //     ->with('success', 'Pemeriksaan berhasil ditambahkan');
+            return redirect()->route('pc.detail_pemeriksaan', [
+                'id' => $pemeriksaan->id_pemeriksaan_aset,
+                'tgl' => $pemeriksaan->tanggal_pemeriksaan,
+            ]);
         } catch (Exception $e) {
             session()->flash('active_tab', 'pemeriksaan');
             return redirect()->back()->with('error', 'Data gagal ditambahkan.');
