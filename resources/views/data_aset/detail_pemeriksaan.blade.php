@@ -91,9 +91,9 @@
             }
 
             /* .card {
-                width: 100%;
-                max-width: 600px;
-            } */
+                        width: 100%;
+                        max-width: 600px;
+                    } */
 
             .card-wrapper {
                 flex-direction: column;
@@ -134,7 +134,7 @@
         /* Setelan dasar untuk card */
         .card {
             /* background-color: #fff;
-            border: 1px solid #ddd; */
+                    border: 1px solid #ddd; */
             /* border-radius: 5px; */
             padding: 20px;
             margin: 10px;
@@ -303,54 +303,56 @@
                                                         </div>
 
                                                         <!-- Tombol (Dropdown dan Hapus) -->
-                                                        <div class="btn-responsive">
-                                                            {{-- Dropdown Button --}}
-                                                            <div class="dropdown mb-2 mr-2">
-                                                                <form
-                                                                    action="{{ route($role . '.updateStatusPemeriksaan') }}"
-                                                                    method="POST">
-                                                                    @csrf
-                                                                    <input type="hidden" name="id_pemeriksaan_aset"
-                                                                        value="{{ $pemeriksaanAset->id_pemeriksaan_aset }}">
-                                                                    <div class="dropdown">
-                                                                        <select id="dropdownButton"
-                                                                            name="status_pemeriksaan"
-                                                                            onchange="this.form.submit()"
-                                                                            style="border-radius: 10px; padding: 6px; margin: 0; width: 150px; font-size:12px; margin-right:5px;">
-                                                                            <option value="selesai"
-                                                                                {{ $pemeriksaanAset->status_pemeriksaan == 'selesai' ? 'selected' : '' }}>
-                                                                                <i
-                                                                                    class="bi bi-check-circle-fill"></i>Selesai
-                                                                                Diinput
-                                                                            </option>
-                                                                            <option value="belum"
-                                                                                {{ $pemeriksaanAset->status_pemeriksaan == 'belum' ? 'selected' : '' }}>
-                                                                                <i class="bi bi-ban"></i>Belum
-                                                                                Selesai Diinput
-                                                                            </option>
-                                                                        </select>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
+                                                        @if (Auth::user()->gocap_id_pc_pengurus != $supervisor || Auth::user()->gocap_id_pc_pemeriksa != $kc)
+                                                            <div class="btn-responsive">
+                                                                {{-- Dropdown Button --}}
+                                                                <div class="dropdown mb-2 mr-2">
+                                                                    <form
+                                                                        action="{{ route($role . '.updateStatusPemeriksaan') }}"
+                                                                        method="POST">
+                                                                        @csrf
+                                                                        <input type="hidden" name="id_pemeriksaan_aset"
+                                                                            value="{{ $pemeriksaanAset->id_pemeriksaan_aset }}">
+                                                                        <div class="dropdown">
+                                                                            <select id="dropdownButton"
+                                                                                name="status_pemeriksaan"
+                                                                                onchange="this.form.submit()"
+                                                                                style="border-radius: 10px; padding: 6px; margin: 0; width: 150px; font-size:12px; margin-right:5px;">
+                                                                                <option value="selesai"
+                                                                                    {{ $pemeriksaanAset->status_pemeriksaan == 'selesai' ? 'selected' : '' }}>
+                                                                                    <i
+                                                                                        class="bi bi-check-circle-fill"></i>Selesai
+                                                                                    Diinput
+                                                                                </option>
+                                                                                <option value="belum"
+                                                                                    {{ $pemeriksaanAset->status_pemeriksaan == 'belum' ? 'selected' : '' }}>
+                                                                                    <i class="bi bi-ban"></i>Belum
+                                                                                    Selesai Diinput
+                                                                                </option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
 
-                                                            {{-- Hapus Button --}}
-                                                            <div
-                                                                class="btn-group btn-block mb-2 mr-2 mb-xl-0 card_hapus_barang">
-                                                                <form
-                                                                    action="{{ route($role . '.delete_pemeriksaan', $pemeriksaanAset->id_pemeriksaan_aset) }}"
-                                                                    method="POST"
-                                                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit"
-                                                                        class="btn btn-danger btn-block"
-                                                                        @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif
-                                                                        style="border-radius: 10px; padding: 5px; width: 150px; font-size:12px; margin-right:5px;">
-                                                                        <i class="fas fa-trash"></i> Hapus
-                                                                    </button>
-                                                                </form>
+                                                                {{-- Hapus Button --}}
+                                                                <div
+                                                                    class="btn-group btn-block mb-2 mr-2 mb-xl-0 card_hapus_barang">
+                                                                    <form
+                                                                        action="{{ route($role . '.delete_pemeriksaan', $pemeriksaanAset->id_pemeriksaan_aset) }}"
+                                                                        method="POST"
+                                                                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="submit"
+                                                                            class="btn btn-danger btn-block"
+                                                                            @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif
+                                                                            style="border-radius: 10px; padding: 5px; width: 150px; font-size:12px; margin-right:5px;">
+                                                                            <i class="fas fa-trash"></i> Hapus
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        @endif
                                                     </div>
                                                 </div>
                                                 <div class="card">
@@ -582,13 +584,16 @@
                                                             class="d-flex justify-content-between align-items-center mb-3">
                                                             <b style="font-size: 16px;">Hasil Pemeriksaan
                                                                 Berdasarkan Kondisi</b>
-                                                            <button type="button" class="btn btn-success"
-                                                                data-toggle="modal" data-target="#TambahPemeriksaanModal"
-                                                                @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif
-                                                                style="border-radius: 10px; padding: 5px; margin: 0; width: 150px; font-size:12px;">
-                                                                <i class="fas fa-plus-circle"></i>
-                                                                <span>Tambah</span>
-                                                            </button>
+                                                            @if (Auth::user()->gocap_id_pc_pengurus != $supervisor || Auth::user()->gocap_id_pc_pemeriksa != $kc)
+                                                                <button type="button" class="btn btn-success"
+                                                                    data-toggle="modal"
+                                                                    data-target="#TambahPemeriksaanModal"
+                                                                    @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif
+                                                                    style="border-radius: 10px; padding: 5px; margin: 0; width: 150px; font-size:12px;">
+                                                                    <i class="fas fa-plus-circle"></i>
+                                                                    <span>Tambah</span>
+                                                                </button>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                     <div class="table-responsive">
@@ -1228,20 +1233,19 @@
                                                             </th>
                                                             <th style="width: 25%">
                                                                 @if (Auth::user()->gocap_id_pc_pengurus == $kc)
-                                                                <div class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                    <button
-                                                                    {{-- @disable($pemeriksaanAset->status_pemeriksaan == 'belum') --}}
-                                                                        class="btn btn-secondary btn-block intro-respon-kc respon-kc"
-                                                                        type="button" data-toggle="modal"
-                                                                        data-target="#responkcModal"
-                                                                        @if ($pemeriksaanAset->status_pemeriksaan == 'belum' || $pemeriksaanAset->status_spv == 'belum') disabled @endif
-                                                                        {{-- @if ($pemeriksaanAset->status_spv == 'belum') disabled @endif --}}
-                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 5px; margin: 0;font-size:12px;"
-                                                                        aria-expanded="false">
-                                                                        &nbsp;&nbsp;<i class="fas fa-edit"></i>
-                                                                        Respon
-                                                                    </button>
-                                                                </div>
+                                                                    <div class="btn-group mb-2 card_edit_pemeriksaan">
+                                                                        <button {{-- @disable($pemeriksaanAset->status_pemeriksaan == 'belum') --}}
+                                                                            class="btn btn-secondary btn-block intro-respon-kc respon-kc"
+                                                                            type="button" data-toggle="modal"
+                                                                            data-target="#responkcModal"
+                                                                            @if ($pemeriksaanAset->status_pemeriksaan == 'belum' || $pemeriksaanAset->status_spv == 'belum') disabled @endif
+                                                                            {{-- @if ($pemeriksaanAset->status_spv == 'belum') disabled @endif --}}
+                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 5px; margin: 0;font-size:12px;"
+                                                                            aria-expanded="false">
+                                                                            &nbsp;&nbsp;<i class="fas fa-edit"></i>
+                                                                            Respon
+                                                                        </button>
+                                                                    </div>
                                                                 @endif
                                                             </th>
                                                         </tr>
