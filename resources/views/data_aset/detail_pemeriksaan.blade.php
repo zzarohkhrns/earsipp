@@ -249,7 +249,7 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="container d-flex flex-wrap justify-content-between">
+                                            <div class="flex-container">
                                                 <div class="card">
                                                     <!-- Kontainer untuk tabel dan tombol -->
                                                     <div class="table-button-container">
@@ -534,6 +534,17 @@
                                                                             @else
                                                                                 <h6 class="text-danger">0</h6>
                                                                             @endif
+                                                                        </th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th style="width:50%">
+                                                                            <br>
+                                                                        </th>
+                                                                        <th style="width:25%">
+                                                                            <br>
+                                                                        </th>
+                                                                        <th style="width:25%">
+                                                                            <br>
                                                                         </th>
                                                                     </tr>
                                                                     <tr>
@@ -1111,18 +1122,20 @@
                                                                 <b style="font-size:16px;">Supervisor</b>
                                                             </th>
                                                             <th style="width: 25%">
-                                                                <div class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                    <button
-                                                                        class="btn btn-secondary btn-block intro-respon-spv respon-spv"
-                                                                        type="button" data-toggle="modal"
-                                                                        data-target="#responspvModal"
-                                                                        @if ($pemeriksaanAset->status_pemeriksaan == 'belum') disabled @endif
-                                                                        style="border-radius:10px; width: 150px; max-width: 150px; padding: 5px; margin: 0; font-size:12px;"
-                                                                        aria-expanded="false">
-                                                                        &nbsp;&nbsp;<i class="fas fa-edit"></i>
-                                                                        Respon
-                                                                    </button>
-                                                                </div>
+                                                                @if (Auth::user()->gocap_id_pc_pengurus == $supervisor)
+                                                                    <div class="btn-group mb-2 card_edit_pemeriksaan">
+                                                                        <button
+                                                                            class="btn btn-secondary btn-block intro-respon-spv respon-spv"
+                                                                            type="button" data-toggle="modal"
+                                                                            data-target="#responspvModal"
+                                                                            @if ($pemeriksaanAset->status_pemeriksaan == 'belum') disabled @endif
+                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 5px; margin: 0; font-size:12px;"
+                                                                            aria-expanded="false">
+                                                                            &nbsp;&nbsp;<i class="fas fa-edit"></i>
+                                                                            Respon
+                                                                        </button>
+                                                                    </div>
+                                                                @endif
                                                             </th>
                                                         </tr>
                                                         <tr>
@@ -1214,18 +1227,22 @@
                                                                 <b style="font-size:16px;">Kepala Cabang</b>
                                                             </th>
                                                             <th style="width: 25%">
+                                                                @if (Auth::user()->gocap_id_pc_pengurus == $kc)
                                                                 <div class="btn-group mb-2 card_edit_pemeriksaan">
                                                                     <button
+                                                                    {{-- @disable($pemeriksaanAset->status_pemeriksaan == 'belum') --}}
                                                                         class="btn btn-secondary btn-block intro-respon-kc respon-kc"
                                                                         type="button" data-toggle="modal"
                                                                         data-target="#responkcModal"
-                                                                        @if ($pemeriksaanAset->status_pemeriksaan == 'belum') disabled @endif
+                                                                        @if ($pemeriksaanAset->status_pemeriksaan == 'belum' || $pemeriksaanAset->status_spv == 'belum') disabled @endif
+                                                                        {{-- @if ($pemeriksaanAset->status_spv == 'belum') disabled @endif --}}
                                                                         style="border-radius:10px; width: 150px; max-width: 150px; padding: 5px; margin: 0;font-size:12px;"
                                                                         aria-expanded="false">
                                                                         &nbsp;&nbsp;<i class="fas fa-edit"></i>
                                                                         Respon
                                                                     </button>
                                                                 </div>
+                                                                @endif
                                                             </th>
                                                         </tr>
                                                         <tr>

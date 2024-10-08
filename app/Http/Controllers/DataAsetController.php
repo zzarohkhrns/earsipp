@@ -450,7 +450,37 @@ class DataAsetController extends Controller
         // Mengambil semua kategori
         $kategori = Kategori::all();
 
-        return view('data_aset.detail_pemeriksaan', compact('role', 'detailPemeriksaan', 'jumlahAset', 'pemeriksaanAset', 'kategori', 'aset'));
+        // Mendapatkan data user
+        $divisiUser = DB::connection('gocap')
+            ->table('pc_pengurus')
+            ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
+            ->where('pc_pengurus.id_pc_pengurus', Auth::user()->gocap_id_pc_pengurus)
+            ->select('pengurus_jabatan.divisi')
+            ->first();
+
+        $supervisor = null;
+        if ($divisiUser) {
+            $supervisor = DB::connection('gocap')
+                ->table('pc_pengurus')
+                ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
+                ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus')
+                ->where('pengurus_jabatan.jabatan', 'Supervisor Cabang')
+                ->where('pengurus_jabatan.divisi', $divisiUser->divisi)
+                ->select('pc_pengurus.id_pc_pengurus as id_supervisor', 'siftnu.pengguna.nama as nama_supervisor')
+                ->first();
+        }
+
+        $kc = DB::connection('gocap')
+            ->table('pc_pengurus')
+            ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
+            ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus')
+            ->where('pengurus_jabatan.jabatan', 'Kepala Cabang')
+            ->select('pc_pengurus.id_pc_pengurus as id_kc', 'siftnu.pengguna.nama as nama_kc')
+            ->first();
+
+            //dd($supervisor, $kc, Auth::user()->gocap_id_pc_pengurus);
+
+        return view('data_aset.detail_pemeriksaan',  compact('supervisor', 'kc' ,'role', 'detailPemeriksaan', 'jumlahAset', 'pemeriksaanAset', 'kategori', 'aset'));
     }
 
     public function exportPdfDetailPemeriksaan($id, $tgl)
