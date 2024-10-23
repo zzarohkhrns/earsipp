@@ -538,7 +538,7 @@
                                                                         <div id="tgl-pemeriksaan"
                                                                             class="form-control custom-input"
                                                                             style="align-items:stretch; background: #fff; cursor: pointer; border-top-right-radius: 10px; border-bottom-right-radius:10px; min-width: 100px;">
-                                                                            <span style="font-size:14px; line-height: 1.2; align-content:center"></span>
+                                                                            <span style="font-size:16px; line-height: 1.2; align-content:center"></span>
                                                                         </div>
                                                                     </div>
 
@@ -633,7 +633,7 @@
                                                                     </div>
                                                                     <select class="form-control" name="filter_status_spv"
                                                                         onchange="this.form.submit();"
-                                                                        style="font-size:14px; line-height: 1.2; border-top-right-radius: 10px; border-bottom-right-radius:10px;">
+                                                                        style="font-size:16px; line-height: 1.2; border-top-right-radius: 10px; border-bottom-right-radius:10px;">
                                                                         <option value="all"
                                                                             {{ request('filter_status_spv', 'all') == 'all' ? 'selected' : '' }}>
                                                                             Semua
@@ -658,7 +658,7 @@
                                                                     </div>
                                                                     <select class="form-control" name="filter_status_kc"
                                                                         onchange="this.form.submit();"
-                                                                        style="font-size:14px; line-height: 1.2; border-top-right-radius: 10px; border-bottom-right-radius:10px;">
+                                                                        style="font-size:16px; line-height: 1.2; border-top-right-radius: 10px; border-bottom-right-radius:10px;">
                                                                         <option value="all"
                                                                             {{ request('filter_status_kc', 'all') == 'all' ? 'selected' : '' }}>
                                                                             Semua
