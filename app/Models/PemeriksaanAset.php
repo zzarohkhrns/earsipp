@@ -11,7 +11,7 @@ class PemeriksaanAset extends Model
     protected $primaryKey = 'id_pemeriksaan_aset';
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = ['id_pemeriksaan_aset', 'tanggal_pemeriksaan', 'id_pemeriksa', 'id_supervisor', 'id_kc', 'status_spv', 'status_kc', 'catatan_spv', 'tgl_mengetahui_spv', 'tgl_mengetahui_kc', 'catatan_kc'];
+    protected $fillable = ['id_pemeriksaan_aset', 'tanggal_pemeriksaan', 'id_pemeriksa', 'id_supervisor', 'id_kc', 'status_spv', 'status_kc', 'catatan_spv', 'tgl_mengetahui_spv', 'tgl_mengetahui_kc', 'catatan_kc', 'status_pemeriksaan'];
 
     public function detailPemeriksaanAset()
     {

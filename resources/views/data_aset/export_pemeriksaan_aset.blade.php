@@ -15,7 +15,7 @@
             </td>
 
             <!-- Informasi Kontak -->
-            <td style="width: 60%; text-align: center;">
+            <td style="width: 60%; text-align: left;">
                 <p style="margin: 0;">Jl. Masjid No.09 Kelurahan Sidanegara, Kec. Cilacap Tengah, Kab. Cilacap</p>
                 <p style="margin: 0;">Ijin Operasional Nomor: <span
                         style="color: #008000;">062/SKA.II/LAZISNU-PBNU/IX/2022</span></p>
@@ -26,7 +26,7 @@
 
             <!-- Logo Kanan -->
             <td style="width: 20%; text-align: right;">
-                <img style="width: 100px;" src="{{ public_path('/images/siftnu.png') }}">
+                <img style="width: 120px;" src="{{ public_path('/images/siftnu.png') }}">
             </td>
         </tr>
     </table>
@@ -35,8 +35,8 @@
     <div style="border-bottom: 4px solid black; margin: 10px 0;"></div>
 
     <div style="text-align: center; margin-bottom: 20px; margin-top: 20px">
-        <h2 style="margin: 0;">FORM PEMERIKSAAN ASET</h2>
-        <p style="margin: 0;">MANAJEMEN EKSEKUTIF NU CARE LAZISNU CILACAP</p>
+        <h4 style="margin: 0;">FORM PEMERIKSAAN ASET</h4>
+        <h4 style="margin: 0;">MANAJEMEN EKSEKUTIF NU CARE LAZISNU CILACAP</h4>
     </div>
 
     <div style="margin-top: 20px;">
@@ -67,14 +67,14 @@
                         @foreach ($details as $key => $detail)
                             <tr>
                                 <td
-                                    style="border: 1px solid black; padding: 4px; line-height: 1.2; word-wrap: break-word; overflow: hidden;">
+                                    style=" text-align: left; vertical-align: top;border: 1px solid black; padding: 4px; line-height: 1.2; word-wrap: break-word; overflow: hidden;">
                                     {{ $no++ }}</td>
                                 <td
-                                    style="border: 1px solid black; padding: 4px; line-height: 1.2; word-wrap: break-word; overflow: hidden;">
+                                    style=" text-align: left; vertical-align: top;border: 1px solid black; padding: 4px; line-height: 1.2; word-wrap: break-word; overflow: hidden;">
                                     <b>{{ $detail->tanggal_pemeriksaan }}</b>
                                 </td>
                                 <td
-                                    style="border: 1px solid black; padding: 4px; line-height: 1.2; word-wrap: break-word; overflow: hidden;">
+                                    style=" text-align: left; vertical-align: top;border: 1px solid black; padding: 4px; line-height: 1.2; word-wrap: break-word; overflow: hidden;">
                                     <b>
                                         {{ $namaPemeriksa }}
                                     </b>
@@ -82,7 +82,7 @@
                                     {{ $detail->pcPengurus->pengurusJabatan->jabatan }}
                                 </td>
                                 <td
-                                    style="border: 1px solid black; padding: 4px; line-height: 1.2; word-wrap: break-word; overflow: hidden;">
+                                    style=" text-align: left; vertical-align: top;border: 1px solid black; padding: 4px; line-height: 1.2; word-wrap: break-word; overflow: hidden;">
                                     @if ($detail->detailPemeriksaanAset->isNotEmpty())
                                         {{ $totalDetailPemeriksaan = $detail->detailPemeriksaanAset->count() }}
                                         Aset
@@ -91,7 +91,7 @@
                                     @endif
                                 </td>
                                 <td
-                                    style="border: 1px solid black; padding: 4px; line-height: 1.2; word-wrap: break-word; overflow: hidden;">
+                                    style=" text-align: left; vertical-align: top;border: 1px solid black; padding: 4px; line-height: 1.2; word-wrap: break-word; overflow: hidden;">
                                     @if ($detail->detailPemeriksaanAset->isNotEmpty())
                                         <table id="example"
                                             style="border-collapse: collapse; width: 100%; margin: 0;">
@@ -192,7 +192,7 @@
                                     @endif
                                 </td>
                                 <td
-                                    style="border: 1px solid black; padding: 4px; line-height: 1.2; word-wrap: break-word; overflow: hidden;">
+                                    style=" text-align: left; vertical-align: top;border: 1px solid black; padding: 4px; line-height: 1.2; word-wrap: break-word; overflow: hidden;">
                                     @if ($detail->detailPemeriksaanAset->isNotEmpty())
                                         <table id="example"
                                             style="border-collapse: collapse; width: 100%; margin: 0;">
@@ -248,7 +248,7 @@
                                     @endif
                                 </td>
                                 <td
-                                    style="border: 1px solid black; padding: 4px; line-height: 1.2; word-wrap: break-word; overflow: hidden;">
+                                    style=" text-align: left; vertical-align: top;border: 1px solid black; padding: 4px; line-height: 1.2; word-wrap: break-word; overflow: hidden;">
                                     <div>
                                         @if ($detail->status_spv == 'mengetahui')
                                             <div class="text-success" style="color: green;">Mengetahui</div>
@@ -265,7 +265,7 @@
                                     </div>
                                 </td>
                                 <td
-                                    style="border: 1px solid black; padding: 4px; line-height: 1.2; word-wrap: break-word; overflow: hidden;">
+                                    style=" text-align: left; vertical-align: top;border: 1px solid black; padding: 4px; line-height: 1.2; word-wrap: break-word; overflow: hidden;">
                                     <div>
                                         @if ($detail->status_kc == 'mengetahui')
                                             <div class="text-success" style="color: green;">Mengetahui</div>

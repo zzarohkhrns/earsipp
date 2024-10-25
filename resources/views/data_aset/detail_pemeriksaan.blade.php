@@ -91,9 +91,9 @@
             }
 
             /* .card {
-                        width: 100%;
-                        max-width: 600px;
-                    } */
+                            width: 100%;
+                            max-width: 600px;
+                        } */
 
             .card-wrapper {
                 flex-direction: column;
@@ -134,7 +134,7 @@
         /* Setelan dasar untuk card */
         .card {
             /* background-color: #fff;
-                    border: 1px solid #ddd; */
+                        border: 1px solid #ddd; */
             /* border-radius: 5px; */
             padding: 20px;
             margin: 10px;
@@ -168,22 +168,24 @@
         </div>
     </div>
     <!-- success jika berhasil menambah data -->
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show">
-            {{ session('success') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endif
-    @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show">
-            {{ session('error') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endif
+    <div style="margin-left: 20px; margin-right: 20px">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show">
+                {{ session('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show">
+                {{ session('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+    </div>
 
     {{-- script untuk close --}}
     <script>
