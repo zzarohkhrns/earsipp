@@ -205,17 +205,32 @@
                                             aria-labelledby="kontrol-aset-tab">
                                             <div class="card-body">
                                                 <div class="row card-kontrol-aset">
+                                                    @if ($aset->detailPemeriksaanAset->isNotEmpty())
+                                                        <div
+                                                            style="display: flex; justify-content: end; width: 100%; margin-bottom: 10px">
+                                                            <a target="_blank"
+                                                                href="{{ route($role . '.export-detail-aset', $aset->aset_id) }}">
+                                                                <button class="btn btn-outline-secondary"
+                                                                    id="exportRiwayatPemeriksaan" style="width: 160px;"
+                                                                    {{-- onClick="window.location.href='/{{ $role }}/print-riwayat-pemeriksaan/{{ $aset->aset_id }}'"> --}}>
+                                                                    Export
+                                                                </button>
+                                                            </a>
+                                                        </div>
+                                                    @endif
+
                                                     <div class="table-responsive">
                                                         <table id="kontrolAset" class="table table-bordered"
                                                             style="width:100%; font-size: 13px;">
                                                             <thead style="text-align: center; font-size: 16px;">
                                                                 <tr>
-                                                                    <th>No</th>
-                                                                    <th>Tgl Pemeriksaan</th>
+                                                                    <th>No.</th>
+                                                                    <th>Tanggal</th>
                                                                     <th>Kondisi</th>
                                                                     <th>Status</th>
-                                                                    <th>Masalah Teridentifikasi</th>
-                                                                    <th>Tindakan Yang Diperlukan</th>
+                                                                    <th>Keterangan</th>
+                                                                    <th>Status SPV</th>
+                                                                    <th>Status KC</th>
                                                                     <th style="width: 100px;">Aksi</th>
                                                                 </tr>
                                                             </thead>
@@ -235,8 +250,9 @@
                                                                             @else
                                                                                 <td class="text-danger">Non aktif</td>
                                                                             @endif
-                                                                            <td>{{ $item->masalah_teridentifikasi }}</td>
-                                                                            <td>{{ $item->tindakan_diperlukan }}</td>
+                                                                            <td><b>Masalah :</b> <br>{{ $item->masalah_teridentifikasi }} <br> <b>Tindakan :</b> <br> {{ $item->tindakan_diperlukan }}</td>
+                                                                            <td><b>Mengetahui :</b> <br> {{ $item->pemeriksaanAset->tgl_mengetahui_spv ?? '-' }} <br> <b>Catatan :</b> <br> {{ $item->pemeriksaanAset->catatan_spv }}</td>
+                                                                            <td><b>Mengetahui :</b> <br> {{ $item->pemeriksaanAset->tgl_mengetahui_kc ?? '-' }} <br> <b>Catatan :</b> <br> {{ $item->pemeriksaanAset->catatan_kc }}</td>
                                                                             <td>
                                                                                 <div
                                                                                     class="d-flex flex-column align-items-center">

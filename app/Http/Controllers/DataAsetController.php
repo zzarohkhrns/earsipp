@@ -360,7 +360,7 @@ class DataAsetController extends Controller
         $filename = "form_aset_{$tanggalSekarang}.pdf";
 
         $pdf = PDF::loadView('data_aset.export_aset', compact('aset'));
-        $pdf->setPaper('A4', 'portrait');
+        $pdf->setPaper('A4', 'la');
         return $pdf->stream($filename);
     }
     public function export_pemeriksaan()
@@ -393,7 +393,7 @@ class DataAsetController extends Controller
         $filename = "form_pemeriksaan_{$tanggalSekarang}.pdf";
 
         $pdf = PDF::loadView('data_aset.export_pemeriksaan_aset', compact('pemeriksaanGrouped', 'pemeriksaanQuery'));
-        $pdf->setPaper('A4', 'portrait');
+        $pdf->setPaper('A4', 'landscape');
         return $pdf->stream($filename);
     }
 
@@ -478,9 +478,9 @@ class DataAsetController extends Controller
             ->select('pc_pengurus.id_pc_pengurus as id_kc', 'siftnu.pengguna.nama as nama_kc')
             ->first();
 
-            //dd($supervisor, $kc, Auth::user()->gocap_id_pc_pengurus);
+        //dd($supervisor, $kc, Auth::user()->gocap_id_pc_pengurus);
 
-        return view('data_aset.detail_pemeriksaan',  compact('supervisor', 'kc' ,'role', 'detailPemeriksaan', 'jumlahAset', 'pemeriksaanAset', 'kategori', 'aset'));
+        return view('data_aset.detail_pemeriksaan',  compact('supervisor', 'kc', 'role', 'detailPemeriksaan', 'jumlahAset', 'pemeriksaanAset', 'kategori', 'aset'));
     }
 
     public function exportPdfDetailPemeriksaan($id, $tgl)
@@ -531,12 +531,33 @@ class DataAsetController extends Controller
         // Buat nama file PDF dengan tanggal pemeriksaan
         $filename = "form_detail_pemeriksaan_{$tanggalPemeriksaan}.pdf";
 
+
         $pdf = PDF::loadView('data_aset.export_detail_pemeriksaan', compact('detailPemeriksaan', 'pemeriksaanAset', 'jumlahAset'));
-        $pdf->setPaper('A4', 'portrait');
+        $pdf->setPaper('A4', 'landscape');
 
         // Stream PDF dengan nama file yang sudah ditentukan
         return $pdf->stream($filename);
     }
+
+    public function exportDetailPemeriksaanByAset($id)
+    {
+        $detailPemeriksaan = DetailPemeriksaanAset::with([
+            'aset.kategori_aset',
+            'pemeriksaanAset.pcPengurus.pengguna',
+            'pemeriksaanAset.supervisor.pengguna',
+            'pemeriksaanAset.kc.pengguna'
+        ])->where('aset_id', $id)->get();
+
+        $pemeriksaanAset = PemeriksaanAset::find($detailPemeriksaan->first()->id_pemeriksaan_aset);
+
+        $filename = "riwayat_pemeriksaan_ekspor_{$pemeriksaanAset->pcPengurus->pengguna->nama}.pdf";
+
+        $pdf = PDF::loadView('data_aset.export_riwayat_pemeriksaan_aset', compact('detailPemeriksaan', 'pemeriksaanAset'));
+        $pdf->setPaper('A4', 'landscape');
+
+        return $pdf->stream($filename);
+    }
+
 
     // update status pemeriksaan
     public function updateStatusPemeriksaan(Request $request)
