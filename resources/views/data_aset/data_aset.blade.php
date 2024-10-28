@@ -1,3 +1,4 @@
+
 @extends('main')
 
 
@@ -538,7 +539,7 @@
                                                                         <div id="tgl-pemeriksaan"
                                                                             class="form-control custom-input"
                                                                             style="align-items:stretch; background: #fff; cursor: pointer; border-top-right-radius: 10px; border-bottom-right-radius:10px; min-width: 100px;">
-                                                                            <span style="font-size:16px; line-height: 1.2; align-content:center"></span>
+                                                                            <span style="font-size:15   px; line-height: 1.2; align-content:center"></span>
                                                                         </div>
                                                                     </div>
 
