@@ -210,8 +210,8 @@
                                                             style="display: flex; justify-content: end; width: 100%; margin-bottom: 10px">
                                                             <a target="_blank"
                                                                 href="{{ route($role . '.export-detail-aset', $aset->aset_id) }}">
-                                                                <button class="btn btn-outline-secondary"
-                                                                    id="exportRiwayatPemeriksaan" style="width: 160px;"
+                                                                <button class="btn btn-warning"
+                                                                    id="exportRiwayatPemeriksaan" style="width: 150px;padding: 5px; color: white;rounded: 10px; font-size: 13px;"
                                                                     {{-- onClick="window.location.href='/{{ $role }}/print-riwayat-pemeriksaan/{{ $aset->aset_id }}'"> --}}>
                                                                     Export
                                                                 </button>
