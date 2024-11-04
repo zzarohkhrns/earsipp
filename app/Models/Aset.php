@@ -62,4 +62,9 @@ class Aset extends Model
     {
         return $this->belongsTo(Kategori::class, 'id_kategori', 'id_kategori');
     }
+
+    public function detail_keluar_masuk_aset()
+    {
+        return $this->hasMany(DetailKeluarMasukAset::class, 'id_aset', 'id_aset');
+    }
 }
