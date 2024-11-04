@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class DetailKeluarMasukAset extends Model
 {
     use HasFactory;
+    protected $table = 'detail_keluar_masuk_aset';
     protected $primaryKey = 'detail_keluar_masuk_aset_id';
-    protected $incrementing = false;
+    public $incrementing = false;
     protected $keyType = 'string';
     protected $fillable = [
         'id_detail_keluar_masuk_aset',
@@ -30,6 +31,6 @@ class DetailKeluarMasukAset extends Model
 
     public function aset()
     {
-        return $this->belongsTo(Aset::class, 'id_aset', 'id_aset');
+        return $this->belongsTo(Aset::class, 'aset_id', 'aset_id');
     }
 }
