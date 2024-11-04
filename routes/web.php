@@ -243,6 +243,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/update-status-pemeriksaan', [DataAsetController::class, 'updateStatusPemeriksaan'])->name('updateStatusPemeriksaan');
         Route::get('/print-detail/{id}/{tgl}', [DataAsetController::class, 'exportPdfDetailPemeriksaan'])->name('exportPdfDetailPemeriksaan');
         Route::get('/print-data-pemeriksaan', [DataAsetController::class, 'export_pemeriksaan'])->name('exportPdfPemeriksaan');
+
+        Route::get('/arsip/detail_keluar_masuk_aset/{id}', [DataAsetController::class, 'detail_keluar_masuk_aset'])->name('detail_keluar_masuk_aset');
     });
 
     // upzis

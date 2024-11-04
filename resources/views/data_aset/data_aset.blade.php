@@ -1301,7 +1301,7 @@
                                                                 <tbody>
                                                                     <tr>
                                                                         <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">
-                                                                            @if ($keluar_masuk->status_kc == 'mengetahui')
+                                                                            @if ($keluar_masuk->status_spv == 'mengetahui')
                                                                                 <div class="text-success">Mengetahui</div>
                                                                             @else
                                                                                 <div class="text-danger">Belum Mengetahui
@@ -1347,11 +1347,27 @@
                                                             </table>
                                                         </td>
                                                         <td>
-                                                            <select class="btn btn-outline-secondary" style="font-size: 13px; padding: 2px; cursor: pointer;">
+                                                            <select class="btn btn-outline-secondary" style="font-size: 13px; padding: 2px; cursor: pointer;" onchange="handleSelectChange(this)">
                                                                 <option value="" disabled selected>Pilih Aksi</option>
-                                                                <option value="">Detail</option>
-                                                                <option value="">Cetak PDF</option>
+                                                                <option value="detail">Detail</option>
+                                                                <option value="cetak">Cetak PDF</option>
                                                             </select>
+                                                            
+                                                            <script>
+                                                                function handleSelectChange(select) {
+                                                                    if (select.value === "detail") {
+                                                                        // Arahkan ke halaman detail
+                                                                        window.location.href = '{{ route($role.'.detail_keluar_masuk_aset', $keluar_masuk->id_keluar_masuk_aset) }}';
+                                                                    } else if (select.value === "cetak") {
+                                                                        // Tambahkan logika untuk mencetak PDF di sini
+                                                                        alert("Fitur cetak PDF belum diimplementasikan.");
+                                                                    }
+                                                                    
+                                                                    // Reset pilihan ke default setelah mengarahkan atau mencetak PDF
+                                                                    select.selectedIndex = 0;
+                                                                }
+                                                            </script>
+                                                            
                                                         </td>
                                                     </tr>
                                                 @endforeach

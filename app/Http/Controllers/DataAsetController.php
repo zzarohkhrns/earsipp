@@ -773,4 +773,11 @@ class DataAsetController extends Controller
     *
     *
     */
+    public function detail_keluar_masuk_aset($id)
+    {
+        $role = 'pc';
+        $keluar_masuk_aset = KeluarMasukAset::find($id);
+
+        return view('data_aset.detail_keluar_masuk', compact('keluar_masuk_aset','role'));
+    }
 }
