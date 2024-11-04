@@ -8,6 +8,7 @@
 @section('content')
 
 
+
     <style>
         .container .d-flex {
             display: flex;
@@ -739,7 +740,7 @@
                                             </div>
                                         </div>
 
-                                        {{-- tabel pemeriksaan --}}
+                                        {{-- table pemeriksaan --}}
                                         <div class="table-responsive mt-0 card-table-berita">
                                             <table id="tablePemeriksaan" class="table table-bordered"
                                                 style="width:100%; font-size:13px;">
@@ -994,7 +995,7 @@
                                         </div>
                                     </div>
 
-                                    {{-- tab keluar masuk --}}
+                                    {{-- Table keluar masuk --}}
                                     <div id="keluarMasuk" class="tab-content" style="width: 99%; padding:10px; mt-1">
                                         <div class="col-12 col-sm-12 mb-2 mb-xl-0">
                                             <div class="card">
@@ -1229,115 +1230,117 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>
-                                                        
-                                                    </td>
-                                                    <td>
-                                                        <table style="border-collapse: collapse; width: 100%; margin: 0;">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;"><b>Tanggal Pencatatan</b></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;"><b>Nama Pencatat</b></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">Jabatan Pencatat</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                    <td>
-                                                        <table style="border-collapse: collapse; width: 100%; margin: 0;">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">No Faktur</td>
-                                                                    <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>No Faktur</b></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">Pemasok</td>
-                                                                    <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>Pemasok</b></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">Total Kuantitas</td>
-                                                                    <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>Total Kuantitas</b></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="2" style="border: none; font-size: 13px; line-height: 1.2; padding: 2px;">
-                                                                        Ini Keterangan pencatatan keluar masuk
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                    <td>
-                                                        <table style="border-collapse: collapse; width: 100%; margin: 0;">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">No Faktur</td>
-                                                                    <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>No Faktur</b></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">Penerima</td>
-                                                                    <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>Penerima</b></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">Total Kuantitas</td>
-                                                                    <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>Total Kuantitas</b></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="2" style="border: none; font-size: 13px; line-height: 1.2; padding: 2px;">
-                                                                        Ini Keterangan pencatatan keluar masuk
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                    <td>
-                                                        <table style="border-collapse: collapse; width: 100%; margin: 0;">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">Status</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">Catatan</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;"><b>Nama SPV</b></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">Jabatan SPV</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                    <td>
-                                                        <table style="border-collapse: collapse; width: 100%; margin: 0;">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">Status</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">Catatan</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;"><b>Nama SPV</b></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">Jabatan SPV</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                    <td>
-                                                        <select class="btn btn-outline-secondary" style="font-size: 13px; padding: 2px; cursor: pointer;">
-                                                            <option value="">Pilih Aksi</option>
-                                                            <option value="">Detail</option>
-                                                            <option value="">Cetak PDF</option>
-                                                        </select>
-                                                    </td>
-                                                </tr>
+                                                @foreach ($keluar_masuk_aset as $keluar_masuk)
+                                                    <tr>
+                                                        <td>
+                                                            {{ $loop->iteration }}
+                                                        </td>
+                                                        <td>
+                                                            <table style="border-collapse: collapse; width: 100%; margin: 0;">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;"><b>{{ $keluar_masuk->tanggal_pencatatan }}</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;"><b>{{ $keluar_masuk->pencatat->pengguna->nama ?? '' }}</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">{{ $keluar_masuk->pencatat->PengurusJabatan->jabatan ?? '' }}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                        <td>
+                                                            <table style="border-collapse: collapse; width: 100%; margin: 0;">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">No Faktur</td>
+                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>{{ $keluar_masuk->masuk_no_faktur }}</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">Pemasok</td>
+                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>{{ $keluar_masuk->masuk_nama_pemasok }}</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">Total Kuantitas</td>
+                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>Total Kuantitas</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan="2" style="border: none; font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                            {{ $keluar_masuk->masuk_keterangan }}
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                        <td>
+                                                            <table style="border-collapse: collapse; width: 100%; margin: 0;">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">No Faktur</td>
+                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>{{ $keluar_masuk->masuk_no_faktur }}</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">Penerima</td>
+                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>{{ $keluar_masuk->keluar_nama_penerima }}</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">Total Kuantitas</td>
+                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>Total Kuantitas</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan="2" style="border: none; font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                            {{ $keluar_masuk->keluar_keterangan }}
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                        <td>
+                                                            <table style="border-collapse: collapse; width: 100%; margin: 0;">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">{{ $keluar_masuk->status_spv }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">{{ $keluar_masuk->catatan_spv }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;"><b>{{ $keluar_masuk->supervisor->pengguna->nama }}</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">{{ $keluar_masuk->supervisor->pengurusJabatan->jabatan }}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                        <td>
+                                                            <table style="border-collapse: collapse; width: 100%; margin: 0;">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">{{ $keluar_masuk->status_kc }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">{{ $keluar_masuk->catatan_kc }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;"><b>{{ $keluar_masuk->kc->pengguna->nama }}</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">{{ $keluar_masuk->kc->pengurusJabatan->jabatan }}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                        <td>
+                                                            <select class="btn btn-outline-secondary" style="font-size: 13px; padding: 2px; cursor: pointer;">
+                                                                <option value="">Pilih Aksi</option>
+                                                                <option value="">Detail</option>
+                                                                <option value="">Cetak PDF</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
