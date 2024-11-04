@@ -221,7 +221,6 @@
                                     </ul>
 
                                     <div class="tab-content" id="myTabContent">
-
                                         {{-- tab pemeriksaaan --}}
                                         <div class="tab-pane fade show active" id="pemeriksaan" role="tabpanel"
                                             aria-labelledby="detail-pemeriksaan-tab">
