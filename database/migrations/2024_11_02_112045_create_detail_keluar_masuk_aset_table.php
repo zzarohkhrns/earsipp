@@ -14,7 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('detail_keluar_masuk_aset', function (Blueprint $table) {
-            $table->uuid('id_keluar_masuk_aset')->primary();
+            $table->uuid('id_detail_keluar_masuk_aset')->primary();
+            $table->foreignUuid('id_keluar_masuk_aset')->nullable();
+            $table->foreign('id_keluar_masuk_aset')->preferences('id_keluar_masuk_aset')->on('keluar_masuk_aset');
             $table->foreignUuid('aset_id')->nullable();
             $table->foreign('aset_id')->references('aset_id')->on('aset');
             $table->string('masuk_kuantitas');
