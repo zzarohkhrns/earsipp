@@ -16,13 +16,13 @@ return new class extends Migration
         Schema::create('detail_keluar_masuk_aset', function (Blueprint $table) {
             $table->uuid('id_detail_keluar_masuk_aset')->primary();
             $table->foreignUuid('id_keluar_masuk_aset')->nullable();
-            $table->foreign('id_keluar_masuk_aset')->preferences('id_keluar_masuk_aset')->on('keluar_masuk_aset');
+            $table->foreign('id_keluar_masuk_aset')->references('id_keluar_masuk_aset')->on('keluar_masuk_aset')->onDelete('cascade');
             $table->foreignUuid('aset_id')->nullable();
-            $table->foreign('aset_id')->references('aset_id')->on('aset');
-            $table->string('masuk_kuantitas');
+            $table->foreign('aset_id')->references('aset_id')->on('aset')->onDelete('cascade');
+            $table->integer('masuk_kuantitas');
             $table->string('masuk_kondisi');
             $table->string('masuk_tindak_lanjut');
-            $table->string('keluar_kuantitas');
+            $table->integer('keluar_kuantitas');
             $table->string('keluar_kondisi');
             $table->string('keluar_tindak_lanjut');
             $table->timestamps();
