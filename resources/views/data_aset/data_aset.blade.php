@@ -1254,16 +1254,16 @@
                                                             <table style="border-collapse: collapse; width: 100%; margin: 0;">
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">No Faktur</td>
-                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>{{ $keluar_masuk->masuk_no_faktur }}</b></td>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">No Faktur</td>
+                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;"><b>{{ $keluar_masuk->masuk_no_faktur }}</b></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">Pemasok</td>
-                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>{{ $keluar_masuk->masuk_nama_pemasok }}</b></td>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">Pemasok</td>
+                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;"><b>{{ $keluar_masuk->masuk_nama_pemasok }}</b></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">Total Kuantitas</td>
-                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>Total Kuantitas</b></td>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">Total Kuantitas</td>
+                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;"><b>Total Kuantitas</b></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td colspan="2" style="border: none; font-size: 13px; line-height: 1.2; padding: 2px;">
@@ -1277,16 +1277,16 @@
                                                             <table style="border-collapse: collapse; width: 100%; margin: 0;">
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">No Faktur</td>
-                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>{{ $keluar_masuk->masuk_no_faktur }}</b></td>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">No Faktur</td>
+                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;"><b>{{ $keluar_masuk->masuk_no_faktur }}</b></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">Penerima</td>
-                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>{{ $keluar_masuk->keluar_nama_penerima }}</b></td>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">Penerima</td>
+                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;"><b>{{ $keluar_masuk->keluar_nama_penerima }}</b></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">Total Kuantitas</td>
-                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>Total Kuantitas</b></td>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">Total Kuantitas</td>
+                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;"><b>Total Kuantitas</b></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td colspan="2" style="border: none; font-size: 13px; line-height: 1.2; padding: 2px;">
@@ -1300,7 +1300,14 @@
                                                             <table style="border-collapse: collapse; width: 100%; margin: 0;">
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">{{ $keluar_masuk->status_spv }}</td>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                            @if ($keluar_masuk->status_kc == 'mengetahui')
+                                                                                <div class="text-success">Mengetahui</div>
+                                                                            @else
+                                                                                <div class="text-danger">Belum Mengetahui
+                                                                                </div>
+                                                                            @endif
+                                                                        </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">{{ $keluar_masuk->catatan_spv }}</td>
@@ -1318,7 +1325,14 @@
                                                             <table style="border-collapse: collapse; width: 100%; margin: 0;">
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">{{ $keluar_masuk->status_kc }}</td>
+                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                            @if ($keluar_masuk->status_kc == 'mengetahui')
+                                                                                <div class="text-success">Mengetahui</div>
+                                                                            @else
+                                                                                <div class="text-danger">Belum Mengetahui
+                                                                                </div>
+                                                                            @endif
+                                                                        </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">{{ $keluar_masuk->catatan_kc }}</td>
@@ -1334,7 +1348,7 @@
                                                         </td>
                                                         <td>
                                                             <select class="btn btn-outline-secondary" style="font-size: 13px; padding: 2px; cursor: pointer;">
-                                                                <option value="">Pilih Aksi</option>
+                                                                <option value="" disabled selected>Pilih Aksi</option>
                                                                 <option value="">Detail</option>
                                                                 <option value="">Cetak PDF</option>
                                                             </select>
@@ -1561,7 +1575,10 @@
     {{-- script untuk rows click --}}
     <script>
         $(document).ready(function() {
-            $('table tbody tr').click(function() {
+            $('#tableDataAset tbody tr').click(function() {
+                window.location = $(this).data('url');
+            });
+            $('#tablePemeriksaan tbody tr').click(function() {
                 window.location = $(this).data('url');
             });
         });
