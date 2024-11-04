@@ -1,4 +1,3 @@
-
 @extends('main')
 
 
@@ -539,7 +538,8 @@
                                                                         <div id="tgl-pemeriksaan"
                                                                             class="form-control custom-input"
                                                                             style="align-items:stretch; background: #fff; cursor: pointer; border-top-right-radius: 10px; border-bottom-right-radius:10px; min-width: 100px;">
-                                                                            <span style="font-size:15px; line-height: 1.2; align-content:center"></span>
+                                                                            <span
+                                                                                style="font-size:15px; line-height: 1.2; align-content:center"></span>
                                                                         </div>
                                                                     </div>
 
@@ -996,32 +996,347 @@
 
                                     {{-- tab keluar masuk --}}
                                     <div id="keluarMasuk" class="tab-content" style="width: 99%; padding:10px; mt-1">
-                                        <table id="tableKeluarMasuk" class="table-responsive mt-0 card-table-berita"
-                                            style="width:100%">
-                                            <thead>
+                                        <div class="col-12 col-sm-12 mb-2 mb-xl-0">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    {{-- menu filter --}}
+                                                    <form method="GET" action="{{ url($role . '/arsip/aset/data') }}">
+                                                        @csrf
+                                                        {{-- filter Tgl Pembelian --}}
+                                                        <div class="row card-filter-barang">
+                                                            <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0">
+                                                                <div class="input-group">
+                                                                    <div class="input-group" style="flex: 1;">
+                                                                        <div class="input-group-prepend"
+                                                                            style="border-radius: 10px;">
+                                                                            <span class="input-group-text custom-text">Tgl
+                                                                                Pemeriksaan</span>
+                                                                        </div>
+                                                                        <div id="tgl-pemeriksaan"
+                                                                            class="form-control custom-input"
+                                                                            style="align-items:stretch; background: #fff; cursor: pointer; border-top-right-radius: 10px; border-bottom-right-radius:10px; min-width: 100px;">
+                                                                            <span
+                                                                                style="font-size:15px; line-height: 1.2; align-content:center"></span>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <input type="hidden" onchange="this.form.submit()"
+                                                                        id="tgl-pemeriksaan-start"
+                                                                        name="tgl-pemeriksaan-start"
+                                                                        value="{{ request('tgl-pemeriksaan-start') }}">
+                                                                    <input type="hidden" onchange="this.form.submit()"
+                                                                        id="tgl-pemeriksaan-end"
+                                                                        name="tgl-pemeriksaan-end"
+                                                                        value="{{ request('tgl-pemeriksaan-end') }}">
+
+                                                                    <script type="text/javascript">
+                                                                        $(function() {
+                                                                            // Set moment.js ke bahasa Indonesia
+                                                                            moment.locale('id');
+
+                                                                            // Inisialisasi nilai tanggal dari input hidden atau gunakan default jika kosong
+                                                                            var start = moment($('#tgl-pemeriksaan-start').val(), 'YYYY/MM/DD').isValid() ? moment($(
+                                                                                '#tgl-pemeriksaan-start').val(), 'YYYY/MM/DD') : moment().subtract(29, 'days');
+                                                                            var end = moment($('#tgl-pemeriksaan-end').val(), 'YYYY/MM/DD').isValid() ? moment($(
+                                                                                    '#tgl-pemeriksaan-end')
+                                                                                .val(), 'YYYY/MM/DD') : moment();
+
+                                                                            function cb(start, end) {
+                                                                                let displayDate;
+
+                                                                                // Cek apakah tahun sama
+                                                                                if (start.year() === end.year()) {
+                                                                                    // Jika bulan dan tahun sama, hanya tampilkan tanggal dan bulan
+                                                                                    if (start.month() === end.month()) {
+                                                                                        displayDate = start.format('DD') + ' - ' + end.format('DD/MM/YYYY');
+                                                                                    } else {
+                                                                                        displayDate = start.format('DD/MM') + ' - ' + end.format('DD/MM/YYYY');
+                                                                                    }
+                                                                                } else {
+                                                                                    // Jika tahun berbeda, tampilkan tanggal lengkap
+                                                                                    displayDate = start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY');
+                                                                                }
+
+                                                                                $('#tgl-pemeriksaan span').html(displayDate); // Tampilkan tanggal yang diformat
+                                                                                $('#tgl-pemeriksaan-start').val(start.format('YYYY/MM/DD')); // Tetap format YYYY-MM-DD untuk server
+                                                                                $('#tgl-pemeriksaan-end').val(end.format('YYYY/MM/DD'));
+                                                                            }
+
+                                                                            $('#tgl-pemeriksaan').daterangepicker({
+                                                                                startDate: start,
+                                                                                endDate: end,
+                                                                                ranges: {
+                                                                                    'Hari ini': [moment(), moment()],
+                                                                                    'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                                                                    '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
+                                                                                    '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
+                                                                                    'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+                                                                                    'Bulan Terakhir': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+                                                                                        'month').endOf('month')]
+                                                                                },
+                                                                                locale: {
+                                                                                    format: 'DD/MM/YYYY', // Format tanggal menjadi angka
+                                                                                    applyLabel: 'Terapkan',
+                                                                                    cancelLabel: 'Batal',
+                                                                                    customRangeLabel: 'Pilih Tanggal',
+                                                                                    daysOfWeek: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                                                                                    monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus',
+                                                                                        'September', 'Oktober', 'November', 'Desember'
+                                                                                    ],
+                                                                                    firstDay: 1 // Set Senin sebagai hari pertama dalam seminggu
+                                                                                }
+                                                                            }, cb);
+
+                                                                            // Menangani tanggal saat apply pada daterangepicker
+                                                                            $('#tgl-pemeriksaan').on('apply.daterangepicker', function(ev, picker) {
+                                                                                $('#tgl-pemeriksaan-start').val(picker.startDate.format(
+                                                                                    'YYYY/MM/DD')); // Tetap format YYYY-MM-DD untuk server
+                                                                                $('#tgl-pemeriksaan-end').val(picker.endDate.format('YYYY/MM/DD'));
+                                                                                // Submit form secara otomatis setelah rentang tanggal dipilih
+                                                                                $(this).closest('form').submit();
+                                                                            });
+
+                                                                            // Panggil callback untuk menampilkan range tanggal yang sudah di-set
+                                                                            cb(start, end);
+                                                                        });
+                                                                    </script>
+
+                                                                </div>
+                                                            </div>
+                                                            {{-- filter kondisi --}}
+                                                            <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <div class="input-group-text">Status SPV</div>
+                                                                    </div>
+                                                                    <select class="form-control" name="filter_status_spv"
+                                                                        onchange="this.form.submit();"
+                                                                        style="font-size:16px; line-height: 1.2; border-top-right-radius: 10px; border-bottom-right-radius:10px;">
+                                                                        <option value="all"
+                                                                            {{ request('filter_status_spv', 'all') == 'all' ? 'selected' : '' }}>
+                                                                            Semua
+                                                                        </option>
+                                                                        <option value="mengetahui"
+                                                                            {{ request('filter_status_spv') == 'mengetahui' ? 'selected' : '' }}>
+                                                                            Mengetahui
+                                                                        </option>
+                                                                        <option value="belum"
+                                                                            {{ request('filter_status_spv') == 'belum' ? 'selected' : '' }}>
+                                                                            Belum Mengetahui
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+
+                                                            </div>
+                                                            {{-- filter tahun --}}
+                                                            <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0 ">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <div class="input-group-text">Status KC</div>
+                                                                    </div>
+                                                                    <select class="form-control" name="filter_status_kc"
+                                                                        onchange="this.form.submit();"
+                                                                        style="font-size:16px; line-height: 1.2; border-top-right-radius: 10px; border-bottom-right-radius:10px;">
+                                                                        <option value="all"
+                                                                            {{ request('filter_status_kc', 'all') == 'all' ? 'selected' : '' }}>
+                                                                            Semua
+                                                                        </option>
+                                                                        <option value="mengetahui"
+                                                                            {{ request('filter_status_kc') == 'mengetahui' ? 'selected' : '' }}>
+                                                                            Mengetahui
+                                                                        </option>
+                                                                        <option value="belum"
+                                                                            {{ request('filter_status_kc') == 'belum' ? 'selected' : '' }}>
+                                                                            Belum Mengetahui
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="container" style="padding: 0;margin:0;">
+                                                                <div class="col-12 col-md-10 mb-2 mb-xl-0">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div class="p-2">
+                                                                            <i class="fas fa-info-circle"></i>
+                                                                        </div>
+                                                                        <div class="p-2">
+                                                                            <span>
+                                                                                Data Aset PC Lazisnu Cilacap. Dapat
+                                                                                ditambahkan oleh Staff Logistik dan
+                                                                                Perlengkapan.
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="container" style="padding: 0;">
+                                                                    <div class="btn-group justify-content-end">
+                                                                        <button type="button"
+                                                                            class="btn btn-outline-secondary btn-sm btn-custom"
+                                                                            onclick="resetFiltersPemeriksaan()"
+                                                                            style="border: 1px solid #495057;">
+                                                                            <i class="fas fa-sync-alt"></i>
+                                                                        </button>
+                                                                        <a href="/{{ $role }}/print-data-pemeriksaan"
+                                                                            target="_blank"
+                                                                            class="btn btn-outline-secondary btn-sm btn-custom ml-2"
+                                                                            style="border: 1px solid #495057;">
+                                                                            <i class="fas fa-file-alt"
+                                                                                style="margin-right: 5px;"></i> Export
+                                                                        </a>
+                                                                        <button type="button"
+                                                                            class="btn btn-success btn-sm btn-custom ml-2"
+                                                                            data-toggle="modal"
+                                                                            data-target="#pemeriksaanModal"
+                                                                            style="background-color: #28a745; color: white;">
+                                                                            <i class="fas fa-plus-circle"></i> Tambah
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <script>
+                                                                function resetFiltersPemeriksaan() {
+                                                                    // Dapatkan URL saat ini tanpa query string
+                                                                    const baseUrl = window.location.origin + window.location.pathname;
+                                                                    // Arahkan ke URL dasar (tanpa filter) dan tambahkan parameter tab
+                                                                    window.location.href = `${baseUrl}?tab=keluarMasuk`;
+                                                                }
+
+                                                                // Deteksi tab pemeriksaan dari URL dan otomatis membuka tab tersebut
+                                                                document.addEventListener("DOMContentLoaded", function() {
+                                                                    const urlParams = new URLSearchParams(window.location.search);
+                                                                    const tabParam = urlParams.get('tab');
+                                                                    if (tabParam === 'pemeriksaan') {
+                                                                        openTab(tabParam); // Sesuaikan 'dataAset' dengan ID tab pemeriksaan
+                                                                    }
+                                                                });
+                                                            </script>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <table id="tableKeluarMasuk" class="table table-bordered"
+                                            style="width:100%; font-size:13px;">
+                                            <thead style="text-align: center; font-size: 16px;background-color:white">
                                                 <tr>
-                                                    <th>NO</th>
-                                                    <th>Diinput Oleh</th>
-                                                    <th>Tanggal Input</th>
-                                                    <th>Keluar</th>
-                                                    <th>Masuk</th>
-                                                    <th>Sisa</th>
-                                                    <th>Keterangan</th>
-                                                    <th>Respon KC</th>
-                                                    <th style="width: 150px;">Aksi</th>
+                                                    <th style="width: 5%;">No</th>
+                                                    <th style="width: 15%;">Tgl Pencatatan</th>
+                                                    <th style="width: 20%;">Aset Masuk</th>
+                                                    <th style="width: 20%;">Aset Keluar</th>
+                                                    <th style="width: 15%;">Status SPV</th>
+                                                    <th style="width: 15%;">Status KC</th>
+                                                    <th style="width: 20%;">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
+                                                    <td>
+                                                        
+                                                    </td>
+                                                    <td>
+                                                        <table style="border-collapse: collapse; width: 100%; margin: 0;">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;"><b>Tanggal Pencatatan</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;"><b>Nama Pencatat</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">Jabatan Pencatat</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td>
+                                                        <table style="border-collapse: collapse; width: 100%; margin: 0;">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">No Faktur</td>
+                                                                    <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>No Faktur</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">Pemasok</td>
+                                                                    <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>Pemasok</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">Total Kuantitas</td>
+                                                                    <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>Total Kuantitas</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" style="border: none; font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                        Ini Keterangan pencatatan keluar masuk
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td>
+                                                        <table style="border-collapse: collapse; width: 100%; margin: 0;">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">No Faktur</td>
+                                                                    <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>No Faktur</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">Penerima</td>
+                                                                    <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>Penerima</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 40%;">Total Kuantitas</td>
+                                                                    <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 60%;"><b>Total Kuantitas</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" style="border: none; font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                        Ini Keterangan pencatatan keluar masuk
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td>
+                                                        <table style="border-collapse: collapse; width: 100%; margin: 0;">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">Status</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">Catatan</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;"><b>Nama SPV</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">Jabatan SPV</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td>
+                                                        <table style="border-collapse: collapse; width: 100%; margin: 0;">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">Status</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">Catatan</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;"><b>Nama SPV</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">Jabatan SPV</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td>
+                                                        <select class="btn btn-outline-secondary" style="font-size: 13px; padding: 2px; cursor: pointer;">
+                                                            <option value="">Pilih Aksi</option>
+                                                            <option value="">Detail</option>
+                                                            <option value="">Cetak PDF</option>
+                                                        </select>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>

@@ -231,7 +231,7 @@
                                                                     <th>Keterangan</th>
                                                                     <th>Status SPV</th>
                                                                     <th>Status KC</th>
-                                                                    <th style="width: 100px;">Aksi</th>
+                                                                    {{-- <th style="width: 100px;">Aksi</th> --}}
                                                                 </tr>
                                                             </thead>
                                                             <tbody style="font-size: 13px;">
@@ -253,7 +253,7 @@
                                                                             <td><b>Masalah :</b> <br>{{ $item->masalah_teridentifikasi }} <br> <b>Tindakan :</b> <br> {{ $item->tindakan_diperlukan }}</td>
                                                                             <td><b>Mengetahui :</b> <br> {{ $item->pemeriksaanAset->tgl_mengetahui_spv ?? '-' }} <br> <b>Catatan :</b> <br> {{ $item->pemeriksaanAset->catatan_spv }}</td>
                                                                             <td><b>Mengetahui :</b> <br> {{ $item->pemeriksaanAset->tgl_mengetahui_kc ?? '-' }} <br> <b>Catatan :</b> <br> {{ $item->pemeriksaanAset->catatan_kc }}</td>
-                                                                            <td>
+                                                                            {{-- <td>
                                                                                 <div
                                                                                     class="d-flex flex-column align-items-center">
                                                                                     <div class="dropdown">
@@ -284,7 +284,7 @@
                                                                                         });
                                                                                     </script>
                                                                                 </div>
-                                                                            </td>
+                                                                            </td> --}}
                                                                         </tr>
                                                                     @endforeach
                                                                 @endif
