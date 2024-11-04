@@ -11,6 +11,8 @@ use App\Models\Kategori;
 use App\Models\KontrolBarang;
 use App\Models\PcPengurus;
 use App\Models\PemeriksaanAset;
+use App\Models\KeluarMasukAset;
+use App\Models\DetailKeluarMasukAset;
 use App\Models\Upzis;
 use App\Models\Ranting;
 use App\Models\Pengguna;
@@ -125,7 +127,6 @@ class DataAsetController extends Controller
 
         // Ambil kategori
         $kategori = DB::table('kategori')->get();
-        $role = 'pc';
 
         // Mendapatkan data user
         $divisiUser = DB::connection('gocap')
@@ -154,8 +155,20 @@ class DataAsetController extends Controller
             ->where('pengurus_jabatan.jabatan', 'Kepala Cabang')
             ->select('pc_pengurus.id_pc_pengurus as id_kc', 'siftnu.pengguna.nama as nama_kc')
             ->first();
+        
 
-        return view('data_aset.data_aset', compact('kategori_id', 'status', 'kodeAset', 'tgl_pembelian_start', 'tgl_pembelian_end', 'role', 'aset', 'kategori', 'pemeriksaan2', 'pemeriksaanGrouped', 'supervisor', 'kc', 'tgl_pemeriksaan_start', 'tgl_pemeriksaan_end', 'status_spv', 'status_kc'));
+        /*
+        KELUAR MASUK ASET
+        */
+
+        $keluar_masuk_aset = KeluarMasukAset::all();
+
+        /*
+        *
+        END KELUAR MASUK
+        */
+        $role = 'pc'; 
+        return view('data_aset.data_aset', compact('keluar_masuk_aset','kategori_id', 'status', 'kodeAset', 'tgl_pembelian_start', 'tgl_pembelian_end', 'role', 'aset', 'kategori', 'pemeriksaan2', 'pemeriksaanGrouped', 'supervisor', 'kc', 'tgl_pemeriksaan_start', 'tgl_pemeriksaan_end', 'status_spv', 'status_kc'));
     }
 
     public function detail_aset($id)
@@ -751,145 +764,13 @@ class DataAsetController extends Controller
     }
 
 
-
-
-
-    // //belum fix
-    // public function printKontrol()
-    // {
-    //     $role = 'pc';
-    //     return view('data_aset.cetak_kontrol', compact('role'));
-    // }
-    // public function printKeluar()
-    // {
-    //     $role = 'pc';
-    //     return view('data_aset.cetak_keluar', compact('role'));
-    // }
-    // public function store_kontrol(Request $request)
-    // {
-    //     $request->validate([
-    //         'tanggal_kontrol' => 'required',
-    //         'berfungsi' => 'required',
-    //         'kondisi' => 'required',
-    //         'keterangan' => 'required'
-    //     ]);
-
-    //     dd($request);
-
-    //     try {
-    //         PemeriksaanAset::create([
-    //             'id_kontrol_barang' => Str::uuid(),
-    //             'id_barang' => $request->id_barang,
-    //             'tanggal_kontrol' => $request->tanggal_kontrol,
-    //             'berfungsi' => 'Ya',
-    //             'kondisi' => 'Baik',
-    //             'keterangan' => $request->keterangan,
-    //         ]);
-    //         return redirect()->back()->with('success', 'Data berhasil ditambahkan');
-    //     } catch (\Exception $e) {
-    //         Log::error('Error saat menyimpan data kontrol: ' . $e->getMessage());
-    //         return redirect()->back()->with('error', 'Data gagal ditambahkan.');
-    //     }
-    // }
-
-
-    // public function getAsetData($id)
-    // {
-    //     $aset = Aset::with('kategori_aset')->where('aset_id', $id)->firstOrFail();
-    //     return response()->json([$aset]);
-    // }
-
-    // public function getDetailPemeriksaan($id)
-    // {
-    //     $detailPemeriksaan = DetailPemeriksaanAset::with('aset.kategori_aset')
-    //         ->where('id_detail_pemeriksaan_aset', $id)
-    //         ->firstOrFail();
-
-    //     return response()->json($detailPemeriksaan);
-    // }
-
-
-    // public function edit_detail_pemeriksaan($id)
-    // {
-    //     $detailPemeriksaan = DetailPemeriksaanAset::with('aset.kategori_aset')->find($id);
-
-    //     return response()->json([
-    //         'aset_id' => $detailPemeriksaan->aset_id,
-    //         'kategori_aset' => $detailPemeriksaan->aset->kategori_aset->kategori,
-    //         'lokasi_penyimpanan' => $detailPemeriksaan->aset->lokasi_penyimpanan,
-    //         'tgl_perolehan' => $detailPemeriksaan->aset->tgl_perolehan,
-    //         'status_aset' => $detailPemeriksaan->status_aset,
-    //         'kondisi' => $detailPemeriksaan->kondisi,
-    //         'masalah_teridentifikasi' => $detailPemeriksaan->masalah_teridentifikasi,
-    //         'tindakan_diperlukan' => $detailPemeriksaan->tindakan_diperlukan,
-    //     ]);
-    // }
-
-    // public function update_detail_pemeriksaan(Request $request, $id)
-    // {
-    //     // Validasi input
-    //     $request->validate([
-    //         'aset' => 'required',
-    //         'status_aset' => 'required|in:aktif,non aktif',
-    //         'kondisi' => 'required|string|max:255',
-    //         'masalah_teridentifikasi' => 'required|string',
-    //         'tindakan_diperlukan' => 'required|string',
-    //     ]);
-
-    //     // Update data di database
-    //     $detailPemeriksaan = DetailPemeriksaanAset::find($id);
-    //     $detailPemeriksaan->aset_id = $request->input('aset');
-    //     $detailPemeriksaan->status_aset = $request->input('status_aset');
-    //     $detailPemeriksaan->kondisi = $request->input('kondisi');
-    //     $detailPemeriksaan->masalah_teridentifikasi = $request->input('masalah_teridentifikasi');
-    //     $detailPemeriksaan->tindakan_diperlukan = $request->input('tindakan_diperlukan');
-    //     $detailPemeriksaan->save();
-
-    //     return redirect()->back()->with('success', 'Detail Pemeriksaan berhasil diupdate');
-    // }
-
-
-
-    // public function updateStatusPemeriksaan(Request $request)
-    // {
-    //     $pemeriksaanAset = PemeriksaanAset::findOrFail($request->id_pemeriksaan_aset);
-    //     $pemeriksaanAset->status_pemeriksaan = $request->status_pemeriksaan;
-    //     $pemeriksaanAset->save();
-
-    //     return response()->json(['message' => 'Status pemeriksaan berhasil diperbarui']);
-    // }
-
-
-
-    // public function updateStatusPemeriksaan(Request $request)
-    // {
-    //     // Validasi input untuk memastikan data yang diterima valid
-    //     $request->validate([
-    //         'id_pemeriksaan_aset' => 'required|exists:pemeriksaan_asets,id',
-    //         'status_pemeriksaan' => 'required|string',
-    //     ]);
-
-    //     // Cari data pemeriksaan aset berdasarkan ID
-    //     $pemeriksaanAset = PemeriksaanAset::find($request->id_pemeriksaan_aset);
-
-    //     // Jika data ditemukan, ubah status dan simpan
-    //     if ($pemeriksaanAset) {
-    //         $pemeriksaanAset->status_pemeriksaan = $request->status_pemeriksaan;
-    //         $pemeriksaanAset->save(); // Simpan perubahan ke database
-    //         return response()->json(['message' => 'Status pemeriksaan berhasil diperbarui!']);
-    //     }
-
-    //     // Jika data tidak ditemukan, kirimkan respons error
-    //     return response()->json(['message' => 'Data tidak ditemukan!'], 404);
-    // }
-
-    // public function checkDate_Pemeriksaan(Request $request)
-    // {
-    //     $exists = PemeriksaanAset::where('id_pemeriksa', $request->id_pemeriksa)
-    //         ->where('tanggal_pemeriksaan', $request->tanggal_pemeriksaan)
-    //         ->exists();
-
-    //     return response()->json(['exists' => $exists]);
-    // }
-
+    /*
+    *
+    *
+    *
+        KELUAR MASUK ASET
+    *
+    *
+    *
+    */
 }
