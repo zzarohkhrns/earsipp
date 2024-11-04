@@ -65,6 +65,6 @@ class Aset extends Model
 
     public function detail_keluar_masuk_aset()
     {
-        return $this->hasMany(DetailKeluarMasukAset::class, 'id_aset', 'id_aset');
+        return $this->hasOne(DetailKeluarMasukAset::class, 'aset_id', 'aset_id');
     }
 }
