@@ -40,7 +40,7 @@ return new class extends Migration
             $table->string('masuk_keterangan');
             $table->string('keluar_no_transaksi');
             $table->date('keluar_tgl_keluar');
-            $table->string('keluar_nama_pemasok');
+            $table->string('keluar_nama_penerima');
             $table->string('keluar_no_faktur');
             $table->string('keluar_keterangan');
             $table->rememberToken();
