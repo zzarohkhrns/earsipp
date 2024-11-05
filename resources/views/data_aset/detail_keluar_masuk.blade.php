@@ -123,11 +123,11 @@
         }
 
         .flex-container .card:first-child {
-            flex:40%;
+            flex: 40%;
         }
 
         .flex-container .card:last-child {
-            flex:60%;
+            flex: 60%;
         }
     </style>
 
@@ -492,9 +492,18 @@
                         <div class="card-body">
                             <div class="row card-kontrol-barang">
                                 <div class="col-12">
+                                    <div class="flex justify-content-between mb-3">
+                                        <h3 class="card-title text-success" style="font-size: 16px;"><b>Data Pencatatan
+                                                Keluar Masuk Aset</b></h3>
+                                        <button type="button" class="btn btn-success" data-toggle="modal"
+                                            data-target="#TambahPencatatanModal"
+                                            style="border-radius: 10px; padding: 5px; margin-left: 5px; width: 150px; font-size:12px;">
+                                            <i class="fas fa-plus-circle"></i>
+                                            <span>Tambah</span>
+                                        </button>
+                                    </div>
                                     <div class="table-responsive">
-                                        <table id="pencatatanTable" class="table table-bordered"
-                                            style="width:100%;">
+                                        <table id="pencatatanTable" class="table table-bordered" style="width:100%;">
                                             <thead style="text-align: center; font-size:16;">
                                                 <tr>
                                                     <th>No.</th>
@@ -516,6 +525,7 @@
                                                     <td colspan="11" style="background-color: #CBF2D6;">
                                                         <b style="font-size: 16px;">1. Aset Masuk</b>
                                                     </td>
+<<<<<<< Updated upstream
                                                 </tr>            
                                                 @if ($keluar_masuk_aset->detail_keluar_masuk)
                                                     @foreach ($keluar_masuk_aset->detail_keluar_masuk as $index=>$detail)
@@ -594,6 +604,14 @@
                                                 </tr>
                                                 @if ($keluar_masuk_aset->detail_keluar_masuk)
                                                     @foreach ($keluar_masuk_aset->detail_keluar_masuk as $index => $detail)
+=======
+                                                </tr>
+                                                @foreach ($keluar_masuk_aset->detail_keluar_masuk as $index=>$detail)
+                                                    {{-- @foreach ($keluar_masuk->detail_keluar_masuk as $detail) --}}
+                                                    {{-- @php
+                                                        dd($detail->aset);
+                                                    @endphp --}}
+>>>>>>> Stashed changes
                                                         <tr>
                                                             <td>{{ $index + 1 }}</td>
                                                                 <td>{{ $detail->aset->kode_aset }}</td>
@@ -671,5 +689,115 @@
     </section>
     
 
+
+    <!-- Modal Background -->
+    <div class="modal fade" id="TambahPencatatanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Tambah Pencatatan Keluar Masuk</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <form id="pencatatanForm" method="POST" action="">
+                        @csrf
+                        <!-- Jenis Radio Button -->
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Jenis</label>
+                            <div class="d-flex mt-1">
+                                <div class="form-check mr-3">
+                                    <input class="form-check-input" type="radio" name="jenis" id="asetMasuk" checked>
+                                    <label class="form-check-label" for="asetMasuk">Aset Masuk</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="jenis" id="asetKeluar">
+                                    <label class="form-check-label" for="asetKeluar">Aset Keluar</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Input Fields -->
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="nama_aset">Nama Aset</label>
+                            <select name="aset" class="form-control" id="nama_aset">
+                                <option value="">Pilih Aset</option>
+                                {{-- @foreach ($aset as $data)
+                                    <option value="{{ $data->aset_id }}">{{ $data->nama_aset }}</option>
+                                @endforeach --}}
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="kategori">Kategori</label>
+                            <input type="text" class="form-control" id="kategori" name="kategori" readonly>
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="lokasi_aset">Lokasi Aset</label>
+                            <input type="text" class="form-control" id="lokasi_aset" name="lokasi_aset" readonly>
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="kuantitas">Kuantitas Masuk (Jika jenis aset keluar maka kuantitas keluar)</label>
+                            <input type="text" class="form-control" id="kuantitas" name="kuantitas">
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="kondisi">Kondisi</label>
+                            <input type="text" class="form-control" id="kondisi" name="kondisi">
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="dokumentasi">Dokumentasi</label>
+                            <input type="file" class="form-control" id="dokumentasi" name="dokumentasi" accept="image/*">
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="tindak_lanjut">Tindak Lanjut</label>
+                            <textarea class="form-control" id="tindak_lanjut" name="tindak_lanjut" rows="3"></textarea>
+                        </div>
+
+                        <!-- Information Box -->
+                        <div class="alert alert-info mt-3" style="background-color: #d4edda; border-color: #c3e6cb; color: #155724;">
+                            <strong>INFORMASI</strong><br>Jika aset yang dimaksud tidak ada, tambahkan dahutu data aset pada menu data aset.
+                        </div>
+
+                        <!-- Modal Footer -->
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-success w-100" style="padding: 8px 0; font-weight: bold;">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+@section('js')
+    <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+
+    <!-- AdminLTE -->
+    <script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
+
+@endsection
 @endsection
 @endsection
