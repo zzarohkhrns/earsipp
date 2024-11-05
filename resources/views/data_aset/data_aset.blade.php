@@ -1186,7 +1186,7 @@
                                                                         <button type="button"
                                                                             class="btn btn-success btn-sm btn-custom ml-2"
                                                                             data-toggle="modal"
-                                                                            data-target="#pemeriksaanModal"
+                                                                            data-target="#keluarMasukModal"
                                                                             style="background-color: #28a745; color: white;">
                                                                             <i class="fas fa-plus-circle"></i> Tambah
                                                                         </button>
@@ -1347,17 +1347,21 @@
                                                             </table>
                                                         </td>
                                                         <td>
-                                                            <select class="btn btn-outline-secondary" style="font-size: 13px; padding: 2px; cursor: pointer;" onchange="handleSelectChange(this)">
+                                                            <a href="{{ route($role.'.detail_keluar_masuk_aset', $keluar_masuk->id_keluar_masuk_aset) }}">Detail</a>
+                                                            {{-- <select class="btn btn-outline-secondary" style="font-size: 13px; padding: 2px; cursor: pointer;" onchange="handleSelectChange(this)">
                                                                 <option value="" disabled selected>Pilih Aksi</option>
                                                                 <option value="detail">Detail</option>
                                                                 <option value="cetak">Cetak PDF</option>
                                                             </select>
+                                                            <input type="text" name="id_keluar_masuk_aset" id="id_keluar_masuk_aset" value="{{ $keluar_masuk->id_keluar_masuk_aset }}" hidden>
+                                                            
                                                             
                                                             <script>
                                                                 function handleSelectChange(select) {
+                                                                    const id = document.getElementById('id_keluar_masuk_aset').value;
                                                                     if (select.value === "detail") {
                                                                         // Arahkan ke halaman detail
-                                                                        window.location.href = '{{ route($role.'.detail_keluar_masuk_aset', $keluar_masuk->id_keluar_masuk_aset) }}';
+                                                                        window.location.href = '{{ route($role.'.detail_keluar_masuk_aset', ':id') }}'.replace(':id', id);
                                                                     } else if (select.value === "cetak") {
                                                                         // Tambahkan logika untuk mencetak PDF di sini
                                                                         alert("Fitur cetak PDF belum diimplementasikan.");
@@ -1366,7 +1370,7 @@
                                                                     // Reset pilihan ke default setelah mengarahkan atau mencetak PDF
                                                                     select.selectedIndex = 0;
                                                                 }
-                                                            </script>
+                                                            </script> --}}
                                                             
                                                         </td>
                                                     </tr>
@@ -1599,6 +1603,82 @@
             });
         });
     </script>
+
+    {{-- modal tambah pencatatan keluar masuk --}}
+    <div class="modal fade" id="keluarMasukModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Tambah Pencatatan Keluar Masuk</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding-top: 0;">
+                    <form id="myForm" method="POST"
+                        action="{{ route($role . '.keluar_masuk_aset.store', ['tab' => 'keluarMasuk']) }}">
+                        @csrf
+                        <div class="form-group">
+                            <label for="tgl_pemeriksaan" style="font-weight: bold; font-size: 14px;">Tgl
+                                Pencatatan</label>
+                            <input type="date" id="tanggal_pencatatan" name="tanggal_pencatatan"
+                                class="form-control custom-input" required>
+                            <div class="form-group">
+                                <label for="manajemen_eksekutif" style="font-weight: bold; font-size: 14px;">Manajemen
+                                    Eksekutif</label>
+                                <input type="text" class="form-control" id="manajemen_eksekutif"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
+                                    value="Nu-Care Lazisnu Cilacap" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="pencatat" style="font-weight: bold; font-size: 14px;">Pencatat</label>
+                                <input type="text" class="form-control" id="pencatat" name="nama_pencatat"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
+                                    {{-- value="{{ Auth::user()->gocap_id_pc_pengurus }}" --}}
+                                    value="{{ Auth::user()->nama }}"
+                                    readonly>
+                                <input type="text" class="form-control" id="pencatat" name="id_pencatat"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
+                                    value="{{ Auth::user()->gocap_id_pc_pengurus }}"
+                                    hidden>
+                            </div>
+                            <div class="form-group">
+                                <label for="supervisor" style="font-weight: bold; font-size: 14px;">Supervisor</label>
+                                <input type="text" class="form-control" id="supervisor" name="supervisor"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
+                                    {{-- value="{{ $supervisor->id_supervisor }}" --}}
+                                    value="{{ $supervisor->nama_supervisor }}" readonly>
+                                <input type="text" class="form-control" id="supervisor" name="id_supervisor"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
+                                    value="{{ $supervisor->id_supervisor }}"
+                                    hidden>
+                            </div>
+                            <div class="form-group">
+                                <label for="kc" style="font-weight: bold; font-size: 14px;">Kepala Cabang</label>
+                                <input type="text" class="form-control" id="kc" name="kc"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
+                                    {{-- value="{{ $kc->id_kc }}" --}}
+                                    value="{{ $kc->nama_kc }}" readonly>
+                                <input type="text" class="form-control" id="kc" name="id_kc"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
+                                    value="{{ $kc->id_kc }}"
+                                    hidden>
+                            </div>
+                            <div class="alert alert-info"
+                                style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; margin-top: 15px;">
+                                <strong>INFORMASI</strong><br>Setelah berhasil menambahkan data, anda wajib
+                                melengkapi data pencatatan keluar masuk  aset.
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-success"
+                                    style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @section('js')
     <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
