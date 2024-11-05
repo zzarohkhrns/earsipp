@@ -344,7 +344,7 @@
                                                                                 <h6>Hari, Tgl Masuk</h6>
                                                                             </th>
                                                                             <th style="width:50%">
-                                                                                <h6>{{ $keluar_masuk_aset->masuk_tgl_masuk }}
+                                                                                <h6>{{ $keluar_masuk_aset->masuk_tgl_masuk ?? '-' }}
                                                                                 </h6>
                                                                             </th>
                                                                         </tr>
@@ -354,7 +354,7 @@
                                                                             </th>
                                                                             <th style="width:50%">
                                                                                 <h6>
-                                                                                    {{ $keluar_masuk_aset->masuk_nama_pemasok }}
+                                                                                    {{ $keluar_masuk_aset->masuk_nama_pemasok ?? '-' }}
                                                                                 </h6>
                                                                             </th>
                                                                         </tr>
@@ -364,7 +364,7 @@
                                                                             </th>
                                                                             <th style="width:50%">
                                                                                 <h6>
-                                                                                    {{ $keluar_masuk_aset->masuk_no_faktur }}
+                                                                                    {{ $keluar_masuk_aset->masuk_no_faktur ?? '-' }}
                                                                                 </h6>
                                                                             </th>
                                                                         </tr>
@@ -384,7 +384,7 @@
                                                                             </th>
                                                                             <th style="width:50%">
                                                                                 <h6>
-                                                                                    {{ $keluar_masuk_aset->masuk_keterangan }}
+                                                                                    {{ $keluar_masuk_aset->masuk_keterangan ?? '-' }}
                                                                                 </h6>
                                                                             </th>
                                                                         </tr>
@@ -412,7 +412,7 @@
                                                                                 <h6>Hari, Tgl Keluar</h6>
                                                                             </th>
                                                                             <th style="width:50%">
-                                                                                <h6>{{ $keluar_masuk_aset->keluar_tgl_keluar }}
+                                                                                <h6>{{ $keluar_masuk_aset->keluar_tgl_keluar ?? '-' }}
                                                                                 </h6>
                                                                             </th>
                                                                         </tr>
@@ -422,7 +422,7 @@
                                                                             </th>
                                                                             <th style="width:50%">
                                                                                 <h6>
-                                                                                    {{ $keluar_masuk_aset->keluar_nama_penerima }}
+                                                                                    {{ $keluar_masuk_aset->keluar_nama_penerima ?? '-' }}
                                                                                 </h6>
                                                                             </th>
                                                                         </tr>
@@ -432,7 +432,7 @@
                                                                             </th>
                                                                             <th style="width:50%">
                                                                                 <h6>
-                                                                                    {{ $keluar_masuk_aset->keluar_no_faktur }}
+                                                                                    {{ $keluar_masuk_aset->keluar_no_faktur ?? '-' }}
                                                                                 </h6>
                                                                             </th>
                                                                         </tr>
@@ -452,7 +452,7 @@
                                                                             </th>
                                                                             <th style="width:50%">
                                                                                 <h6>
-                                                                                    {{ $keluar_masuk_aset->keluar_keterangan }}
+                                                                                    {{ $keluar_masuk_aset->keluar_keterangan ?? '-' }}
                                                                                 </h6>
                                                                             </th>
                                                                         </tr>
@@ -516,23 +516,95 @@
                                                     <td colspan="11" style="background-color: #CBF2D6;">
                                                         <b style="font-size: 16px;">1. Aset Masuk</b>
                                                     </td>
-                                                </tr>                                                        
-                                                @foreach ($keluar_masuk_aset->detail_keluar_masuk as $index=>$detail)
-                                                    {{-- @foreach ($keluar_masuk->detail_keluar_masuk as $detail) --}}
-                                                    {{-- @php
-                                                        dd($detail->aset);
-                                                    @endphp --}}
+                                                </tr>            
+                                                @if ($keluar_masuk_aset->detail_keluar_masuk)
+                                                    @foreach ($keluar_masuk_aset->detail_keluar_masuk as $index=>$detail)
+                                                        {{-- @foreach ($keluar_masuk->detail_keluar_masuk as $detail) --}}
+                                                        {{-- @php
+                                                            dd($detail->aset);
+                                                        @endphp --}}
+                                                            <tr>
+                                                                <td>{{ $index + 1 }}</td>
+                                                                <td>{{ $detail->aset->kode_aset }}</td>
+                                                                <td>{{ $detail->aset->nama_aset }}</td>
+                                                                <td>{{ $detail->aset->kategori_aset->kategori }}</td>
+                                                                <td>{{ $detail->aset->lokasi_penyimpanan }}</td>
+                                                                <td>{{ $detail->masuk_kuantitas }}</td>
+                                                                <td>{{ $detail->aset->satuan }}</td>
+                                                                <td>{{ $detail->masuk_kondisi }}</td>
+                                                                <td>{{ $detail->masuk_tindak_lanjut }}</td>
+                                                                <td>Lihat</td>
+                                                                <td>
+                                                                    <div
+                                                                        class="d-flex flex-column align-items-center">
+                                                                        <div
+                                                                            class="btn-group mb-2 card_edit_pemeriksaan">
+                                                                            <button
+                                                                                class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
+                                                                                type="button"
+                                                                                data-toggle="modal"
+                                                                                {{-- data-target="#UbahPemeriksaanModal"
+                                                                                data-aset-id="{{ $data->aset_id }}"
+                                                                                data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
+                                                                                data-lokasi-penyimpanan="{{ $data->aset->lokasi_penyimpanan }}"
+                                                                                data-tgl-perolehan="{{ $data->aset->tgl_perolehan }}"
+                                                                                data-kondisi="{{ $data->kondisi }}"
+                                                                                data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
+                                                                                data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
+                                                                                data-status-aset="{{ $data->status_aset }}"
+                                                                                data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
+                                                                                @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif --}}
+                                                                                style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; font-size:12px;">
+                                                                                <i class="fas fa-edit"></i>
+                                                                                Ubah
+                                                                            </button>
+                                                                        </div>
+                                                                        <div
+                                                                            class="btn-group mb-2 mb-xl-0 card_hapus_detail">
+                                                                            <div
+                                                                                class="btn-group mb-2 mb-xl-0 btn-block">
+                                                                                <form
+                                                                                    {{-- action="{{ route($role . '.delete_detail_pemeriksaan', $data->id_detail_pemeriksaan_aset) }}" --}}
+                                                                                    method="POST"
+                                                                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                                                                    @csrf
+                                                                                    @method('DELETE')
+                                                                                    <button type="submit"
+                                                                                        class="btn btn-outline-secondary btn-block"
+                                                                                        {{-- @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif --}}
+                                                                                        style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin-bottom: 10px; font-size:12px;">
+                                                                                        <i
+                                                                                            class="fas fa-trash"></i>
+                                                                                        Hapus
+                                                                                    </button>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        {{-- @endforeach --}}
+                                                    @endforeach
+                                                @endif
+
+                                                <tr>
+                                                    <td colspan="11" style="background-color: #CBF2D6;">
+                                                        <b style="font-size: 16px;">2. Aset Keluar</b>
+                                                    </td>
+                                                </tr>
+                                                @if ($keluar_masuk_aset->detail_keluar_masuk)
+                                                    @foreach ($keluar_masuk_aset->detail_keluar_masuk as $index => $detail)
                                                         <tr>
                                                             <td>{{ $index + 1 }}</td>
-                                                            <td>{{ $detail->aset->kode_aset }}</td>
-                                                            <td>{{ $detail->aset->nama_aset }}</td>
-                                                            <td>{{ $detail->aset->kategori_aset->kategori }}</td>
-                                                            <td>{{ $detail->aset->lokasi_penyimpanan }}</td>
-                                                            <td>{{ $detail->masuk_kuantitas }}</td>
-                                                            <td>{{ $detail->aset->satuan }}</td>
-                                                            <td>{{ $detail->masuk_kondisi }}</td>
-                                                            <td>{{ $detail->masuk_tindak_lanjut }}</td>
-                                                            <td>Lihat</td>
+                                                                <td>{{ $detail->aset->kode_aset }}</td>
+                                                                <td>{{ $detail->aset->nama_aset }}</td>
+                                                                <td>{{ $detail->aset->kategori_aset->kategori }}</td>
+                                                                <td>{{ $detail->aset->lokasi_penyimpanan }}</td>
+                                                                <td>{{ $detail->keluar_kuantitas }}</td>
+                                                                <td>{{ $detail->aset->satuan }}</td>
+                                                                <td>{{ $detail->keluar_kondisi }}</td>
+                                                                <td>{{ $detail->keluar_tindak_lanjut }}</td>
+                                                                <td>Lihat</td>
                                                             <td>
                                                                 <div
                                                                     class="d-flex flex-column align-items-center">
@@ -553,8 +625,10 @@
                                                                             data-status-aset="{{ $data->status_aset }}"
                                                                             data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
                                                                             @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif --}}
-                                                                            style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; font-size:12px;">
-                                                                            <i class="fas fa-edit"></i>
+                                                                            style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin: 0; font-size:12px;"
+                                                                            aria-expanded="false">
+                                                                            &nbsp;&nbsp;<i
+                                                                                class="fas fa-edit"></i>
                                                                             Ubah
                                                                         </button>
                                                                     </div>
@@ -569,7 +643,7 @@
                                                                                 @csrf
                                                                                 @method('DELETE')
                                                                                 <button type="submit"
-                                                                                    class="btn btn-outline-secondary btn-block"
+                                                                                    class="btn btn-outline-secondary btn-block "
                                                                                     {{-- @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif --}}
                                                                                     style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin-bottom: 10px; font-size:12px;">
                                                                                     <i
@@ -582,78 +656,8 @@
                                                                 </div>
                                                             </td>
                                                         </tr>
-                                                    {{-- @endforeach --}}
-                                                @endforeach
-
-                                                <tr>
-                                                    <td colspan="11" style="background-color: #CBF2D6;">
-                                                        <b style="font-size: 16px;">2. Aset Keluar</b>
-                                                    </td>
-                                                </tr>
-                                                @foreach ($keluar_masuk_aset->detail_keluar_masuk as $index => $detail)
-                                                    <tr>
-                                                        <td>{{ $index + 1 }}</td>
-                                                            <td>{{ $detail->aset->kode_aset }}</td>
-                                                            <td>{{ $detail->aset->nama_aset }}</td>
-                                                            <td>{{ $detail->aset->kategori_aset->kategori }}</td>
-                                                            <td>{{ $detail->aset->lokasi_penyimpanan }}</td>
-                                                            <td>{{ $detail->keluar_kuantitas }}</td>
-                                                            <td>{{ $detail->aset->satuan }}</td>
-                                                            <td>{{ $detail->keluar_kondisi }}</td>
-                                                            <td>{{ $detail->keluar_tindak_lanjut }}</td>
-                                                            <td>Lihat</td>
-                                                        <td>
-                                                            <div
-                                                                class="d-flex flex-column align-items-center">
-                                                                <div
-                                                                    class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                    <button
-                                                                        class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
-                                                                        type="button"
-                                                                        data-toggle="modal"
-                                                                        {{-- data-target="#UbahPemeriksaanModal"
-                                                                        data-aset-id="{{ $data->aset_id }}"
-                                                                        data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
-                                                                        data-lokasi-penyimpanan="{{ $data->aset->lokasi_penyimpanan }}"
-                                                                        data-tgl-perolehan="{{ $data->aset->tgl_perolehan }}"
-                                                                        data-kondisi="{{ $data->kondisi }}"
-                                                                        data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
-                                                                        data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
-                                                                        data-status-aset="{{ $data->status_aset }}"
-                                                                        data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
-                                                                        @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif --}}
-                                                                        style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin: 0; font-size:12px;"
-                                                                        aria-expanded="false">
-                                                                        &nbsp;&nbsp;<i
-                                                                            class="fas fa-edit"></i>
-                                                                        Ubah
-                                                                    </button>
-                                                                </div>
-                                                                <div
-                                                                    class="btn-group mb-2 mb-xl-0 card_hapus_detail">
-                                                                    <div
-                                                                        class="btn-group mb-2 mb-xl-0 btn-block">
-                                                                        <form
-                                                                            {{-- action="{{ route($role . '.delete_detail_pemeriksaan', $data->id_detail_pemeriksaan_aset) }}" --}}
-                                                                            method="POST"
-                                                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                                                                            @csrf
-                                                                            @method('DELETE')
-                                                                            <button type="submit"
-                                                                                class="btn btn-outline-secondary btn-block "
-                                                                                {{-- @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif --}}
-                                                                                style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin-bottom: 10px; font-size:12px;">
-                                                                                <i
-                                                                                    class="fas fa-trash"></i>
-                                                                                Hapus
-                                                                            </button>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
+                                                    @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -665,6 +669,7 @@
             </div>
         </div>
     </section>
+    
 
 @endsection
 @endsection
