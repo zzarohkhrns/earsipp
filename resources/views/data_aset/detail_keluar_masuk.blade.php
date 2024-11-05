@@ -525,93 +525,13 @@
                                                     <td colspan="11" style="background-color: #CBF2D6;">
                                                         <b style="font-size: 16px;">1. Aset Masuk</b>
                                                     </td>
-<<<<<<< Updated upstream
-                                                </tr>            
-                                                @if ($keluar_masuk_aset->detail_keluar_masuk)
-                                                    @foreach ($keluar_masuk_aset->detail_keluar_masuk as $index=>$detail)
-                                                        {{-- @foreach ($keluar_masuk->detail_keluar_masuk as $detail) --}}
-                                                        {{-- @php
-                                                            dd($detail->aset);
-                                                        @endphp --}}
-                                                            <tr>
-                                                                <td>{{ $index + 1 }}</td>
-                                                                <td>{{ $detail->aset->kode_aset }}</td>
-                                                                <td>{{ $detail->aset->nama_aset }}</td>
-                                                                <td>{{ $detail->aset->kategori_aset->kategori }}</td>
-                                                                <td>{{ $detail->aset->lokasi_penyimpanan }}</td>
-                                                                <td>{{ $detail->masuk_kuantitas }}</td>
-                                                                <td>{{ $detail->aset->satuan }}</td>
-                                                                <td>{{ $detail->masuk_kondisi }}</td>
-                                                                <td>{{ $detail->masuk_tindak_lanjut }}</td>
-                                                                <td>Lihat</td>
-                                                                <td>
-                                                                    <div
-                                                                        class="d-flex flex-column align-items-center">
-                                                                        <div
-                                                                            class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                            <button
-                                                                                class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
-                                                                                type="button"
-                                                                                data-toggle="modal"
-                                                                                {{-- data-target="#UbahPemeriksaanModal"
-                                                                                data-aset-id="{{ $data->aset_id }}"
-                                                                                data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
-                                                                                data-lokasi-penyimpanan="{{ $data->aset->lokasi_penyimpanan }}"
-                                                                                data-tgl-perolehan="{{ $data->aset->tgl_perolehan }}"
-                                                                                data-kondisi="{{ $data->kondisi }}"
-                                                                                data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
-                                                                                data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
-                                                                                data-status-aset="{{ $data->status_aset }}"
-                                                                                data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
-                                                                                @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif --}}
-                                                                                style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; font-size:12px;">
-                                                                                <i class="fas fa-edit"></i>
-                                                                                Ubah
-                                                                            </button>
-                                                                        </div>
-                                                                        <div
-                                                                            class="btn-group mb-2 mb-xl-0 card_hapus_detail">
-                                                                            <div
-                                                                                class="btn-group mb-2 mb-xl-0 btn-block">
-                                                                                <form
-                                                                                    {{-- action="{{ route($role . '.delete_detail_pemeriksaan', $data->id_detail_pemeriksaan_aset) }}" --}}
-                                                                                    method="POST"
-                                                                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                                                                                    @csrf
-                                                                                    @method('DELETE')
-                                                                                    <button type="submit"
-                                                                                        class="btn btn-outline-secondary btn-block"
-                                                                                        {{-- @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif --}}
-                                                                                        style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin-bottom: 10px; font-size:12px;">
-                                                                                        <i
-                                                                                            class="fas fa-trash"></i>
-                                                                                        Hapus
-                                                                                    </button>
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        {{-- @endforeach --}}
-                                                    @endforeach
-                                                @endif
-
-                                                <tr>
-                                                    <td colspan="11" style="background-color: #CBF2D6;">
-                                                        <b style="font-size: 16px;">2. Aset Keluar</b>
-                                                    </td>
                                                 </tr>
                                                 @if ($keluar_masuk_aset->detail_keluar_masuk)
-                                                    @foreach ($keluar_masuk_aset->detail_keluar_masuk as $index => $detail)
-=======
-                                                </tr>
                                                 @foreach ($keluar_masuk_aset->detail_keluar_masuk as $index=>$detail)
                                                     {{-- @foreach ($keluar_masuk->detail_keluar_masuk as $detail) --}}
                                                     {{-- @php
                                                         dd($detail->aset);
                                                     @endphp --}}
->>>>>>> Stashed changes
                                                         <tr>
                                                             <td>{{ $index + 1 }}</td>
                                                                 <td>{{ $detail->aset->kode_aset }}</td>
@@ -690,7 +610,7 @@
     
 
 
-    <!-- Modal Background -->
+    <!-- Modal Tambah Pencatatan Keluar Masuk -->
     <div class="modal fade" id="TambahPencatatanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
