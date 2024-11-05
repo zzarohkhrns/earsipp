@@ -244,6 +244,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/print-detail/{id}/{tgl}', [DataAsetController::class, 'exportPdfDetailPemeriksaan'])->name('exportPdfDetailPemeriksaan');
         Route::get('/print-data-pemeriksaan', [DataAsetController::class, 'export_pemeriksaan'])->name('exportPdfPemeriksaan');
 
+        Route::post('/arsip/keluar_masuk_aset/store', [DataAsetController::class, 'keluar_masuk_aset_store'])->name('keluar_masuk_aset.store');
         Route::get('/arsip/detail_keluar_masuk_aset/{id}', [DataAsetController::class, 'detail_keluar_masuk_aset'])->name('detail_keluar_masuk_aset');
     });
 
