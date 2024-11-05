@@ -161,7 +161,7 @@ class DataAsetController extends Controller
         KELUAR MASUK ASET
         */
 
-        $keluar_masuk_aset = KeluarMasukAset::all();
+        $keluar_masuk_aset = KeluarMasukAset::orderBy('created_at', 'desc')->get();
 
         /*
         *
@@ -777,7 +777,30 @@ class DataAsetController extends Controller
     {
         $role = 'pc';
         $keluar_masuk_aset = KeluarMasukAset::find($id);
+        // dd($keluar_masuk_aset);
 
         return view('data_aset.detail_keluar_masuk', compact('keluar_masuk_aset','role'));
+    }
+
+    public function keluar_masuk_aset_store(Request $request)
+    {
+        if(Auth::user()->gocap_id_pc_pengurus !=NULL)
+        {
+            $role = 'pc';
+        }
+        try {
+            KeluarMasukAset::create(
+                [
+                    'id_keluar_masuk_aset' => (string) Str::uuid(),
+                    'tanggal_pencatatan' => $request->tanggal_pencatatan,
+                    'id_pencatat' => $request->id_pencatat,
+                    'id_supervisor' => $request->id_supervisor,
+                    'id_kc' => $request->id_kc,
+                ],
+            );
+            return redirect()->route('pc.data_aset')->with('success', 'Berhasil menghapus data keluar masuk.');
+        } catch(\Exception $e) {
+            return redirect()->route('pc.data_aset')->with('error', 'Gagal menghapus data keluar masuk, error : '.$e->getMessage());
+        }
     }
 }
