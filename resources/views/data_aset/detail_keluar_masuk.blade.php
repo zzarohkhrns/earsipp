@@ -322,7 +322,7 @@
                                                                 </a>
                                                                 <button type="button" class="btn btn-success"
                                                                     data-toggle="modal"
-                                                                    data-target="#TambahPemeriksaanModal"
+                                                                    data-target="#TambahFakturModal"
                                                                     style="border-radius: 10px; padding: 5px; margin-left: 5px; width: 150px; font-size:12px;">
                                                                     <i class="fas fa-plus-circle"></i>
                                                                     <span>Tambah</span>
@@ -596,6 +596,81 @@
                                                         </tr>
                                                     @endforeach
                                                 @endif
+                                                <tr>
+                                                    <td colspan="11" style="background-color: #CBF2D6;">
+                                                        <b style="font-size: 16px;">2. Aset Keluar</b>
+                                                    </td>
+                                                </tr>
+                                                @if ($keluar_masuk_aset->detail_keluar_masuk)
+                                                @foreach ($keluar_masuk_aset->detail_keluar_masuk as $index=>$detail)
+                                                    {{-- @foreach ($keluar_masuk->detail_keluar_masuk as $detail) --}}
+                                                    {{-- @php
+                                                        dd($detail->aset);
+                                                    @endphp --}}
+                                                        <tr>
+                                                            <td>{{ $index + 1 }}</td>
+                                                                <td>{{ $detail->aset->kode_aset }}</td>
+                                                                <td>{{ $detail->aset->nama_aset }}</td>
+                                                                <td>{{ $detail->aset->kategori_aset->kategori }}</td>
+                                                                <td>{{ $detail->aset->lokasi_penyimpanan }}</td>
+                                                                <td>{{ $detail->keluar_kuantitas }}</td>
+                                                                <td>{{ $detail->aset->satuan }}</td>
+                                                                <td>{{ $detail->keluar_kondisi }}</td>
+                                                                <td>{{ $detail->keluar_tindak_lanjut }}</td>
+                                                                <td>Lihat</td>
+                                                            <td>
+                                                                <div
+                                                                    class="d-flex flex-column align-items-center">
+                                                                    <div
+                                                                        class="btn-group mb-2 card_edit_pemeriksaan">
+                                                                        <button
+                                                                            class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
+                                                                            type="button"
+                                                                            data-toggle="modal"
+                                                                            {{-- data-target="#UbahPemeriksaanModal"
+                                                                            data-aset-id="{{ $data->aset_id }}"
+                                                                            data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
+                                                                            data-lokasi-penyimpanan="{{ $data->aset->lokasi_penyimpanan }}"
+                                                                            data-tgl-perolehan="{{ $data->aset->tgl_perolehan }}"
+                                                                            data-kondisi="{{ $data->kondisi }}"
+                                                                            data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
+                                                                            data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
+                                                                            data-status-aset="{{ $data->status_aset }}"
+                                                                            data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
+                                                                            @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif --}}
+                                                                            style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin: 0; font-size:12px;"
+                                                                            aria-expanded="false">
+                                                                            &nbsp;&nbsp;<i
+                                                                                class="fas fa-edit"></i>
+                                                                            Ubah
+                                                                        </button>
+                                                                    </div>
+                                                                    <div
+                                                                        class="btn-group mb-2 mb-xl-0 card_hapus_detail">
+                                                                        <div
+                                                                            class="btn-group mb-2 mb-xl-0 btn-block">
+                                                                            <form
+                                                                                {{-- action="{{ route($role . '.delete_detail_pemeriksaan', $data->id_detail_pemeriksaan_aset) }}" --}}
+                                                                                method="POST"
+                                                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                                                                @csrf
+                                                                                @method('DELETE')
+                                                                                <button type="submit"
+                                                                                    class="btn btn-outline-secondary btn-block "
+                                                                                    {{-- @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif --}}
+                                                                                    style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin-bottom: 10px; font-size:12px;">
+                                                                                    <i
+                                                                                        class="fas fa-trash"></i>
+                                                                                    Hapus
+                                                                                </button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -607,7 +682,7 @@
             </div>
         </div>
     </section>
-    
+
 
 
     <!-- Modal Tambah Pencatatan Keluar Masuk -->
@@ -673,9 +748,9 @@
                             <input type="text" class="form-control" id="kondisi" name="kondisi">
                         </div>
 
-                        <div class="form-group mb-2">
+                        <div class="form-group mb-3">
                             <label class="font-weight-bold" for="dokumentasi">Dokumentasi</label>
-                            <input type="file" class="form-control" id="dokumentasi" name="dokumentasi" accept="image/*">
+                            <input type="file" class="form-control" id="dokumentasi" name="dokumentasi" accept="image/*" style="padding: 4px; align-items: center;">
                         </div>
 
                         <div class="form-group mb-2">
@@ -698,7 +773,78 @@
         </div>
     </div>
 
+    <!-- Modal Tambah Pencatatan Faktur -->
+    <div class="modal fade" id="TambahFakturModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Tambah Faktur</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <form id="fakturForm" method="POST" action="">
+                        @csrf
+                        <!-- Jenis Radio Button -->
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Jenis</label>
+                            <div class="d-flex mt-1">
+                                <div class="form-check mr-3">
+                                    <input class="form-check-input" type="radio" name="jenis" id="asetMasuk" checked>
+                                    <label class="form-check-label" for="asetMasuk">Aset Masuk</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="jenis" id="asetKeluar">
+                                    <label class="form-check-label" for="asetKeluar">Aset Keluar</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Input Fields -->
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="tgl_masuk">Tanggal Masuk</label>
+                            <input type="date" class="form-control" id="tgl_masuk" name="tgl_masuk">
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="nama_pemasok">Nama Pemasok</label>
+                            <input type="text" class="form-control" id="nama_pemasok" name="nama_pemasok">
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="lokasi_aset">Lokasi Aset</label>
+                            <input type="text" class="form-control" id="lokasi_aset" name="lokasi_aset">
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="no_faktur">Nomor Faktur</label>
+                            <input type="text" class="form-control" id="no_faktur" name="no_faktur">
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="keterangan">Keterangan</label>
+                            <input type="text" class="form-control" id="keterangan" name="keterangan">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="font-weight-bold" for="dokumentasi">Dokumentasi</label>
+                            <input type="file" class="form-control" id="dokumentasi" name="dokumentasi" accept="image/*" style="padding: 4px; align-items: center;">
+                        </div>
+
+                        <!-- Modal Footer -->
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-success w-100" style="padding: 8px 0; font-weight: bold;">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 @section('js')

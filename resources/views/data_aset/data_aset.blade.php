@@ -100,33 +100,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- success jika berhasil menambah data -->
-                                    @if (session('success'))
-                                        <div class="alert alert-success alert-dismissible fade show">
-                                            {{ session('success') }}
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    @endif
-                                    @if (session('error'))
-                                        <div class="alert alert-danger alert-dismissible fade show">
-                                            {{ session('error') }}
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    @endif
-
-                                    {{-- script untuk close --}}
-                                    <script>
-                                        $(document).ready(function() {
-                                            $('.alert .close').on('click', function() {
-                                                $(this).parent('.alert').hide();
-                                            });
-                                        });
-                                    </script>
-
                                     <!-- tab data aset -->
                                     <div id="dataAset" class="tab-content active" style="width: 99%; padding:10px; mt-1">
                                         <div class="col-12 col-sm-12 mb-2 mb-xl-0">
@@ -1216,146 +1189,224 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <table id="tableKeluarMasuk" class="table table-bordered"
-                                            style="width:100%; font-size:13px;">
-                                            <thead style="text-align: center; font-size: 16px;background-color:white">
-                                                <tr>
-                                                    <th style="width: 5%;">No</th>
-                                                    <th style="width: 15%;">Tgl Pencatatan</th>
-                                                    <th style="width: 20%;">Aset Masuk</th>
-                                                    <th style="width: 20%;">Aset Keluar</th>
-                                                    <th style="width: 15%;">Status SPV</th>
-                                                    <th style="width: 15%;">Status KC</th>
-                                                    <th style="width: 20%;">Aksi</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($keluar_masuk_aset as $keluar_masuk)
+                                        <div class="table-responsive">
+                                            <table id="tableKeluarMasuk" class="table table-bordered"
+                                                style="width:100%; font-size:13px;">
+                                                <thead style="text-align: center; font-size: 16px;background-color:white">
                                                     <tr>
-                                                        <td>
-                                                            {{ $loop->iteration }}
-                                                        </td>
-                                                        <td>
-                                                            <table style="border-collapse: collapse; width: 100%; margin: 0;">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;"><b>{{ $keluar_masuk->tanggal_pencatatan }}</b></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;"><b>{{ $keluar_masuk->pencatat->pengguna->nama ?? '' }}</b></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">{{ $keluar_masuk->pencatat->PengurusJabatan->jabatan ?? '' }}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                        <td>
-                                                            <table style="border-collapse: collapse; width: 100%; margin: 0;">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">No Faktur</td>
-                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;"><b>{{ $keluar_masuk->masuk_no_faktur }}</b></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">Pemasok</td>
-                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;"><b>{{ $keluar_masuk->masuk_nama_pemasok }}</b></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">Total Kuantitas</td>
-                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;"><b>Total Kuantitas</b></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td colspan="2" style="border: none; font-size: 13px; line-height: 1.2; padding: 2px;">
-                                                                            {{ $keluar_masuk->masuk_keterangan }}
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                        <td>
-                                                            <table style="border-collapse: collapse; width: 100%; margin: 0;">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">No Faktur</td>
-                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;"><b>{{ $keluar_masuk->masuk_no_faktur }}</b></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">Penerima</td>
-                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;"><b>{{ $keluar_masuk->keluar_nama_penerima }}</b></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">Total Kuantitas</td>
-                                                                        <td style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;"><b>Total Kuantitas</b></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td colspan="2" style="border: none; font-size: 13px; line-height: 1.2; padding: 2px;">
-                                                                            {{ $keluar_masuk->keluar_keterangan }}
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                        <td>
-                                                            <table style="border-collapse: collapse; width: 100%; margin: 0;">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">
-                                                                            @if ($keluar_masuk->status_spv == 'mengetahui')
-                                                                                <div class="text-success">Mengetahui</div>
-                                                                            @else
-                                                                                <div class="text-danger">Belum Mengetahui
-                                                                                </div>
-                                                                            @endif
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">{{ $keluar_masuk->catatan_spv }}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;"><b>{{ $keluar_masuk->supervisor->pengguna->nama }}</b></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">{{ $keluar_masuk->supervisor->pengurusJabatan->jabatan }}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                        <td>
-                                                            <table style="border-collapse: collapse; width: 100%; margin: 0;">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">
-                                                                            @if ($keluar_masuk->status_kc == 'mengetahui')
-                                                                                <div class="text-success">Mengetahui</div>
-                                                                            @else
-                                                                                <div class="text-danger">Belum Mengetahui
-                                                                                </div>
-                                                                            @endif
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">{{ $keluar_masuk->catatan_kc }}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;"><b>{{ $keluar_masuk->kc->pengguna->nama }}</b></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">{{ $keluar_masuk->kc->pengurusJabatan->jabatan }}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                        <td>
-                                                            <a href="{{ route($role.'.detail_keluar_masuk_aset', $keluar_masuk->id_keluar_masuk_aset) }}">Detail</a>
-                                                            {{-- <select class="btn btn-outline-secondary" style="font-size: 13px; padding: 2px; cursor: pointer;" onchange="handleSelectChange(this)">
+                                                        <th style="width: 5%;">No</th>
+                                                        <th style="width: 15%;">Tgl Pencatatan</th>
+                                                        <th style="width: 20%;">Aset Masuk</th>
+                                                        <th style="width: 20%;">Aset Keluar</th>
+                                                        <th style="width: 15%;">Status SPV</th>
+                                                        <th style="width: 15%;">Status KC</th>
+                                                        <th style="width: 20%;">Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($keluar_masuk_aset as $keluar_masuk)
+                                                        <tr>
+                                                            <td>
+                                                                {{ $loop->iteration }}
+                                                            </td>
+                                                            <td>
+                                                                <table
+                                                                    style="border-collapse: collapse; width: 100%; margin: 0;">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                                <b>{{ $keluar_masuk->tanggal_pencatatan }}</b>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                                <b>{{ $keluar_masuk->pencatat->pengguna->nama ?? '' }}</b>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                                {{ $keluar_masuk->pencatat->PengurusJabatan->jabatan ?? '' }}
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                            <td>
+                                                                <table
+                                                                    style="border-collapse: collapse; width: 100%; margin: 0;">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">
+                                                                                No Faktur</td>
+                                                                            <td
+                                                                                style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">
+                                                                                <b>{{ !empty($keluar_masuk->masuk_no_faktur) ? $keluar_masuk->masuk_no_faktur : '-' }}</b>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">
+                                                                                Pemasok</td>
+                                                                            <td
+                                                                                style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">
+                                                                                <b>{{ !empty($keluar_masuk->masuk_nama_pemasok) ? $keluar_masuk->masuk_nama_pemasok : '-' }}</b>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">
+                                                                                Total Kuantitas</td>
+                                                                            <td
+                                                                                style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">
+                                                                                <b>Total Kuantitas</b></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td colspan="2"
+                                                                                style="border: none; font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                                {{ $keluar_masuk->masuk_keterangan }}
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                            <td>
+                                                                <table
+                                                                    style="border-collapse: collapse; width: 100%; margin: 0;">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">
+                                                                                No Faktur</td>
+                                                                            <td
+                                                                                style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">
+                                                                                <b>{{ !empty($keluar_masuk->keluar_no_faktur) ? $keluar_masuk->keluar_no_faktur : '-' }}</b>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">
+                                                                                Penerima</td>
+                                                                            <td
+                                                                                style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">
+                                                                                <b>{{ !empty($keluar_masuk->keluar_nama_penerima) ? $keluar_masuk->keluar_nama_penerima : '-' }}</b>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">
+                                                                                Total Kuantitas</td>
+                                                                            <td
+                                                                                style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">
+                                                                                <b>Total Kuantitas</b></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td colspan="2"
+                                                                                style="border: none; font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                                {{ $keluar_masuk->keluar_keterangan }}
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                            <td>
+                                                                <table
+                                                                    style="border-collapse: collapse; width: 100%; margin: 0;">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                                @if ($keluar_masuk->status_spv == 'mengetahui')
+                                                                                    <div class="text-success">Mengetahui
+                                                                                    </div>
+                                                                                @else
+                                                                                    <div class="text-danger">Belum
+                                                                                        Mengetahui
+                                                                                    </div>
+                                                                                @endif
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                                {{ !empty($keluar_masuk->catatan_spv) ? $keluar_masuk->catatan_spv : '-' }}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                                <b>{{ $keluar_masuk->supervisor->pengguna->nama }}</b>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                                {{ $keluar_masuk->supervisor->pengurusJabatan->jabatan }}
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                            <td>
+                                                                <table
+                                                                    style="border-collapse: collapse; width: 100%; margin: 0;">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                                @if ($keluar_masuk->status_kc == 'mengetahui')
+                                                                                    <div class="text-success">Mengetahui
+                                                                                    </div>
+                                                                                @else
+                                                                                    <div class="text-danger">Belum
+                                                                                        Mengetahui
+                                                                                    </div>
+                                                                                @endif
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                                {{ !empty($keluar_masuk->catatan_kc) ? $keluar_masuk->catatan_kc : '-' }}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                                <b>{{ $keluar_masuk->kc->pengguna->nama }}</b>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="border: none;font-size: 13px; line-height: 1.2; padding: 2px;">
+                                                                                {{ $keluar_masuk->kc->pengurusJabatan->jabatan }}
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                            <td>
+                                                                <div>
+                                                                    <a href="{{ route($role . '.detail_keluar_masuk_aset', $keluar_masuk->id_keluar_masuk_aset) }}"
+                                                                        style="display: inline-block; width: 100px; padding: 8px; border: 1px solid #ccc; text-align: center; text-decoration: none; color: #333; font-weight: bold; margin-bottom: 8px; border-radius: 4px;">
+                                                                        Detail
+                                                                    </a>
+                                                                    <a href=""
+                                                                        style="display: inline-block; width: 100px; padding: 8px; border: 1px solid #ccc; text-align: center; text-decoration: none; color: #333; font-weight: bold; border-radius: 4px;">
+                                                                        Cetak PDF
+                                                                    </a>
+                                                                </div>
+                                                                {{-- <select class="btn btn-outline-secondary" style="font-size: 13px; padding: 2px; cursor: pointer;" onchange="handleSelectChange(this)">
                                                                 <option value="" disabled selected>Pilih Aksi</option>
                                                                 <option value="detail">Detail</option>
                                                                 <option value="cetak">Cetak PDF</option>
                                                             </select>
                                                             <input type="text" name="id_keluar_masuk_aset" id="id_keluar_masuk_aset" value="{{ $keluar_masuk->id_keluar_masuk_aset }}" hidden>
-                                                            
-                                                            
+
+
                                                             <script>
                                                                 function handleSelectChange(select) {
                                                                     const id = document.getElementById('id_keluar_masuk_aset').value;
@@ -1366,17 +1417,18 @@
                                                                         // Tambahkan logika untuk mencetak PDF di sini
                                                                         alert("Fitur cetak PDF belum diimplementasikan.");
                                                                     }
-                                                                    
+
                                                                     // Reset pilihan ke default setelah mengarahkan atau mencetak PDF
                                                                     select.selectedIndex = 0;
                                                                 }
                                                             </script> --}}
-                                                            
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                     <div id="penyusutanNilai" class="tab-content">
                                         <h2>Penyusutan Nilai</h2>
@@ -1633,41 +1685,34 @@
                             <div class="form-group">
                                 <label for="pencatat" style="font-weight: bold; font-size: 14px;">Pencatat</label>
                                 <input type="text" class="form-control" id="pencatat" name="nama_pencatat"
-                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
-                                    {{-- value="{{ Auth::user()->gocap_id_pc_pengurus }}" --}}
-                                    value="{{ Auth::user()->nama }}"
-                                    readonly>
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" {{-- value="{{ Auth::user()->gocap_id_pc_pengurus }}" --}}
+                                    value="{{ Auth::user()->nama }}" readonly>
                                 <input type="text" class="form-control" id="pencatat" name="id_pencatat"
                                     style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
-                                    value="{{ Auth::user()->gocap_id_pc_pengurus }}"
-                                    hidden>
+                                    value="{{ Auth::user()->gocap_id_pc_pengurus }}" hidden>
                             </div>
                             <div class="form-group">
                                 <label for="supervisor" style="font-weight: bold; font-size: 14px;">Supervisor</label>
                                 <input type="text" class="form-control" id="supervisor" name="supervisor"
-                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
-                                    {{-- value="{{ $supervisor->id_supervisor }}" --}}
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" {{-- value="{{ $supervisor->id_supervisor }}" --}}
                                     value="{{ $supervisor->nama_supervisor }}" readonly>
                                 <input type="text" class="form-control" id="supervisor" name="id_supervisor"
                                     style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
-                                    value="{{ $supervisor->id_supervisor }}"
-                                    hidden>
+                                    value="{{ $supervisor->id_supervisor }}" hidden>
                             </div>
                             <div class="form-group">
                                 <label for="kc" style="font-weight: bold; font-size: 14px;">Kepala Cabang</label>
                                 <input type="text" class="form-control" id="kc" name="kc"
-                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
-                                    {{-- value="{{ $kc->id_kc }}" --}}
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" {{-- value="{{ $kc->id_kc }}" --}}
                                     value="{{ $kc->nama_kc }}" readonly>
                                 <input type="text" class="form-control" id="kc" name="id_kc"
                                     style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
-                                    value="{{ $kc->id_kc }}"
-                                    hidden>
+                                    value="{{ $kc->id_kc }}" hidden>
                             </div>
                             <div class="alert alert-info"
                                 style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; margin-top: 15px;">
                                 <strong>INFORMASI</strong><br>Setelah berhasil menambahkan data, anda wajib
-                                melengkapi data pencatatan keluar masuk  aset.
+                                melengkapi data pencatatan keluar masuk aset.
                             </div>
                             <div>
                                 <button type="submit" class="btn btn-success"
