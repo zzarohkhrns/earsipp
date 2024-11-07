@@ -769,10 +769,13 @@
                                                     </td>
                                                 </tr>
                                                 @if ($keluar_masuk_aset->detail_keluar_masuk)
+                                                @php
+                                                    $no = 0;
+                                                @endphp
                                                     @foreach ($keluar_masuk_aset->detail_keluar_masuk as $index=>$detail)
                                                         @if ($detail->masuk_kuantitas)
                                                             <tr>
-                                                                <td>{{ $index + 1 }}</td>
+                                                                <td>{{ $no = $no + 1 }}</td>
                                                                     <td>{{ $detail->aset->kode_aset }}</td>
                                                                     <td>{{ $detail->aset->nama_aset }}</td>
                                                                     <td>{{ $detail->aset->kategori_aset->kategori }}</td>
@@ -842,10 +845,13 @@
                                                     </td>
                                                 </tr>
                                                 @if ($keluar_masuk_aset->detail_keluar_masuk)
+                                                @php
+                                                    $no = 0;
+                                                @endphp
                                                   @foreach ($keluar_masuk_aset->detail_keluar_masuk as $index=>$detail)
                                                         @if ($detail->keluar_kuantitas)
                                                             <tr>
-                                                                <td>{{ $index + 1 }}</td>
+                                                                <td>{{ $no = $no + 1 }}</td>
                                                                     <td>{{ $detail->aset->kode_aset }}</td>
                                                                     <td>{{ $detail->aset->nama_aset }}</td>
                                                                     <td>{{ $detail->aset->kategori_aset->kategori }}</td>
