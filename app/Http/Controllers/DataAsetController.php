@@ -851,7 +851,9 @@ class DataAsetController extends Controller
                 $tindak_lanjutColumn = 'keluar_tindak_lanjut';
             }
 
-            $detail_keluar_masuk_aset = DetailKeluarMasukAset::where('aset_id', $request->aset);
+            $detail_keluar_masuk_aset = DetailKeluarMasukAset::where('aset_id', $request->aset)->first();
+
+            // dd($detail_keluar_masuk_aset);
             if($detail_keluar_masuk_aset) {
                 $detail_keluar_masuk_aset->update([
                     'aset_id' => $request->aset,
@@ -862,15 +864,17 @@ class DataAsetController extends Controller
                     $dokumentasiColumn => $driveFileLink,
                 ]);
             } else {
-                DetailKeluarMasukAset::create([
-                    'id_detail_keluar_masuk'=> (String) Str::uuid(),
+                DetailKeluarMasukAset::create(
+                    [
+                    'id_detail_keluar_masuk_aset'=> (string) Str::uuid(),
                     'aset_id' => $request->aset,
                     'id_keluar_masuk_aset' => $id,
                     $kuantitasColumn => $request->kuantitas,
                     $kondisiColumn => $request->kondisi,
                     $tindak_lanjutColumn => $request->tindak_lanjut,
                     $dokumentasiColumn => $driveFileLink,
-                ]);
+                    ]
+                );
             }
 
             return redirect()->back()->with('success', 'Berhasil menambahkan detail keluar masuk!');
