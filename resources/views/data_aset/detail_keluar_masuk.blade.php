@@ -700,18 +700,18 @@
 
                 <!-- Modal Body -->
                 <div class="modal-body">
-                    <form id="pencatatanForm" method="POST" action="">
+                    <form id="pencatatanForm" method="POST" action="{{ route($role.'.detail_keluar_masuk_aset.store', $keluar_masuk_aset->id_keluar_masuk_aset); }}">
                         @csrf
                         <!-- Jenis Radio Button -->
                         <div class="form-group mb-2">
                             <label class="font-weight-bold">Jenis</label>
                             <div class="d-flex mt-1">
                                 <div class="form-check mr-3">
-                                    <input class="form-check-input" type="radio" name="jenis" id="asetMasuk" checked>
+                                    <input class="form-check-input" type="radio" name="jenis" value="masuk" id="asetMasuk" checked>
                                     <label class="form-check-label" for="asetMasuk">Aset Masuk</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="jenis" id="asetKeluar">
+                                    <input class="form-check-input" type="radio" name="jenis" value="keluar" id="asetKeluar">
                                     <label class="form-check-label" for="asetKeluar">Aset Keluar</label>
                                 </div>
                             </div>
@@ -720,27 +720,27 @@
                         <!-- Input Fields -->
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="nama_aset">Nama Aset</label>
-                            <select name="aset" class="form-control" id="nama_aset">
+                            <select name="aset" class="form-control" id="aset">
                                 <option value="">Pilih Aset</option>
-                                {{-- @foreach ($aset as $data)
+                                @foreach ($aset as $data)
                                     <option value="{{ $data->aset_id }}">{{ $data->nama_aset }}</option>
-                                @endforeach --}}
+                                @endforeach
                             </select>
                         </div>
 
                         <div class="form-group mb-2">
-                            <label class="font-weight-bold" for="kategori">Kategori</label>
-                            <input type="text" class="form-control" id="kategori" name="kategori" readonly>
+                            <label class="font-weight-bold" for="kategori_aset">Kategori</label>
+                            <input type="text" class="form-control" id="kategori_aset" name="kategori_aset" readonly>
                         </div>
 
                         <div class="form-group mb-2">
-                            <label class="font-weight-bold" for="lokasi_aset">Lokasi Aset</label>
-                            <input type="text" class="form-control" id="lokasi_aset" name="lokasi_aset" readonly>
+                            <label class="font-weight-bold" for="lokasi_penyimpanan">Lokasi Aset</label>
+                            <input type="text" class="form-control" id="lokasi_penyimpanan" name="lokasi_penyimpanan" readonly>
                         </div>
 
                         <div class="form-group mb-2">
-                            <label class="font-weight-bold" for="kuantitas">Kuantitas Masuk (Jika jenis aset keluar maka kuantitas keluar)</label>
-                            <input type="text" class="form-control" id="kuantitas" name="kuantitas">
+                            <label class="font-weight-bold" for="kuantitas">Kuantitas</label>
+                            <input type="number" class="form-control" id="kuantitas" name="kuantitas">
                         </div>
 
                         <div class="form-group mb-2">
@@ -773,6 +773,44 @@
         </div>
     </div>
 
+    {{-- script untuk otomatisasi data aset pada tambah pemeriksaan --}}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script>
+        $('#aset').change(function() {
+            var asetId = $(this).val(); // Mendapatkan nilai id aset yang dipilih
+            console.log(asetId); // Log id aset untuk memastikan onchange berfungsi
+            if (asetId) {
+                $.ajax({
+                    url: '/pc/aset/data/' + asetId, // URL endpoint sesuai dengan route yang telah diatur
+                    type: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                            'content') // Mengambil csrf_token dari meta tag
+                    },
+                    success: function(data) {
+                        if (data.length > 0) {
+                            var aset = data[0];
+                            // Mengisi field yang sesuai dengan data yang diterima dari server
+                            $('#kategori_aset').val(aset.kategori_aset.kategori);
+                            $('#lokasi_penyimpanan').val(aset.lokasi_penyimpanan);
+                            // $('#tgl_perolehan').val(aset.tgl_perolehan);
+                        } else {
+                            alert('Aset tidak ditemukan');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            } else {
+                // Mengosongkan field jika tidak ada aset yang dipilih
+                $('#kategori_aset').val('');
+                $('#lokasi_penyimpanan').val('');
+                // $('#tgl_perolehan').val('');
+            }
+        });
+    </script>
+
     <!-- Modal Tambah Pencatatan Faktur -->
     <div class="modal fade" id="TambahFakturModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         aria-hidden="true">
@@ -788,60 +826,89 @@
 
                 <!-- Modal Body -->
                 <div class="modal-body">
-                    <form id="fakturForm" method="POST" action="">
+                    <form id="fakturForm" method="POST" action="{{ route($role.'.detail_keluar_masuk_aset.update', $keluar_masuk_aset->id_keluar_masuk_aset) }}">
                         @csrf
+                        @method('PUT')
+                        
                         <!-- Jenis Radio Button -->
                         <div class="form-group mb-2">
                             <label class="font-weight-bold">Jenis</label>
                             <div class="d-flex mt-1">
                                 <div class="form-check mr-3">
-                                    <input class="form-check-input" type="radio" name="jenis" id="asetMasuk" checked>
+                                    <input class="form-check-input" type="radio" name="jenis" value="masuk" id="asetMasuk">
                                     <label class="form-check-label" for="asetMasuk">Aset Masuk</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="jenis" id="asetKeluar">
+                                    <input class="form-check-input" type="radio" name="jenis" value="keluar" id="asetKeluar" checked>
                                     <label class="form-check-label" for="asetKeluar">Aset Keluar</label>
                                 </div>
                             </div>
                         </div>
-
+                
                         <!-- Input Fields -->
                         <div class="form-group mb-2">
-                            <label class="font-weight-bold" for="tgl_masuk">Tanggal Masuk</label>
-                            <input type="date" class="form-control" id="tgl_masuk" name="tgl_masuk">
+                            <label class="font-weight-bold" for="tgl">Tanggal</label>
+                            <input type="date" class="form-control" id="tgl" name="tgl">
                         </div>
-
-                        <div class="form-group mb-2">
-                            <label class="font-weight-bold" for="nama_pemasok">Nama Pemasok</label>
-                            <input type="text" class="form-control" id="nama_pemasok" name="nama_pemasok">
+                        
+                        <div class="form-group mb-2" id="pemasok">
+                            <label class="font-weight-bold" for="nama">Nama Pemasok</label>
+                            <input type="text" class="form-control" id="nama" name="nama">
                         </div>
-
-                        <div class="form-group mb-2">
-                            <label class="font-weight-bold" for="lokasi_aset">Lokasi Aset</label>
-                            <input type="text" class="form-control" id="lokasi_aset" name="lokasi_aset">
-                        </div>
-
+                        
+                        {{-- <div class="form-group mb-2" id="penerima">
+                            <label class="font-weight-bold" for="keluar_nama_penerima">Nama Penerima</label>
+                            <input type="text" class="form-control" id="keluar_nama_penerima" name="keluar_nama_penerima">
+                        </div> --}}
+                        
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="no_faktur">Nomor Faktur</label>
                             <input type="text" class="form-control" id="no_faktur" name="no_faktur">
                         </div>
-
+                        
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="keterangan">Keterangan</label>
                             <input type="text" class="form-control" id="keterangan" name="keterangan">
                         </div>
-
+                        
                         <div class="form-group mb-3">
                             <label class="font-weight-bold" for="dokumentasi">Dokumentasi</label>
                             <input type="file" class="form-control" id="dokumentasi" name="dokumentasi" accept="image/*" style="padding: 4px; align-items: center;">
                         </div>
-
+                
                         <!-- Modal Footer -->
                         <div class="mt-3">
                             <button type="submit" class="btn btn-success w-100" style="padding: 8px 0; font-weight: bold;">Simpan</button>
                         </div>
                     </form>
                 </div>
+                {{-- script untuk mengubah tampilan berdasarkan radio button jenis pencatatan yang dipilih
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const asetMasuk = document.getElementById('asetMasuk');
+                        const asetKeluar = document.getElementById('asetKeluar');
+                        const pemasok = document.getElementById('pemasok');
+                        const penerima = document.getElementById('penerima');
+                
+                        // Fungsi untuk mengatur tampilan berdasarkan radio button yang dipilih
+                        function toggleInputFields() {
+                            if (asetKeluar.checked) {
+                                pemasok.hidden = true;
+                                penerima.hidden = false;
+                            } else if (asetMasuk.checked) {
+                                pemasok.hidden = false;
+                                penerima.hidden = true;
+                            }
+                        }
+                        // Event listener untuk perubahan radio button
+                        asetMasuk.addEventListener('change', toggleInputFields);
+                        asetKeluar.addEventListener('change', toggleInputFields);
+                
+                        // Panggil fungsi saat halaman pertama kali dimuat untuk kondisi awal
+                        toggleInputFields();
+                
+                    });
+                </script> --}}
             </div>
         </div>
     </div>
