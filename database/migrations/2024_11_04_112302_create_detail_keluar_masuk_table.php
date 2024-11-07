@@ -19,12 +19,14 @@ return new class extends Migration
             $table->foreign('id_keluar_masuk_aset')->references('id_keluar_masuk_aset')->on('keluar_masuk_aset')->onDelete('cascade');
             $table->foreignUuid('aset_id')->nullable();
             $table->foreign('aset_id')->references('aset_id')->on('aset')->onDelete('cascade');
-            $table->integer('masuk_kuantitas');
-            $table->string('masuk_kondisi');
-            $table->string('masuk_tindak_lanjut');
-            $table->integer('keluar_kuantitas');
-            $table->string('keluar_kondisi');
-            $table->string('keluar_tindak_lanjut');
+            $table->integer('masuk_kuantitas')->nullable();
+            $table->string('masuk_kondisi')->nullable();
+            $table->string('masuk_tindak_lanjut')->nullable();
+            $table->string('masuk_dokumentasi')->nullable();
+            $table->integer('keluar_kuantitas')->nullable();
+            $table->string('keluar_kondisi')->nullable();
+            $table->string('keluar_tindak_lanjut')->nullable();
+            $table->string('keluar_dokumentasi')->nullable();
             $table->timestamps();
         });
     }

@@ -38,11 +38,13 @@ return new class extends Migration
             $table->string('masuk_nama_pemasok')->nullable();
             $table->string('masuk_no_faktur')->nullable();
             $table->string('masuk_keterangan')->nullable();
+            $table->string('masuk_dokumentasi')->nullable();
             $table->string('keluar_no_transaksi')->nullable();
             $table->date('keluar_tgl_keluar')->nullable();
             $table->string('keluar_nama_penerima')->nullable();
             $table->string('keluar_no_faktur')->nullable();
             $table->string('keluar_keterangan')->nullable();
+            $table->string('keluar_dokumentasi')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

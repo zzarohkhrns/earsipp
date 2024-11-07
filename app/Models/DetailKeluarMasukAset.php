@@ -19,9 +19,11 @@ class DetailKeluarMasukAset extends Model
         'masuk_kuantitas',
         'masuk_kondisi',
         'masuk_tindak_lanjut',
+        'masuk_dokumentasi',
         'keluar_kuantitas',
         'keluar_kondisi',
         'keluar_tindak_lanjut',
+        'keluar_dokumentasi'
     ];
 
     public function keluar_masuk_aset()
