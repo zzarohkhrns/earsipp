@@ -252,7 +252,6 @@
                                             </div>
                                             <div class="flex-container">
                                                 <div class="card">
-                                                    <!-- Kontainer untuk tabel dan tombol -->
                                                     <div class="table-button-container">
                                                         <!-- Tabel Pemeriksaan -->
                                                         <div>
