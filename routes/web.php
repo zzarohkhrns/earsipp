@@ -200,7 +200,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/arsip/kegiatan_pc/{hal}', [KegiatanController::class, 'kegiatan_pc'])->name('kegiatan_pc');
         Route::get('/kegiatan/jenis_kegiatan/{hal}', [KegiatanController::class, 'jenis_kegiatan'])->name('jenis_kegiatan');
-        Route::post('/aksi_tambah_jenis_kegiatan/', [KegiatanController::class, 'aksi_tambah_jenis_kegiatan'])->name('aksi_tambah_jenis_kegiatan');
+        Route::post('/aksi_tambah_jenis_kegiatan', [KegiatanController::class, 'aksi_tambah_jenis_kegiatan'])->name('aksi_tambah_jenis_kegiatan');
         Route::put('/aksi_edit_jenis_kegiatan/{id}', [KegiatanController::class, 'aksi_edit_jenis_kegiatan'])->name('aksi_edit_jenis_kegiatan');
         Route::post('/aksi_hapus_jenis_kegiatan/{id}', [KegiatanController::class, 'aksi_hapus_jenis_kegiatan'])->name('aksi_hapus_jenis_kegiatan');
         Route::post('/filter/kegiatan/{hal}', [FilterKegiatanController::class, 'filter_kegiatan'])->name('filter_kegiatan');
@@ -244,8 +244,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/print-detail/{id}/{tgl}', [DataAsetController::class, 'exportPdfDetailPemeriksaan'])->name('exportPdfDetailPemeriksaan');
         Route::get('/print-data-pemeriksaan', [DataAsetController::class, 'export_pemeriksaan'])->name('exportPdfPemeriksaan');
 
+
         Route::post('/arsip/keluar_masuk_aset/store', [DataAsetController::class, 'keluar_masuk_aset_store'])->name('keluar_masuk_aset.store');
         Route::get('/arsip/detail_keluar_masuk_aset/{id}', [DataAsetController::class, 'detail_keluar_masuk_aset'])->name('detail_keluar_masuk_aset');
+
+        Route::post('/arsip/detail_keluar_masuk_aset/store/{id}', [DataAsetController::class, 'detail_keluar_masuk_aset_store'])->name('detail_keluar_masuk_aset.store');
+        Route::put('/arsip/update_detail_keluar_masuk_aset/{id}', [DataAsetController::class, 'detail_keluar_masuk_aset_update'])->name('detail_keluar_masuk_aset.update');
     });
 
     // upzis

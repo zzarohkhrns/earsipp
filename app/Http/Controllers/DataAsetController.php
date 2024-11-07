@@ -778,8 +778,9 @@ class DataAsetController extends Controller
         $role = 'pc';
         $keluar_masuk_aset = KeluarMasukAset::find($id);
         // dd($keluar_masuk_aset);
+        $aset = Aset::all();
 
-        return view('data_aset.detail_keluar_masuk', compact('keluar_masuk_aset','role'));
+        return view('data_aset.detail_keluar_masuk', compact('keluar_masuk_aset','role', 'aset'));
     }
 
     public function keluar_masuk_aset_store(Request $request)
@@ -801,6 +802,37 @@ class DataAsetController extends Controller
             return redirect()->route('pc.data_aset')->with('success', 'Berhasil menghapus data keluar masuk.');
         } catch(\Exception $e) {
             return redirect()->route('pc.data_aset')->with('error', 'Gagal menghapus data keluar masuk, error : '.$e->getMessage());
+        }
+    }
+
+    public function detail_keluar_masuk_aset_store(Request $request, $id) {
+        dd($request, $id);
+    }
+
+    public function detail_keluar_masuk_aset_update(Request $request,$id)
+    {
+        if($request->hasFile('dokumentasi')) {
+            $dokumentasiPath = $request->file('dokumentasi')->store('dokumentasi', 'public');
+        }
+
+        try {
+            if($request->jenis == 'masuk') {
+                $data = [
+                    'masuk_tgl_masuk' => $request->tgl,
+                    'masuk_nama_pemasok' => $request->nama,
+                    'masuk_no_faktur' =>  $request->no_faktur,
+                    'masuk_keterangan' => $request->keterangan,
+                ];
+            } else {
+                $data = [
+                    'keluar_tgl_keluar' => $request->tgl,
+                    'keluar_nama_pemasok' => $request->nama,
+                    'keluar_no_faktur' =>  $request->no_faktur,
+                    'keluar_keterangan' => $request->keterangan,
+                ];
+            }
+        } catch (\Exception $e) {
+
         }
     }
 }
