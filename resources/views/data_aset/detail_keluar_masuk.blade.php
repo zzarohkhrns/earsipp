@@ -122,13 +122,6 @@
             margin: 10px;
         }
 
-        .flex-container .card:first-child {
-            flex: 40%;
-        }
-
-        .flex-container .card:last-child {
-            flex: 60%;
-        }
     </style>
 
 
@@ -223,7 +216,7 @@
                                                 </div>
 
                                                 <div class="flex-container" style="display: flex;">
-                                                    <div class="card" style="width: 40%;">
+                                                    <div class="card" style="flex: 40%;">
                                                         <div class="table-button-container">
                                                             <div>
                                                                 <table id="example"
@@ -307,11 +300,11 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="card" style="width: 60%;">
+                                                    <div class="card" style="flex: 60%;">
                                                         <div class="flex-container"
-                                                            style="display: flex; align-items: center; justify-content: space-between;">
+                                                            style="display: flex; justify-content: space-between;">
                                                             <div style="width: 50%;">
-                                                                <b style="font-size: 16px;">No faktur keluar masuk</b>
+                                                                <b style="font-size: 16px;">No Faktur Keluar Masuk Aset</b>
                                                             </div>
                                                             <div class="btn-group btn-block mb-xl-0 card-tambah-kontrol"
                                                                 style="width: 50%;">
@@ -476,6 +469,255 @@
                                         {{-- tab status spv & kc --}}
                                         <div class="tab-pane fade" id="status-spv-kc" role="tabpanel"
                                             aria-labelledby="status-spv-kc-tab">
+                                            <div class="col-12 mt-3 mb-3">
+                                                <div class="status-buttons">
+                                                    {{-- @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') --}}
+                                                        <button class="btn btn-success"
+                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Selesai
+                                                            Input
+                                                            Pemeriksaan</button>
+                                                    {{-- @else
+                                                        <button class="btn btn-warning"
+                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Belum
+                                                            Selesai Input
+                                                            Pemeriksaan</button>
+                                                    @endif --}}
+                                                    {{-- @if ($pemeriksaanAset->status_spv == 'mengetahui') --}}
+                                                        <button class="btn btn-success"
+                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">SPV
+                                                            Mengetahui</button>
+                                                    {{-- @else
+                                                        <button class="btn btn-warning"
+                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">SPV
+                                                            Belum
+                                                            Mengetahui</button>
+                                                    @endif --}}
+                                                    {{-- @if ($pemeriksaanAset->status_kc == 'mengetahui') --}}
+                                                        <button class="btn btn-success"
+                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Diteruskan
+                                                            Ke KC, KC
+                                                            Mengetahui</button>
+                                                    {{-- @else
+                                                        <button class="btn btn-warning"
+                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Diteruskan
+                                                            Ke KC, KC Belum
+                                                            Mengetahui</button>
+                                                    @endif --}}
+                                                </div>
+                                            </div>
+                                            <div class="flex-container">
+                                                <div class="card">
+
+                                                    {{-- detail respon --}}
+                                                    <table id="example" style="width: 100%; border-collapse: collapse;">
+
+                                                        {{-- line 1 --}}
+                                                        <tr>
+                                                            <th style="width: 75%;">
+                                                                <b style="font-size:16px;">Supervisor</b>
+                                                            </th>
+                                                            <th style="width: 25%">
+                                                                {{-- @if (Auth::user()->gocap_id_pc_pengurus == $supervisor) --}}
+                                                                    <div class="btn-group mb-2 card_edit_pemeriksaan">
+                                                                        <button
+                                                                            class="btn btn-secondary btn-block intro-respon-spv respon-spv"
+                                                                            type="button" data-toggle="modal"
+                                                                            data-target="#responspvModal"
+                                                                            {{-- @if ($pemeriksaanAset->status_pemeriksaan == 'belum') disabled @endif --}}
+                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 5px; margin: 0; font-size:12px;"
+                                                                            aria-expanded="false">
+                                                                            &nbsp;&nbsp;<i class="fas fa-edit"></i>
+                                                                            Respon
+                                                                        </button>
+                                                                    </div>
+                                                                {{-- @endif --}}
+                                                            </th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b class="text-success" style="font-size: 19px;">
+                                                                    {{ $keluar_masuk_aset->supervisor->pengguna->nama }}
+                                                                </b>
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+
+                                                        {{-- line 2 --}}
+                                                        <tr>
+                                                            <th style="width: 75%">
+                                                                <b style="font-size:16px;">Jabatan</b>
+                                                            </th>
+                                                            <th style="width: 25%"></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                {{ $keluar_masuk_aset->supervisor->pengurusJabatan->jabatan }}
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+
+                                                        {{-- line 3 --}}
+                                                        <tr>
+                                                            <th style="width: 75%">
+                                                                <b style="font-size:16px;">Tgl Respon</b>
+                                                            </th>
+                                                            <th style="width: 25%"></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                @if ($keluar_masuk_aset->tgl_mengetahui_spv)
+                                                                    {{ $keluar_masuk_aset->tgl_mengetahui_spv }}
+                                                                @else
+                                                                    -
+                                                                @endif
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+
+                                                        {{-- line 4 --}}
+                                                        <tr>
+                                                            <th style="width: 75%">
+                                                                <b style="font-size:16px;">Status</b>
+                                                            </th>
+                                                            <th style="width: 25%"></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                @if ($keluar_masuk_aset->status_spv == 'mengetahui')
+                                                                    <text class="text-success">Mengetahui</text>
+                                                                @else
+                                                                    <text class="text-warning">Belum
+                                                                        Mengetahui</text>
+                                                                @endif
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+
+                                                        {{-- line 5 --}}
+                                                        <tr>
+                                                            <th style="width: 75%">
+                                                                <b style="font-size:16px;">Catatan SPV</b>
+                                                            </th>
+                                                            <th style="width: 25%"></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                @if ($keluar_masuk_aset->catatan_spv)
+                                                                    {{ $keluar_masuk_aset->catatan_spv }}
+                                                                @else
+                                                                    -
+                                                                @endif
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="card">
+                                                    {{-- detail Pemeriksaan --}}
+                                                    <table id="example" style="width: 100%; border-collapse: collapse;">
+
+                                                        {{-- line 1 --}}
+                                                        <tr>
+                                                            <th style="width: 75%">
+                                                                <b style="font-size:16px;">Kepala Cabang</b>
+                                                            </th>
+                                                            <th style="width: 25%">
+                                                                {{-- @if (Auth::user()->gocap_id_pc_pengurus == $kc) --}}
+                                                                    <div class="btn-group mb-2 card_edit_pemeriksaan">
+                                                                        <button {{-- @disable($pemeriksaanAset->status_pemeriksaan == 'belum') --}}
+                                                                            class="btn btn-secondary btn-block intro-respon-kc respon-kc"
+                                                                            type="button" data-toggle="modal"
+                                                                            data-target="#responkcModal"
+                                                                            {{-- @if ($pemeriksaanAset->status_pemeriksaan == 'belum' || $pemeriksaanAset->status_spv == 'belum') disabled @endif --}}
+                                                                            {{-- @if ($pemeriksaanAset->status_spv == 'belum') disabled @endif --}}
+                                                                            style="border-radius:10px; width: 150px; max-width: 150px; padding: 5px; margin: 0;font-size:12px;"
+                                                                            aria-expanded="false">
+                                                                            &nbsp;&nbsp;<i class="fas fa-edit"></i>
+                                                                            Respon
+                                                                        </button>
+                                                                    </div>
+                                                                {{-- @endif --}}
+                                                            </th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b style="font-size:19px;" class="text-success">
+                                                                    {{ $keluar_masuk_aset->kc->pengguna->nama }}
+                                                                </b>
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+
+                                                        {{-- line 2 --}}
+                                                        <tr>
+                                                            <th style="width: 75%">
+                                                                <b style="font-size:16px;">Jabatan</b>
+                                                            </th>
+                                                            <th style="width: 25%"></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                {{ $keluar_masuk_aset->kc->pengurusJabatan->jabatan }}
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+
+                                                        {{-- line 3 --}}
+                                                        <tr>
+                                                            <th style="width: 75%">
+                                                                <b style="font-size:16px;">Tgl Respon</b>
+                                                            </th>
+                                                            <th style="width: 25%"></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                @if ($keluar_masuk_aset->tgl_mengetahui_kc)
+                                                                    {{ $keluar_masuk_aset->tgl_mengetahui_kc }}
+                                                                @else
+                                                                    -
+                                                                @endif
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+
+                                                        {{-- line 4 --}}
+                                                        <tr>
+                                                            <th style="width: 75%">
+                                                                <b style="font-size:16px;">Status</b>
+                                                            </th>
+                                                            <th style="width: 25%"></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                @if ($keluar_masuk_aset->status_kc == 'mengetahui')
+                                                                    <text class="text-success">Mengetahui</text>
+                                                                @else
+                                                                    <text class="text-warning">Belum</text>
+                                                                @endif
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+
+                                                        {{-- line 5 --}}
+                                                        <tr>
+                                                            <th style="width: 75%">
+                                                                <b style="font-size:16px;">Catatan KC</b>
+                                                            </th>
+                                                            <th style="width: 25%"></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                @if ($keluar_masuk_aset->catatan_kc)
+                                                                    {{ $keluar_masuk_aset->catatan_kc }}
+                                                                @else
+                                                                    -
+                                                                @endif
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -700,7 +942,7 @@
 
                 <!-- Modal Body -->
                 <div class="modal-body">
-                    <form id="pencatatanForm" method="POST" action="{{ route($role.'.detail_keluar_masuk_aset.store', $keluar_masuk_aset->id_keluar_masuk_aset); }}">
+                    <form id="pencatatanForm" method="POST" action="{{ route($role.'.detail_keluar_masuk_aset.store', $keluar_masuk_aset->id_keluar_masuk_aset) }}">
                         @csrf
                         <!-- Jenis Radio Button -->
                         <div class="form-group mb-2">
@@ -829,7 +1071,7 @@
                     <form id="fakturForm" method="POST" action="{{ route($role.'.detail_keluar_masuk_aset.update', $keluar_masuk_aset->id_keluar_masuk_aset) }}">
                         @csrf
                         @method('PUT')
-                        
+
                         <!-- Jenis Radio Button -->
                         <div class="form-group mb-2">
                             <label class="font-weight-bold">Jenis</label>
@@ -844,38 +1086,38 @@
                                 </div>
                             </div>
                         </div>
-                
+
                         <!-- Input Fields -->
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="tgl">Tanggal</label>
                             <input type="date" class="form-control" id="tgl" name="tgl">
                         </div>
-                        
+
                         <div class="form-group mb-2" id="pemasok">
                             <label class="font-weight-bold" for="nama">Nama Pemasok</label>
                             <input type="text" class="form-control" id="nama" name="nama">
                         </div>
-                        
+
                         {{-- <div class="form-group mb-2" id="penerima">
                             <label class="font-weight-bold" for="keluar_nama_penerima">Nama Penerima</label>
                             <input type="text" class="form-control" id="keluar_nama_penerima" name="keluar_nama_penerima">
                         </div> --}}
-                        
+
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="no_faktur">Nomor Faktur</label>
                             <input type="text" class="form-control" id="no_faktur" name="no_faktur">
                         </div>
-                        
+
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="keterangan">Keterangan</label>
                             <input type="text" class="form-control" id="keterangan" name="keterangan">
                         </div>
-                        
+
                         <div class="form-group mb-3">
                             <label class="font-weight-bold" for="dokumentasi">Dokumentasi</label>
                             <input type="file" class="form-control" id="dokumentasi" name="dokumentasi" accept="image/*" style="padding: 4px; align-items: center;">
                         </div>
-                
+
                         <!-- Modal Footer -->
                         <div class="mt-3">
                             <button type="submit" class="btn btn-success w-100" style="padding: 8px 0; font-weight: bold;">Simpan</button>
@@ -889,7 +1131,7 @@
                         const asetKeluar = document.getElementById('asetKeluar');
                         const pemasok = document.getElementById('pemasok');
                         const penerima = document.getElementById('penerima');
-                
+
                         // Fungsi untuk mengatur tampilan berdasarkan radio button yang dipilih
                         function toggleInputFields() {
                             if (asetKeluar.checked) {
@@ -903,16 +1145,137 @@
                         // Event listener untuk perubahan radio button
                         asetMasuk.addEventListener('change', toggleInputFields);
                         asetKeluar.addEventListener('change', toggleInputFields);
-                
+
                         // Panggil fungsi saat halaman pertama kali dimuat untuk kondisi awal
                         toggleInputFields();
-                
+
                     });
                 </script> --}}
             </div>
         </div>
     </div>
 
+    <!-- modal respon spv -->
+    <div class="modal fade" id="responspvModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Respon SPV - Pencatatan Aset</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding-top: 0;">
+                    <form id="responspvForm" method="POST"
+                        {{-- action="{{ route($role . '.respon_spv.update', $pemeriksaanAset->id_pemeriksaan_aset) }}"> --}}>
+                        @csrf
+                        <div class="form-group">
+                            <label for="tanggal_pencatatan" style="font-weight: bold; font-size: 14px;">Tgl
+                                Pencatatan</label>
+                            <input type="date" class="form-control" id="tanggal_pencatatan"
+                                name="tanggal_pencatatan" value="{{ $keluar_masuk_aset->tanggal_pencatatan }}"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="kategori">Status SPV</label>
+                            <select class="form-control" id="status_spv" name="status_spv"
+                                onchange="toggleNewCategoryForm()">
+                                <option value="">Pilih Status</option>
+                                <option value="mengetahui" @if ($keluar_masuk_aset->status_spv == 'mengetahui') selected @endif>Mengetahui
+                                </option>
+                                <option value="belum" @if ($keluar_masuk_aset->status_spv == 'belum') selected @endif>Belum Mengetahui
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tgl_respon" style="font-weight: bold; font-size: 14px;">Tgl Respon SPV</label>
+                            <input type="date" class="form-control" id="tgl_mengetahui_spv" name="tgl_mengetahui_spv"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        </div>
+                        <div class="form-group">
+                            <label for="catatan_spv" style="font-weight: bold; font-size: 14px;">Catatan SPV</label>
+                            <input type="text" class="form-control" id="catatan_spv" name="catatan_spv"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;">
+                        </div>
+                        <div class="alert alert-info"
+                            style="background-color: #CBF2D6; border-color: #CBF2D6; color: #155724; margin-top: 15px;">
+                            <strong>INFORMASI</strong><br>Dengan klik tombol simpan, SPV mengetahui hasil pemeriksaan aset
+                            dan meneruskannya ke Kepala Cabang.
+                        </div>
+                        <button type="submit" class="btn btn-success"
+                            style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal respon kc -->
+    <div class="modal fade" id="responkcModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Respon KC - Pencatatan Aset</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding-top: 0;">
+                    <form method="POST"
+                        {{-- action="{{ route($role . '.respon_kc.update', $pemeriksaanAset->id_pemeriksaan_aset) }}"> --}}>
+                        @csrf
+                        <div class="form-group">
+                            <label for="tgl_pencatatan" style="font-weight: bold; font-size: 14px;">Tgl
+                                Pemeriksaan</label>
+                            <input type="date" class="form-control" id="tgl_pencatatan"
+                                value="{{ $keluar_masuk_aset->tgl_pencatatan }}"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="tgl_respon" style="font-weight: bold; font-size: 14px;">Tgl Respon SPV</label>
+                            <input type="date" class="form-control" id="tgl_mengetahui_spv" name="tgl_mengetahui_spv"
+                                value="{{ $keluar_masuk_aset->tgl_mengetahui_spv }}"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="catatan_spv" style="font-weight: bold; font-size: 14px;">Catatan SPV</label>
+                            <input type="text" class="form-control" id="catatan_spv" name="catatan_spv"
+                                value="{{ $keluar_masuk_aset->catatan_spv }}"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="kategori">Status KC</label>
+                            <select class="form-control" id="status_kc" name="status_kc" required
+                                onchange="toggleNewCategoryForm()">
+                                <option value="">Pilih Status</option>
+                                <option value="mengetahui" @if ($keluar_masuk_aset->status_kc == 'mengetahui') selected @endif>Mengetahui
+                                </option>
+                                <option value="belum" @if ($keluar_masuk_aset->status_kc == 'belum') selected @endif>Belum Mengetahui
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tgl_respon_kc" style="font-weight: bold; font-size: 14px;">Tgl Respon KC</label>
+                            <input type="date" class="form-control" id="tgl_mengetahui_kc" name="tgl_mengetahui_kc"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="catatan_kc" style="font-weight: bold; font-size: 14px;">Catatan KC</label>
+                            <input type="text" class="form-control" id="catatan_kc" name="catatan_kc"
+                                style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" required>
+                        </div>
+                        <div class="alert alert-info"
+                            style="background-color: #CBF2D6; border-color: #CBF2D6; color: #155724; margin-top: 15px;">
+                            <strong>INFORMASI</strong><br>Dengan klik tombol simpan, KC mengetahui hasil pemeriksaan aset.
+                            Hasil pemeriksaan aset dapat digunakan sebagai lampiran pengajuan internal.
+                        </div>
+                        <button type="submit" class="btn btn-success"
+                            style="width: 100%; padding: 8px 0; font-weight: bold;">Simpan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @section('js')
     <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
