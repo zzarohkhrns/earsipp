@@ -9,7 +9,7 @@ class DetailKeluarMasukAset extends Model
 {
     use HasFactory;
     protected $table = 'detail_keluar_masuk_aset';
-    protected $primaryKey = 'detail_keluar_masuk_aset_id';
+    protected $primaryKey = 'id_detail_keluar_masuk_aset';
     public $incrementing = false;
     protected $keyType = 'string';
     protected $fillable = [
