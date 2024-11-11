@@ -943,5 +943,23 @@ class DataAsetController extends Controller
         }
     }
 
+    public function export_detail_keluar_masuk_aset(){
+        // return view('data_aset.export_detail_keluar_masuk');
 
+        $filename = "form_detail_keluar_masuk_aset.pdf";
+
+        $pdf = PDF::loadView('data_aset.export_detail_keluar_masuk');
+        $pdf->setPaper('A4', 'landscape');
+
+        return $pdf->stream($filename);
+    }
+
+    public function export_keluar_masuk_aset(){
+        $filename = "form_keluar_masuk_aset.pdf";
+
+        $pdf = PDF::loadView('data_aset.export_keluar_masuk');
+        $pdf->setPaper('A4', 'landscape');
+
+        return $pdf->stream($filename);
+    }
 }

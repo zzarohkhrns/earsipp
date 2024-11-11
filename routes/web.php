@@ -243,6 +243,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/update-status-pemeriksaan', [DataAsetController::class, 'updateStatusPemeriksaan'])->name('updateStatusPemeriksaan');
         Route::get('/print-detail/{id}/{tgl}', [DataAsetController::class, 'exportPdfDetailPemeriksaan'])->name('exportPdfDetailPemeriksaan');
         Route::get('/print-data-pemeriksaan', [DataAsetController::class, 'export_pemeriksaan'])->name('exportPdfPemeriksaan');
+        Route::get('/print-detail-keluar-masuk', [DataAsetController::class, 'export_detail_keluar_masuk_aset'])->name('exportPdfDetailKeluarMasuk');
+        Route::get('/print-data-keluar-masuk', [DataAsetController::class, 'export_keluar_masuk_aset'])->name('exportPdfKeluarMasuk');
 
 
         Route::post('/arsip/keluar_masuk_aset/store', [DataAsetController::class, 'keluar_masuk_aset_store'])->name('keluar_masuk_aset.store');

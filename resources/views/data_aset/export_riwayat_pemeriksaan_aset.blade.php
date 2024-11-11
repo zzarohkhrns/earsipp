@@ -40,31 +40,31 @@
     </div>
 
     <div style="margin-top: 20px;">
-        <table style="width: 100%; border-collapse: collapse;">
+        <table style="width: 50%; border-collapse: collapse;">
             <tr>
-                <td style="border: none; padding: 3px;">Nama Aset</td>
-                <td style="border: none; padding: 3px;">:</td>
+                <td style="border: none; padding: 3px; width:25%;">Nama Aset</td>
+                <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
                     {{ $detailPemeriksaan->first()->aset->nama_aset }}
                 </td>
             </tr>
             <tr>
-                <td style="border: none; padding: 3px;">Spesifikasi</td>
-                <td style="border: none; padding: 3px;">:</td>
+                <td style="border: none; padding: 3px; width:25%;">Spesifikasi</td>
+                <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
                     {{ $detailPemeriksaan->first()->aset->spesifikasi }}
                 </td>
             </tr>
             <tr>
-                <td style="border: none; padding: 3px;">Kategori</td>
-                <td style="border: none; padding: 3px;">:</td>
+                <td style="border: none; padding: 3px; width:25%;">Kategori</td>
+                <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
                     {{ $detailPemeriksaan->first()->aset->kategori_aset->kategori }}
                 </td>
             </tr>
             <tr>
-                <td style="border: none; padding: 3px;">Lokasi Penyimpanan</td>
-                <td style="border: none; padding: 3px;">:</td>
+                <td style="border: none; padding: 3px; width:25%;">Lokasi Penyimpanan</td>
+                <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
                     {{ $detailPemeriksaan->first()->aset->lokasi_penyimpanan }}
                 </td>
@@ -73,7 +73,7 @@
     </div>
 
     <table class="table table-bordered"
-        style="width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 10px;">
+        style="width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 10px; margin-top: 10px;">
         <thead>
             <tr>
                 <th style="border: 1px solid black; padding: 4px;">No.</th>

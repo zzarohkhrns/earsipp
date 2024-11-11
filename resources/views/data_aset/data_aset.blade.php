@@ -986,7 +986,7 @@
                                                                             <span class="input-group-text custom-text">Tgl
                                                                                 Pencatatan</span>
                                                                         </div>
-                                                                        <div id="tgl-pemeriksaan"
+                                                                        <div id="tgl-pencatatan"
                                                                             class="form-control custom-input"
                                                                             style="align-items:stretch; background: #fff; cursor: pointer; border-top-right-radius: 10px; border-bottom-right-radius:10px; min-width: 100px;">
                                                                             <span
@@ -995,13 +995,13 @@
                                                                     </div>
 
                                                                     <input type="hidden" onchange="this.form.submit()"
-                                                                        id="tgl-pemeriksaan-start"
-                                                                        name="tgl-pemeriksaan-start"
-                                                                        value="{{ request('tgl-pemeriksaan-start') }}">
+                                                                        id="tgl-pencatatan-start"
+                                                                        name="tgl-pencatatan-start"
+                                                                        value="{{ request('tgl-pencatatan-start') }}">
                                                                     <input type="hidden" onchange="this.form.submit()"
-                                                                        id="tgl-pemeriksaan-end"
-                                                                        name="tgl-pemeriksaan-end"
-                                                                        value="{{ request('tgl-pemeriksaan-end') }}">
+                                                                        id="tgl-pencatatan-end"
+                                                                        name="tgl-pencatatan-end"
+                                                                        value="{{ request('tgl-pencatatan-end') }}">
 
                                                                     <script type="text/javascript">
                                                                         $(function() {
@@ -1009,10 +1009,10 @@
                                                                             moment.locale('id');
 
                                                                             // Inisialisasi nilai tanggal dari input hidden atau gunakan default jika kosong
-                                                                            var start = moment($('#tgl-pemeriksaan-start').val(), 'YYYY/MM/DD').isValid() ? moment($(
-                                                                                '#tgl-pemeriksaan-start').val(), 'YYYY/MM/DD') : moment().subtract(29, 'days');
-                                                                            var end = moment($('#tgl-pemeriksaan-end').val(), 'YYYY/MM/DD').isValid() ? moment($(
-                                                                                    '#tgl-pemeriksaan-end')
+                                                                            var start = moment($('#tgl-pencatatan-start').val(), 'YYYY/MM/DD').isValid() ? moment($(
+                                                                                '#tgl-pencatatan-start').val(), 'YYYY/MM/DD') : moment().subtract(29, 'days');
+                                                                            var end = moment($('#tgl-pencatatan-end').val(), 'YYYY/MM/DD').isValid() ? moment($(
+                                                                                    '#tgl-pencatatan-end')
                                                                                 .val(), 'YYYY/MM/DD') : moment();
 
                                                                             function cb(start, end) {
@@ -1031,12 +1031,12 @@
                                                                                     displayDate = start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY');
                                                                                 }
 
-                                                                                $('#tgl-pemeriksaan span').html(displayDate); // Tampilkan tanggal yang diformat
-                                                                                $('#tgl-pemeriksaan-start').val(start.format('YYYY/MM/DD')); // Tetap format YYYY-MM-DD untuk server
-                                                                                $('#tgl-pemeriksaan-end').val(end.format('YYYY/MM/DD'));
+                                                                                $('#tgl-pencatatan span').html(displayDate); // Tampilkan tanggal yang diformat
+                                                                                $('#tgl-pencatatan-start').val(start.format('YYYY/MM/DD')); // Tetap format YYYY-MM-DD untuk server
+                                                                                $('#tgl-pencatatan-end').val(end.format('YYYY/MM/DD'));
                                                                             }
 
-                                                                            $('#tgl-pemeriksaan').daterangepicker({
+                                                                            $('#tgl-pencatatan').daterangepicker({
                                                                                 startDate: start,
                                                                                 endDate: end,
                                                                                 ranges: {
@@ -1062,10 +1062,10 @@
                                                                             }, cb);
 
                                                                             // Menangani tanggal saat apply pada daterangepicker
-                                                                            $('#tgl-pemeriksaan').on('apply.daterangepicker', function(ev, picker) {
-                                                                                $('#tgl-pemeriksaan-start').val(picker.startDate.format(
+                                                                            $('#tgl-pencatatan').on('apply.daterangepicker', function(ev, picker) {
+                                                                                $('#tgl-pencatatan-start').val(picker.startDate.format(
                                                                                     'YYYY/MM/DD')); // Tetap format YYYY-MM-DD untuk server
-                                                                                $('#tgl-pemeriksaan-end').val(picker.endDate.format('YYYY/MM/DD'));
+                                                                                $('#tgl-pencatatan-end').val(picker.endDate.format('YYYY/MM/DD'));
                                                                                 // Submit form secara otomatis setelah rentang tanggal dipilih
                                                                                 $(this).closest('form').submit();
                                                                             });
@@ -1149,7 +1149,7 @@
                                                                             style="border: 1px solid #495057;">
                                                                             <i class="fas fa-sync-alt"></i>
                                                                         </button>
-                                                                        <a href="/{{ $role }}/print-data-pemeriksaan"
+                                                                        <a href="/{{ $role }}/print-data-keluar-masuk"
                                                                             target="_blank"
                                                                             class="btn btn-outline-secondary btn-sm btn-custom ml-2"
                                                                             style="border: 1px solid #495057;">
@@ -1262,7 +1262,8 @@
                                                                                 Total Kuantitas</td>
                                                                             <td
                                                                                 style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">
-                                                                                <b>Total Kuantitas</b></td>
+                                                                                <b>Total Kuantitas</b>
+                                                                            </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td colspan="2"
@@ -1301,7 +1302,8 @@
                                                                                 Total Kuantitas</td>
                                                                             <td
                                                                                 style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">
-                                                                                <b>Total Kuantitas</b></td>
+                                                                                <b>Total Kuantitas</b>
+                                                                            </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td colspan="2"
@@ -1394,35 +1396,11 @@
                                                                         style="display: inline-block; width: 100px; padding: 8px; border: 1px solid #ccc; text-align: center; text-decoration: none; color: #333; font-weight: bold; margin-bottom: 8px; border-radius: 4px;">
                                                                         Detail
                                                                     </a>
-                                                                    <a href=""
+                                                                    <a href="{{ route($role . '.exportPdfDetailKeluarMasuk') }}"
                                                                         style="display: inline-block; width: 100px; padding: 8px; border: 1px solid #ccc; text-align: center; text-decoration: none; color: #333; font-weight: bold; border-radius: 4px;">
                                                                         Cetak PDF
                                                                     </a>
                                                                 </div>
-                                                                {{-- <select class="btn btn-outline-secondary" style="font-size: 13px; padding: 2px; cursor: pointer;" onchange="handleSelectChange(this)">
-                                                                <option value="" disabled selected>Pilih Aksi</option>
-                                                                <option value="detail">Detail</option>
-                                                                <option value="cetak">Cetak PDF</option>
-                                                            </select>
-                                                            <input type="text" name="id_keluar_masuk_aset" id="id_keluar_masuk_aset" value="{{ $keluar_masuk->id_keluar_masuk_aset }}" hidden>
-
-
-                                                            <script>
-                                                                function handleSelectChange(select) {
-                                                                    const id = document.getElementById('id_keluar_masuk_aset').value;
-                                                                    if (select.value === "detail") {
-                                                                        // Arahkan ke halaman detail
-                                                                        window.location.href = '{{ route($role.'.detail_keluar_masuk_aset', ':id') }}'.replace(':id', id);
-                                                                    } else if (select.value === "cetak") {
-                                                                        // Tambahkan logika untuk mencetak PDF di sini
-                                                                        alert("Fitur cetak PDF belum diimplementasikan.");
-                                                                    }
-
-                                                                    // Reset pilihan ke default setelah mengarahkan atau mencetak PDF
-                                                                    select.selectedIndex = 0;
-                                                                }
-                                                            </script> --}}
-
                                                             </td>
                                                         </tr>
                                                     @endforeach

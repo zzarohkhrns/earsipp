@@ -211,7 +211,8 @@
                                                             <a target="_blank"
                                                                 href="{{ route($role . '.export-detail-aset', $aset->aset_id) }}">
                                                                 <button class="btn btn-warning"
-                                                                    id="exportRiwayatPemeriksaan" style="width: 150px;padding: 5px; color: white;rounded: 10px; font-size: 13px;"
+                                                                    id="exportRiwayatPemeriksaan"
+                                                                    style="width: 150px;padding: 5px; color: white;rounded: 10px; font-size: 13px;"
                                                                     {{-- onClick="window.location.href='/{{ $role }}/print-riwayat-pemeriksaan/{{ $aset->aset_id }}'"> --}}>
                                                                     Export
                                                                 </button>
@@ -250,9 +251,20 @@
                                                                             @else
                                                                                 <td class="text-danger">Non aktif</td>
                                                                             @endif
-                                                                            <td><b>Masalah :</b> <br>{{ $item->masalah_teridentifikasi }} <br> <b>Tindakan :</b> <br> {{ $item->tindakan_diperlukan }}</td>
-                                                                            <td><b>Mengetahui :</b> <br> {{ $item->pemeriksaanAset->tgl_mengetahui_spv ?? '-' }} <br> <b>Catatan :</b> <br> {{ $item->pemeriksaanAset->catatan_spv }}</td>
-                                                                            <td><b>Mengetahui :</b> <br> {{ $item->pemeriksaanAset->tgl_mengetahui_kc ?? '-' }} <br> <b>Catatan :</b> <br> {{ $item->pemeriksaanAset->catatan_kc }}</td>
+                                                                            <td><b>Masalah :</b>
+                                                                                <br>{{ $item->masalah_teridentifikasi }}
+                                                                                <br> <b>Tindakan :</b> <br>
+                                                                                {{ $item->tindakan_diperlukan }}</td>
+                                                                            <td><b>Mengetahui :</b> <br>
+                                                                                {{ $item->pemeriksaanAset->tgl_mengetahui_spv ?? '-' }}
+                                                                                <br> <b>Catatan :</b> <br>
+                                                                                {{ $item->pemeriksaanAset->catatan_spv }}
+                                                                            </td>
+                                                                            <td><b>Mengetahui :</b> <br>
+                                                                                {{ $item->pemeriksaanAset->tgl_mengetahui_kc ?? '-' }}
+                                                                                <br> <b>Catatan :</b> <br>
+                                                                                {{ $item->pemeriksaanAset->catatan_kc }}
+                                                                            </td>
                                                                             {{-- <td>
                                                                                 <div
                                                                                     class="d-flex flex-column align-items-center">
@@ -305,15 +317,13 @@
                                                             style="width:100%; font-size: 13px;">
                                                             <thead style="text-align: center; font-size: 16px;">
                                                                 <tr>
-                                                                    <th>No</th>
-                                                                    <th>Diinput Oleh</th>
-                                                                    <th>Tanggal Input</th>
-                                                                    <th>Keluar</th>
-                                                                    <th>Masuk</th>
-                                                                    <th>Sisa</th>
-                                                                    <th>Keterangan</th>
-                                                                    <th>Respon KC</th>
-                                                                    <th style="width: 150px;">Aksi</th>
+                                                                    <th style="width: 5%;">No</th>
+                                                                    <th style="width: 15%;">Tgl Pencatatan</th>
+                                                                    <th style="width: 20%;">Aset Masuk</th>
+                                                                    <th style="width: 20%;">Aset Keluar</th>
+                                                                    <th style="width: 15%;">Status SPV</th>
+                                                                    <th style="width: 15%;">Status KC</th>
+                                                                    <th style="width: 10%;">Aksi</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -324,9 +334,12 @@
                                                                     <td></td>
                                                                     <td></td>
                                                                     <td></td>
-                                                                    <td></td>
-                                                                    <td></td>
-                                                                    <td></td>
+                                                                    <td style="text-align: center;">
+                                                                        <a href="#"
+                                                                            style="display: inline-block; width: 80px; padding: 2px; border: 1px solid #ccc; text-align: center; text-decoration: none; color: #333; border-radius: 4px;">
+                                                                            Detail
+                                                                        </a>
+                                                                    </td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
