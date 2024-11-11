@@ -165,7 +165,7 @@ class DataAsetController extends Controller
             ->where('pengurus_jabatan.jabatan', 'Kepala Cabang')
             ->select('pc_pengurus.id_pc_pengurus as id_kc', 'siftnu.pengguna.nama as nama_kc')
             ->first();
-        
+
 
         /*
         KELUAR MASUK ASET
@@ -177,7 +177,7 @@ class DataAsetController extends Controller
         *
         END KELUAR MASUK
         */
-        $role = 'pc'; 
+        $role = 'pc';
         return view('data_aset.data_aset', compact('keluar_masuk_aset','kategori_id', 'status', 'kodeAset', 'tgl_pembelian_start', 'tgl_pembelian_end', 'role', 'aset', 'kategori', 'pemeriksaan2', 'pemeriksaanGrouped', 'supervisor', 'kc', 'tgl_pemeriksaan_start', 'tgl_pemeriksaan_end', 'status_spv', 'status_kc'));
     }
 
@@ -800,7 +800,7 @@ class DataAsetController extends Controller
             $role = 'pc';
         }
         try {
-            KeluarMasukAset::create(
+            $keluar_masuk_aset = KeluarMasukAset::create(
                 [
                     'id_keluar_masuk_aset' => (string) Str::uuid(),
                     'tanggal_pencatatan' => $request->tanggal_pencatatan,
@@ -809,78 +809,9 @@ class DataAsetController extends Controller
                     'id_kc' => $request->id_kc,
                 ],
             );
-            return redirect()->route('pc.data_aset')->with('success', 'Berhasil menghapus data keluar masuk.');
+            return redirect()->route('pc.detail_keluar_masuk_aset', $keluar_masuk_aset->id_keluar_masuk_aset);
         } catch(\Exception $e) {
             return redirect()->route('pc.data_aset')->with('error', 'Gagal menghapus data keluar masuk, error : '.$e->getMessage());
-        }
-    }
-
-    public function detail_keluar_masuk_aset_store(Request $request, $id) {
-
-        if($request->hasFile('dokumentasi')) {
-            // Simpan file ke direktori sementara di server
-            $dokumentasiPath = $request->file('dokumentasi')->store('dokumentasi', 'public');
-            
-            // Ambil path file yang sudah disimpan di server
-            $filePath = storage_path('app/public/' . $dokumentasiPath);
-            $fileName = $request->file('dokumentasi')->getClientOriginalName();
-
-            // Upload file ke Google Drive
-            $googleDriveService = new GoogleDriveService(); // Pastikan sudah ada instance dari GoogleDriveService
-            $driveFileLink = $googleDriveService->uploadFile($filePath, $fileName);
-            
-             // Jika file berhasil diupload ke Google Drive (misalnya $driveFileLink berisi link file di Google Drive)
-            if ($driveFileLink) {
-                // Hapus file dari server setelah berhasil upload
-                unlink($filePath);
-            }            
-        }
-        // dd($driveFileLink, $request->hasFile('dokumentasi'));
-        try {
-        
-            if($request->jenis === 'masuk') {
-                $kuantitasColumn = 'masuk_kuantitas';
-                $dokumentasiColumn = 'masuk_dokumentasi';
-                $kondisiColumn = 'masuk_kondisi';
-                $tindak_lanjutColumn = 'masuk_tindak_lanjut';
-                
-            } else {
-                $dokumentasiColumn = 'keluar_dokumentasi';
-                $kuantitasColumn = 'keluar_kuantitas';
-                $kondisiColumn = 'keluar_kondisi';
-                $tindak_lanjutColumn = 'keluar_tindak_lanjut';
-            }
-
-            $detail_keluar_masuk_aset = DetailKeluarMasukAset::where('aset_id', $request->aset)->first();
-
-            // dd($detail_keluar_masuk_aset);
-            if($detail_keluar_masuk_aset) {
-                $detail_keluar_masuk_aset->update([
-                    'aset_id' => $request->aset,
-                    'id_keluar_masuk_aset' => $id,
-                    $kuantitasColumn => $request->kuantitas,
-                    $kondisiColumn => $request->kondisi,
-                    $tindak_lanjutColumn => $request->tindak_lanjut,
-                    $dokumentasiColumn => $driveFileLink,
-                ]);
-            } else {
-                DetailKeluarMasukAset::create(
-                    [
-                    'id_detail_keluar_masuk_aset'=> (string) Str::uuid(),
-                    'aset_id' => $request->aset,
-                    'id_keluar_masuk_aset' => $id,
-                    $kuantitasColumn => $request->kuantitas,
-                    $kondisiColumn => $request->kondisi,
-                    $tindak_lanjutColumn => $request->tindak_lanjut,
-                    $dokumentasiColumn => $driveFileLink,
-                    ]
-                );
-            }
-
-            return redirect()->back()->with('success', 'Berhasil menambahkan detail keluar masuk!');
-
-        }catch(\Exception $e) {
-            return redirect()->back()->with('error','Gagal menambahkan detail keluar masuk, error : '.$e->getMessage());
         }
     }
 
@@ -892,7 +823,7 @@ class DataAsetController extends Controller
         if ($request->hasFile('dokumentasi')) {
             // Simpan file ke direktori sementara di server
             $dokumentasiPath = $request->file('dokumentasi')->store('dokumentasi', 'public');
-            
+
             // Ambil path file yang sudah disimpan di server
             $filePath = storage_path('app/public/' . $dokumentasiPath);
             $fileName = $request->file('dokumentasi')->getClientOriginalName();
@@ -900,7 +831,7 @@ class DataAsetController extends Controller
             // Upload file ke Google Drive
             $googleDriveService = new GoogleDriveService(); // Pastikan sudah ada instance dari GoogleDriveService
             $driveFileLink = $googleDriveService->uploadFile($filePath, $fileName);
-            
+
              // Jika file berhasil diupload ke Google Drive (misalnya $driveFileLink berisi link file di Google Drive)
             if ($driveFileLink) {
                 // Hapus file dari server setelah berhasil upload
@@ -942,4 +873,75 @@ class DataAsetController extends Controller
             return redirect()->back()->with('error', 'Data faktur '. $request->jenis .' gagal ditambahkan, err : '.$e->getMessage());
         }
     }
+
+    public function detail_keluar_masuk_aset_store(Request $request, $id) {
+
+        if($request->hasFile('dokumentasi')) {
+            // Simpan file ke direktori sementara di server
+            $dokumentasiPath = $request->file('dokumentasi')->store('dokumentasi', 'public');
+
+            // Ambil path file yang sudah disimpan di server
+            $filePath = storage_path('app/public/' . $dokumentasiPath);
+            $fileName = $request->file('dokumentasi')->getClientOriginalName();
+
+            // Upload file ke Google Drive
+            $googleDriveService = new GoogleDriveService(); // Pastikan sudah ada instance dari GoogleDriveService
+            $driveFileLink = $googleDriveService->uploadFile($filePath, $fileName);
+
+             // Jika file berhasil diupload ke Google Drive (misalnya $driveFileLink berisi link file di Google Drive)
+            if ($driveFileLink) {
+                // Hapus file dari server setelah berhasil upload
+                unlink($filePath);
+            }
+        }
+        // dd($driveFileLink, $request->hasFile('dokumentasi'));
+        try {
+
+            if($request->jenis === 'masuk') {
+                $kuantitasColumn = 'masuk_kuantitas';
+                $dokumentasiColumn = 'masuk_dokumentasi';
+                $kondisiColumn = 'masuk_kondisi';
+                $tindak_lanjutColumn = 'masuk_tindak_lanjut';
+
+            } else {
+                $dokumentasiColumn = 'keluar_dokumentasi';
+                $kuantitasColumn = 'keluar_kuantitas';
+                $kondisiColumn = 'keluar_kondisi';
+                $tindak_lanjutColumn = 'keluar_tindak_lanjut';
+            }
+
+            $detail_keluar_masuk_aset = DetailKeluarMasukAset::where('aset_id', $request->aset)->first();
+
+            // dd($detail_keluar_masuk_aset);
+            if($detail_keluar_masuk_aset) {
+                $detail_keluar_masuk_aset->update([
+                    'aset_id' => $request->aset,
+                    'id_keluar_masuk_aset' => $id,
+                    $kuantitasColumn => $request->kuantitas,
+                    $kondisiColumn => $request->kondisi,
+                    $tindak_lanjutColumn => $request->tindak_lanjut,
+                    $dokumentasiColumn => $driveFileLink,
+                ]);
+            } else {
+                DetailKeluarMasukAset::create(
+                    [
+                    'id_detail_keluar_masuk_aset'=> (string) Str::uuid(),
+                    'aset_id' => $request->aset,
+                    'id_keluar_masuk_aset' => $id,
+                    $kuantitasColumn => $request->kuantitas,
+                    $kondisiColumn => $request->kondisi,
+                    $tindak_lanjutColumn => $request->tindak_lanjut,
+                    $dokumentasiColumn => $driveFileLink,
+                    ]
+                );
+            }
+
+            return redirect()->back()->with('success', 'Berhasil menambahkan detail keluar masuk!');
+
+        }catch(\Exception $e) {
+            return redirect()->back()->with('error','Gagal menambahkan detail keluar masuk, error : '.$e->getMessage());
+        }
+    }
+
+
 }

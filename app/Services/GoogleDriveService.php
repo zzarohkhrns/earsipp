@@ -34,6 +34,7 @@ class GoogleDriveService
         $permission = new Drive\Permission();
         $permission->setType('anyone');
         $permission->setRole('reader');
+        // $permission->setEmailAddress('rayhanaf230905@gmail.com');
         $driveService->permissions->create($result->getId(), $permission);
 
         // Mengambil link file yang dapat diakses publik

@@ -132,7 +132,7 @@
                     <ol class="breadcrumb m-0 pl-4">
                         <li class="breadcrumb-item active">
                             <a href="/{{ $role }}/dashboard">Dashboard</a> / <a
-                                href="/{{ $role }}/arsip/aset/data">Data Aset</a> / <a>Detail Pemeriksaan</a>
+                                href="/{{ $role }}/arsip/aset/data">Data Aset</a> / <a>Detail Keluar Masuk</a>
                         </li>
                     </ol>
                 </div>
@@ -794,17 +794,8 @@
                                                                                 class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
                                                                                 type="button"
                                                                                 data-toggle="modal"
-                                                                                {{-- data-target="#UbahPemeriksaanModal"
-                                                                                data-aset-id="{{ $data->aset_id }}"
-                                                                                data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
-                                                                                data-lokasi-penyimpanan="{{ $data->aset->lokasi_penyimpanan }}"
-                                                                                data-tgl-perolehan="{{ $data->aset->tgl_perolehan }}"
-                                                                                data-kondisi="{{ $data->kondisi }}"
-                                                                                data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
-                                                                                data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
-                                                                                data-status-aset="{{ $data->status_aset }}"
-                                                                                data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
-                                                                                @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif --}}
+                                                                                data-target="#EditPencatatanModal"
+                                                                                data-aset-id = {{ $detail->aset_id }}
                                                                                 style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin: 0; font-size:12px;"
                                                                                 aria-expanded="false">
                                                                                 &nbsp;&nbsp;<i
@@ -870,17 +861,7 @@
                                                                                 class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
                                                                                 type="button"
                                                                                 data-toggle="modal"
-                                                                                {{-- data-target="#UbahPemeriksaanModal"
-                                                                                data-aset-id="{{ $data->aset_id }}"
-                                                                                data-kategori-aset="{{ $data->aset->kategori_aset->kategori }}"
-                                                                                data-lokasi-penyimpanan="{{ $data->aset->lokasi_penyimpanan }}"
-                                                                                data-tgl-perolehan="{{ $data->aset->tgl_perolehan }}"
-                                                                                data-kondisi="{{ $data->kondisi }}"
-                                                                                data-masalah-teridentifikasi="{{ $data->masalah_teridentifikasi }}"
-                                                                                data-tindakan-diperlukan="{{ $data->tindakan_diperlukan }}"
-                                                                                data-status-aset="{{ $data->status_aset }}"
-                                                                                data-id-detail="{{ $data->id_detail_pemeriksaan_aset }}"
-                                                                                @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif --}}
+                                                                                data-target="#EditPencatatanModal"
                                                                                 style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin: 0; font-size:12px;"
                                                                                 aria-expanded="false">
                                                                                 &nbsp;&nbsp;<i
@@ -937,6 +918,94 @@
                 <!-- Modal Header -->
                 <div class="modal-header">
                     <h5 class="modal-title" id="myModalLabel">Tambah Pencatatan Keluar Masuk</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <form id="pencatatanForm" enctype="multipart/form-data" method="POST" action="{{ route($role.'.detail_keluar_masuk_aset.store', $keluar_masuk_aset->id_keluar_masuk_aset) }}">
+                        @csrf
+                        <!-- Jenis Radio Button -->
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Jenis</label>
+                            <div class="d-flex mt-1">
+                                <div class="form-check mr-3">
+                                    <input class="form-check-input" type="radio" name="jenis" value="masuk" id="asetMasuk" checked>
+                                    <label class="form-check-label" for="asetMasuk">Aset Masuk</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="jenis" value="keluar" id="asetKeluar">
+                                    <label class="form-check-label" for="asetKeluar">Aset Keluar</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Input Fields -->
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="nama_aset">Nama Aset</label>
+                            <select name="aset" class="form-control" id="aset">
+                                <option value="">Pilih Aset</option>
+                                @foreach ($aset as $data)
+                                    <option value="{{ $data->aset_id }}">{{ $data->nama_aset }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="kategori_aset">Kategori</label>
+                            <input type="text" class="form-control" id="kategori_aset" name="kategori_aset" readonly>
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="lokasi_penyimpanan">Lokasi Aset</label>
+                            <input type="text" class="form-control" id="lokasi_penyimpanan" name="lokasi_penyimpanan" readonly>
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="kuantitas">Kuantitas</label>
+                            <input type="number" class="form-control" id="kuantitas" name="kuantitas">
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="kondisi">Kondisi</label>
+                            <input type="text" class="form-control" id="kondisi" name="kondisi">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="font-weight-bold" for="dokumentasi">Dokumentasi</label>
+                            <input type="file" class="form-control" id="dokumentasi" name="dokumentasi" accept="image/*" style="padding: 4px; align-items: center;">
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold" for="tindak_lanjut">Tindak Lanjut</label>
+                            <textarea class="form-control" id="tindak_lanjut" name="tindak_lanjut" rows="3"></textarea>
+                        </div>
+
+                        <!-- Information Box -->
+                        <div class="alert alert-info mt-3" style="background-color: #d4edda; border-color: #c3e6cb; color: #155724;">
+                            <strong>INFORMASI</strong><br>Jika aset yang dimaksud tidak ada, tambahkan dahutu data aset pada menu data aset.
+                        </div>
+
+                        <!-- Modal Footer -->
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-success w-100" style="padding: 8px 0; font-weight: bold;">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal edit Pencatatan Keluar Masuk -->
+    <div class="modal fade" id="EditPencatatanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Ubah Pencatatan Keluar Masuk</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -1278,6 +1347,11 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).on('click', 'ubah_btn', function() {
+            var $id_keluar_masuk
+        })
+    </script>
 
 @section('js')
     <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>

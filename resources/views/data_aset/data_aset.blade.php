@@ -984,7 +984,7 @@
                                                                         <div class="input-group-prepend"
                                                                             style="border-radius: 10px;">
                                                                             <span class="input-group-text custom-text">Tgl
-                                                                                Pemeriksaan</span>
+                                                                                Pencatatan</span>
                                                                         </div>
                                                                         <div id="tgl-pemeriksaan"
                                                                             class="form-control custom-input"
