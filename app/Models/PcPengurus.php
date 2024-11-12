@@ -40,4 +40,9 @@ class PcPengurus extends Model
     {
         return $this->belongsTo(PengurusJabatan::class, 'id_pengurus_jabatan');
     }
+
+    public function KeluarMasukAset()
+    {
+        return $this->hasMany(KeluarMasukAset::class, 'id_pencatat', 'id_pc_pengurus');
+    }
 }
