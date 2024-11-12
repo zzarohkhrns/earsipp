@@ -943,6 +943,88 @@ class DataAsetController extends Controller
         }
     }
 
+    public function detail_keluar_masuk_aset_update(Request $request)
+    {
+        try {
+            // Temukan detail_keluar_masuk_aset berdasarkan ID yang dikirimkan
+            $detail = DetailKeluarMasukAset::findOrFail($request->edit_id_detail_keluar_masuk_aset);
+
+            // Tentukan kolom berdasarkan jenis
+            if ($request->edit_jenis === 'masuk') {
+                $kuantitasColumn = 'masuk_kuantitas';
+                $dokumentasiColumn = 'masuk_dokumentasi';
+                $kondisiColumn = 'masuk_kondisi';
+                $tindak_lanjutColumn = 'masuk_tindak_lanjut';
+            } else {
+                $kuantitasColumn = 'keluar_kuantitas';
+                $dokumentasiColumn = 'keluar_dokumentasi';
+                $kondisiColumn = 'keluar_kondisi';
+                $tindak_lanjutColumn = 'keluar_tindak_lanjut';
+            }
+
+            // Jika ada file dokumentasi yang diupload, proses penghapusan dan upload baru
+            if ($request->hasFile('edit_dokumentasi')) {
+                // Hapus gambar lama di Google Drive
+                $googleDriveService = new GoogleDriveService();
+
+                // Ambil link file yang lama (berada di database)
+                $oldDriveLink = $detail->$dokumentasiColumn;
+
+                // Ambil ID file Google Drive dari URL (anggap file Drive URL berbentuk https://drive.google.com/uc?id=FILE_ID)
+                $oldFileId = $this->getGoogleDriveFileId($oldDriveLink);
+
+                // Hapus file lama di Google Drive
+                if ($oldFileId) {
+                    $googleDriveService->deleteFile($oldFileId);
+                }
+
+                // Simpan file baru ke server sementara
+                $dokumentasiPath = $request->file('edit_dokumentasi')->store('dokumentasi', 'public');
+                $filePath = storage_path('app/public/' . $dokumentasiPath);
+                $fileName = $request->file('edit_dokumentasi')->getClientOriginalName();
+
+                // Upload file baru ke Google Drive
+                $newDriveLink = $googleDriveService->uploadFile($filePath, $fileName);
+
+                // Hapus file dari server setelah berhasil upload
+                unlink($filePath);
+
+                // Update kolom dokumentasi dengan link file baru dari Google Drive
+                $detail->$dokumentasiColumn = $newDriveLink;
+            }
+
+            // Update data lainnya
+            $detail->update([
+                'aset_id' => $request->edit_aset,
+                $kuantitasColumn => $request->edit_kuantitas,
+                $kondisiColumn => $request->edit_kondisi,
+                $tindak_lanjutColumn => $request->edit_tindak_lanjut,
+            ]);
+
+            return redirect()->back()->with('success', 'Data berhasil diperbarui!');
+            
+        } catch (\Exception $e) {
+            // Menangani kesalahan
+            return redirect()->back()->with('error', 'Gagal memperbarui data, error: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Fungsi untuk mengambil ID file Google Drive dari URL
+     *
+     * @param string $driveLink
+     * @return string|null
+     */
+    private function getGoogleDriveFileId($driveLink)
+    {
+        // Misalnya URL Google Drive format: https://drive.google.com/uc?id=FILE_ID
+        if (preg_match('/(?:drive|docs).google.com.*?id=([^&?\/]+)/', $driveLink, $matches)) {
+            return $matches[1];
+        }
+        return null;
+    }
+
+
     public function export_detail_keluar_masuk_aset(){
         // return view('data_aset.export_detail_keluar_masuk');
 
