@@ -791,11 +791,19 @@
                                                                         <div
                                                                             class="btn-group mb-2 card_edit_pemeriksaan">
                                                                             <button
-                                                                                class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
+                                                                                class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-detail-keluar-masuk"
                                                                                 type="button"
                                                                                 data-toggle="modal"
                                                                                 data-target="#EditPencatatanModal"
+                                                                                data-jenis = "masuk"
+                                                                                data-id-detail-keluar_masuk-aset = {{ $detail->id_detail_keluar_masuk_aset }}
+                                                                                data-kuantitas = {{ $detail->masuk_kuantitas }}
+                                                                                data-kondisi = {{ $detail->masuk_kondisi }}
+                                                                                data-tindak-lanjut = {{ $detail->masuk_tindak_lanjut }}
                                                                                 data-aset-id = {{ $detail->aset_id }}
+                                                                                data-kategori-aset = {{ $detail->aset->kategori_aset->kategori }}
+                                                                                data-lokasi-penyimpanan ={{ $detail->aset->lokasi_penyimpanan }}
+                                                                                data-dokumentasi = {{ $detail->keluar_dokumentasi }}
                                                                                 style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin: 0; font-size:12px;"
                                                                                 aria-expanded="false">
                                                                                 &nbsp;&nbsp;<i
@@ -856,12 +864,21 @@
                                                                     <div
                                                                         class="d-flex flex-column align-items-center">
                                                                         <div
-                                                                            class="btn-group mb-2 card_edit_pemeriksaan">
+                                                                            class="btn-group mb-2 card_edit_keluar_masuk">
                                                                             <button
-                                                                                class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-pemeriksaan"
+                                                                                class="btn btn-outline-secondary btn-block intro-ubah-detail-keluar-masuk edit-detail-keluar-masuk"
                                                                                 type="button"
                                                                                 data-toggle="modal"
                                                                                 data-target="#EditPencatatanModal"
+                                                                                data-jenis = "keluar"
+                                                                                data-id-detail-keluar_masuk-aset = {{ $detail->id_detail_keluar_masuk_aset }}
+                                                                                data-kuantitas = {{ $detail->keluar_kuantitas }}
+                                                                                data-kondisi = {{ $detail->keluar_kondisi }}
+                                                                                data-tindak-lanjut = {{ $detail->keluar_tindak_lanjut }}
+                                                                                data-aset-id = {{ $detail->aset_id }}
+                                                                                data-kategori-aset = {{ $detail->aset->kategori_aset->kategori }}
+                                                                                data-lokasi-penyimpanan ={{ $detail->aset->lokasi_penyimpanan }}
+                                                                                data-dokumentasi = {{ $detail->keluar_dokumentasi }}
                                                                                 style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin: 0; font-size:12px;"
                                                                                 aria-expanded="false">
                                                                                 &nbsp;&nbsp;<i
@@ -998,6 +1015,39 @@
         </div>
     </div>
 
+
+    <script>
+        $(document).on('click', '.edit-detail-keluar-masuk', function() {
+            var id_detail_keluar_masuk_aset = $(this).data('id-detail-keluar_masuk-aset');
+            var aset_id = $(this).data('aset-id');
+            var kuantitas = $(this).data('kuantitas');
+            var kondisi = $(this).data('kondisi');
+            var tindak_lanjut = $(this).data('tindak-lanjut');
+            var jenis = $(this).data('jenis');
+            var dokumentasi = $(this).data('dokumentasi');
+            var kategori_aset = $(this).data('kategori-aset');
+            var lokasi_penyimpanan = $(this).data('lokasi-penyimpanan');
+
+            // Jika dokumentasi adalah URL Google Drive, pastikan formatnya sesuai
+            var formattedDokumentasi = dokumentasi.replace("/view", "/uc");
+
+            //Isi form di dalam modal dengan data yang diterima
+            $('#edit_id_detail_keluar_masuk_aset').val(id_detail_keluar_masuk_aset);
+            $('#edit_aset').val(aset_id);
+            $('#edit_kategori_aset').val(kategori_aset);
+            $('#edit_lokasi_penyimpanan').val(lokasi_penyimpanan);
+            $('#edit_kuantitas').val(kuantitas);
+            $('#edit_kondisi').val(kondisi);
+            $('#edit_tindak_lanjut').val(tindak_lanjut);
+            $('input[name="edit_jenis"][value="'+ jenis +'"]').prop('checked', true);
+            // Menampilkan gambar dokumentasi
+             $('#old_dokumentasi').attr('src', formattedDokumentasi);
+
+            // Jika ada dokumentasi sebelumnya, set di input file
+            $('#old_dokumentasi').val(dokumentasi);
+        })
+    </script>
+
     <!-- Modal edit Pencatatan Keluar Masuk -->
     <div class="modal fade" id="EditPencatatanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         aria-hidden="true">
@@ -1013,18 +1063,20 @@
 
                 <!-- Modal Body -->
                 <div class="modal-body">
-                    <form id="pencatatanForm" enctype="multipart/form-data" method="POST" action="{{ route($role.'.detail_keluar_masuk_aset.store', $keluar_masuk_aset->id_keluar_masuk_aset) }}">
+                    <form id="pencatatanForm" enctype="multipart/form-data" method="POST" action="{{ route('pc.detail_keluar_masuk_aset.update') }}">
                         @csrf
+                        @method('PUT')
                         <!-- Jenis Radio Button -->
+                        <input type="text" name="edit_id_detail_keluar_masuk_aset" hidden id="edit_id_detail_keluar_masuk_aset">
                         <div class="form-group mb-2">
                             <label class="font-weight-bold">Jenis</label>
                             <div class="d-flex mt-1">
                                 <div class="form-check mr-3">
-                                    <input class="form-check-input" type="radio" name="jenis" value="masuk" id="asetMasuk" checked>
+                                    <input class="form-check-input" type="radio" name="edit_jenis" value="masuk" id="edit_jenis">
                                     <label class="form-check-label" for="asetMasuk">Aset Masuk</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="jenis" value="keluar" id="asetKeluar">
+                                    <input class="form-check-input" type="radio" name="edit_jenis" value="keluar" id="edit_jenis">
                                     <label class="form-check-label" for="asetKeluar">Aset Keluar</label>
                                 </div>
                             </div>
@@ -1033,7 +1085,7 @@
                         <!-- Input Fields -->
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="nama_aset">Nama Aset</label>
-                            <select name="aset" class="form-control" id="aset">
+                            <select name="edit_aset" class="form-control" id="edit_aset">
                                 <option value="">Pilih Aset</option>
                                 @foreach ($aset as $data)
                                     <option value="{{ $data->aset_id }}">{{ $data->nama_aset }}</option>
@@ -1043,32 +1095,36 @@
 
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="kategori_aset">Kategori</label>
-                            <input type="text" class="form-control" id="kategori_aset" name="kategori_aset" readonly>
+                            <input type="text" class="form-control" id="edit_kategori_aset" name="edit_kategori_aset" readonly>
                         </div>
 
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="lokasi_penyimpanan">Lokasi Aset</label>
-                            <input type="text" class="form-control" id="lokasi_penyimpanan" name="lokasi_penyimpanan" readonly>
+                            <input type="text" class="form-control" id="edit_lokasi_penyimpanan" name="edit_lokasi_penyimpanan" readonly>
                         </div>
 
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="kuantitas">Kuantitas</label>
-                            <input type="number" class="form-control" id="kuantitas" name="kuantitas">
+                            <input type="number" class="form-control" id="edit_kuantitas" name="edit_kuantitas">
                         </div>
 
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="kondisi">Kondisi</label>
-                            <input type="text" class="form-control" id="kondisi" name="kondisi">
+                            <input type="text" class="form-control" id="edit_kondisi" name="edit_kondisi">
                         </div>
 
+                        {{-- <div class="form-group mb-3">
+                            <!-- Menampilkan gambar dokumentasi dengan ID yang sesuai -->
+                            <img id="old_dokumentasi" src="https://drive.google.com/uc?id=15Fb8Vz2hIb1rPSTOfVeNtaGahkiu92ZF" alt="dokumentasi aset" style="max-width: 100%; height: auto;">
+                        </div> --}}
                         <div class="form-group mb-3">
-                            <label class="font-weight-bold" for="dokumentasi">Dokumentasi</label>
-                            <input type="file" class="form-control" id="dokumentasi" name="dokumentasi" accept="image/*" style="padding: 4px; align-items: center;">
-                        </div>
+                            <label class="font-weight-bold" for="dokumentasi">Ubah Dokumentasi</label>
+                            <input type="file" class="form-control" id="edit_dokumentasi" name="edit_dokumentasi" accept="image/*" style="padding: 4px; align-items: center;">
+                        </div>                        
 
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="tindak_lanjut">Tindak Lanjut</label>
-                            <textarea class="form-control" id="tindak_lanjut" name="tindak_lanjut" rows="3"></textarea>
+                            <textarea class="form-control" id="edit_tindak_lanjut" name="edit_tindak_lanjut" rows="3"></textarea>
                         </div>
 
                         <!-- Information Box -->
@@ -1085,6 +1141,7 @@
             </div>
         </div>
     </div>
+
 
     {{-- script untuk otomatisasi data aset pada tambah pemeriksaan --}}
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -1119,6 +1176,43 @@
                 // Mengosongkan field jika tidak ada aset yang dipilih
                 $('#kategori_aset').val('');
                 $('#lokasi_penyimpanan').val('');
+                // $('#tgl_perolehan').val('');
+            }
+        });
+    </script>
+
+    {{-- untuk edit keluar masuk --}}
+    <script>
+        $('#edit_aset').change(function() {
+            var asetId = $(this).val(); // Mendapatkan nilai id aset yang dipilih
+            console.log(asetId); // Log id aset untuk memastikan onchange berfungsi
+            if (asetId) {
+                $.ajax({
+                    url: '/pc/aset/data/' + asetId, // URL endpoint sesuai dengan route yang telah diatur
+                    type: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                            'content') // Mengambil csrf_token dari meta tag
+                    },
+                    success: function(data) {
+                        if (data.length > 0) {
+                            var aset = data[0];
+                            // Mengisi field yang sesuai dengan data yang diterima dari server
+                            $('#edit_kategori_aset').val(aset.kategori_aset.kategori);
+                            $('#edit_lokasi_penyimpanan').val(aset.lokasi_penyimpanan);
+                            // $('#tgl_perolehan').val(aset.tgl_perolehan);
+                        } else {
+                            alert('Aset tidak ditemukan');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            } else {
+                // Mengosongkan field jika tidak ada aset yang dipilih
+                $('#edit_kategori_aset').val('');
+                $('#edit_lokasi_penyimpanan').val('');
                 // $('#tgl_perolehan').val('');
             }
         });
@@ -1347,11 +1441,7 @@
             </div>
         </div>
     </div>
-    <script>
-        $(document).on('click', 'ubah_btn', function() {
-            var $id_keluar_masuk
-        })
-    </script>
+
 
 @section('js')
     <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
