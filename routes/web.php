@@ -249,10 +249,12 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/arsip/keluar_masuk_aset/store', [DataAsetController::class, 'keluar_masuk_aset_store'])->name('keluar_masuk_aset.store');
         Route::put('/arsip/update_keluar_masuk_aset/{id}', [DataAsetController::class, 'keluar_masuk_aset_update'])->name('keluar_masuk_aset.update');
+        Route::delete('/arsip/delete_keluar_masuk_aset/{id}', [DataAsetController::class, 'keluar_masuk_aset_delete'])->name('keluar_masuk_aset.delete');
 
         Route::get('/arsip/detail_keluar_masuk_aset/{id}', [DataAsetController::class, 'detail_keluar_masuk_aset'])->name('detail_keluar_masuk_aset');
         Route::post('/arsip/detail_keluar_masuk_aset/store/{id}', [DataAsetController::class, 'detail_keluar_masuk_aset_store'])->name('detail_keluar_masuk_aset.store');
         Route::put('/arsip/update_detail_keluar_masuk_aset', [DataAsetController::class, 'detail_keluar_masuk_aset_update'])->name('detail_keluar_masuk_aset.update');
+        Route::delete('/arsip/delete_detail_keluar_masuk_aset/{id}/{jenis}', [DataAsetController::class, 'detail_keluar_masuk_aset_delete'])->name('detail_keluar_masuk_aset.delete');
     });
 
     // upzis
