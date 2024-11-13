@@ -195,7 +195,13 @@ class DataAsetController extends Controller
             'pemeriksaanAset.kc.pengguna'
         ])->where('aset_id', $id)->get();
 
-        return view('data_aset.detail_aset', compact('role', 'aset', 'kategori', 'detailPemeriksaan'));
+
+        $keluar_masuk_aset = KeluarMasukAset::with('detail_keluar_masuk_aset.aset')
+                                              ->whereHas('detail_keluar_masuk_aset', function ($query) use ($id) {
+                                                    $query->where('aset_id', $id);
+                                            })->get();
+
+        return view('data_aset.detail_aset', compact('role', 'aset', 'kategori', 'detailPemeriksaan', 'keluar_masuk_aset'));
     }
 
     //get kode aset
@@ -820,57 +826,97 @@ class DataAsetController extends Controller
         $keluar_masuk_aset = KeluarMasukAset::find($id);
 
         // Cek apakah ada file gambar yang diupload
-        if ($request->hasFile('dokumentasi')) {
-            // Simpan file ke direktori sementara di server
-            $dokumentasiPath = $request->file('dokumentasi')->store('dokumentasi', 'public');
-
-            // Ambil path file yang sudah disimpan di server
-            $filePath = storage_path('app/public/' . $dokumentasiPath);
-            $fileName = $request->file('dokumentasi')->getClientOriginalName();
-
-            // Upload file ke Google Drive
-            $googleDriveService = new GoogleDriveService(); // Pastikan sudah ada instance dari GoogleDriveService
-            $driveFileLink = $googleDriveService->uploadFile($filePath, $fileName);
-
-             // Jika file berhasil diupload ke Google Drive (misalnya $driveFileLink berisi link file di Google Drive)
-            if ($driveFileLink) {
-                // Hapus file dari server setelah berhasil upload
-                unlink($filePath);
+        if($request->no_faktur) {
+            if ($request->hasFile('dokumentasi')) {
+                // Simpan file ke direktori sementara di server
+                $dokumentasiPath = $request->file('dokumentasi')->store('dokumentasi', 'public');
+    
+                // Ambil path file yang sudah disimpan di server
+                $filePath = storage_path('app/public/' . $dokumentasiPath);
+                $fileName = $request->file('dokumentasi')->getClientOriginalName();
+    
+                // Upload file ke Google Drive
+                $googleDriveService = new GoogleDriveService(); // Pastikan sudah ada instance dari GoogleDriveService
+                $driveFileLink = $googleDriveService->uploadFile($filePath, $fileName);
+    
+                 // Jika file berhasil diupload ke Google Drive (misalnya $driveFileLink berisi link file di Google Drive)
+                if ($driveFileLink) {
+                    // Hapus file dari server setelah berhasil upload
+                    unlink($filePath);
+                }
+            }
+            try {
+                if ($request->jenis == 'masuk') {
+                    $data = [
+                        'masuk_tgl_masuk' => $request->tgl,
+                        'masuk_nama_pemasok' => $request->nama,
+                        'masuk_no_faktur' =>  $request->no_faktur,
+                        'masuk_keterangan' => $request->keterangan,
+                        'masuk_dokumentasi' => $driveFileLink
+                    ];
+    
+                    if ($keluar_masuk_aset->masuk_dokumentasi) {
+                        Storage::disk('public')->delete($keluar_masuk_aset->masuk_dokumentasi);
+                    }
+                } else {
+                    $data = [
+                        'keluar_tgl_keluar' => $request->tgl,
+                        'keluar_nama_penerima' => $request->nama,
+                        'keluar_no_faktur' =>  $request->no_faktur,
+                        'keluar_keterangan' => $request->keterangan,
+                        'keluar_dokumentasi' => $driveFileLink
+                    ];
+    
+                    if ($keluar_masuk_aset->keluar_dokumentasi) {
+                        Storage::disk('public')->delete($keluar_masuk_aset->keluar_dokumentasi);
+                    }
+                }
+                // dd($data, $keluar_masuk_aset);
+                $keluar_masuk_aset->update($data);
+    
+                // Redirect atau berikan response sukses
+                return redirect()->back()->with('success', 'Data faktur '. $request->jenis .' berhasil ditambahkan.');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Data faktur '. $request->jenis .' gagal ditambahkan, err : '.$e->getMessage());
             }
         }
-        try {
-            if ($request->jenis == 'masuk') {
-                $data = [
-                    'masuk_tgl_masuk' => $request->tgl,
-                    'masuk_nama_pemasok' => $request->nama,
-                    'masuk_no_faktur' =>  $request->no_faktur,
-                    'masuk_keterangan' => $request->keterangan,
-                    'masuk_dokumentasi' => $driveFileLink
-                ];
-
-                if ($keluar_masuk_aset->masuk_dokumentasi) {
-                    Storage::disk('public')->delete($keluar_masuk_aset->masuk_dokumentasi);
-                }
-            } else {
-                $data = [
-                    'keluar_tgl_keluar' => $request->tgl,
-                    'keluar_nama_penerima' => $request->nama,
-                    'keluar_no_faktur' =>  $request->no_faktur,
-                    'keluar_keterangan' => $request->keterangan,
-                    'keluar_dokumentasi' => $driveFileLink
-                ];
-
-                if ($keluar_masuk_aset->keluar_dokumentasi) {
-                    Storage::disk('public')->delete($keluar_masuk_aset->keluar_dokumentasi);
-                }
+        if($request->status_pencatatan) {
+            try {
+                $keluar_masuk_aset->update(['status_pencatatan' => $request->status_pencatatan]);
+                
+                return redirect()->back()->with('success', 'Status pemeriksaan berhasil diubah');
+            } catch (\Exception $e) {
+                
+                return redirect()->back()->with('success', 'Status pemeriksaan gagal diubah, err : '.$e->getMessage());
             }
-            // dd($data, $keluar_masuk_aset);
-            $keluar_masuk_aset->update($data);
+        }
+        if($request->status_spv || $request->status_kc)
+        {
+            $jabatan = $request->status_spv ? 'spv' : 'kc';
+            try {
+                $keluar_masuk_aset->update([
+                    'status_'.$jabatan => $request->input('status_'.$jabatan),
+                    'tgl_mengetahui_'.$jabatan => $request->input('tgl_mengetahui_'.$jabatan),
+                    'catatan_'.$jabatan => $request->input('catatan_'.$jabatan),
+                ]);
+                return redirect()->back()->with('success', 'Status '.$jabatan.' berhasil diubah');
+            }catch (\Exception $e) {
+                return redirect()->back()->with('success', 'Status '.$jabatan.' gagal diubah');
+            }
 
-            // Redirect atau berikan response sukses
-            return redirect()->back()->with('success', 'Data faktur '. $request->jenis .' berhasil ditambahkan.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Data faktur '. $request->jenis .' gagal ditambahkan, err : '.$e->getMessage());
+        }
+    }
+
+    public function keluar_masuk_aset_delete($id) {
+        $keluar_masuk_aset = KeluarMasukAset::find($id);
+        try {
+            $keluar_masuk_aset->delete();
+
+            return redirect()->route('pc.data_aset', ['tab' => 'keluarMasuk'])->with('success', 'Berhasil menghapus data.');
+        }catch(\Exception $e)
+        {
+            return redirect()->back()->with('error', 'Gagal menghapus data, err '. $e->getMessage());
+
         }
     }
 
@@ -1007,6 +1053,61 @@ class DataAsetController extends Controller
             // Menangani kesalahan
             return redirect()->back()->with('error', 'Gagal memperbarui data, error: ' . $e->getMessage());
         }
+    }
+
+    public function detail_keluar_masuk_aset_delete($id,$jenis)
+    {
+        $detail = DetailKeluarMasukAset::find($id);
+        // dd($detail, $jenis);
+
+        // Tentukan kolom berdasarkan jenis
+        if ($jenis == 'masuk') {
+            $kuantitasColumn = 'masuk_kuantitas';
+            $dokumentasiColumn = 'masuk_dokumentasi';
+            $kondisiColumn = 'masuk_kondisi';
+            $tindak_lanjutColumn = 'masuk_tindak_lanjut';
+        } else {
+            $kuantitasColumn = 'keluar_kuantitas';
+            $dokumentasiColumn = 'keluar_dokumentasi';
+            $kondisiColumn = 'keluar_kondisi';
+            $tindak_lanjutColumn = 'keluar_tindak_lanjut';
+        }
+
+        try {
+            //menghapus gambar di gdrive
+            if($detail->$dokumentasiColumn)
+            {
+                // Hapus gambar lama di Google Drive
+                $googleDriveService = new GoogleDriveService();
+
+                // Ambil link file yang lama (berada di database)
+                $oldDriveLink = $detail->$dokumentasiColumn;
+
+                // Ambil ID file Google Drive dari URL (anggap file Drive URL berbentuk https://drive.google.com/uc?id=FILE_ID)
+                $oldFileId = $this->getGoogleDriveFileId($oldDriveLink);
+
+                // Hapus file lama di Google Drive
+                if ($oldFileId) {
+                    $googleDriveService->deleteFile($oldFileId);
+                }
+            }
+
+            $detail->update([
+                $kuantitasColumn => null,
+                $dokumentasiColumn => null,
+                $kondisiColumn => null,
+                $tindak_lanjutColumn => null,
+            ]);
+            if($detail->masuk_kuantitas == null && $detail->keluar_kuantitas == null)
+            {
+                $detail->delete();
+            }
+
+            return redirect()->back()->with('success', 'Berhasil menghapus Aset '. $jenis);
+        }catch(\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus Aset '. $jenis .'<br>error :' . $e->getMessage());
+        }
+        
     }
 
     /**
