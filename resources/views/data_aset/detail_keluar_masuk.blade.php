@@ -205,14 +205,28 @@
                                             aria-labelledby="detail-pencatatan-tab">
                                             <div class="col-12 mt-3">
                                                 <div class="status-buttons">
-                                                    <button class="btn btn-success"
+                                                    @if ($keluar_masuk_aset->status_pencatatan == 'selesai')
+                                                        <button class="btn btn-success"
                                                         style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Selesai
                                                         Input
                                                         Pemeriksaan</button>
-                                                    <button class="btn btn-success"
-                                                        style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Diteruskan
-                                                        Ke SPV, SPV
-                                                        Mengetahui</button>
+                                                    @else
+                                                        <button class="btn btn-warning"
+                                                            style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Belum Selesai
+                                                            Input
+                                                            Pemeriksaan</button>
+                                                    @endif
+                                                    @if ($keluar_masuk_aset->status_spv == 'belum')
+                                                        <button class="btn btn-warning"
+                                                            style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Diteruskan
+                                                            ke SPV, SPV
+                                                            belum mengetahui</button>    
+                                                    @else
+                                                        <button class="btn btn-success"
+                                                            style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Diteruskan
+                                                            ke SPV, SPV
+                                                            mengetahui</button>    
+                                                    @endif
                                                 </div>
 
                                                 <div class="flex-container" style="display: flex;">
@@ -263,21 +277,21 @@
                                                             <!-- Tombol (Dropdown dan Hapus) -->
                                                             <div class="btn-responsive">
                                                                 <div class="dropdown mb-2">
-                                                                    <form method="POST">
+                                                                    <form method="POST" action="{{ route($role . '.keluar_masuk_aset.update', $keluar_masuk_aset->id_keluar_masuk_aset) }}">
                                                                         @csrf
+                                                                        @method('PUT')
                                                                         <div class="dropdown">
                                                                             <select id="dropdownButton"
-                                                                                name="status_pemeriksaan"
+                                                                                name="status_pencatatan"
                                                                                 onchange="this.form.submit()"
                                                                                 style="border-radius: 10px; padding: 6px; margin: 0; width: 150px; font-size:12px; margin-right:5px;">
-                                                                                <option value="selesai">
-                                                                                    <i
-                                                                                        class="bi bi-check-circle-fill"></i>Selesai
-                                                                                    Diinput
-                                                                                </option>
-                                                                                <option value="belum">
+                                                                                <option value="belum" @selected($keluar_masuk_aset->status_pencatatan == 'belum')>
                                                                                     <i class="bi bi-ban"></i>Belum
                                                                                     Selesai Diinput
+                                                                                </option>
+                                                                                <option value="selesai" @selected($keluar_masuk_aset->status_pencatatan == 'selesai')>
+                                                                                    <i class="bi bi-check-circle-fill"></i>Selesai
+                                                                                    Diinput
                                                                                 </option>
                                                                             </select>
                                                                         </div>
@@ -286,11 +300,12 @@
 
                                                                 <div
                                                                     class="btn-group btn-block mb-2 mr-2 mb-xl-0 card_hapus_barang">
-                                                                    <form method="POST"
+                                                                    <form method="POST" action="{{ route($role.'.keluar_masuk_aset.delete', $keluar_masuk_aset->id_keluar_masuk_aset) }}"
                                                                         onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                                                         @csrf
                                                                         @method('DELETE')
                                                                         <button type="submit"
+                                                                            @disabled($keluar_masuk_aset->status_pencatatan == 'selesai')
                                                                             class="btn btn-danger btn-block"
                                                                             style="border-radius: 10px; padding: 5px; width: 150px; font-size:12px; margin-right:5px;">
                                                                             <i class="fas fa-trash"></i> Hapus
@@ -315,6 +330,7 @@
                                                                 </a>
                                                                 <button type="button" class="btn btn-success"
                                                                     data-toggle="modal"
+                                                                    @disabled($keluar_masuk_aset->status_pencatatan == 'selesai')
                                                                     data-target="#TambahFakturModal"
                                                                     style="border-radius: 10px; padding: 5px; margin-left: 5px; width: 150px; font-size:12px;">
                                                                     <i class="fas fa-plus-circle"></i>
@@ -472,37 +488,36 @@
                                             <div class="col-12 mt-3 mb-3">
                                                 <div class="status-buttons">
                                                     {{-- @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') --}}
-                                                        <button class="btn btn-success"
-                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Selesai
-                                                            Input
-                                                            Pemeriksaan</button>
-                                                    {{-- @else
-                                                        <button class="btn btn-warning"
-                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Belum
-                                                            Selesai Input
-                                                            Pemeriksaan</button>
-                                                    @endif --}}
-                                                    {{-- @if ($pemeriksaanAset->status_spv == 'mengetahui') --}}
-                                                        <button class="btn btn-success"
+                                                        
+                                                        @if ($keluar_masuk_aset->status_pencatatan == 'belum')
+                                                            <button class="btn btn-warning"
+                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Belum selesai input pemeriksaan</button>    
+                                                        @else
+                                                            <button class="btn btn-success"
+                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Selesai input pemeriksaan</button>
+                                                        @endif    
+
+                                                        @if ($keluar_masuk_aset->status_spv == 'belum')
+                                                            <button class="btn btn-warning"
                                                             style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">SPV
-                                                            Mengetahui</button>
-                                                    {{-- @else
-                                                        <button class="btn btn-warning"
+                                                            belum mengetahui</button>    
+                                                        @else
+                                                            <button class="btn btn-success"
                                                             style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">SPV
-                                                            Belum
-                                                            Mengetahui</button>
-                                                    @endif --}}
-                                                    {{-- @if ($pemeriksaanAset->status_kc == 'mengetahui') --}}
-                                                        <button class="btn btn-success"
+                                                            Mengetahui</button>    
+                                                        @endif
+                                                        
+                                                        @if ($keluar_masuk_aset->status_kc == 'belum')
+                                                            <button class="btn btn-warning"
                                                             style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Diteruskan
-                                                            Ke KC, KC
-                                                            Mengetahui</button>
-                                                    {{-- @else
-                                                        <button class="btn btn-warning"
+                                                            ke KC, KC
+                                                            belum mengetahui</button>    
+                                                        @else
+                                                            <button class="btn btn-success"
                                                             style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Diteruskan
-                                                            Ke KC, KC Belum
-                                                            Mengetahui</button>
-                                                    @endif --}}
+                                                            ke KC, KC
+                                                            mengetahui</button>    
+                                                        @endif
                                                 </div>
                                             </div>
                                             <div class="flex-container">
@@ -520,10 +535,10 @@
                                                                 {{-- @if (Auth::user()->gocap_id_pc_pengurus == $supervisor) --}}
                                                                     <div class="btn-group mb-2 card_edit_pemeriksaan">
                                                                         <button
+                                                                            @disabled($keluar_masuk_aset->status_pencatatan == 'belum')
                                                                             class="btn btn-secondary btn-block intro-respon-spv respon-spv"
                                                                             type="button" data-toggle="modal"
                                                                             data-target="#responspvModal"
-                                                                            {{-- @if ($pemeriksaanAset->status_pemeriksaan == 'belum') disabled @endif --}}
                                                                             style="border-radius:10px; width: 150px; max-width: 150px; padding: 5px; margin: 0; font-size:12px;"
                                                                             aria-expanded="false">
                                                                             &nbsp;&nbsp;<i class="fas fa-edit"></i>
@@ -624,12 +639,11 @@
                                                             <th style="width: 25%">
                                                                 {{-- @if (Auth::user()->gocap_id_pc_pengurus == $kc) --}}
                                                                     <div class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                        <button {{-- @disable($pemeriksaanAset->status_pemeriksaan == 'belum') --}}
+                                                                        <button 
                                                                             class="btn btn-secondary btn-block intro-respon-kc respon-kc"
                                                                             type="button" data-toggle="modal"
                                                                             data-target="#responkcModal"
-                                                                            {{-- @if ($pemeriksaanAset->status_pemeriksaan == 'belum' || $pemeriksaanAset->status_spv == 'belum') disabled @endif --}}
-                                                                            {{-- @if ($pemeriksaanAset->status_spv == 'belum') disabled @endif --}}
+                                                                            @disabled($keluar_masuk_aset->status_spv == 'belum' || $keluar_masuk_aset->status_pencatatan == 'belum')
                                                                             style="border-radius:10px; width: 150px; max-width: 150px; padding: 5px; margin: 0;font-size:12px;"
                                                                             aria-expanded="false">
                                                                             &nbsp;&nbsp;<i class="fas fa-edit"></i>
@@ -738,7 +752,7 @@
                                         <h3 class="card-title text-success" style="font-size: 16px;"><b>Data Pencatatan
                                                 Keluar Masuk Aset</b></h3>
                                         <button type="button" class="btn btn-success" data-toggle="modal"
-                                            data-target="#TambahPencatatanModal"
+                                            data-target="#TambahPencatatanModal" @disabled($keluar_masuk_aset->status_pencatatan == 'selesai')
                                             style="border-radius: 10px; padding: 5px; margin-left: 5px; width: 150px; font-size:12px;">
                                             <i class="fas fa-plus-circle"></i>
                                             <span>Tambah</span>
@@ -791,6 +805,7 @@
                                                                         <div
                                                                             class="btn-group mb-2 card_edit_pemeriksaan">
                                                                             <button
+                                                                                @disabled($keluar_masuk_aset->status_pencatatan == 'selesai')
                                                                                 class="btn btn-outline-secondary btn-block intro-ubah-detail-pemeriksaan edit-detail-keluar-masuk"
                                                                                 type="button"
                                                                                 data-toggle="modal"
@@ -816,12 +831,12 @@
                                                                             <div
                                                                                 class="btn-group mb-2 mb-xl-0 btn-block">
                                                                                 <form
-                                                                                    {{-- action="{{ route($role . '.delete_detail_pemeriksaan', $data->id_detail_pemeriksaan_aset) }}" --}}
-                                                                                    method="POST"
+                                                                                 action="{{ route($role . '.detail_keluar_masuk_aset.delete', ['id' => $detail->id_detail_keluar_masuk_aset,'jenis' => 'masuk']) }}"                                                                                    method="POST"
                                                                                     onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                                                                     @csrf
                                                                                     @method('DELETE')
                                                                                     <button type="submit"
+                                                                                        @disabled($keluar_masuk_aset->status_pencatatan == 'selesai')
                                                                                         class="btn btn-outline-secondary btn-block "
                                                                                         {{-- @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif --}}
                                                                                         style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin-bottom: 10px; font-size:12px;">
@@ -866,6 +881,7 @@
                                                                         <div
                                                                             class="btn-group mb-2 card_edit_keluar_masuk">
                                                                             <button
+                                                                                @disabled($keluar_masuk_aset->status_pencatatan == 'selesai')
                                                                                 class="btn btn-outline-secondary btn-block intro-ubah-detail-keluar-masuk edit-detail-keluar-masuk"
                                                                                 type="button"
                                                                                 data-toggle="modal"
@@ -891,12 +907,13 @@
                                                                             <div
                                                                                 class="btn-group mb-2 mb-xl-0 btn-block">
                                                                                 <form
-                                                                                    {{-- action="{{ route($role . '.delete_detail_pemeriksaan', $data->id_detail_pemeriksaan_aset) }}" --}}
+                                                                                    action="{{ route($role . '.detail_keluar_masuk_aset.delete', ['id' => $detail->id_detail_keluar_masuk_aset,'jenis' => 'keluar']) }}"
                                                                                     method="POST"
                                                                                     onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                                                                     @csrf
                                                                                     @method('DELETE')
                                                                                     <button type="submit"
+                                                                                        @disabled($keluar_masuk_aset->status_pencatatan == 'selesai')
                                                                                         class="btn btn-outline-secondary btn-block "
                                                                                         {{-- @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') disabled @endif --}}
                                                                                         style="border-radius:10px; width: 100px; max-width: 100px; padding: 5px; margin-bottom: 10px; font-size:12px;">
@@ -1129,7 +1146,7 @@
 
                         <!-- Information Box -->
                         <div class="alert alert-info mt-3" style="background-color: #d4edda; border-color: #c3e6cb; color: #155724;">
-                            <strong>INFORMASI</strong><br>Jika aset yang dimaksud tidak ada, tambahkan dahutu data aset pada menu data aset.
+                            <strong>INFORMASI</strong><br>Jika aset yang dimaksud tidak ada, tambahkan dahulu data aset pada menu data aset.
                         </div>
 
                         <!-- Modal Footer -->
@@ -1239,7 +1256,7 @@
 
                         <!-- Jenis Radio Button -->
                         <div class="form-group mb-2">
-                            <label class="font-weight-bold">Jenis</label>
+                            <label ="font-weight-bold">Jenis</label>
                             <div class="d-flex mt-1">
                                 <div class="form-check mr-3">
                                     <input class="form-check-input" type="radio" name="jenis" value="masuk" id="asetMasuk">
@@ -1332,8 +1349,9 @@
                 </div>
                 <div class="modal-body" style="padding-top: 0;">
                     <form id="responspvForm" method="POST"
-                        {{-- action="{{ route($role . '.respon_spv.update', $pemeriksaanAset->id_pemeriksaan_aset) }}"> --}}>
+                        action="{{ route($role . '.keluar_masuk_aset.update', $keluar_masuk_aset->id_keluar_masuk_aset) }}">
                         @csrf
+                        @method('PUT')
                         <div class="form-group">
                             <label for="tanggal_pencatatan" style="font-weight: bold; font-size: 14px;">Tgl
                                 Pencatatan</label>
@@ -1387,8 +1405,9 @@
                 </div>
                 <div class="modal-body" style="padding-top: 0;">
                     <form method="POST"
-                        {{-- action="{{ route($role . '.respon_kc.update', $pemeriksaanAset->id_pemeriksaan_aset) }}"> --}}>
-                        @csrf
+                        action="{{ route($role . '.keluar_masuk_aset.update', $keluar_masuk_aset->id_keluar_masuk_aset) }}">
+                    @csrf
+                    @method('PUT')
                         <div class="form-group">
                             <label for="tgl_pencatatan" style="font-weight: bold; font-size: 14px;">Tgl
                                 Pemeriksaan</label>
