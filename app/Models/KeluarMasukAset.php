@@ -25,7 +25,7 @@ class KeluarMasukAset extends Model
     {
         return $this->belongsTo(PcPengurus::class, 'id_kc', 'id_pc_pengurus');
     }
-    public function detail_keluar_masuk()
+    public function detail_keluar_masuk_aset()
     {
         return $this->hasMany(DetailKeluarMasukAset::class, 'id_keluar_masuk_aset', 'id_keluar_masuk_aset');
     }
