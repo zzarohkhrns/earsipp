@@ -1145,7 +1145,7 @@
                                                                     <div class="btn-group justify-content-end">
                                                                         <button type="button"
                                                                             class="btn btn-outline-secondary btn-sm btn-custom"
-                                                                            onclick="resetFiltersPemeriksaan()"
+                                                                            onclick="resetFiltersKeluarMasuk()"
                                                                             style="border: 1px solid #495057;">
                                                                             <i class="fas fa-sync-alt"></i>
                                                                         </button>
@@ -1168,7 +1168,7 @@
                                                             </div>
 
                                                             <script>
-                                                                function resetFiltersPemeriksaan() {
+                                                                function resetFiltersKeluarMasuk() {
                                                                     // Dapatkan URL saat ini tanpa query string
                                                                     const baseUrl = window.location.origin + window.location.pathname;
                                                                     // Arahkan ke URL dasar (tanpa filter) dan tambahkan parameter tab
