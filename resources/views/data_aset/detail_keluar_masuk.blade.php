@@ -205,27 +205,28 @@
                                             aria-labelledby="detail-pencatatan-tab">
                                             <div class="col-12 mt-3">
                                                 <div class="status-buttons">
+                                                    <!-- Tombol untuk status pencatatan -->
                                                     @if ($keluar_masuk_aset->status_pencatatan == 'selesai')
                                                         <button class="btn btn-success"
-                                                        style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Selesai
-                                                        Input
+                                                            style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Selesai Input
                                                         </button>
+
+                                                        <!-- Tombol untuk status SPV -->
+                                                        @if ($keluar_masuk_aset->status_spv == 'belum')
+                                                            <button class="btn btn-warning"
+                                                                style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Diteruskan
+                                                                ke SPV, SPV belum mengetahui
+                                                            </button>
+                                                        @else
+                                                            <button class="btn btn-success"
+                                                                style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Diteruskan
+                                                                ke SPV, SPV mengetahui
+                                                            </button>
+                                                        @endif
                                                     @else
                                                         <button class="btn btn-warning"
-                                                            style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Belum Selesai
-                                                            Input
+                                                            style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Belum Selesai Input
                                                         </button>
-                                                    @endif
-                                                    @if ($keluar_masuk_aset->status_spv == 'belum')
-                                                        <button class="btn btn-warning"
-                                                            style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Diteruskan
-                                                            ke SPV, SPV
-                                                            belum mengetahui</button>
-                                                    @else
-                                                        <button class="btn btn-success"
-                                                            style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Diteruskan
-                                                            ke SPV, SPV
-                                                            mengetahui</button>
                                                     @endif
                                                 </div>
 
