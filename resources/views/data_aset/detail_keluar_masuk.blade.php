@@ -209,23 +209,23 @@
                                                         <button class="btn btn-success"
                                                         style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Selesai
                                                         Input
-                                                        Pemeriksaan</button>
+                                                        </button>
                                                     @else
                                                         <button class="btn btn-warning"
                                                             style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Belum Selesai
                                                             Input
-                                                            Pemeriksaan</button>
+                                                        </button>
                                                     @endif
                                                     @if ($keluar_masuk_aset->status_spv == 'belum')
                                                         <button class="btn btn-warning"
                                                             style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Diteruskan
                                                             ke SPV, SPV
-                                                            belum mengetahui</button>    
+                                                            belum mengetahui</button>
                                                     @else
                                                         <button class="btn btn-success"
                                                             style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Diteruskan
                                                             ke SPV, SPV
-                                                            mengetahui</button>    
+                                                            mengetahui</button>
                                                     @endif
                                                 </div>
 
@@ -488,41 +488,40 @@
                                             <div class="col-12 mt-3 mb-3">
                                                 <div class="status-buttons">
                                                     {{-- @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') --}}
-                                                        
+
                                                         @if ($keluar_masuk_aset->status_pencatatan == 'belum')
                                                             <button class="btn btn-warning"
-                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Belum selesai input pemeriksaan</button>    
+                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Belum selesai input pemeriksaan</button>
                                                         @else
                                                             <button class="btn btn-success"
                                                             style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Selesai input pemeriksaan</button>
-                                                        @endif    
+                                                        @endif
 
                                                         @if ($keluar_masuk_aset->status_spv == 'belum')
                                                             <button class="btn btn-warning"
                                                             style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">SPV
-                                                            belum mengetahui</button>    
+                                                            belum mengetahui</button>
                                                         @else
                                                             <button class="btn btn-success"
                                                             style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">SPV
-                                                            Mengetahui</button>    
+                                                            Mengetahui</button>
                                                         @endif
-                                                        
+
                                                         @if ($keluar_masuk_aset->status_kc == 'belum')
                                                             <button class="btn btn-warning"
                                                             style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Diteruskan
                                                             ke KC, KC
-                                                            belum mengetahui</button>    
+                                                            belum mengetahui</button>
                                                         @else
                                                             <button class="btn btn-success"
                                                             style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Diteruskan
                                                             ke KC, KC
-                                                            mengetahui</button>    
+                                                            mengetahui</button>
                                                         @endif
                                                 </div>
                                             </div>
                                             <div class="flex-container">
                                                 <div class="card">
-
                                                     {{-- detail respon --}}
                                                     <table id="example" style="width: 100%; border-collapse: collapse;">
 
@@ -639,7 +638,7 @@
                                                             <th style="width: 25%">
                                                                 {{-- @if (Auth::user()->gocap_id_pc_pengurus == $kc) --}}
                                                                     <div class="btn-group mb-2 card_edit_pemeriksaan">
-                                                                        <button 
+                                                                        <button
                                                                             class="btn btn-secondary btn-block intro-respon-kc respon-kc"
                                                                             type="button" data-toggle="modal"
                                                                             data-target="#responkcModal"
@@ -1137,7 +1136,7 @@
                         <div class="form-group mb-3">
                             <label class="font-weight-bold" for="dokumentasi">Ubah Dokumentasi</label>
                             <input type="file" class="form-control" id="edit_dokumentasi" name="edit_dokumentasi" accept="image/*" style="padding: 4px; align-items: center;">
-                        </div>                        
+                        </div>
 
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="tindak_lanjut">Tindak Lanjut</label>

@@ -64,7 +64,6 @@
             border: none;
         }
 
-        /* Atur agar tabel dan tombol sejajar di desktop */
         .table-button-container {
             display: flex;
             justify-content: space-between;
@@ -72,7 +71,6 @@
             flex-wrap: wrap;
         }
 
-        /* Saat tampilan mobile (maksimum lebar 768px), tombol akan bergeser ke bawah tabel */
         @media (max-width: 768px) {
             .table-button-container {
                 flex-direction: column;
@@ -80,9 +78,6 @@
 
             .btn-responsive {
                 margin-top: 15px;
-                /* Jarak antara tabel dan tombol di layar kecil */
-                /* width: 100%; */
-                /* Membuat tombol memenuhi lebar layar di perangkat mobile */
             }
 
             .container {
@@ -90,16 +85,10 @@
                 align-items: center;
             }
 
-            /* .card {
-                            width: 100%;
-                            max-width: 600px;
-                        } */
-
             .card-wrapper {
                 flex-direction: column;
             }
 
-            /* CSS untuk responsif */
 
             .responsive-flex {
                 flex-direction: column;
@@ -113,14 +102,11 @@
             .flex-container {
                 flex-direction: column;
                 align-items: flex-start;
-                /* Jika Anda ingin tombol berada di kiri */
             }
 
             .btn-group {
                 margin-left: 0;
-                /* Sesuaikan margin sesuai kebutuhan */
                 margin-top: 10px;
-                /* Tambahkan margin atas untuk jarak dari tabel */
             }
         }
 
@@ -133,15 +119,9 @@
 
         /* Setelan dasar untuk card */
         .card {
-            /* background-color: #fff;
-                        border: 1px solid #ddd; */
-            /* border-radius: 5px; */
             padding: 20px;
             margin: 10px;
             flex: 1;
-            /* Flex item agar sama tinggi */
-            /* min-width: 300px; */
-            /* Mengatur lebar minimum card */
         }
     </style>
 

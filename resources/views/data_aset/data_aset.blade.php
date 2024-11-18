@@ -999,8 +999,7 @@
                                                                         name="tgl-pencatatan-start"
                                                                         value="{{ request('tgl-pencatatan-start') }}">
                                                                     <input type="hidden" onchange="this.form.submit()"
-                                                                        id="tgl-pencatatan-end"
-                                                                        name="tgl-pencatatan-end"
+                                                                        id="tgl-pencatatan-end" name="tgl-pencatatan-end"
                                                                         value="{{ request('tgl-pencatatan-end') }}">
 
                                                                     <script type="text/javascript">
@@ -1653,13 +1652,7 @@
                                 Pencatatan</label>
                             <input type="date" id="tanggal_pencatatan" name="tanggal_pencatatan"
                                 class="form-control custom-input" required>
-                            <div class="form-group">
-                                <label for="manajemen_eksekutif" style="font-weight: bold; font-size: 14px;">Manajemen
-                                    Eksekutif</label>
-                                <input type="text" class="form-control" id="manajemen_eksekutif"
-                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
-                                    value="Nu-Care Lazisnu Cilacap" readonly>
-                            </div>
+
                             <div class="form-group">
                                 <label for="pencatat" style="font-weight: bold; font-size: 14px;">Pencatat</label>
                                 <input type="text" class="form-control" id="pencatat" name="nama_pencatat"
@@ -1669,28 +1662,9 @@
                                     style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
                                     value="{{ Auth::user()->gocap_id_pc_pengurus }}" hidden>
                             </div>
-                            <div class="form-group">
-                                <label for="supervisor" style="font-weight: bold; font-size: 14px;">Supervisor</label>
-                                <input type="text" class="form-control" id="supervisor" name="supervisor"
-                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" {{-- value="{{ $supervisor->id_supervisor }}" --}}
-                                    value="{{ $supervisor->nama_supervisor }}" readonly>
-                                <input type="text" class="form-control" id="supervisor" name="id_supervisor"
-                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
-                                    value="{{ $supervisor->id_supervisor }}" hidden>
-                            </div>
-                            <div class="form-group">
-                                <label for="kc" style="font-weight: bold; font-size: 14px;">Kepala Cabang</label>
-                                <input type="text" class="form-control" id="kc" name="kc"
-                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" {{-- value="{{ $kc->id_kc }}" --}}
-                                    value="{{ $kc->nama_kc }}" readonly>
-                                <input type="text" class="form-control" id="kc" name="id_kc"
-                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
-                                    value="{{ $kc->id_kc }}" hidden>
-                            </div>
                             <div class="alert alert-info"
                                 style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; margin-top: 15px;">
-                                <strong>INFORMASI</strong><br>Setelah berhasil menambahkan data, anda wajib
-                                melengkapi data pencatatan keluar masuk aset.
+                                <strong>INFORMASI</strong><br>Catatan digunakan untuk memantau keluar dan masuknya aset/barang dari tempat penyimpanan. Setelah klik tombol simpan, lengkapi data pencatatan.
                             </div>
                             <div>
                                 <button type="submit" class="btn btn-success"
@@ -1772,6 +1746,13 @@
             const activeTab = urlParams.get('tab') || 'dataAset'; // Default tab is dataAset
             openTab(activeTab);
         }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const inputTanggal = document.getElementById("tanggal_pencatatan");
+            const today = new Date();
+            const formattedDate = today.toISOString().split("T")[0]; // Format menjadi 'YYYY-MM-DD'
+            inputTanggal.value = formattedDate; // Isi input dengan tanggal hari ini
+        });
     </script>
 @endsection
 

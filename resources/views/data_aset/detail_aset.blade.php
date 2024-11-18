@@ -323,7 +323,7 @@
                                                                     <th style="width: 20%;">Aset Keluar</th>
                                                                     <th style="width: 15%;">Status SPV</th>
                                                                     <th style="width: 15%;">Status KC</th>
-                                                                    <th style="width: 10%;">Aksi</th>
+                                                                    {{-- <th style="width: 10%;">Aksi</th> --}}
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -513,7 +513,7 @@
                                                                                 </tbody>
                                                                             </table>
                                                                         </td>
-                                                                        <td>
+                                                                        {{-- <td>
                                                                             <div>
                                                                                 <a href="{{ route($role . '.detail_keluar_masuk_aset', $keluar_masuk->id_keluar_masuk_aset) }}"
                                                                                     style="display: inline-block; width: 100px; padding: 8px; border: 1px solid #ccc; text-align: center; text-decoration: none; color: #333; font-weight: bold; margin-bottom: 8px; border-radius: 4px;">
@@ -524,7 +524,7 @@
                                                                                     Cetak PDF
                                                                                 </a>
                                                                             </div>
-                                                                        </td>
+                                                                        </td> --}}
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>
