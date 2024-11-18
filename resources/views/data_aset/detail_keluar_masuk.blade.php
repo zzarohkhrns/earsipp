@@ -782,11 +782,11 @@
                                                         <b style="font-size: 16px;">1. Aset Masuk</b>
                                                     </td>
                                                 </tr>
-                                                @if ($keluar_masuk_aset->detail_keluar_masuk)
+                                                @if ($keluar_masuk_aset->detail_keluar_masuk_aset)
                                                 @php
                                                     $no = 0;
                                                 @endphp
-                                                    @foreach ($keluar_masuk_aset->detail_keluar_masuk as $index=>$detail)
+                                                    @foreach ($keluar_masuk_aset->detail_keluar_masuk_aset as $index=>$detail)
                                                         @if ($detail->masuk_kuantitas)
                                                             <tr>
                                                                 <td>{{ $no = $no + 1 }}</td>
@@ -858,11 +858,11 @@
                                                         <b style="font-size: 16px;">2. Aset Keluar</b>
                                                     </td>
                                                 </tr>
-                                                @if ($keluar_masuk_aset->detail_keluar_masuk)
+                                                @if ($keluar_masuk_aset->detail_keluar_masuk_aset)
                                                 @php
                                                     $no = 0;
                                                 @endphp
-                                                  @foreach ($keluar_masuk_aset->detail_keluar_masuk as $index=>$detail)
+                                                  @foreach ($keluar_masuk_aset->detail_keluar_masuk_aset as $index=>$detail)
                                                         @if ($detail->keluar_kuantitas)
                                                             <tr>
                                                                 <td>{{ $no = $no + 1 }}</td>
@@ -979,7 +979,7 @@
                         <!-- Input Fields -->
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="nama_aset">Nama Aset</label>
-                            <select name="aset" class="form-control" id="aset">
+                            <select name="aset" class="form-control" id="aset" required >
                                 <option value="">Pilih Aset</option>
                                 @foreach ($aset as $data)
                                     <option value="{{ $data->aset_id }}">{{ $data->nama_aset }}</option>
@@ -999,22 +999,22 @@
 
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="kuantitas">Kuantitas</label>
-                            <input type="number" class="form-control" id="kuantitas" name="kuantitas">
+                            <input required type="number" class="form-control" id="kuantitas" name="kuantitas">
                         </div>
 
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="kondisi">Kondisi</label>
-                            <input type="text" class="form-control" id="kondisi" name="kondisi">
+                            <input required type="text" class="form-control" id="kondisi" name="kondisi">
                         </div>
 
                         <div class="form-group mb-3">
                             <label class="font-weight-bold" for="dokumentasi">Dokumentasi</label>
-                            <input type="file" class="form-control" id="dokumentasi" name="dokumentasi" accept="image/*" style="padding: 4px; align-items: center;">
+                            <input required type="file" class="form-control" id="dokumentasi" name="dokumentasi" accept="image/*" style="padding: 4px; align-items: center;">
                         </div>
 
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="tindak_lanjut">Tindak Lanjut</label>
-                            <textarea class="form-control" id="tindak_lanjut" name="tindak_lanjut" rows="3"></textarea>
+                            <textarea required class="form-control" id="tindak_lanjut" name="tindak_lanjut" rows="3"></textarea>
                         </div>
 
                         <!-- Information Box -->
@@ -1089,11 +1089,11 @@
                             <label class="font-weight-bold">Jenis</label>
                             <div class="d-flex mt-1">
                                 <div class="form-check mr-3">
-                                    <input class="form-check-input" type="radio" name="edit_jenis" value="masuk" id="edit_jenis">
+                                    <input class="form-check-input" type="radio" name="edit_jenis" value="masuk" id="edit_jenis" disabled>
                                     <label class="form-check-label" for="asetMasuk">Aset Masuk</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="edit_jenis" value="keluar" id="edit_jenis">
+                                    <input class="form-check-input" type="radio" name="edit_jenis" value="keluar" id="edit_jenis" disabled>
                                     <label class="form-check-label" for="asetKeluar">Aset Keluar</label>
                                 </div>
                             </div>
@@ -1102,7 +1102,7 @@
                         <!-- Input Fields -->
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="nama_aset">Nama Aset</label>
-                            <select name="edit_aset" class="form-control" id="edit_aset">
+                            <select name="edit_aset" class="form-control" id="edit_aset" disabled>
                                 <option value="">Pilih Aset</option>
                                 @foreach ($aset as $data)
                                     <option value="{{ $data->aset_id }}">{{ $data->nama_aset }}</option>
@@ -1122,12 +1122,12 @@
 
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="kuantitas">Kuantitas</label>
-                            <input type="number" class="form-control" id="edit_kuantitas" name="edit_kuantitas">
+                            <input type="number" class="form-control" id="edit_kuantitas" name="edit_kuantitas"required>
                         </div>
 
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="kondisi">Kondisi</label>
-                            <input type="text" class="form-control" id="edit_kondisi" name="edit_kondisi">
+                            <input type="text" class="form-control" id="edit_kondisi" name="edit_kondisi" required >
                         </div>
 
                         {{-- <div class="form-group mb-3">
@@ -1141,7 +1141,7 @@
 
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="tindak_lanjut">Tindak Lanjut</label>
-                            <textarea class="form-control" id="edit_tindak_lanjut" name="edit_tindak_lanjut" rows="3"></textarea>
+                            <textarea class="form-control" id="edit_tindak_lanjut" name="edit_tindak_lanjut" rows="3" required ></textarea>
                         </div>
 
                         <!-- Information Box -->
@@ -1259,11 +1259,11 @@
                             <label ="font-weight-bold">Jenis</label>
                             <div class="d-flex mt-1">
                                 <div class="form-check mr-3">
-                                    <input class="form-check-input" type="radio" name="jenis" value="masuk" id="asetMasuk">
+                                    <input class="form-check-input" type="radio" name="jenis" value="masuk" id="asetMasuk" checked>
                                     <label class="form-check-label" for="asetMasuk">Aset Masuk</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="jenis" value="keluar" id="asetKeluar" checked>
+                                    <input class="form-check-input" type="radio" name="jenis" value="keluar" id="asetKeluar" >
                                     <label class="form-check-label" for="asetKeluar">Aset Keluar</label>
                                 </div>
                             </div>
@@ -1272,12 +1272,12 @@
                         <!-- Input Fields -->
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="tgl">Tanggal</label>
-                            <input type="date" class="form-control" id="tgl" name="tgl">
+                            <input type="date" class="form-control" id="tgl" name="tgl" required>
                         </div>
 
                         <div class="form-group mb-2" id="pemasok">
                             <label class="font-weight-bold" for="nama">Nama Pemasok</label>
-                            <input type="text" class="form-control" id="nama" name="nama">
+                            <input type="text" class="form-control" id="nama" name="nama" required>
                         </div>
 
                         {{-- <div class="form-group mb-2" id="penerima">
@@ -1287,17 +1287,17 @@
 
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="no_faktur">Nomor Faktur</label>
-                            <input type="text" class="form-control" id="no_faktur" name="no_faktur">
+                            <input type="text" class="form-control" id="no_faktur" name="no_faktur" required>
                         </div>
 
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="keterangan">Keterangan</label>
-                            <input type="text" class="form-control" id="keterangan" name="keterangan">
+                            <input type="text" class="form-control" id="keterangan" name="keterangan" required>
                         </div>
 
                         <div class="form-group mb-3">
                             <label class="font-weight-bold" for="dokumentasi">Dokumentasi</label>
-                            <input type="file" class="form-control" id="dokumentasi" name="dokumentasi" style="padding: 4px; align-items: center;">
+                            <input type="file" class="form-control" id="dokumentasi" required name="dokumentasi" style="padding: 4px; align-items: center;">
                         </div>
 
                         <!-- Modal Footer -->
