@@ -208,7 +208,7 @@
                                                     <!-- Tombol untuk status pencatatan -->
                                                     @if ($keluar_masuk_aset->status_pencatatan == 'selesai')
                                                         <button class="btn btn-success"
-                                                            style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Selesai Input
+                                                            style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Selesai Pencatatan
                                                         </button>
 
                                                         <!-- Tombol untuk status SPV -->
@@ -225,7 +225,7 @@
                                                         @endif
                                                     @else
                                                         <button class="btn btn-warning"
-                                                            style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Belum Selesai Input
+                                                            style="border-radius: 10px;font-size: 12px; padding:4px; color: white;">Belum Selesai Pencatatan
                                                         </button>
                                                     @endif
                                                 </div>
@@ -288,11 +288,11 @@
                                                                                 style="border-radius: 10px; padding: 6px; margin: 0; width: 150px; font-size:12px; margin-right:5px;">
                                                                                 <option value="belum" @selected($keluar_masuk_aset->status_pencatatan == 'belum')>
                                                                                     <i class="bi bi-ban"></i>Belum
-                                                                                    Selesai Diinput
+                                                                                    Selesai Pencatatan
                                                                                 </option>
                                                                                 <option value="selesai" @selected($keluar_masuk_aset->status_pencatatan == 'selesai')>
                                                                                     <i class="bi bi-check-circle-fill"></i>Selesai
-                                                                                    Diinput
+                                                                                    Pencatatan
                                                                                 </option>
                                                                             </select>
                                                                         </div>
