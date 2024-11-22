@@ -44,28 +44,28 @@
                 <td style="border: none; padding: 3px; width:25%;">Diinput Oleh</td>
                 <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
-                    {{-- {{ $detailPemeriksaan->first()->aset->nama_aset }} --}}
+                    {{ $keluar_masuk_aset->pencatat->pengguna->nama }}
                 </td>
             </tr>
             <tr>
                 <td style="border: none; padding: 3px; width:25%;">Jabatan</td>
                 <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
-                    {{-- {{ $detailPemeriksaan->first()->aset->spesifikasi }} --}}
+                    {{ $keluar_masuk_aset->pencatat->pengurusJabatan->jabatan }}
                 </td>
             </tr>
             <tr>
                 <td style="border: none; padding: 3px; width:25%;">Divisi</td>
                 <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
-                    {{-- {{ $detailPemeriksaan->first()->aset->kategori_aset->kategori }} --}}
+                    {{ $keluar_masuk_aset->pencatat->pengurusJabatan->divisi }}
                 </td>
             </tr>
             <tr>
                 <td style="border: none; padding: 3px; width:25%;">Hari, Tgl Submit</td>
                 <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
-                    {{-- {{ $detailPemeriksaan->first()->aset->lokasi_penyimpanan }} --}}
+                    {{ $keluar_masuk_aset->status_pencatatan == 'selesai' ? $keluar_masuk_aset->tanggal_pencatatan : '-' }}
                 </td>
             </tr>
         </table>
@@ -85,42 +85,42 @@
                 <td style="border: none; padding: 3px; width:25%;">No. Transaksi Masuk</td>
                 <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
-                    {{-- {{ $detailPemeriksaan->first()->aset->nama_aset }} --}}
+                    {{ $keluar_masuk_aset->masuk_no_transaksi ?? '-' }}
                 </td>
             </tr>
             <tr>
                 <td style="border: none; padding: 3px; width:25%;">Hari, Tgl Masuk</td>
                 <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
-                    {{-- {{ $detailPemeriksaan->first()->aset->spesifikasi }} --}}
+                    {{ $keluar_masuk_aset->masuk_tgl_masuk }}
                 </td>
             </tr>
             <tr>
                 <td style="border: none; padding: 3px; width:25%;">Nama Pemasok</td>
                 <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
-                    {{-- {{ $detailPemeriksaan->first()->aset->kategori_aset->kategori }} --}}
+                    {{ $keluar_masuk_aset->masuk_nama_pemasok }}
                 </td>
             </tr>
             <tr>
                 <td style="border: none; padding: 3px; width:25%;">No. Faktur/Nota</td>
                 <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
-                    {{-- {{ $detailPemeriksaan->first()->aset->lokasi_penyimpanan }} --}}
+                    {{ $keluar_masuk_aset->masuk_no_faktur }}
                 </td>
             </tr>
             <tr>
                 <td style="border: none; padding: 3px; width:25%;">Total Kuantitas</td>
                 <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
-                    {{-- {{ $detailPemeriksaan->first()->aset->lokasi_penyimpanan }} --}}
+                    {{ $keluar_masuk_aset->detail_keluar_masuk_aset()->sum('masuk_kuantitas') }}
                 </td>
             </tr>
             <tr>
                 <td style="border: none; padding: 3px; width:25%;">Keterangan</td>
                 <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
-                    {{-- {{ $detailPemeriksaan->first()->aset->lokasi_penyimpanan }} --}}
+                    {{ $keluar_masuk_aset->masuk_keterangan }}
                 </td>
             </tr>
         </table>
@@ -142,17 +142,26 @@
             </tr>
         </thead>
         <tbody style="font-size: 13px;">
-            <tr>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-            </tr>
+            @if ($keluar_masuk_aset->detail_keluar_masuk_aset)
+                @php
+                    $no = 0;
+                @endphp
+                @foreach ($keluar_masuk_aset->detail_keluar_masuk_aset as $index => $detail)
+                    @if ($detail->masuk_kuantitas)
+                        <tr>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $no++ }}</td>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $detail->aset->kode_aset }}</td>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $detail->aset->nama_aset }}</td>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $detail->aset->kategori_aset->kategori }}</td>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $detail->aset->lokasi_penyimpanan }}</td>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $detail->masuk_kuantitas }}</td>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $detail->aset->satuan }}</td>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $detail->masuk_kondisi }}</td>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $detail->masuk_tindak_lanjut }}</td>
+                        </tr>
+                    @endif
+                @endforeach
+            @endif
         </tbody>
     </table>
 
@@ -163,45 +172,45 @@
     <div style="text-align: left; margin-bottom: 10px;">
         <table style="width: 60%; border-collapse: collapse;">
             <tr>
-                <td style="border: none; padding: 3px; width:25%;">No. Transaksi Masuk</td>
+                <td style="border: none; padding: 3px; width:25%;">No. Transaksi Keluar</td>
                 <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
-                    {{-- {{ $detailPemeriksaan->first()->aset->nama_aset }} --}}
+                    {{ $keluar_masuk_aset->keluar_no_transaksi ?? '-' }}
                 </td>
             </tr>
             <tr>
-                <td style="border: none; padding: 3px; width:25%;">Hari, Tgl Masuk</td>
+                <td style="border: none; padding: 3px; width:25%;">Hari, Tgl Keluar</td>
                 <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
-                    {{-- {{ $detailPemeriksaan->first()->aset->spesifikasi }} --}}
+                    {{ $keluar_masuk_aset->keluar_tgl_keluar ?? '-' }}
                 </td>
             </tr>
             <tr>
-                <td style="border: none; padding: 3px; width:25%;">Nama Pemasok</td>
+                <td style="border: none; padding: 3px; width:25%;">Nama Penerima</td>
                 <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
-                    {{-- {{ $detailPemeriksaan->first()->aset->kategori_aset->kategori }} --}}
+                    {{ $keluar_masuk_aset->keluar_nama_penerima ?? '-' }}
                 </td>
             </tr>
             <tr>
                 <td style="border: none; padding: 3px; width:25%;">No. Faktur/Nota</td>
                 <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
-                    {{-- {{ $detailPemeriksaan->first()->aset->lokasi_penyimpanan }} --}}
+                    {{ $keluar_masuk_aset->keluar_no_faktur ?? '-' }}
                 </td>
             </tr>
             <tr>
                 <td style="border: none; padding: 3px; width:25%;">Total Kuantitas</td>
                 <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
-                    {{-- {{ $detailPemeriksaan->first()->aset->lokasi_penyimpanan }} --}}
+                    {{ $keluar_masuk_aset->detail_keluar_masuk_aset()->sum('keluar_kuantitas') }}
                 </td>
             </tr>
             <tr>
                 <td style="border: none; padding: 3px; width:25%;">Keterangan</td>
                 <td style="border: none; padding: 3px; width:4%;">:</td>
                 <td style="border: none; padding: 3px;">
-                    {{-- {{ $detailPemeriksaan->first()->aset->lokasi_penyimpanan }} --}}
+                    {{ $keluar_masuk_aset->keluar_keterangan ?? '-' }}
                 </td>
             </tr>
         </table>
@@ -223,17 +232,26 @@
             </tr>
         </thead>
         <tbody style="font-size: 13px;">
-            <tr>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-                <td style="border: 1px solid black; padding: 4px;"></td>
-            </tr>
+            @if ($keluar_masuk_aset->detail_keluar_masuk_aset)
+                @php
+                    $no = 0;
+                @endphp
+                @foreach ($keluar_masuk_aset->detail_keluar_masuk_aset as $index => $detail)
+                    @if ($detail->keluar_kuantitas)
+                        <tr>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $no++ }}</td>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $detail->aset->kode_aset }}</td>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $detail->aset->nama_aset }}</td>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $detail->aset->kategori_aset->kategori }}</td>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $detail->aset->lokasi_penyimpanan }}</td>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $detail->keluar_kuantitas }}</td>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $detail->aset->satuan }}</td>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $detail->keluar_kondisi }}</td>
+                            <td style="border: 1px solid black; padding: 4px;">{{ $detail->keluar_tindak_lanjut }}</td>
+                        </tr>
+                    @endif
+                @endforeach
+            @endif
         </tbody>
     </table>
 
@@ -269,77 +287,67 @@
             </tr>
             <tr>
                 <td style="text-align: center; width: 30%;">
-                    {{-- @if ($pemeriksaanAset->status_pemeriksaan == 'selesai') --}}
-                        <img src="https://gocapv2.nucarecilacap.id/uploads/user/Halin%20Fajar%20Waskitho__1722238260.jpg"
-                            alt="ttd"
-                            style="height: 150px; margin-top: -30px;margin-bottom: -15px;padding: 0;" />
-                    {{-- @endif --}}
+                    @if ($keluar_masuk_aset->status_pencatatan == 'selesai')
+                    <img src="https://gocapv2.nucarecilacap.id/uploads/user/Halin%20Fajar%20Waskitho__1722238260.jpg"
+                        alt="ttd" style="height: 150px; margin-top: -30px;margin-bottom: -15px;padding: 0;" />
+                    @endif
                 </td>
                 <td style="text-align: center; width: 30%;">
-                    {{-- @if ($pemeriksaanAset->status_spv == 'mengetahui') --}}
-                        <img src="https://gocapv2.nucarecilacap.id/uploads/user/Farahdiba%20Nadya%20Natakanestri__1722397013.jpg"
-                            alt="ttd"
-                            style="height: 200px; margin-top: -72px;margin-bottom: -25px;padding: 0;" />
-                    {{-- @endif --}}
+                    @if ($keluar_masuk_aset->status_spv == 'mengetahui')
+                    <img src="https://gocapv2.nucarecilacap.id/uploads/user/Farahdiba%20Nadya%20Natakanestri__1722397013.jpg"
+                        alt="ttd" style="height: 200px; margin-top: -72px;margin-bottom: -25px;padding: 0;" />
+                    @endif
                 </td>
                 <td style="text-align: center; width: 30%;">
-                    {{-- @if ($pemeriksaanAset->status_kc == 'mengetahui') --}}
-                        <img src="https://gocapv2.nucarecilacap.id/uploads/user/Ahmad%20Fauzi,%20S.Pd.I__1722238190.jpg"
-                            alt="ttd" style="height: 100px; margin-top : -20px;padding: 0;" />
-                    {{-- @endif --}}
+                    @if ($keluar_masuk_aset->status_kc == 'mengetahui')
+                    <img src="https://gocapv2.nucarecilacap.id/uploads/user/Ahmad%20Fauzi,%20S.Pd.I__1722238190.jpg"
+                        alt="ttd" style="height: 100px; margin-top : -20px;padding: 0;" />
+                    @endif
                 </td>
             </tr>
             <tr>
                 <td style="text-align: center; width: 30%;">
                     <b style="padding: 0;">
-                        {{-- {{ $pemeriksaanAset->pcPengurus->pengguna->nama }} --}}
-                        nama
+                        {{ $keluar_masuk_aset->pencatat->pengguna->nama }}
                     </b>
                 </td>
                 <td style="text-align: center; width: 30%;">
                     <b style="padding: 0;">
-                        {{-- {{ $pemeriksaanAset->supervisor->pengguna->nama }} --}}
-                        nama
+                        {{ $keluar_masuk_aset->supervisor->pengguna->nama }}
                     </b>
                 </td>
                 <td style="text-align: center; width: 30%;">
                     <b style="padding: 0;">
-                        {{-- {{ $pemeriksaanAset->kc->pengguna->nama }} --}}
-                        nama
+                        {{ $keluar_masuk_aset->kc->pengguna->nama }}
                     </b>
                 </td>
             </tr>
             <tr>
                 <td style="text-align: center; width: 30%;">
                     <p style="margin: 0; padding: 0;">
-                        {{-- {{ $pemeriksaanAset->pcPengurus->PengurusJabatan->jabatan }} --}}
-                        jabatan
+                        {{ $keluar_masuk_aset->pencatat->PengurusJabatan->jabatan }}
                     </p>
                 </td>
                 <td style="text-align: center; width: 30%;">
                     <p style="margin: 0; padding: 0;">
-                        {{-- {{ $pemeriksaanAset->supervisor->PengurusJabatan->jabatan }} --}}
-                        jabatan
+                        {{ $keluar_masuk_aset->supervisor->PengurusJabatan->jabatan }}
                     </p>
                 </td>
                 <td style="text-align: center; width: 30%;">
                     <p style="margin: 0; padding: 0;">
-                        {{-- {{ $pemeriksaanAset->kc->PengurusJabatan->jabatan }} --}}
-                        jabatan
+                        {{ $keluar_masuk_aset->kc->PengurusJabatan->jabatan }}
                     </p>
                 </td>
             </tr>
             <tr>
                 <td style="text-align: center; width: 30%;">
                     <p style="margin: 0; padding: 0;">
-                        {{-- {{ $pemeriksaanAset->pcPengurus->PengurusJabatan->divisi }} --}}
-                        divisi
+                        {{ $keluar_masuk_aset->pencatat->PengurusJabatan->divisi }}
                     </p>
                 </td>
                 <td style="text-align: center; width: 30%;">
                     <p style="margin: 0; padding: 0;">
-                        {{-- {{ $pemeriksaanAset->supervisor->PengurusJabatan->divisi }} --}}
-                        divisi
+                        {{ $keluar_masuk_aset->supervisor->PengurusJabatan->divisi }}
                     </p>
                 </td>
                 <td style="text-align: center; width: 30%;">

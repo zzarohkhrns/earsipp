@@ -324,7 +324,7 @@
                                                             </div>
                                                             <div class="btn-group btn-block mb-xl-0 card-tambah-kontrol"
                                                                 style="width: 50%;">
-                                                                <a href=""
+                                                                <a href="{{ route('pc.exportPdfDetailKeluarMasuk', $keluar_masuk_aset->id_keluar_masuk_aset) }}"
                                                                     style="border-radius: 10px; padding: 5px; width: 150px; font-size: 12px;"
                                                                     class="btn btn-outline-success" target="_blank">
                                                                     <i class="fas fa-file-alt"></i> Export
@@ -384,7 +384,7 @@
                                                                             </th>
                                                                             <th style="width:50%">
                                                                                 <h6>
-                                                                                    total
+                                                                                    {{ $totalMasukKuantitas ?? '-' }}
                                                                                 </h6>
                                                                             </th>
                                                                         </tr>
@@ -452,7 +452,7 @@
                                                                             </th>
                                                                             <th style="width:50%">
                                                                                 <h6>
-                                                                                    total
+                                                                                    {{ $totalKeluarKuantitas ?? '-' }}
                                                                                 </h6>
                                                                             </th>
                                                                         </tr>
@@ -492,32 +492,36 @@
 
                                                         @if ($keluar_masuk_aset->status_pencatatan == 'belum')
                                                             <button class="btn btn-warning"
-                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Belum selesai input pemeriksaan</button>
+                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Belum selesai pencatatan</button>
                                                         @else
                                                             <button class="btn btn-success"
-                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Selesai input pemeriksaan</button>
+                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Selesai pencatatan</button>
                                                         @endif
 
-                                                        @if ($keluar_masuk_aset->status_spv == 'belum')
-                                                            <button class="btn btn-warning"
-                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">SPV
-                                                            belum mengetahui</button>
-                                                        @else
-                                                            <button class="btn btn-success"
-                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">SPV
-                                                            Mengetahui</button>
+                                                        @if($keluar_masuk_aset->status_pencatatan == 'selesai')
+                                                            @if ($keluar_masuk_aset->status_spv == 'belum')
+                                                                <button class="btn btn-warning"
+                                                                style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">SPV
+                                                                belum mengetahui</button>
+                                                            @else
+                                                                <button class="btn btn-success"
+                                                                style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">SPV
+                                                                Mengetahui</button>
+                                                            @endif
                                                         @endif
 
-                                                        @if ($keluar_masuk_aset->status_kc == 'belum')
-                                                            <button class="btn btn-warning"
-                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Diteruskan
-                                                            ke KC, KC
-                                                            belum mengetahui</button>
-                                                        @else
-                                                            <button class="btn btn-success"
-                                                            style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Diteruskan
-                                                            ke KC, KC
-                                                            mengetahui</button>
+                                                        @if ($keluar_masuk_aset->status_spv == 'mengetahui')
+                                                            @if ($keluar_masuk_aset->status_kc == 'belum')
+                                                                <button class="btn btn-warning"
+                                                                style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Diteruskan
+                                                                ke KC, KC
+                                                                belum mengetahui</button>
+                                                            @else
+                                                                <button class="btn btn-success"
+                                                                style="border-radius: 10px; font-size: 12px; padding:4px; color: white;">Diteruskan
+                                                                ke KC, KC
+                                                                mengetahui</button>
+                                                            @endif
                                                         @endif
                                                 </div>
                                             </div>
@@ -1279,11 +1283,6 @@
                             <label class="font-weight-bold" for="nama">Nama Pemasok</label>
                             <input type="text" class="form-control" id="nama" name="nama" required>
                         </div>
-
-                        {{-- <div class="form-group mb-2" id="penerima">
-                            <label class="font-weight-bold" for="keluar_nama_penerima">Nama Penerima</label>
-                            <input type="text" class="form-control" id="keluar_nama_penerima" name="keluar_nama_penerima">
-                        </div> --}}
 
                         <div class="form-group mb-2">
                             <label class="font-weight-bold" for="no_faktur">Nomor Faktur</label>

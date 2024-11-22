@@ -795,8 +795,10 @@ class DataAsetController extends Controller
         $keluar_masuk_aset = KeluarMasukAset::find($id);
         // dd($keluar_masuk_aset);
         $aset = Aset::all();
-
-        return view('data_aset.detail_keluar_masuk', compact('keluar_masuk_aset','role', 'aset'));
+        $totalMasukKuantitas = $keluar_masuk_aset->detail_keluar_masuk_aset()->sum('masuk_kuantitas');
+        $totalKeluarKuantitas = $keluar_masuk_aset->detail_keluar_masuk_aset()->sum('keluar_kuantitas');
+        // dd($totalKeluarKuantitas, $totalMasukKuantitas);
+        return view('data_aset.detail_keluar_masuk', compact('keluar_masuk_aset','role', 'aset', 'totalMasukKuantitas','totalKeluarKuantitas'));
     }
 
     public function keluar_masuk_aset_store(Request $request)
@@ -845,32 +847,52 @@ class DataAsetController extends Controller
                     unlink($filePath);
                 }
             }
+            
             try {
-                if ($request->jenis == 'masuk') {
-                    $data = [
-                        'masuk_tgl_masuk' => $request->tgl,
-                        'masuk_nama_pemasok' => $request->nama,
-                        'masuk_no_faktur' =>  $request->no_faktur,
-                        'masuk_keterangan' => $request->keterangan,
-                        'masuk_dokumentasi' => $driveFileLink
-                    ];
-    
+                if ($request->jenis == 'masuk') {      
+
+                    $tglColumn = 'masuk_tgl_masuk';
+                    $namaColumn = 'masuk_nama_pemasok';
+                    $noFakturColumn = 'masuk_no_faktur';
+                    $keteranganColumn = 'masuk_keterangan';
+                    $dokumentasiColumn = 'masuk_dokumentasi';
+                    $transaksiColumn = 'masuk_no_transaksi';
+                    
                     if ($keluar_masuk_aset->masuk_dokumentasi) {
                         Storage::disk('public')->delete($keluar_masuk_aset->masuk_dokumentasi);
                     }
                 } else {
-                    $data = [
-                        'keluar_tgl_keluar' => $request->tgl,
-                        'keluar_nama_penerima' => $request->nama,
-                        'keluar_no_faktur' =>  $request->no_faktur,
-                        'keluar_keterangan' => $request->keterangan,
-                        'keluar_dokumentasi' => $driveFileLink
-                    ];
+
+                    $tglColumn = 'keluar_tgl_keluar';
+                    $namaColumn = 'keluar_nama_penerima';
+                    $noFakturColumn = 'keluar_no_faktur';
+                    $keteranganColumn = 'keluar_keterangan';
+                    $dokumentasiColumn = 'keluar_dokumentasi';
+                    $transaksiColumn = 'keluar_no_transaksi';
     
                     if ($keluar_masuk_aset->keluar_dokumentasi) {
                         Storage::disk('public')->delete($keluar_masuk_aset->keluar_dokumentasi);
                     }
                 }
+
+                $transaksi_terakhir = KeluarMasukAset::whereNotNull($transaksiColumn)->orderBy($transaksiColumn, 'desc')->first();
+                $no_transaksi_terakhir = $transaksi_terakhir ? $transaksi_terakhir->masuk_no_transaksi : null;
+                if($no_transaksi_terakhir)
+                {
+                    $transaksi_baru = str_pad((int)$no_transaksi_terakhir + 1, 3, '0', STR_PAD_LEFT);
+                }
+                else
+                {
+                    $transaksi_baru = '001';
+                }
+                $data = [
+                        $tglColumn => $request->tgl,
+                        $namaColumn => $request->nama,
+                        $noFakturColumn =>  $request->no_faktur,
+                        $keteranganColumn => $request->keterangan,
+                        $dokumentasiColumn => $driveFileLink,
+                        $transaksiColumn => $transaksi_baru
+                    ];
                 // dd($data, $keluar_masuk_aset);
                 $keluar_masuk_aset->update($data);
     
@@ -899,7 +921,8 @@ class DataAsetController extends Controller
                     'tgl_mengetahui_'.$jabatan => $request->input('tgl_mengetahui_'.$jabatan),
                     'catatan_'.$jabatan => $request->input('catatan_'.$jabatan),
                 ]);
-                return redirect()->back()->with('success', 'Status '.$jabatan.' berhasil diubah');
+                session()->flash('active_tab', 'status-spv-kc');
+                return redirect()->route('pc.detail_keluar_masuk_aset', $id)->with('success', 'Status '.$jabatan.' berhasil diubah');
             }catch (\Exception $e) {
                 return redirect()->back()->with('success', 'Status '.$jabatan.' gagal diubah');
             }
@@ -1126,12 +1149,13 @@ class DataAsetController extends Controller
     }
 
 
-    public function export_detail_keluar_masuk_aset(){
+    public function export_detail_keluar_masuk_aset($id){
         // return view('data_aset.export_detail_keluar_masuk');
-
+        $keluar_masuk_aset = KeluarMasukAset::findOrFail($id);
         $filename = "form_detail_keluar_masuk_aset.pdf";
+        // dd($keluar_masuk_aset);
 
-        $pdf = PDF::loadView('data_aset.export_detail_keluar_masuk');
+        $pdf = PDF::loadView('data_aset.export_detail_keluar_masuk', compact('keluar_masuk_aset'));
         $pdf->setPaper('A4', 'landscape');
 
         return $pdf->stream($filename);
