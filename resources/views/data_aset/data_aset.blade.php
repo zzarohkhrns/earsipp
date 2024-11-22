@@ -1395,7 +1395,7 @@
                                                                         style="display: inline-block; width: 100px; padding: 8px; border: 1px solid #ccc; text-align: center; text-decoration: none; color: #333; font-weight: bold; margin-bottom: 8px; border-radius: 4px;">
                                                                         Detail
                                                                     </a>
-                                                                    <a href="{{ route($role . '.exportPdfDetailKeluarMasuk') }}"
+                                                                    <a href="{{ route($role . '.exportPdfDetailKeluarMasuk', $keluar_masuk->id_keluar_masuk_aset) }}"
                                                                         style="display: inline-block; width: 100px; padding: 8px; border: 1px solid #ccc; text-align: center; text-decoration: none; color: #333; font-weight: bold; border-radius: 4px;">
                                                                         Cetak PDF
                                                                     </a>
@@ -1661,6 +1661,26 @@
                                 <input type="text" class="form-control" id="pencatat" name="id_pencatat"
                                     style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
                                     value="{{ Auth::user()->gocap_id_pc_pengurus }}" hidden>
+                            </div>
+
+                            <div class="form-group" hidden>
+                                <label for="supervisor" style="font-weight: bold; font-size: 14px;">Supervisor</label>
+                                <input type="text" class="form-control" id="supervisor" name="nama"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
+                                    value="{{ $supervisor->nama_supervisor }}" readonly>
+                                <input type="text" class="form-control" id="supervisor" name="id_supervisor"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" name="id_supervisor"
+                                    value="{{ $supervisor->id_supervisor }}" hidden>
+                            </div>
+                            <div class="form-group" hidden>
+                                <label for="kepala_cabang" style="font-weight: bold; font-size: 14px;">Kepala
+                                    Cabang</label>
+                                <input type="text" class="form-control" id="kepala_cabang"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;"
+                                    value="{{ $kc->nama_kc }}" readonly>
+                                <input type="text" class="form-control" id="kepala_cabang"
+                                    style="font-size: 14px; padding: 8px 12px; margin-bottom: 10px;" name="id_kc"
+                                    value="{{ $kc->id_kc }}" hidden>
                             </div>
                             <div class="alert alert-info"
                                 style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; margin-top: 15px;">
