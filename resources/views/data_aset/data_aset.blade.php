@@ -1261,7 +1261,7 @@
                                                                                 Total Kuantitas</td>
                                                                             <td
                                                                                 style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">
-                                                                                <b>Total Kuantitas</b>
+                                                                                <b>{{ $keluar_masuk->detail_keluar_masuk_aset()->sum('masuk_kuantitas') }}</b>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -1301,7 +1301,7 @@
                                                                                 Total Kuantitas</td>
                                                                             <td
                                                                                 style="text-align: right;border: none;font-size: 13px; line-height: 1.2; padding: 2px;width: 50%;">
-                                                                                <b>Total Kuantitas</b>
+                                                                                <b>{{ $keluar_masuk->detail_keluar_masuk_aset()->sum('keluar_kuantitas') }}</b>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>

@@ -1163,8 +1163,9 @@ class DataAsetController extends Controller
 
     public function export_keluar_masuk_aset(){
         $filename = "form_keluar_masuk_aset.pdf";
+        $keluar_masuk_aset = KeluarMasukAset::all();
 
-        $pdf = PDF::loadView('data_aset.export_keluar_masuk');
+        $pdf = PDF::loadView('data_aset.export_keluar_masuk', compact('keluar_masuk_aset'));
         $pdf->setPaper('A4', 'landscape');
 
         return $pdf->stream($filename);
