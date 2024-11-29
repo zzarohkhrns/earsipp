@@ -108,6 +108,7 @@
                                                     {{-- menu filter --}}
                                                     <form method="GET" action="{{ url($role . '/arsip/aset/data') }}">
                                                         @csrf
+                                                        <input type="text" name="tab" value="dataAset" id="">
                                                         {{-- filter Tgl Pembelian --}}
                                                         <div class="row card-filter-barang">
                                                             <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0">
@@ -499,7 +500,8 @@
                                                     {{-- menu filter --}}
                                                     <form method="GET" action="{{ url($role . '/arsip/aset/data') }}">
                                                         @csrf
-                                                        {{-- filter Tgl Pembelian --}}
+                                                        <input type="text" name="tab" value="pemeriksaan" id="">
+                                                        {{-- filter Tgl Pemeriksaan --}}
                                                         <div class="row card-filter-barang">
                                                             <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0">
                                                                 <div class="input-group">
@@ -973,10 +975,11 @@
                                         <div class="col-12 col-sm-12 mb-2 mb-xl-0">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    {{-- menu filter --}}
+                                                    {{-- menu filter keluar masuk --}}
                                                     <form method="GET" action="{{ url($role . '/arsip/aset/data') }}">
                                                         @csrf
-                                                        {{-- filter Tgl Pembelian --}}
+                                                        <input type="text" name="tab" value="keluarMasuk" hidden id="">
+                                                        {{-- filter Tgl Pencatatan --}}
                                                         <div class="row card-filter-barang">
                                                             <div class="col-12 col-md-4 col-sm-12 mb-2 mb-xl-0">
                                                                 <div class="input-group">
@@ -1082,19 +1085,19 @@
                                                                     <div class="input-group-prepend">
                                                                         <div class="input-group-text">Status SPV</div>
                                                                     </div>
-                                                                    <select class="form-control" name="filter_status_spv"
+                                                                    <select class="form-control" name="filter_keluar_masuk_status_spv"
                                                                         onchange="this.form.submit();"
                                                                         style="font-size:16px; line-height: 1.2; border-top-right-radius: 10px; border-bottom-right-radius:10px;">
                                                                         <option value="all"
-                                                                            {{ request('filter_status_spv', 'all') == 'all' ? 'selected' : '' }}>
+                                                                            {{ request('filter_keluar_masuk_status_spv', 'all') == 'all' ? 'selected' : '' }}>
                                                                             Semua
                                                                         </option>
                                                                         <option value="mengetahui"
-                                                                            {{ request('filter_status_spv') == 'mengetahui' ? 'selected' : '' }}>
+                                                                            {{ request('filter_keluar_masuk_status_spv') == 'mengetahui' ? 'selected' : '' }}>
                                                                             Mengetahui
                                                                         </option>
                                                                         <option value="belum"
-                                                                            {{ request('filter_status_spv') == 'belum' ? 'selected' : '' }}>
+                                                                            {{ request('filter_keluar_masuk_status_spv') == 'belum' ? 'selected' : '' }}>
                                                                             Belum Mengetahui
                                                                         </option>
                                                                     </select>
@@ -1107,19 +1110,19 @@
                                                                     <div class="input-group-prepend">
                                                                         <div class="input-group-text">Status KC</div>
                                                                     </div>
-                                                                    <select class="form-control" name="filter_status_kc"
+                                                                    <select class="form-control" name="filter_keluar_masuk_status_kc"
                                                                         onchange="this.form.submit();"
                                                                         style="font-size:16px; line-height: 1.2; border-top-right-radius: 10px; border-bottom-right-radius:10px;">
                                                                         <option value="all"
-                                                                            {{ request('filter_status_kc', 'all') == 'all' ? 'selected' : '' }}>
+                                                                            {{ request('filter_keluar_masuk_status_kc', 'all') == 'all' ? 'selected' : '' }}>
                                                                             Semua
                                                                         </option>
                                                                         <option value="mengetahui"
-                                                                            {{ request('filter_status_kc') == 'mengetahui' ? 'selected' : '' }}>
+                                                                            {{ request('filter_keluar_masuk_status_kc') == 'mengetahui' ? 'selected' : '' }}>
                                                                             Mengetahui
                                                                         </option>
                                                                         <option value="belum"
-                                                                            {{ request('filter_status_kc') == 'belum' ? 'selected' : '' }}>
+                                                                            {{ request('filter_keluar_masuk_status_kc') == 'belum' ? 'selected' : '' }}>
                                                                             Belum Mengetahui
                                                                         </option>
                                                                     </select>

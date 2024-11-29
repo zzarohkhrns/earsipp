@@ -14,17 +14,22 @@ class GoogleDriveService
     public function __construct()
     {
         $this->client = new Client();
-        $this->client->setAuthConfig(storage_path('app/google/meta-yen-441002-m9-f04ed1a88012.json'));
+        $this->client->setAuthConfig(storage_path('app/google/earsip-dokumen-aa9a4a8a683f.json'));
         $this->client->addScope(Drive::DRIVE);
         $this->service = new Drive($this->client);
     }
 
-    public function uploadFile($filePath, $fileName)
+    public function uploadFile($filePath, $fileName, $folderId = null)
     {
         $driveService = new Drive($this->client);
 
         $file = new Drive\DriveFile();
         $file->setName($fileName);
+
+        // Tambahkan folder sebagai parent jika diberikan
+        if ($folderId) {
+            $file->setParents([$folderId]);
+        }
 
         $result = $driveService->files->create($file, [
             'data' => file_get_contents($filePath),
@@ -32,11 +37,10 @@ class GoogleDriveService
             'uploadType' => 'multipart'
         ]);
 
-         // Setelah upload berhasil, atur permission untuk file agar dapat diakses publik
+        // Setelah upload berhasil, atur permission untuk file agar dapat diakses publik
         $permission = new Drive\Permission();
         $permission->setType('anyone');
         $permission->setRole('reader');
-        // $permission->setEmailAddress('rayhanaf230905@gmail.com');
         $driveService->permissions->create($result->getId(), $permission);
 
         // Mengambil link file yang dapat diakses publik
@@ -50,12 +54,24 @@ class GoogleDriveService
     public function deleteFile($fileId)
     {
         try {
-            // Menggunakan method delete untuk menghapus file dari Google Drive berdasarkan ID
             $this->service->files->delete($fileId);
             return true;
         } catch (\Exception $e) {
-            // Menangani kesalahan jika ada masalah dengan penghapusan
             return false;
         }
     }
+
+    // /**
+    //  * Extract Google Drive File ID from the provided URL.
+    //  *
+    //  * @param string $url
+    //  * @return string|null
+    //  */
+    // private function getGoogleDriveFileId($url)
+    // {
+    //     preg_match('/id=([^&]+)/', $url, $matches);
+    //     return $matches[1] ?? null;
+    // }
+
 }
+

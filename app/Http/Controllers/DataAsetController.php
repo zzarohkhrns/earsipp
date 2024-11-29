@@ -43,140 +43,182 @@ class DataAsetController extends Controller
     //controller data_aset_blade
     public function data(Request $request)
     {
-        // Ambil semua filter dari request dengan nilai default jika tidak ada input
-        $kategori_id = $request->input('kategori', 'all');
-        $status = $request->input('status', 'all');
-        $tgl_pembelian_start = $request->input('tgl-pembelian-start');
-        $tgl_pembelian_end = $request->input('tgl-pembelian-end');
+        /*
+            DATA ASET
+        */
+            //menentukan tab yang muncul
 
-        // Query dasar untuk mengambil aset yang memiliki detail pemeriksaan
-        $asetQuery = Aset::with([
-            'kategori_aset',
-            'latestDetailPemeriksaanAset.pemeriksaanAset',
-            'detailPemeriksaanAset.pemeriksaanAset'
-        ]);
+            // Ambil semua filter dari request dengan nilai default jika tidak ada input
+            $kategori_id = $request->input('kategori', 'all');
+            $status = $request->input('status', 'all');
+            $tgl_pembelian_start = $request->input('tgl-pembelian-start');
+            $tgl_pembelian_end = $request->input('tgl-pembelian-end');
 
-        $kodeAset = Aset::getNextKodeAset();
+            // Query dasar untuk mengambil aset yang memiliki detail pemeriksaan
+            $asetQuery = Aset::with([
+                'kategori_aset',
+                'latestDetailPemeriksaanAset.pemeriksaanAset',
+                'detailPemeriksaanAset.pemeriksaanAset'
+            ]);
 
-        if ($kategori_id == 'all' && $status == 'all' && !$tgl_pembelian_start && !$tgl_pembelian_end) {
-            // Eksekusi query untuk mendapatkan data aset yang sudah difilter
-            $aset = $asetQuery->orderBy('created_at', 'desc')->get();
-        } else {
-            // Terapkan filter kategori
-            if ($kategori_id !== 'all') {
-                $asetQuery->whereHas('kategori_aset', function ($query) use ($kategori_id) {
-                    $query->where('id_kategori', $kategori_id);
+            $kodeAset = Aset::getNextKodeAset();
+
+            if ($kategori_id == 'all' && $status == 'all' && !$tgl_pembelian_start && !$tgl_pembelian_end) {
+                // Eksekusi query untuk mendapatkan data aset yang sudah difilter
+                $aset = $asetQuery->orderBy('created_at', 'desc')->get();
+            } else {
+                // Terapkan filter kategori
+                if ($kategori_id !== 'all') {
+                    $asetQuery->whereHas('kategori_aset', function ($query) use ($kategori_id) {
+                        $query->where('id_kategori', $kategori_id);
+                    });
+
+                }
+
+                // Terapkan filter status
+                if ($status !== 'all') {
+                    $asetQuery->whereHas('latestDetailPemeriksaanAset', function ($query) use ($status) {
+                        $query->where('status_aset', $status);
+                    });
+
+                }
+
+                // Terapkan filter tanggal pembelian
+                if ($tgl_pembelian_start && $tgl_pembelian_end) {
+                    $asetQuery->whereBetween('tgl_perolehan', [$tgl_pembelian_start, $tgl_pembelian_end]);
+
+                } elseif ($tgl_pembelian_start) {
+                    $asetQuery->where('tgl_perolehan', '>=', $tgl_pembelian_start);
+
+                } elseif ($tgl_pembelian_end) {
+                    $asetQuery->where('tgl_perolehan', '<=', $tgl_pembelian_end);
+
+                }
+                $aset = $asetQuery->orderBy('created_at', 'desc')->get();
+            }
+        /*
+           End Data Aset
+        */
+        
+        
+        /*
+           PEMERIKSAAN ASET
+        */
+ 
+
+            // Data pemeriksaan lainnya
+            $pemeriksaanQuery = PemeriksaanAset::with([
+                'detailPemeriksaanAset.aset.kategori_aset',
+                'pcPengurus.pengguna',
+                'pcPengurus.pengurusJabatan',
+                'supervisor.pengurusJabatan',
+                'kc.pengurusJabatan',
+                'supervisor.pengguna',
+                'kc.pengguna'
+            ]);
+
+            // Ambil semua filter dari request dengan nilai default jika tidak ada input
+            $tgl_pemeriksaan_start = $request->input('tgl-pemeriksaan-start');
+            $tgl_pemeriksaan_end = $request->input('tgl-pemeriksaan-end');
+            $status_spv = $request->input('filter_status_spv', 'all');
+            $status_kc = $request->input('filter_status_kc', 'all');
+
+            if ($status_spv == 'all' && $status_kc == 'all' && !$tgl_pemeriksaan_start && !$tgl_pemeriksaan_end) {
+                $pemeriksaan2 = $pemeriksaanQuery->get();
+            } else {
+                // Terapkan filter tanggal pemeriksaan
+                if ($tgl_pemeriksaan_start && $tgl_pemeriksaan_end) {
+                    $pemeriksaanQuery->whereBetween('tanggal_pemeriksaan', [$tgl_pemeriksaan_start, $tgl_pemeriksaan_end]);
+                } elseif ($tgl_pemeriksaan_start) {
+                    $pemeriksaanQuery->where('tanggal_pemeriksaan', '>=', $tgl_pemeriksaan_start);
+                } elseif ($tgl_pemeriksaan_end) {
+                    $pemeriksaanQuery->where('tanggal_pemeriksaan', '<=', $tgl_pemeriksaan_end);
+                }
+
+                if ($status_spv != 'all') {
+                    $pemeriksaanQuery->where('status_spv', $status_spv);
+                }
+                if ($status_kc != 'all') {
+                    $pemeriksaanQuery->where('status_kc', $status_kc);
+                }
+
+                $pemeriksaan2 = $pemeriksaanQuery->get();
+            }
+
+            $pemeriksaanGrouped = $pemeriksaan2->sortByDesc('created_at')
+                ->groupBy(function ($item) {
+                    return $item->pcPengurus->pengguna->nama . '-' . $item->tanggal_pemeriksaan;
+                })
+                ->map(function ($group) {
+                    return $group->unique('aset_id')->values();
                 });
+
+
+            // Ambil kategori
+            $kategori = DB::table('kategori')->get();
+
+            // Mendapatkan data user
+            $divisiUser = DB::connection('gocap')
+                ->table('pc_pengurus')
+                ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
+                ->where('pc_pengurus.id_pc_pengurus', Auth::user()->gocap_id_pc_pengurus)
+                ->select('pengurus_jabatan.divisi')
+                ->first();
+
+            $supervisor = null;
+            if ($divisiUser) {
+                $supervisor = DB::connection('gocap')
+                    ->table('pc_pengurus')
+                    ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
+                    ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus')
+                    ->where('pengurus_jabatan.jabatan', 'Supervisor Cabang')
+                    ->where('pengurus_jabatan.divisi', $divisiUser->divisi)
+                    ->select('pc_pengurus.id_pc_pengurus as id_supervisor', 'siftnu.pengguna.nama as nama_supervisor')
+                    ->first();
             }
 
-            // Terapkan filter status
-            if ($status !== 'all') {
-                $asetQuery->whereHas('latestDetailPemeriksaanAset', function ($query) use ($status) {
-                    $query->where('status_aset', $status);
-                });
-            }
-
-            // Terapkan filter tanggal pembelian
-            if ($tgl_pembelian_start && $tgl_pembelian_end) {
-                $asetQuery->whereBetween('tgl_perolehan', [$tgl_pembelian_start, $tgl_pembelian_end]);
-            } elseif ($tgl_pembelian_start) {
-                $asetQuery->where('tgl_perolehan', '>=', $tgl_pembelian_start);
-            } elseif ($tgl_pembelian_end) {
-                $asetQuery->where('tgl_perolehan', '<=', $tgl_pembelian_end);
-            }
-            $aset = $asetQuery->orderBy('created_at', 'desc')->get();
-        }
-
-        // Data pemeriksaan lainnya
-        $pemeriksaanQuery = PemeriksaanAset::with([
-            'detailPemeriksaanAset.aset.kategori_aset',
-            'pcPengurus.pengguna',
-            'pcPengurus.pengurusJabatan',
-            'supervisor.pengurusJabatan',
-            'kc.pengurusJabatan',
-            'supervisor.pengguna',
-            'kc.pengguna'
-        ]);
-
-        // Ambil semua filter dari request dengan nilai default jika tidak ada input
-        $tgl_pemeriksaan_start = $request->input('tgl-pemeriksaan-start');
-        $tgl_pemeriksaan_end = $request->input('tgl-pemeriksaan-end');
-        $status_spv = $request->input('filter_status_spv', 'all');
-        $status_kc = $request->input('filter_status_kc', 'all');
-
-        if ($status_spv == 'all' && $status_kc == 'all' && !$tgl_pemeriksaan_start && !$tgl_pemeriksaan_end) {
-            $pemeriksaan2 = $pemeriksaanQuery->get();
-        } else {
-            // Terapkan filter tanggal pemeriksaan
-            if ($tgl_pemeriksaan_start && $tgl_pemeriksaan_end) {
-                $pemeriksaanQuery->whereBetween('tanggal_pemeriksaan', [$tgl_pemeriksaan_start, $tgl_pemeriksaan_end]);
-            } elseif ($tgl_pemeriksaan_start) {
-                $pemeriksaanQuery->where('tanggal_pemeriksaan', '>=', $tgl_pemeriksaan_start);
-            } elseif ($tgl_pemeriksaan_end) {
-                $pemeriksaanQuery->where('tanggal_pemeriksaan', '<=', $tgl_pemeriksaan_end);
-            }
-
-            if ($status_spv != 'all') {
-                $pemeriksaanQuery->where('status_spv', $status_spv);
-            }
-            if ($status_kc != 'all') {
-                $pemeriksaanQuery->where('status_kc', $status_kc);
-            }
-
-            $pemeriksaan2 = $pemeriksaanQuery->get();
-        }
-
-        $pemeriksaanGrouped = $pemeriksaan2->sortByDesc('created_at')
-            ->groupBy(function ($item) {
-                return $item->pcPengurus->pengguna->nama . '-' . $item->tanggal_pemeriksaan;
-            })
-            ->map(function ($group) {
-                return $group->unique('aset_id')->values();
-            });
-
-
-        // Ambil kategori
-        $kategori = DB::table('kategori')->get();
-
-        // Mendapatkan data user
-        $divisiUser = DB::connection('gocap')
-            ->table('pc_pengurus')
-            ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
-            ->where('pc_pengurus.id_pc_pengurus', Auth::user()->gocap_id_pc_pengurus)
-            ->select('pengurus_jabatan.divisi')
-            ->first();
-
-        $supervisor = null;
-        if ($divisiUser) {
-            $supervisor = DB::connection('gocap')
+            $kc = DB::connection('gocap')
                 ->table('pc_pengurus')
                 ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
                 ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus')
-                ->where('pengurus_jabatan.jabatan', 'Supervisor Cabang')
-                ->where('pengurus_jabatan.divisi', $divisiUser->divisi)
-                ->select('pc_pengurus.id_pc_pengurus as id_supervisor', 'siftnu.pengguna.nama as nama_supervisor')
+                ->where('pengurus_jabatan.jabatan', 'Kepala Cabang')
+                ->select('pc_pengurus.id_pc_pengurus as id_kc', 'siftnu.pengguna.nama as nama_kc')
                 ->first();
-        }
-
-        $kc = DB::connection('gocap')
-            ->table('pc_pengurus')
-            ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
-            ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus')
-            ->where('pengurus_jabatan.jabatan', 'Kepala Cabang')
-            ->select('pc_pengurus.id_pc_pengurus as id_kc', 'siftnu.pengguna.nama as nama_kc')
-            ->first();
-
+        /*
+           END PEMERIKSAAN ASET
+        */
+        
 
         /*
         KELUAR MASUK ASET
         */
 
-        $keluar_masuk_aset = KeluarMasukAset::orderBy('created_at', 'desc')->get();
+        $query = KeluarMasukAset::orderBy('created_at', 'desc');
 
+        $tglPencatatanStart = $request->input('tgl-pencatatan-start');
+        $tglPencatatanEnd = $request->input('tgl-pencatatan-end');
+        $statusSPV = $request->input('filter_keluar_masuk_status_spv');
+        $statusKC = $request->input('filter_keluar_masuk_status_kc');
+
+        if($tglPencatatanStart && $tglPencatatanEnd) {
+            $query->whereBetween('tanggal_pencatatan',[ $tglPencatatanStart, $tglPencatatanEnd]);
+        }
+
+        if ($statusSPV && $statusSPV !== 'all') {
+            $query->where('status_spv', $statusSPV);
+        }            
+        if ($statusKC && $statusKC !== 'all') {
+            $query->where('status_kc', $statusKC);
+        }           
+
+        $keluar_masuk_aset = $query->get();
         /*
         *
         END KELUAR MASUK
         */
+
+
+
         $role = 'pc';
         return view('data_aset.data_aset', compact('keluar_masuk_aset','kategori_id', 'status', 'kodeAset', 'tgl_pembelian_start', 'tgl_pembelian_end', 'role', 'aset', 'kategori', 'pemeriksaan2', 'pemeriksaanGrouped', 'supervisor', 'kc', 'tgl_pemeriksaan_start', 'tgl_pemeriksaan_end', 'status_spv', 'status_kc'));
     }
@@ -807,6 +849,7 @@ class DataAsetController extends Controller
         {
             $role = 'pc';
         }
+
         try {
             $keluar_masuk_aset = KeluarMasukAset::create(
                 [
@@ -829,22 +872,28 @@ class DataAsetController extends Controller
 
         // Cek apakah ada file gambar yang diupload
         if($request->no_faktur) {
-            if ($request->hasFile('dokumentasi')) {
+            if($request->hasFile('dokumentasi')) {
                 // Simpan file ke direktori sementara di server
                 $dokumentasiPath = $request->file('dokumentasi')->store('dokumentasi', 'public');
     
                 // Ambil path file yang sudah disimpan di server
                 $filePath = storage_path('app/public/' . $dokumentasiPath);
                 $fileName = $request->file('dokumentasi')->getClientOriginalName();
+                $folderId = '1FBbNi1m7ErHojk_XJqreT-Vi14HPptbT';
     
-                // Upload file ke Google Drive
-                $googleDriveService = new GoogleDriveService(); // Pastikan sudah ada instance dari GoogleDriveService
-                $driveFileLink = $googleDriveService->uploadFile($filePath, $fileName);
+                try {
+                    // Upload file ke Google Drive
+                    $googleDriveService = new GoogleDriveService(); // Pastikan sudah ada instance dari GoogleDriveService
+                    $driveFileLink = $googleDriveService->uploadFile($filePath, $fileName, $folderId);
     
-                 // Jika file berhasil diupload ke Google Drive (misalnya $driveFileLink berisi link file di Google Drive)
-                if ($driveFileLink) {
-                    // Hapus file dari server setelah berhasil upload
-                    unlink($filePath);
+                    // Jika file berhasil diupload ke Google Drive (misalnya $driveFileLink berisi link file di Google Drive)
+                    if ($driveFileLink) {
+                        // Hapus file dari server setelah berhasil upload
+                        unlink($filePath);
+                    }
+                } catch (\Exception $e) {
+                    // Berikan pesan error jika gagal upload
+                    return redirect()->back()->with('error', 'Gagal mengunggah file ke Google Drive: ' . $e->getMessage());
                 }
             }
             
@@ -952,15 +1001,21 @@ class DataAsetController extends Controller
             // Ambil path file yang sudah disimpan di server
             $filePath = storage_path('app/public/' . $dokumentasiPath);
             $fileName = $request->file('dokumentasi')->getClientOriginalName();
+            $folderId = '1FBbNi1m7ErHojk_XJqreT-Vi14HPptbT';
 
-            // Upload file ke Google Drive
-            $googleDriveService = new GoogleDriveService(); // Pastikan sudah ada instance dari GoogleDriveService
-            $driveFileLink = $googleDriveService->uploadFile($filePath, $fileName);
+            try {
+                // Upload file ke Google Drive
+                $googleDriveService = new GoogleDriveService(); // Pastikan sudah ada instance dari GoogleDriveService
+                $driveFileLink = $googleDriveService->uploadFile($filePath, $fileName, $folderId);
 
-             // Jika file berhasil diupload ke Google Drive (misalnya $driveFileLink berisi link file di Google Drive)
-            if ($driveFileLink) {
-                // Hapus file dari server setelah berhasil upload
-                unlink($filePath);
+                // Jika file berhasil diupload ke Google Drive (misalnya $driveFileLink berisi link file di Google Drive)
+                if ($driveFileLink) {
+                    // Hapus file dari server setelah berhasil upload
+                    unlink($filePath);
+                }
+            } catch (\Exception $e) {
+                // Berikan pesan error jika gagal upload
+                return redirect()->back()->with('error', 'Gagal mengunggah file ke Google Drive: ' . $e->getMessage());
             }
         }
         // dd($driveFileLink, $request->hasFile('dokumentasi'));
@@ -1041,6 +1096,7 @@ class DataAsetController extends Controller
 
                 // Ambil ID file Google Drive dari URL (anggap file Drive URL berbentuk https://drive.google.com/uc?id=FILE_ID)
                 $oldFileId = $this->getGoogleDriveFileId($oldDriveLink);
+                $folderId = '1FBbNi1m7ErHojk_XJqreT-Vi14HPptbT';
 
                 // Hapus file lama di Google Drive
                 if ($oldFileId) {
@@ -1053,10 +1109,12 @@ class DataAsetController extends Controller
                 $fileName = $request->file('edit_dokumentasi')->getClientOriginalName();
 
                 // Upload file baru ke Google Drive
-                $newDriveLink = $googleDriveService->uploadFile($filePath, $fileName);
+                $newDriveLink = $googleDriveService->uploadFile($filePath, $fileName, $folderId);
 
-                // Hapus file dari server setelah berhasil upload
-                unlink($filePath);
+                // Hapus file sementara dari server setelah berhasil upload
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
 
                 // Update kolom dokumentasi dengan link file baru dari Google Drive
                 $detail->$dokumentasiColumn = $newDriveLink;
