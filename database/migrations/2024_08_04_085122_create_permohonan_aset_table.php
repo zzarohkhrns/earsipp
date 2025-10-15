@@ -16,7 +16,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('permohonan_aset', function (Blueprint $table) {
-            $gocap = DB::connection('gocap')->getDatabaseName();
+            $gocap = DB::connection('n1651709_gocap')->getDatabaseName();
 
             $table->uuid('id_permohonan_aset')->primary();
             $table->foreignUuid('id_pc_pengurus')->nullable();

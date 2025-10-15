@@ -99,12 +99,12 @@ class DataAsetController extends Controller
         /*
            End Data Aset
         */
-        
-        
+
+
         /*
            PEMERIKSAAN ASET
         */
- 
+
 
             // Data pemeriksaan lainnya
             $pemeriksaanQuery = PemeriksaanAset::with([
@@ -158,7 +158,7 @@ class DataAsetController extends Controller
             $kategori = DB::table('kategori')->get();
 
             // Mendapatkan data user
-            $divisiUser = DB::connection('gocap')
+            $divisiUser = DB::connection('n1651709_gocap')
                 ->table('pc_pengurus')
                 ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
                 ->where('pc_pengurus.id_pc_pengurus', Auth::user()->gocap_id_pc_pengurus)
@@ -167,7 +167,7 @@ class DataAsetController extends Controller
 
             $supervisor = null;
             if ($divisiUser) {
-                $supervisor = DB::connection('gocap')
+                $supervisor = DB::connection('n1651709_gocap')
                     ->table('pc_pengurus')
                     ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
                     ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus')
@@ -177,7 +177,7 @@ class DataAsetController extends Controller
                     ->first();
             }
 
-            $kc = DB::connection('gocap')
+            $kc = DB::connection('n1651709_gocap')
                 ->table('pc_pengurus')
                 ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
                 ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus')
@@ -187,7 +187,7 @@ class DataAsetController extends Controller
         /*
            END PEMERIKSAAN ASET
         */
-        
+
 
         /*
         KELUAR MASUK ASET
@@ -206,10 +206,10 @@ class DataAsetController extends Controller
 
         if ($statusSPV && $statusSPV !== 'all') {
             $query->where('status_spv', $statusSPV);
-        }            
+        }
         if ($statusKC && $statusKC !== 'all') {
             $query->where('status_kc', $statusKC);
-        }           
+        }
 
         $keluar_masuk_aset = $query->get();
         /*
@@ -522,7 +522,7 @@ class DataAsetController extends Controller
         $kategori = Kategori::all();
 
         // Mendapatkan data user
-        $divisiUser = DB::connection('gocap')
+        $divisiUser = DB::connection('n1651709_gocap')
             ->table('pc_pengurus')
             ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
             ->where('pc_pengurus.id_pc_pengurus', Auth::user()->gocap_id_pc_pengurus)
@@ -531,7 +531,7 @@ class DataAsetController extends Controller
 
         $supervisor = null;
         if ($divisiUser) {
-            $supervisor = DB::connection('gocap')
+            $supervisor = DB::connection('n1651709_gocap')
                 ->table('pc_pengurus')
                 ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
                 ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus')
@@ -541,7 +541,7 @@ class DataAsetController extends Controller
                 ->first();
         }
 
-        $kc = DB::connection('gocap')
+        $kc = DB::connection('n1651709_gocap')
             ->table('pc_pengurus')
             ->join('pengurus_jabatan', 'pc_pengurus.id_pengurus_jabatan', '=', 'pengurus_jabatan.id_pengurus_jabatan')
             ->join('siftnu.pengguna', 'siftnu.pengguna.gocap_id_pc_pengurus', '=', 'pc_pengurus.id_pc_pengurus')
@@ -875,17 +875,17 @@ class DataAsetController extends Controller
             if($request->hasFile('dokumentasi')) {
                 // Simpan file ke direktori sementara di server
                 $dokumentasiPath = $request->file('dokumentasi')->store('dokumentasi', 'public');
-    
+
                 // Ambil path file yang sudah disimpan di server
                 $filePath = storage_path('app/public/' . $dokumentasiPath);
                 $fileName = $request->file('dokumentasi')->getClientOriginalName();
                 $folderId = '1FBbNi1m7ErHojk_XJqreT-Vi14HPptbT';
-    
+
                 try {
                     // Upload file ke Google Drive
                     $googleDriveService = new GoogleDriveService(); // Pastikan sudah ada instance dari GoogleDriveService
                     $driveFileLink = $googleDriveService->uploadFile($filePath, $fileName, $folderId);
-    
+
                     // Jika file berhasil diupload ke Google Drive (misalnya $driveFileLink berisi link file di Google Drive)
                     if ($driveFileLink) {
                         // Hapus file dari server setelah berhasil upload
@@ -896,9 +896,9 @@ class DataAsetController extends Controller
                     return redirect()->back()->with('error', 'Gagal mengunggah file ke Google Drive: ' . $e->getMessage());
                 }
             }
-            
+
             try {
-                if ($request->jenis == 'masuk') {      
+                if ($request->jenis == 'masuk') {
 
                     $tglColumn = 'masuk_tgl_masuk';
                     $namaColumn = 'masuk_nama_pemasok';
@@ -906,7 +906,7 @@ class DataAsetController extends Controller
                     $keteranganColumn = 'masuk_keterangan';
                     $dokumentasiColumn = 'masuk_dokumentasi';
                     $transaksiColumn = 'masuk_no_transaksi';
-                    
+
                     if ($keluar_masuk_aset->masuk_dokumentasi) {
                         Storage::disk('public')->delete($keluar_masuk_aset->masuk_dokumentasi);
                     }
@@ -918,7 +918,7 @@ class DataAsetController extends Controller
                     $keteranganColumn = 'keluar_keterangan';
                     $dokumentasiColumn = 'keluar_dokumentasi';
                     $transaksiColumn = 'keluar_no_transaksi';
-    
+
                     if ($keluar_masuk_aset->keluar_dokumentasi) {
                         Storage::disk('public')->delete($keluar_masuk_aset->keluar_dokumentasi);
                     }
@@ -944,7 +944,7 @@ class DataAsetController extends Controller
                     ];
                 // dd($data, $keluar_masuk_aset);
                 $keluar_masuk_aset->update($data);
-    
+
                 // Redirect atau berikan response sukses
                 return redirect()->back()->with('success', 'Data faktur '. $request->jenis .' berhasil ditambahkan.');
             } catch (\Exception $e) {
@@ -954,10 +954,10 @@ class DataAsetController extends Controller
         if($request->status_pencatatan) {
             try {
                 $keluar_masuk_aset->update(['status_pencatatan' => $request->status_pencatatan]);
-                
+
                 return redirect()->back()->with('success', 'Status pemeriksaan berhasil diubah');
             } catch (\Exception $e) {
-                
+
                 return redirect()->back()->with('success', 'Status pemeriksaan gagal diubah, err : '.$e->getMessage());
             }
         }
@@ -1129,7 +1129,7 @@ class DataAsetController extends Controller
             ]);
 
             return redirect()->back()->with('success', 'Data berhasil diperbarui!');
-            
+
         } catch (\Exception $e) {
             // Menangani kesalahan
             return redirect()->back()->with('error', 'Gagal memperbarui data, error: ' . $e->getMessage());
@@ -1188,7 +1188,7 @@ class DataAsetController extends Controller
         }catch(\Exception $e) {
             return redirect()->back()->with('error', 'Gagal menghapus Aset '. $jenis .'<br>error :' . $e->getMessage());
         }
-        
+
     }
 
     /**

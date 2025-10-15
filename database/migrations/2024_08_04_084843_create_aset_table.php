@@ -16,7 +16,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('aset', function (Blueprint $table) {
-            $gocap = DB::connection('gocap')->getDatabaseName(); // Menyiapkan nama database gocap
+            $gocap = DB::connection('n1651709_gocap')->getDatabaseName(); // Menyiapkan nama database gocap
 
             $table->uuid('aset_id')->primary();
             $table->string('kode_aset')->nullable();
@@ -48,7 +48,7 @@ return new class extends Migration
             // Foreign key id_upzis_pengurus
             $table->foreignUuid('id_upzis_pengurus')->nullable();
             $table->foreign('id_upzis_pengurus')->references('id_upzis_pengurus')->on(new Expression($gocap . '.upzis_pengurus')); // Menggunakan sintaks yang benar untuk Expression
-            
+
             $table->string('asal_perolahan')->nullable();
 
             $table->rememberToken();
